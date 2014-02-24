@@ -13,17 +13,17 @@
     </tr>
     <tr>
         <td>Anne</td>
-        <td>Bonnie</td>
-        <td>Clara</td>
-    </tr>
-    <tr>
         <td>Present</td>
-        <td>Present</td>
-        <td>Present</td>    
-    </tr>
-    <tr>
         <td>5:00</td>
-        <td>9:30</td>
+    </tr>
+    <tr>
+        <td>Bonnie</td>
+        <td>Present</td>
+        <td>9:30</td>    
+    </tr>
+    <tr>
+        <td>Clara</td>
+        <td>Present</td>
         <td>1:11</td>
     </tr>
 </table>
