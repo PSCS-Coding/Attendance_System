@@ -17,10 +17,10 @@ mysql_select_db("studentInfo", $db_server)
     
 <table style="width:80%">
     <tr>
-    <th>Student</th>
-    <th>Status</th>
-    <th>Comment</th>
-    <th>Time</th>
+        <th>Student</th>
+        <th>Status</th>
+        <th>Comment</th>
+        <th>Time</th>
     </tr>
     <tr>
         <td>Anne</td>
