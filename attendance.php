@@ -15,13 +15,20 @@ mysql_select_db("attendance", $db_server)
 	or die("Unable to select database: " . mysql_error());
 	
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo");
-$users = mysql_fetch_array($userdata);
+$rows = mysql_num_rows($userdata);
+$users = array();
+
+for ($j = 0 ; $j < $rows ; ++$j)
+		{
+		$row = mysql_fetch_row($userdata);
+		array_merge($users, $row);
+		}
 
 print_r($users);
 
 foreach ($users as $user) {
 	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
-//	echo $user . "<br />";
+	echo $user . "<br />";
 	}
 ?>
     
