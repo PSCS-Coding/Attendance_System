@@ -38,9 +38,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
 	$rowdata = mysql_fetch_array($raw);
 	
-	echo "<br />";
-	print_r($rowdata);
-	
         echo "<tr>";
         echo "<td><input type='checkbox'/></td>";
         echo "<td>" . $rowdata[0] . "</td>";
