@@ -40,7 +40,8 @@ foreach ($users as $user) {
         <th>Comment</th>
         <th>Time</th>
     </tr>
-    for ($i = 1; $i <= $NumStudents; $i++) {
+    <?php
+    foreach ($suers as $user) {
         <td><input type="checkbox"/></td>
         <td>$studentInfo[0]</td>
         <td>$studentInfo[1]</td>
@@ -49,5 +50,5 @@ foreach ($users as $user) {
     }
 </table>
 </body>
-
+?>
 </html>
