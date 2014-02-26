@@ -39,7 +39,6 @@ print_r($users);
     <?php
     foreach ($users as $user) {
 	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
-    ?>
         <tr>
         <td><input type="checkbox"/></td>
         <td>$user</td>
@@ -47,7 +46,6 @@ print_r($users);
         <td>$studentInfo[2]</td>
         <td>$studentInfo[3]</td
         </tr>
-   <?php
    }
    ?>
 </table>
