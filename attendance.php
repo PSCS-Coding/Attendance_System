@@ -26,10 +26,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
 
 print_r($users);
 
-foreach ($users as $user) {
-	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
-	echo $user . "<br />";
-	}
 ?>
     
 <table style="width:80%">
@@ -41,14 +37,17 @@ foreach ($users as $user) {
         <th>Time</th>
     </tr>
     <?php
-    foreach ($suers as $user) {
+    foreach ($users as $user) {
+	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
+    ?>
         <td><input type="checkbox"/></td>
-        <td>$studentInfo[0]</td>
+        <td>$user</td>
         <td>$studentInfo[1]</td>
         <td>$studentInfo[2]</td>
         <td>$studentInfo[3]</td
-    }
+   <?php
+   }
+   ?>
 </table>
 </body>
-?>
 </html>
