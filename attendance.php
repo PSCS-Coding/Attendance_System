@@ -14,14 +14,14 @@ mysql_select_db("attendance", $db_server)
 
 	or die("Unable to select database: " . mysql_error());
 	
-$userdata = mysql_query("SELECT DISTINCT name FROM studentInfo");
+$userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
 $users = array();
 
 for ($j = 0 ; $j < $rows ; ++$j)
 		{
-		$row = mysql_fetch_row($userdata);
-		array_merge($users, $row);
+		$namedata = mysql_fetch_row($userdata);
+		array_push($users, $namedata[0]);
 		}
 
 print_r($users);
