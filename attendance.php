@@ -20,12 +20,9 @@ $users = array();
 
 for ($j = 0 ; $j < $rows ; ++$j)
 		{
-		$namedata = mysql_fetch_row($userdata);
+		$namedata = mysql_fetch_array($userdata);
 		array_push($users, $namedata[0]);
 		}
-
-print_r($users);
-
 ?>
     
 <table style="width:80%">
@@ -38,13 +35,18 @@ print_r($users);
     </tr>
     <?php
     foreach ($users as $user) {
-	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
+	$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
+	$rowdata = mysql_fetch_array($raw);
+	
+	echo "<br />";
+	print_r($rowdata);
+	
         echo "<tr>";
         echo "<td><input type='checkbox'/></td>";
-        echo "<td>" . $user . "</td>";
-        echo "<td>" . $studentInfo[1] . "</td>";
-        echo "<td>" . $studentInfo[2] . "</td>";
-        echo "<td>" . $studentInfo[3] . "</td>";
+        echo "<td>" . $rowdata[0] . "</td>";
+        echo "<td>" . $rowdata[1] . "</td>";
+        echo "<td>" . $rowdata[2] . "</td>";
+        echo "<td>" . $rowdata[3] . "</td>";
         echo "</tr>";
    }
    ?>
