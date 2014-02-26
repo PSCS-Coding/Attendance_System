@@ -20,7 +20,7 @@ $users = mysql_fetch_array($userdata);
 foreach $users as $user (
 	mysql_query("SELECT * FROM StudentInfo WHERE name =" . "$user " . "ORDERBY timestamp DESC LIMIT 1");
 	echo $user . "<br />";
-	
+	)
 ?>
     
 <table style="width:80%">
