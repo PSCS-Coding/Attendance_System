@@ -17,9 +17,11 @@ mysql_select_db("attendance", $db_server)
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo");
 $users = mysql_fetch_array($userdata);
 
+print_r($users);
+
 foreach ($users as $user) {
-	mysql_query("SELECT * FROM studentInfo WHERE name =" . "$user " . "ORDERBY timestamp DESC LIMIT 1");
-	echo $user . "<br />";
+	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
+//	echo $user . "<br />";
 	}
 ?>
     
