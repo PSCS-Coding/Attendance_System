@@ -34,29 +34,19 @@ foreach ($users as $user) {
     
 <table style="width:80%">
     <tr>
+        <th></th>
         <th>Student</th>
         <th>Status</th>
         <th>Comment</th>
         <th>Time</th>
     </tr>
-    <tr>
-        <td>Anne</td>
-        <td>Present</td>
-        <td></td>
-        <td>5:00</td>
-    </tr>
-    <tr>
-        <td>Bonnie</td>
-        <td>Present</td>
-        <td></td>
-        <td>9:30</td>    
-    </tr>
-    <tr>
-        <td>Clara</td>
-        <td>Present</td>
-        <td></td>
-        <td>1:11</td>
-    </tr>
+    for ($i = 1; $i <= $NumStudents; $i++) {
+        <td><input type="checkbox"/></td>
+        <td>$studentInfo[0]</td>
+        <td>$studentInfo[1]</td>
+        <td>$studentInfo[2]</td>
+        <td>$studentInfo[3]</td
+    }
 </table>
 </body>
 
