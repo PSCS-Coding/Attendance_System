@@ -39,13 +39,13 @@ print_r($users);
     <?php
     foreach ($users as $user) {
 	mysql_query("SELECT * FROM studentInfo WHERE name =" . $user . " ORDER BY timestamp DESC LIMIT 1");
-        <tr>
-        <td><input type="checkbox"/></td>
-        <td>$user</td>
-        <td>$studentInfo[1]</td>
-        <td>$studentInfo[2]</td>
-        <td>$studentInfo[3]</td
-        </tr>
+        echo "<tr>";
+        echo "<td><input type='checkbox'/></td>";
+        echo "<td>" . $user . "</td>";
+        echo "<td>" . $studentInfo[1] . "</td>";
+        echo "<td>" . $studentInfo[2] . "</td>";
+        echo "<td>" . $studentInfo[3] . "</td>";
+        echo "</tr>";
    }
    ?>
 </table>
