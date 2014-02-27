@@ -4,6 +4,20 @@
 <title>attendance system tests</title>
 
 <body>
+
+<table style="width : 100%">
+    <th><select>
+  <option value="Present">Present</option>
+  <option value="Offsite">Offsite</option>
+  <option value="Field Trip">Field Trip</option>
+  <option value="Checked Out">Checked Out</option>
+  <input type="submit" value="Submit">
+    <form name="input" action="html_form_action.asp" method="get">
+Comment: <input type="text" name="comment">
+
+</select></th>
+</table>    
+
 <?php
 // connect to sql
 $db_server = mysql_connect("localhost", "pscs", "Courage!");
