@@ -6,7 +6,7 @@
 <body>
 
 <table style="width : 100%">
-   <select>
+   <select name="status">
   <option value="Present">Present</option>
   <option value="Offsite">Offsite</option>
   <option value="Field Trip">Field Trip</option>
@@ -61,6 +61,14 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	}	
 		if (isset($_POST['person'])) {
 			print_r ($_POST['person']);
+            
+    if (isset($_POST['submit'])) {
+    
+    $query = "INSERT INTO studentInfo (name, status, comments)
+    VALUES ('$_POST['person']', '$_POST['status']', '$_POST['comment'])";
+    $result = mysql_query($db_server, $query)
+    or die('Error querying database.');
+}
 		}
  
    
