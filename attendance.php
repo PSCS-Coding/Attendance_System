@@ -59,15 +59,13 @@ for ($j = 0 ; $j < $rows ; ++$j)
         echo "<td>" . $rowdata[3] . "</td>";
         echo "</tr>";
 	}	
-		if (isset($_POST['person'])) {
-			print_r ($_POST['person']);
-            
+	
     if (isset($_POST['submit'])) {
-    
-    $query = "INSERT INTO studentInfo (name, status, comments)
-    VALUES ('$_POST['person']', '$_POST['status']', '$_POST['comment'])";
-    $result = mysql_query($db_server, $query)
-    or die('Error querying database.');
+		foreach ($_POST['person'] as $student) {
+		$query = "INSERT INTO studentInfo (name, status, comments)
+		VALUES ('$student', '$_POST['status']', '$_POST['comment'])";
+		$result = mysql_query($db_server, $query)
+		or die('Error querying database.');
 }
 		}
  
