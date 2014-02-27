@@ -2,7 +2,7 @@
 <html>
 <link rel="stylesheet" type="text/css" href="attendance.css">
 <title>attendance system tests</title>
-
+<form>
 <body>
 
 <table style="width : 100%">
@@ -13,7 +13,6 @@
   <option value="Checked Out">Checked Out</option>
   <input type="submit" value="Submit">
 Comment: <input type="text" name="comment">
-</select>
 </table>    
 
 <?php
@@ -61,4 +60,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
    ?>
 </table>
 </body>
+</form>
+</select>
 </html>
