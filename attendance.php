@@ -11,7 +11,7 @@
   <option value="Offsite">Offsite</option>
   <option value="Field Trip">Field Trip</option>
   <option value="Checked Out">Checked Out</option>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Submit" name="submit">
 Comment: <input type="text" name="comment">
 </table>    
 
@@ -24,7 +24,20 @@ if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
 mysql_select_db("attendance", $db_server)
 
 	or die("Unable to select database: " . mysql_error());
-	
+if (isset($_POST['submit'])) {
+        $name = $_POST['person'];
+        $status = $_POST['status'];
+        $comments = $_POST['comment'];
+      
+		foreach ($name as $student) {
+
+            $query = "INSERT INTO studentInfo (name, status, comments)
+        VALUES ('$student', '$status', '$comments')";
+        $result = mysql_query($query)
+        or die('Error querying database.');
+}
+    }
+    
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
 $users = array();
@@ -34,6 +47,7 @@ for ($j = 0 ; $j < $rows ; ++$j)
 		$namedata = mysql_fetch_array($userdata);
 		array_push($users, $namedata[0]);
 		}
+        
 ?>
     
 <table style="width:80%">
@@ -52,29 +66,17 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	$rowdata = mysql_fetch_array($raw);
 	
         echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value=" . $rowdata[0] . "/></td>";
+        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "'></td>";
         echo "<td>" . $rowdata[0] . "</td>";
         echo "<td>" . $rowdata[1] . "</td>";
         echo "<td>" . $rowdata[2] . "</td>";
         echo "<td>" . $rowdata[3] . "</td>";
         echo "</tr>";
 	}	
-	
-    if (isset($_POST['submit'])) {
-		foreach ($_POST['person'] as $student) {
-        $name = $_POST['person'];
-        $status = $_POST['status'];
-        $comments = $_POST['comment'];
-        
-    $query = "INSERT INTO studentInfo (name, status, comments)
-    VALUES ('$name', '$status', '$comments')";
-    $result = mysql_query($db_server, $query)
-    or die('Error querying database.');
-}
-    }
+    unset($_POST['submit']);  
    ?>
 </table>
-</body>
-</form>
 </select>
+</form>
+</body>
 </html>
