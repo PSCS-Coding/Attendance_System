@@ -62,15 +62,16 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	
     if (isset($_POST['submit'])) {
 		foreach ($_POST['person'] as $student) {
-		$query = "INSERT INTO `attendance`.`studentInfo` (`name`, `status`, `comments`, `time`) VALUES ('student', '', 'comment', CURRENT_TIMESTAMP);
-		$result = mysql_query($db_server, $query)
-		or die('Error querying database.');
+        $name = $_POST['person'];
+        $status = $_POST['status'];
+        $comments = $_POST['comment'];
+        
+    $query = "INSERT INTO studentInfo (name, status, comments)
+    VALUES ('$name', '$status', '$comments')";
+    $result = mysql_query($db_server, $query)
+    or die('Error querying database.');
 }
-		}
- 
-   
-		
-   
+    }
    ?>
 </table>
 </body>
