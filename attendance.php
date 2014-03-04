@@ -6,13 +6,15 @@
 <body>
 
 <table style="width : 100%">
-   <select name="status">
-  <option value="Present">Present</option>
-  <option value="Offsite">Offsite</option>
-  <option value="Field Trip">Field Trip</option>
-  <option value="Checked Out">Checked Out</option>
-  <input type="submit" value="Submit" name="submit">
-Comment: <input type="text" name="comment">
+<tr>
+    <td><form method='post' action='attendance.php'><select name="status">
+        <option value="Present">Present</option>
+        <option value="Offsite">Offsite</option>
+        <option value="Field Trip">Field Trip</option>
+        <option value="Checked Out">Checked Out</option></td>
+    <td><input type="submit" value="Submit" name="submit"></td>
+    <td>Comment: <input type="text" name="comment"></td>
+</tr>
 </table>    
 
 <?php
@@ -74,7 +76,5 @@ for ($j = 0 ; $j < $rows ; ++$j)
     unset($_POST['submit']);  
    ?>
 </table>
-</select>
-</form>
 </body>
 </html>
