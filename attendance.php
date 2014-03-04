@@ -5,7 +5,7 @@
 <form method='post' action='attendance.php'>
 <body>
 
-<table style="width : 100%">
+<table style="width : 80%">
 <tr>
     <td><form method='post' action='attendance.php'><select name="status">
         <option value="Present">Present</option>
