@@ -12,7 +12,11 @@
 <tr>
     <td><input type="submit" value="Offsite" name="offsite"></td>
     <td>
-        <input type="text" value="Location" name="location"></td>
+        <input type="text" name="location">
+        <label for="location">Location</label></td>
+        <td>
+        <input type="text" name="offtime">
+        <label for="offtime">Return time</label></td>
 </tr>
 <tr>
     <td><input type="submit" value="Field Trip" name="fieldtrip"></td>
@@ -23,8 +27,13 @@
         </select>
     </td>
     <td>
-        <input type="text" value="Location" name="location">
+        <input type="text" name="ftlocation">
+        <label for="ftlocation">Location</label>
+        <input type="text" name="fttime">
+        <label for="fttime">Return time</label>
         </td>
+<tr>
+    <td><input type="submit" value="Sign Out" name="signout"></td>
 </tr>
 </table>    
 </body>
