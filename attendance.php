@@ -12,29 +12,11 @@
         <option value="Offsite">Offsite</option>
         <option value="Field Trip">Field Trip</option>
         <option value="Checked Out">Checked Out</option></td>
-	I think I'll be back in:<select name="comment">
-	<option value="10">10 Minutes</option>
-	<option value="20">20 Minutes</option>
-	<option value="40">40 Minutes</option>
-	<option value="60">An Hour</option>
-	<option value="90">An Hour and a half</option>
-	<option value="180">2 Hours</option>
-	</select>
     <td><input type="submit" value="Submit" name="submit"></td>
     <td>Comment: <input type="text" name="comment"></td>
 </tr>
 </table>    
 
-<table class="spacer">
-    
-</table>
-<?php
-$hour = date('G');
-$minute = date('i');
-//'G' parameter means 24 hour time, no minute or second
-//'i' parameter means minutes, no hour or second
-// Here's the page for the date function: http://www.php.net/manual/en/function.date.php
-?>
 <?php
 // connect to sql
 $db_server = mysql_connect("localhost", "pscs", "Courage!");
@@ -48,20 +30,6 @@ if (isset($_POST['submit'])) {
         $name = $_POST['person'];
         $status = $_POST['status'];
         $comments = $_POST['comment'];
-		
-		$commentminute = $comments + $minute;
-		if ($commentminute > 59) {
-		$hour = $hour + 1;
-		$commentminute = $commentminute - 60;
-		}
-		$commenttext = "Expected at " . $hour . ":" . $commentminute;
-		foreach ($name as $student) {
-
-            $query = "INSERT INTO studentInfo (name, status, comments)
-        VALUES ('$student', '$status', '$commenttext')";
-        $result = mysql_query($query)
-        or die('Error querying database.');
-}
       
 		foreach ($name as $student) {
 
