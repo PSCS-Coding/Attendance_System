@@ -2,9 +2,9 @@
 <html>
 <link rel="stylesheet" type="text/css" href="attendance.css">
 <title>attendance system tests</title>
-<form method='post' action='attendance.php'>
-<body>
 
+<body>
+<form method='post' action='attendance.php' id='main'>
 <table style="width : 80%">
 <tr>
     <td><form method='post' action='attendance.php'><select name="status">
@@ -16,7 +16,7 @@
     <td>Comment: <input type="text" name="comment"></td>
 </tr>
 </table>    
-
+</form>
 <?php
 // connect to sql
 $db_server = mysql_connect("localhost", "pscs", "Courage!");
