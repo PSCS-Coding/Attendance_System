@@ -78,7 +78,7 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	
 	else {
 		echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value=" . $rowdata[0] . "form='main'/></td>";
+        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
         echo "<td>" . $rowdata[0] . "</td>";
         echo "<td>" . $rowdata[1] . "</td>";
         echo "<td>" . $rowdata[2] . "</td>";
