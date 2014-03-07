@@ -18,7 +18,7 @@ $presentquery = "INSERT INTO studentInfo (name, status)
 
 $presentsubmit = mysql_query($presentquery);
 
-header('Location: http://code.pscs.org/Isaac/isaacattendance.php');
+header('Location: http://code.pscs.org/attendance/attendance.php');
 exit;
 ?>
 </body>
