@@ -66,13 +66,27 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
 	$rowdata = mysql_fetch_array($raw);
 	
+	if ($rowdata[1] == 'Offsite' || $rowdata[1] == 'Checked Out' || $rowdata[1] == 'Field Trip') {
         echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "'></td>";
+        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'><form action='presentbutton.php' method='post'>
+		<input type='hidden' name='present' value='". $user . "'>
+		<input type='submit' value='P'></form></td>";
         echo "<td>" . $rowdata[0] . "</td>";
         echo "<td>" . $rowdata[1] . "</td>";
         echo "<td>" . $rowdata[2] . "</td>";
         echo "</tr>";
+	}
+	
+	else {
+		echo "<tr>";
+        echo "<td><input type='checkbox' name='person[]' value=" . $rowdata[0] . "form='main'/></td>";
+        echo "<td>" . $rowdata[0] . "</td>";
+        echo "<td>" . $rowdata[1] . "</td>";
+        echo "<td>" . $rowdata[2] . "</td>";
+        echo "<td>" . $rowdata[3] . "</td>";
+        echo "</tr>";
 	}	
+}	
     unset($_POST['submit']);  
    ?>
 </table>
