@@ -83,7 +83,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
         echo "<td>" . $rowdata[0] . "</td>";
         echo "<td>" . $rowdata[1] . "</td>";
         echo "<td>" . $rowdata[2] . "</td>";
-        echo "<td>" . $rowdata[3] . "</td>";
         echo "</tr>";
 	}	
 }	
