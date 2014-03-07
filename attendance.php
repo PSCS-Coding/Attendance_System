@@ -32,13 +32,12 @@ if (isset($_POST['submit'])) {
         $comments = $_POST['comment'];
       
 		foreach ($name as $student) {
-
-            $query = "INSERT INTO studentInfo (name, status, comments)
-        VALUES ('$student', '$status', '$comments')";
-        $result = mysql_query($query)
-        or die('Error querying database.');
+			$query = "INSERT INTO studentInfo (name, status, comments)
+			VALUES ('$student', '$status', '$comments')";
+			$result = mysql_query($query)
+				or die('Error querying database.');
+		}
 }
-    }
     
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
@@ -63,8 +62,8 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	
 	$checkboxes = array();
     foreach ($users as $user) {
-	$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
-	$rowdata = mysql_fetch_array($raw);
+		$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
+		$rowdata = mysql_fetch_array($raw);
 	
 	if ($rowdata[1] == 'Offsite' || $rowdata[1] == 'Checked Out' || $rowdata[1] == 'Field Trip') {
         echo "<tr>";
