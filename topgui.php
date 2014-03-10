@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html> 
 <link rel="stylesheet" type="text/css" href="attendance.css">
 
 <body>
