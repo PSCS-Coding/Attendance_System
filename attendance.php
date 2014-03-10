@@ -67,7 +67,7 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	
 	if ($rowdata[1] == 'Offsite' || $rowdata[1] == 'Checked Out' || $rowdata[1] == 'Field Trip') {
         echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'><form action='presentbutton.php' method='post'>
+        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main' class='c_box'><form action='presentbutton.php' method='post'>
 		<input type='hidden' name='present' value='". $user . "'>
 		<input type='submit' value='P' class='p_button'></form></td>";
         echo "<td>" . $rowdata[0] . "</td>";
