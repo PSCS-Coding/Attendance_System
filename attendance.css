@@ -9,7 +9,7 @@ border-collapse:collapse;
 .top_interface {
 border-collapse:collapse;
 }
-.top_interface,td {
+.top_interface td {
 margin: auto;
 }
 th, td {
