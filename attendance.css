@@ -8,6 +8,7 @@ border-collapse:collapse;
 }
 .top_interface {
 border-collapse:collapse;
+margin: auto;
 }
 th, td {
 padding:5px;
