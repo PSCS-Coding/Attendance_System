@@ -56,6 +56,14 @@ or die("Unable to select database: " . mysql_error());
         <th>Comment</th>
     </tr>
 <?php
+$userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
+$rows = mysql_num_rows($userdata);
+$users = array();
+
+for ($j = 0 ; $j < $rows ; ++$j){
+		$namedata = mysql_fetch_array($userdata);
+		array_push($users, $namedata[0]);
+}
 	$checkboxes = array();
 foreach ($users as $user) {
 		$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
