@@ -11,6 +11,7 @@ $query = "INSERT INTO studentInfo (name, status, comments)
             or die('Error querying database.');
 }
 ?>
+<form action="milo.php" id= main method="post">
     <table style="width : 80%">
         <tr>
             <td><input type="submit" value="Present" name="present"></td>
