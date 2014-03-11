@@ -5,40 +5,94 @@
 
 <body>
 <form method='post' action='attendance.php' id='main'>
-<table style="width : 80%">
+<table style="width : 80%" class='top_interface'>
 <tr>
-    <td><form method='post' action='attendance.php'><select name="status">
-        <option value="Present">Present</option>
-        <option value="Offsite">Offsite</option>
-        <option value="Field Trip">Field Trip</option>
-        <option value="Checked Out">Checked Out</option></td>
-    <td><input type="submit" value="Submit" name="submit"></td>
-    <td>Comment: <input type="text" name="comment"></td>
+    <td><input type="submit" value="Present" name="present"></td>
+</tr>
+<tr>
+    <td><input type="submit" value="Offsite" name="offsite"></td>
+    <td>
+        <input type="text" name="location">
+        <label for="location">Location</label></td>
+        <td>
+        <input type="text" name="offtime">
+        <label for="offtime">Return time</label></td>
+</tr>
+<tr>
+    <td><input type="submit" value="Field Trip" name="fieldtrip"></td>
+    <td><select name="facilitator">
+		<!-- 
+==============================================================================
+		Make a query to get teacher names, don't hard code this
+==============================================================================
+		-->
+		<option value=''>Select</option>
+        <option value="scobie">Scobie</option>
+        <option value="nic">Nic</option>
+        <option value="crysta">Crysta</option>
+        </select>
+    </td>
+    <td>
+        <input type="text" name="fttime">
+        <label for="fttime">Return time</label>
+        </td>
+<tr>
+    <td><input type="submit" value="Sign Out" name="signout"></td>
 </tr>
 </table>    
 </form>
 <?php
 // connect to sql
 $db_server = mysql_connect("localhost", "pscs", "Courage!");
-
 if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
-
 mysql_select_db("attendance", $db_server)
-
 	or die("Unable to select database: " . mysql_error());
+
+
 if (isset($_POST['submit'])) {
-        $name = $_POST['person'];
-        $status = $_POST['status'];
-        $comments = $_POST['comment'];
-      
-		foreach ($name as $student) {
-			$query = "INSERT INTO studentInfo (name, status, comments)
-			VALUES ('$student', '$status', '$comments')";
-			$result = mysql_query($query)
-				or die('Error querying database.');
-		}
+        
 }
-    
+
+function changestatus($f_name, $f_status, $f_comment) {
+	$query = "INSERT INTO studentInfo (name, status, comments)
+			VALUES ('$f_name', '$f_status', '$f_comment')";
+	$result = mysql_query($query)
+		or die('Error querying database.');
+}
+
+if (isset($_POST['present'])) {
+	$name = $_POST['person'];
+	foreach ($name as $student)
+	{
+		changestatus($student, 'Present', '');
+	}
+}
+
+if (isset($_POST['offsite'])) {
+	$name = $_POST['person'];
+	$status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
+	foreach ($name as $student)
+	{
+		changestatus($student, 'Offsite', $status);
+	}
+}
+
+if (isset($_POST['fieldtrip'])) {
+	$name = $_POST['person'];
+	$status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
+	foreach ($name as $student)
+	{
+		changestatus($student, 'Field Trip', $status);
+	}
+}
+if (isset($_POST['signout'])) {
+	$name = $_POST['person'];
+	foreach ($name as $student)
+	{
+		changestatus($student, 'Checked out', '');
+	}
+}
+
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
 $users = array();
@@ -51,7 +105,7 @@ for ($j = 0 ; $j < $rows ; ++$j)
         
 ?>
     
-<table style="width:80%">
+<table style="width:80%" class='data_table'>
     <tr>
         <th></th>
         <th>Student</th>
