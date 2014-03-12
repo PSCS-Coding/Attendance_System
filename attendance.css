@@ -7,10 +7,11 @@ border:1px solid black;
 border-collapse:collapse;
 }
 .top_interface {
-border-collapse:collapse;
+
 }
 .top_interface td {
 margin: auto;
+border-collapse:collapse;
 }
 th, td {
 padding:5px;

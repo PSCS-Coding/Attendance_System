@@ -4,42 +4,46 @@
 <title>attendance system tests</title>
 
 <body>
+
+<div>
 <form method='post' action='attendance.php' id='main'>
-<table style="width : 80%" class='top_interface'>
-<tr>
-    <td><input type="submit" value="Present" name="present"></td>
-</tr>
-<tr>
-    <td><input type="submit" value="Offsite" name="offsite"></td>
-    <td>
-        <input type="text" name="location">
-        <label for="location">Location</label></td>
-        <td>
-        <input type="text" name="offtime">
-        <label for="offtime">Return time</label></td>
-</tr>
-<tr>
-    <td><input type="submit" value="Field Trip" name="fieldtrip"></td>
-    <td><select name="facilitator">
+
+<div>
+    <input type="submit" value="Present" name="present">
+</div>
+
+<div>
+    <input type="submit" value="Offsite" name="offsite">
+    
+    <input type="text" name="location">
+    <label for="location">Location</label>
+	
+    <input type="text" name="offtime">
+    <label for="offtime">Return time</label>
+</div>
+
+<div>
+    <input type="submit" value="Field Trip" name="fieldtrip">
+    <select name="facilitator">
 		<!-- 
 ==============================================================================
 		Make a query to get teacher names, don't hard code this
 ==============================================================================
 		-->
-		<option value=''>Select</option>
+		<option value=''>Select Facilitator</option>
         <option value="scobie">Scobie</option>
         <option value="nic">Nic</option>
         <option value="crysta">Crysta</option>
         </select>
-    </td>
-    <td>
+    
         <input type="text" name="fttime">
         <label for="fttime">Return time</label>
-        </td>
-<tr>
-    <td><input type="submit" value="Sign Out" name="signout"></td>
-</tr>
-</table>    
+</div>
+
+<div>
+    <input type="submit" value="Sign Out" name="signout">
+</div>
+</div>
 </form>
 <?php
 // connect to sql
@@ -107,10 +111,10 @@ for ($j = 0 ; $j < $rows ; ++$j)
     
 <table style="width:80%" class='data_table'>
     <tr>
-        <th></th>
-        <th>Student</th>
-        <th>Status</th>
-        <th>Comment</th>
+        <th class='data_table'></th>
+        <th class='data_table'>Student</th>
+        <th class='data_table'>Status</th>
+        <th class='data_table'>Comment</th>
     </tr>
     <?php
 	
@@ -121,21 +125,21 @@ for ($j = 0 ; $j < $rows ; ++$j)
 	
 	if ($rowdata[1] == 'Offsite' || $rowdata[1] == 'Checked Out' || $rowdata[1] == 'Field Trip') {
         echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main' class='c_box'><form action='presentbutton.php' method='post'>
+        echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main' class='c_box'><form action='presentbutton.php' method='post'>
 		<input type='hidden' name='present' value='". $user . "'>
 		<input type='submit' value='P' class='p_button'></form></td>";
-        echo "<td>" . $rowdata[0] . "</td>";
-        echo "<td>" . $rowdata[1] . "</td>";
-        echo "<td>" . $rowdata[2] . "</td>";
+        echo "<td class='data_table'>" . $rowdata[0] . "</td>";
+        echo "<td class='data_table'>" . $rowdata[1] . "</td>";
+        echo "<td class='data_table'>" . $rowdata[2] . "</td>";
         echo "</tr>";
 	}
 	
 	else {
 		echo "<tr>";
-        echo "<td><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
-        echo "<td>" . $rowdata[0] . "</td>";
-        echo "<td>" . $rowdata[1] . "</td>";
-        echo "<td>" . $rowdata[2] . "</td>";
+        echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
+        echo "<td class='data_table'>" . $rowdata[0] . "</td>";
+        echo "<td class='data_table'>" . $rowdata[1] . "</td>";
+        echo "<td class='data_table'>" . $rowdata[2] . "</td>";
         echo "</tr>";
 	}	
 }	
