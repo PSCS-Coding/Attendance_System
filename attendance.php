@@ -24,18 +24,27 @@
 
 <div>
     <input type="submit" value="Field Trip" name="fieldtrip">
-    <select name="facilitator">
-		<!-- 
-==============================================================================
-		Make a query to get teacher names, don't hard code this
-==============================================================================
-		-->
-		<option value=''>Select Facilitator</option>
-        <option value="scobie">Scobie</option>
-        <option value="nic">Nic</option>
-        <option value="crysta">Crysta</option>
+   
+<?php
+	$fac_query = "SELECT * FROM facilitators ORDER BY facilitatorname ASC";
+	$fac_data = mysql_query($fac_query);
+	
+	if (!$fac_data) die ("Database access failed: " . mysql_error());
+	$fac_rows = mysql_num_rows($fac_data);
+	
+	$facilitators = array();
+
+	for ($i = 0 ; $i < $fac_rows ; ++$i)
+		{
+		$fac_name = mysql_result($fac_data, $i);
+		array_push ($facilitators, $fac_name);
+		}
+		echo "<select name='facilitator'><option value=''>Select Facilitator</option>";
+		foreach ($facilitators as $facilitator_option) {
+			echo "<option value= '" . $facilitator_option . "' >" . $facilitator_option . "</option>";
+		}
+?>
         </select>
-    
         <input type="text" name="fttime">
         <label for="fttime">Return time</label>
 </div>
