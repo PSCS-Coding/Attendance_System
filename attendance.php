@@ -79,7 +79,7 @@ if (isset($_POST['present'])) {
 }
 
 if (isset($_POST['offsite'])) {
-    if (!isset($_POST['location'] || $_POST['offtime']){
+    if (!isset($_POST['location']) || ($_POST['offtime'])){
     echo "you need to fill out all the boxes in the offsite line";
     } else {
 	$name = $_POST['person'];
