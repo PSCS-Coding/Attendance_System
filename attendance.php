@@ -26,6 +26,13 @@
     <input type="submit" value="Field Trip" name="fieldtrip">
    
 <?php
+
+// connect to sql
+$db_server = mysql_connect("localhost", "pscs", "Courage!");
+if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
+mysql_select_db("attendance", $db_server)
+	or die("Unable to select database: " . mysql_error());
+
 	$fac_query = "SELECT * FROM facilitators ORDER BY facilitatorname ASC";
 	$fac_data = mysql_query($fac_query);
 	
@@ -55,16 +62,6 @@
 </div>
 </form>
 <?php
-// connect to sql
-$db_server = mysql_connect("localhost", "pscs", "Courage!");
-if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
-mysql_select_db("attendance", $db_server)
-	or die("Unable to select database: " . mysql_error());
-
-
-if (isset($_POST['submit'])) {
-        
-}
 
 function changestatus($f_name, $f_status, $f_comment) {
 	$query = "INSERT INTO studentInfo (name, status, comments)
