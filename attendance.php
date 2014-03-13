@@ -24,18 +24,27 @@
 
 <div>
     <input type="submit" value="Field Trip" name="fieldtrip">
-    <select name="facilitator">
-		<!-- 
-==============================================================================
-		Make a query to get teacher names, don't hard code this
-==============================================================================
-		-->
-		<option value=''>Select Facilitator</option>
-        <option value="scobie">Scobie</option>
-        <option value="nic">Nic</option>
-        <option value="crysta">Crysta</option>
+   
+<?php
+	$fac_query = "SELECT * FROM facilitators ORDER BY facilitatorname ASC";
+	$fac_data = mysql_query($fac_query);
+	
+	if (!$fac_data) die ("Database access failed: " . mysql_error());
+	$fac_rows = mysql_num_rows($fac_data);
+	
+	$facilitators = array();
+
+	for ($i = 0 ; $i < $fac_rows ; ++$i)
+		{
+		$fac_name = mysql_result($fac_data, $i);
+		array_push ($facilitators, $fac_name);
+		}
+		echo "<select name='facilitator'><option value=''>Select Facilitator</option>";
+		foreach ($facilitators as $facilitator_option) {
+			echo "<option value= '" . $facilitator_option . "' >" . $facilitator_option . "</option>";
+		}
+?>
         </select>
-    
         <input type="text" name="fttime">
         <label for="fttime">Return time</label>
 </div>
@@ -53,13 +62,17 @@ mysql_select_db("attendance", $db_server)
 	or die("Unable to select database: " . mysql_error());
 
 
+if (isset($_POST['submit'])) {
+        
+}
+
 function changestatus($f_name, $f_status, $f_comment) {
 	$query = "INSERT INTO studentInfo (name, status, comments)
 			VALUES ('$f_name', '$f_status', '$f_comment')";
 	$result = mysql_query($query)
 		or die('Error querying database.');
 }
-if (isset($_POST['submit'])){
+
 if (isset($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
@@ -68,29 +81,23 @@ if (isset($_POST['present'])) {
 	}
 }
 
-if (isset($_POST['offsite']) && isset($_POST['location']) && isset($_POST['offtime'])){
+if (isset($_POST['offsite'])) {
 	$name = $_POST['person'];
 	$status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
-	foreach ($name as $student) {
+	foreach ($name as $student)
+	{
 		changestatus($student, 'Offsite', $status);
-        }
-	} else {
-    echo "fill out all the field trip boxes before continuing";
-    }
+	}
+}
 
-if (isset($_POST['fieldtrip']) && isset($_POST['facilitator']) && isset($_POST['fttime'])){
+if (isset($_POST['fieldtrip'])) {
 	$name = $_POST['person'];
 	$status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
-	foreach ($name as $student){
+	foreach ($name as $student)
+	{
 		changestatus($student, 'Field Trip', $status);
-        }
-	} else {
-    echo "fill out all the field trip boxes before continuing";
-    }
-
-
-
-
+	}
+}
 if (isset($_POST['signout'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
@@ -98,7 +105,7 @@ if (isset($_POST['signout'])) {
 		changestatus($student, 'Checked out', '');
 	}
 }
-}
+
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
 $users = array();
