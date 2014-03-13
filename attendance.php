@@ -79,14 +79,16 @@ if (isset($_POST['present'])) {
 }
 
 if (isset($_POST['offsite'])) {
+    if (!isset($_POST['location']) or !isset($_POST['offtime'])){
+    echo "you need to fill out all the boxes in the offsite line";
+    } else {
 	$name = $_POST['person'];
 	$status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
-	foreach ($name as $student)
-	{
+	foreach ($name as $student){
 		changestatus($student, 'Offsite', $status);
 	}
 }
-
+}
 if (isset($_POST['fieldtrip'])) {
 	$name = $_POST['person'];
 	$status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
