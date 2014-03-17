@@ -70,6 +70,13 @@ function changestatus($f_name, $f_status, $f_comment) {
 		or die('Error querying database.');
 }
 
+function validTime($inTime) {
+$pattern   =   "/^(?:0[1-9]|1[0-2]):[0-5][0-9]$/";
+ if(preg_match($pattern,$inTime)){
+   return true;
+ }
+}
+
 if (isset($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
@@ -82,12 +89,12 @@ if (!empty($_POST['offsite'])) {
 	$name = $_POST['person'];
     $status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
     if (!empty($_POST['location'])){
-       if (!empty($_POST['offtime'])){
+       if (validTime($_POST['offtime'])){
 	        foreach ($name as $student){
 		    changestatus($student, 'Offsite', $status);
             }
         } else {
-        echo "you need to fill out the return time box before signing out to offsite";
+        echo "that's not a valid time";
         }
     } else {
     echo "you need to fill out the location box before signing out to offsite";
@@ -98,15 +105,15 @@ if (!empty($_POST['fieldtrip'])) {
 	$name = $_POST['person'];
     $status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
     if (!empty($_POST['facilitator'])){
-       if (!empty($_POST['fttime'])){
+       if (validTime($_POST['fttime'])){
 	        foreach ($name as $student){
 		    changestatus($student, 'Field Trip', $status);
             }
         } else {
-        echo "you need to choose a facilitator before signing out to field trip";
+        echo "that's not a valid time";
         }
     } else {
-    echo "you need to fill out the return time box before signing out to field trip";
+    echo "you need to chose a facilitator before signing out to field trip";
     }
 }
 
