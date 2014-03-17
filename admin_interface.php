@@ -19,7 +19,7 @@ Interface for deleting as well -->
 	</tr>
 <?php
 //Select table from database, queries firstname and lastname of current students
-$userdata = mysql_query("SELECT firstname,lastname FROM studentData WHERE current='1' ORDER BY firstname ASC");
+$userdata = mysql_query("SELECT firstname,lastname FROM studentdata WHERE current='1' ORDER BY firstname ASC");
 
 //Specifies number of rows for the for loop
 $rows = mysql_num_rows($userdata);
