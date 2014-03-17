@@ -71,7 +71,7 @@ function changestatus($f_name, $f_status, $f_comment) {
 }
 
 function validTime($inTime) {
-$pattern   =   "/^(?:0[1-9]|1[0-2]):[0-5][0-9]$/";
+$pattern   =   "/^(([0-9])|([0-1][0-9])|([2][0-3])):?([0-5][0-9])$/";
  if(preg_match($pattern,$inTime)){
    return true;
  }
@@ -94,6 +94,7 @@ return false;
 print_r ($_POST);
 if (!empty($_POST['person']) && isPost()){
 echo "person is set and so is one of the post submits";
+
 if (!empty($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
@@ -184,7 +185,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
         echo "<td class='data_table'>" . $rowdata[2] . "</td>";
         echo "</tr>";
 	}
-	
 	else {
 		echo "<tr>";
         echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
