@@ -77,7 +77,24 @@ $pattern   =   "/^(?:0[1-9]|1[0-2]):[0-5][0-9]$/";
  }
 }
 
-if (isset($_POST['present'])) {
+function isPost(){
+if (in_array("Present", $_POST)) {
+    return true;
+} elseif (in_array("Offsite", $_POST)){
+    return true;
+} elseif (in_array("Field Trip", $_POST)){
+    return true;
+} elseif (in_array("Sign Out", $_POST)){
+    return true;
+} else {
+return false;
+}
+}
+
+print_r ($_POST);
+if (!empty($_POST['person']) && isPost()){
+echo "person is set and so is one of the post submits";
+if (!empty($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
@@ -117,13 +134,19 @@ if (!empty($_POST['fieldtrip'])) {
     }
 }
 
-if (isset($_POST['signout'])) {
+if (!empty($_POST['signout'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
 		changestatus($student, 'Checked out', '');
 	}
 }
+
+} else if(isPost() && empty($_POST['person'])) {
+echo "please choose a student";
+}
+
+
 
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
@@ -171,7 +194,6 @@ for ($j = 0 ; $j < $rows ; ++$j)
         echo "</tr>";
 	}	
 }	
-    unset($_POST['submit']);  
    ?>
 </table>
 </body>
