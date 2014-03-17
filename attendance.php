@@ -62,10 +62,10 @@ mysql_select_db("attendance", $db_server)
 </div>
 </form>
 <?php
-
-function changestatus($f_name, $f_status, $f_comment) {
-	$query = "INSERT INTO studentInfo (name, status, comments)
-			VALUES ('$f_name', '$f_status', '$f_comment')";
+$time = time();
+function changestatus($f_name, $f_status, $f_comment, $timeout, $timein) {
+	$query = "INSERT INTO studentInfo (name, status, comments, timeout, timein)
+			VALUES ('$f_name', '$f_status', '$f_comment', '$timeout', '$timein')";
 	$result = mysql_query($query)
 		or die('Error querying database.');
 }
@@ -99,7 +99,7 @@ if (!empty($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
-		changestatus($student, 'Present', '');
+		changestatus($student, 'Present', '', '', $time);
 	}
 }
 
@@ -109,7 +109,7 @@ if (!empty($_POST['offsite'])) {
     if (!empty($_POST['location'])){
        if (validTime($_POST['offtime'])){
 	        foreach ($name as $student){
-		    changestatus($student, 'Offsite', $status);
+		    changestatus($student, 'Offsite', $status, $time, '');
             }
         } else {
         echo "that's not a valid time";
@@ -125,7 +125,7 @@ if (!empty($_POST['fieldtrip'])) {
     if (!empty($_POST['facilitator'])){
        if (validTime($_POST['fttime'])){
 	        foreach ($name as $student){
-		    changestatus($student, 'Field Trip', $status);
+		    changestatus($student, 'Field Trip', $status, $time, '');
             }
         } else {
         echo "that's not a valid time";
@@ -139,15 +139,14 @@ if (!empty($_POST['signout'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
-		changestatus($student, 'Checked out', '');
+		changestatus($student, 'Checked out', '', $time, '');
 	}
 }
 
 } else if(isPost() && empty($_POST['person'])) {
 echo "please choose a student";
+
 }
-
-
 
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
@@ -185,6 +184,7 @@ for ($j = 0 ; $j < $rows ; ++$j)
         echo "<td class='data_table'>" . $rowdata[2] . "</td>";
         echo "</tr>";
 	}
+	
 	else {
 		echo "<tr>";
         echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
