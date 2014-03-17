@@ -78,26 +78,38 @@ if (isset($_POST['present'])) {
 	}
 }
 
-if (isset($_POST['offsite'])) {
-$expression = $_POST['location'] || $_POST['offtime'];
-    if (!isset($expression)){
-    echo "you need to fill out all the boxes in the offsite line";
+if (!empty($_POST['offsite'])) {
+	$name = $_POST['person'];
+    $status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
+    if (!empty($_POST['location'])){
+       if (!empty($_POST['offtime'])){
+	        foreach ($name as $student){
+		    changestatus($student, 'Offsite', $status);
+            }
+        } else {
+        echo "you need to fill out the return time box before signing out to offsite";
+        }
     } else {
+    echo "you need to fill out the location box before signing out to offsite";
+    }
+}
+
+if (!empty($_POST['fieldtrip'])) {
 	$name = $_POST['person'];
-	$status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
-	foreach ($name as $student){
-		changestatus($student, 'Offsite', $status);
-	}
+    $status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
+    if (!empty($_POST['facilitator'])){
+       if (!empty($_POST['fttime'])){
+	        foreach ($name as $student){
+		    changestatus($student, 'Field Trip', $status);
+            }
+        } else {
+        echo "you need to choose a facilitator before signing out to field trip";
+        }
+    } else {
+    echo "you need to fill out the return time box before signing out to field trip";
+    }
 }
-}
-if (isset($_POST['fieldtrip'])) {
-	$name = $_POST['person'];
-	$status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
-	foreach ($name as $student)
-	{
-		changestatus($student, 'Field Trip', $status);
-	}
-}
+
 if (isset($_POST['signout'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
