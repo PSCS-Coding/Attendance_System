@@ -146,6 +146,18 @@ echo "please choose a student";
 
 }
 
+if (!empty($_POST['present_bstudent'])) {
+	$name = $_POST['present_bstudent'];
+	echo 'the conditional is working';
+	changestatus($name, 'Present', '');
+}
+
+if (!empty($_POST['Late'])) {
+	$name = $_POST['late_student'];
+	$status = "arriving at " . $_POST['late_time'];
+	changestatus($name, 'Late', $status);
+}
+
 $userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
 $rows = mysql_num_rows($userdata);
 $users = array();
@@ -171,23 +183,47 @@ for ($j = 0 ; $j < $rows ; ++$j)
     foreach ($users as $user) {
 		$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
 		$rowdata = mysql_fetch_array($raw);
-	
-	if ($rowdata[1] == 'Offsite' || $rowdata[1] == 'Checked Out' || $rowdata[1] == 'Field Trip') {
-        echo "<tr>";
-        echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main' class='c_box'><form action='presentbutton.php' method='post'>
-		<input type='hidden' name='present' value='". $user . "'>
-		<input type='submit' value='P' class='p_button'></form></td>";
-        echo "<td class='data_table'>" . $rowdata[0] . "</td>";
-        echo "<td class='data_table'>" . $rowdata[1] . "</td>";
-        echo "<td class='data_table'>" . $rowdata[2] . "</td>";
-        echo "</tr>";
+		$day_data = new DateTime($rowdata[3]);
+		$yesterday = new DateTime('yesterday 23:59:59');
+		$status = $rowdata[1];
+		
+	if ($day_data < $yesterday) {
+		$status = 'Not Checked In';
+	}
+
+	if ($status == 'Offsite' || $status == 'Checked Out' || $status == 'Field Trip' || $status == 'Not Checked In' || $status == 'Late') {
+        ?>
+		
+		<tr>
+			<td class='data_table'>
+				
+				<input type='checkbox' name='person[]' value='<?php echo $rowdata[0]; ?>' form='main' class='c_box'>
+				<form action='attend_latetest.php' method='post'>
+					<input type='submit' value='P' class='p_button' name='present_button'>
+					<input type='hidden' name='present_bstudent' value='<?php echo $rowdata[0]; ?>'>
+				</form>
+				<?php
+				if ($day_data < $yesterday) { 
+				?>
+				<form action='attend_latetest.php' method='post'>
+					<input type='submit' value='Late' name='Late' class='l_button'>
+					<input type='text' name='late_time'>
+					<input type='hidden' name='late_student' value='<?php echo $rowdata[0]; ?>'>
+				</form>
+				<?php } ?>
+			</td>
+			<td class='data_table'><?php print $rowdata[0]; ?></td>
+			<td class='data_table'><?php print $status; ?></td>
+			<td class='data_table'><?php print $rowdata[2]; ?></td>
+        </tr>
+		<?php
 	}
 	
 	else {
 		echo "<tr>";
         echo "<td class='data_table'><input type='checkbox' name='person[]' value='" . $rowdata[0] . "' form='main'/></td>";
         echo "<td class='data_table'>" . $rowdata[0] . "</td>";
-        echo "<td class='data_table'>" . $rowdata[1] . "</td>";
+        echo "<td class='data_table'>" . $status . "</td>";
         echo "<td class='data_table'>" . $rowdata[2] . "</td>";
         echo "</tr>";
 	}	
