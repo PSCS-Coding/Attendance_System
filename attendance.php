@@ -16,7 +16,7 @@
 	<div>
 		<input type="submit" value="Offsite" name="offsite">
 		<input type="text" name="location" placeholder='Location'>
-		<input type="text" name="offtime" placeholder='Return time'>
+		<input type="time" name="offtime" placeholder='Return time'>
 	</div>
 <!-- Field trip form -->
 	<div>
@@ -56,7 +56,7 @@
 ?>
         </select>
 <!-- Field trip return time -->
-        <input type="text" name="fttime" placeholder='Return time'>
+        <input type="time" name="fttime" placeholder='Return time'>
 	</div>
 
 <!-- Sign out form -->
