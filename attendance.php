@@ -198,14 +198,14 @@ for ($j = 0 ; $j < $rows ; ++$j)
 			<td class='data_table'>
 				
 				<input type='checkbox' name='person[]' value='<?php echo $rowdata[0]; ?>' form='main' class='c_box'>
-				<form action='attend_latetest.php' method='post'>
+				<form action='attendance.php' method='post'>
 					<input type='submit' value='P' class='p_button' name='present_button'>
 					<input type='hidden' name='present_bstudent' value='<?php echo $rowdata[0]; ?>'>
 				</form>
 				<?php
 				if ($day_data < $yesterday) { 
 				?>
-				<form action='attend_latetest.php' method='post'>
+				<form action='attendance.php' method='post'>
 					<input type='submit' value='Late' name='Late' class='l_button'>
 					<input type='text' name='late_time'>
 					<input type='hidden' name='late_student' value='<?php echo $rowdata[0]; ?>'>
