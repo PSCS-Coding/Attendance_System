@@ -1,18 +1,12 @@
-
 th {
     margin-left:5%;
 }
-.data_table {
+table,th,td {
 border:1px solid black;
 border-collapse:collapse;
 }
-.top_interface {
-border-collapse:collapse;
-}
-.top_interface td {
-margin: auto;
-}
-th, td {
+th,td
+{
 padding:5px;
 }
 .c_box {

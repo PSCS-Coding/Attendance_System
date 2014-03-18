@@ -6,18 +6,22 @@
 </head>
 <body>
 	<div>
+	
 <!-- Form that manages status -->
 		<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
+
 <!-- Present form -->
 	<div>
 		<input type="submit" value="Present" name="present">
 	</div>
+
 <!-- Offsite form -->
 	<div>
 		<input type="submit" value="Offsite" name="offsite">
 		<input type="text" name="location" placeholder='Location'>
 		<input type="text" name="offtime" placeholder='Return time'>
 	</div>
+
 <!-- Field trip form -->
 	<div>
 		<input type="submit" value="Field Trip" name="fieldtrip">
@@ -70,7 +74,7 @@
 <?php
 
 //function document
-require_once("function.php");
+require_once("attend_func.php");
 
 //requires checkboxes to be checked
 if (!empty($_POST['person']) && isPost()){
@@ -135,6 +139,7 @@ if (!empty($_POST['person']) && isPost()){
 //individual present button querying
 if (!empty($_POST['present_bstudent'])) {
 	$name = $_POST['present_bstudent'];
+	echo 'the conditional is working';
 	changestatus($name, 'Present', '');
 }
 
