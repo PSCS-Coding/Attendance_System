@@ -91,9 +91,7 @@ return false;
 }
 }
 
-print_r ($_POST);
 if (!empty($_POST['person']) && isPost()){
-echo "person is set and so is one of the post submits";
 
 if (!empty($_POST['present'])) {
 	$name = $_POST['person'];
