@@ -63,9 +63,9 @@ mysql_select_db("attendance", $db_server)
 </form>
 <?php
 $time = time();
-function changestatus($f_name, $f_status, $f_comment, $timeout, $timein) {
-	$query = "INSERT INTO studentInfo (name, status, comments, timeout, timein)
-			VALUES ('$f_name', '$f_status', '$f_comment', '$timeout', '$timein')";
+function changestatus($f_name, $f_status, $f_comment) {
+	$query = "INSERT INTO studentInfo (name, status, comments)
+			VALUES ('$f_name', '$f_status', '$f_comment')";
 	$result = mysql_query($query)
 		or die('Error querying database.');
 }
@@ -97,7 +97,7 @@ if (!empty($_POST['present'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
-		changestatus($student, 'Present', '', '', $time);
+		changestatus($student, 'Present', '');
 	}
 }
 
@@ -107,7 +107,7 @@ if (!empty($_POST['offsite'])) {
     if (!empty($_POST['location'])){
        if (validTime($_POST['offtime'])){
 	        foreach ($name as $student){
-		    changestatus($student, 'Offsite', $status, $time, '');
+		    changestatus($student, 'Offsite', $status);
             }
         } else {
         echo "that's not a valid time";
@@ -123,7 +123,7 @@ if (!empty($_POST['fieldtrip'])) {
     if (!empty($_POST['facilitator'])){
        if (validTime($_POST['fttime'])){
 	        foreach ($name as $student){
-		    changestatus($student, 'Field Trip', $status, $time, '');
+		    changestatus($student, 'Field Trip', $status);
             }
         } else {
         echo "that's not a valid time";
@@ -137,7 +137,7 @@ if (!empty($_POST['signout'])) {
 	$name = $_POST['person'];
 	foreach ($name as $student)
 	{
-		changestatus($student, 'Checked out', '', $time, '');
+		changestatus($student, 'Checked out', '');
 	}
 }
 
