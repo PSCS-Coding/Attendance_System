@@ -71,7 +71,6 @@
         <th class='table_head'> Student Name </th>
 		<th class='table_head'> Start Date </th>
 		<th class='table_head'> Delete </th>
-		<th class='table_head'> Edit </th>
         </tr>
 	<?php
 		for ($j = 0 ; $j < $rows ; ++$j)
@@ -93,11 +92,6 @@
       <input type="submit" value="DELETE STUDENT" />
     </form>
     </td>
-	<td>	
-	<form method='post'>
-	<input type='submit' value='EDIT STUDENT' />
-	</form>
-	</td>
     </tr>
 	<?php } ?> 
     </table> 
@@ -110,7 +104,6 @@
 	<table class='table'>
 		<tr>
         <th class='table_head'> Student Name </th>
-		<th class='table_head'> Edit Data </th>
 		<th class='table_head'> Start Date </th>
 		<th class='table_head'> Delete </th>
         </tr>
