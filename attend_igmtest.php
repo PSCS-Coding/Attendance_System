@@ -1,101 +1,81 @@
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" type="text/css" href="attendance.css">
 <head>
-		<title>attendance system tests</title>
+	<title>PSCS Attendance</title>
+	<link rel="stylesheet" type="text/css" href="attendance.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			$('#offtime').timepicker({ 'scrollDefaultNow': true,
+										'minTime': '9:00am',
+										'maxTime': '3:30pm',
+										'timeFormat': 'g:i',
+										'step': 5,
+										 });
+			$('#fttime').timepicker({ 'scrollDefaultNow': true,
+										'minTime': '9:00am',
+										'maxTime': '3:30pm',
+										'timeFormat': 'g:i',
+										'step': 15,
+										 });
+		});
+	</script>
 </head>
-<body>
-	<div>
+<!-- setup -->
+<link rel="stylesheet" type="text/css" href="attendance.css">
+<?php
+    require_once("connection.php");
+    require_once("function.php");
+    
+    
+    //facilitator array, $facilitators is array of all from sql    
+    $facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
+    
+    $facilitators = array();
+    while ($fac_row = $facget->fetch_row()) {
+		array_push ($facilitators, $fac_row[0]);
+    }
+    
+    //current students array
+    $current_users_result = $db_server->query("SELECT studentid FROM studentdata WHERE current=1 ORDER BY firstname");
 	
-<!-- Form that manages status -->
-		<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
+	$result = $db_server->query("SELECT DISTINCT firstname FROM (SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime 
+									 FROM events 
+									 JOIN statusdata ON events.statusid = statusdata.statusid
+									 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
+									 WHERE studentdata.current=1 
+									 ORDER BY timestamp DESC) AS custom
+									 ORDER BY statusname") 
+									 or die(mysqli_error($db_server));    
+		$testingarray = $result->fetch_assoc();
+		echo "<pre>";
+		print_r ($testingarray);
+		echo "</pre>";
+    
+//===========================================
+//==========on submit button click===========
+//===========================================
 
-<!-- Present form -->
-	<div>
-		<input type="submit" value="Present" name="present">
-	</div>
-
-<!-- Offsite form -->
-	<div>
-		<input type="submit" value="Offsite" name="offsite">
-		<input type="text" name="location" placeholder='Location'>
-		<input type="text" name="offtime" placeholder='Return time'>
-	</div>
-
-<!-- Field trip form -->
-	<div>
-		<input type="submit" value="Field Trip" name="fieldtrip">
-<?php
-
-// connect to sql
-	$db_server = mysql_connect("localhost", "pscs", "Courage!");
-	if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
-	mysql_select_db("attendance", $db_server) or die("Unable to select database: " . mysql_error());
-// ***********************make this an external file once we convert to mysqli************************
-
-// grabs facilitator data for the field trip dropdown
-	$fac_query = "SELECT * FROM facilitators ORDER BY facilitatorname ASC";
-	$fac_data = mysql_query($fac_query);
-	
-	if (!$fac_data) die ("Database access failed: " . mysql_error());
-	$fac_rows = mysql_num_rows($fac_data);
-
-// puts each facilitator into an array
-	$facilitators = array();
-
-	for ($i = 0 ; $i < $fac_rows ; ++$i)
-		{
-		$fac_name = mysql_result($fac_data, $i);
-		array_push ($facilitators, $fac_name);
-		}
-?>
-<!-- Creates the dropdown entries -->
-		<select name='facilitator'><option value=''>Select Facilitator</option>
-<?php
-			foreach ($facilitators as $facilitator_option) {
-?> 
-				<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
-<?php
-			}
-?>
-        </select>
-<!-- Field trip return time -->
-        <input type="text" name="fttime" placeholder='Return time'>
-	</div>
-
-<!-- Sign out form -->
-	<div>
-		<input type="submit" value="Sign Out" name="signout">
-	</div>
-	
-	</form>
-	</div>
-		
-<?php
-
-//function document
-require_once("attend_func.php");
-
-//requires checkboxes to be checked
 if (!empty($_POST['person']) && isPost()){
-
-//top present form querying
-	if (!empty($_POST['present'])) {
 		$name = $_POST['person'];
+
+    //present    
+	if (!empty($_POST['present'])) {
 		foreach ($name as $student)
 		{
-			changestatus($student, 'Present', '');
+			changestatus($student, '1', '', '');
 		}
 	}
 
-//offsite querying and validation
+    //offsite
 	if (!empty($_POST['offsite'])) {
-		$name = $_POST['person'];
-		$status = "at " . $_POST['location'] . " returning at " . $_POST['offtime'];
-		if (!empty($_POST['location'])){
+		if (!empty($_POST['offloc'])){
+        		$info = $_POST['offloc'];
 			if (validTime($_POST['offtime'])){
 				foreach ($name as $student){
-				changestatus($student, 'Offsite', $status);
+				changestatus($student, '2', $info, $_POST['offtime']);
 				}
 			} else {
 			echo "that's not a valid time";
@@ -105,14 +85,14 @@ if (!empty($_POST['person']) && isPost()){
 		}
 	}
 
-//Fieldtrip querying and validation
+    //fieldtrip
 	if (!empty($_POST['fieldtrip'])) {
-		$name = $_POST['person'];
-		$status = "with " . $_POST['facilitator'] . " returning at " . $_POST['fttime'];
+
 		if (!empty($_POST['facilitator'])){
+        		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
 				foreach ($name as $student){
-				changestatus($student, 'Field Trip', $status);
+				changestatus($student, '3', $info, $_POST['fttime']);
 				}
 			} else {
 				echo "that's not a valid time";
@@ -122,12 +102,12 @@ if (!empty($_POST['person']) && isPost()){
 		}
 	}
 
-//Sign out querying
+//Sign out querying -- "4" refers to "Checked Out" in statusdata table
 	if (!empty($_POST['signout'])) {
 		$name = $_POST['person'];
 		foreach ($name as $student)
 		{
-			changestatus($student, 'Checked out', '');
+			changestatus($student, '4', '', '');
 		}
 	}
 
@@ -136,114 +116,142 @@ if (!empty($_POST['person']) && isPost()){
 	echo "please choose a student";
 }
 
-//individual present button querying
+//individual present button querying -- "1" refers to "Present" in statusdata table
 if (!empty($_POST['present_bstudent'])) {
 	$name = $_POST['present_bstudent'];
-	echo 'the conditional is working';
-	changestatus($name, 'Present', '');
+	changestatus($name, '1', '', '');
 }
 
-//late status querying
+//late status querying -- "5" refers to "Late" in statusdata table
 if (!empty($_POST['Late'])) {
 	$name = $_POST['late_student'];
 	$status = "arriving at " . $_POST['late_time'];
-	changestatus($name, 'Late', $status);
+	changestatus($name, '5', '', '');
 }
 
-//Gets student names/id
-$userdata = mysql_query("SELECT DISTINCT name FROM studentInfo ORDER BY name ASC");
-
-//Number of student names
-$rows = mysql_num_rows($userdata);
-
-//blank array to store each name from query
-$users = array();
-
-//iterates through query, adding each name to $users array
-for ($j = 0 ; $j < $rows ; ++$j)
-		{
-		$namedata = mysql_fetch_array($userdata);
-		array_push($users, $namedata[0]);
-		}
-        
 ?>
-<!-- table display for current student status -->
+
+
+
+<!-- top form for change status -->
+
+<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
+    <div>
+        <input type="submit" value="Present" name="present">
+    </div>
+    
+    <div>
+        <input type="submit" name="offsite" value="Offsite">
+        <input type="text" name="offloc" placeholder='Location'>
+		<input type="text" name="offtime" placeholder='Return time' id="offtime">
+    </div>
+    
+    <div>
+       <input type="submit" name="fieldtrip" value="Field Trip"> 
+    
+<!-- Creates the dropdown of facilitators -->
+		<select name='facilitator'><option value=''>Select Facilitator</option>
+        <?php
+			foreach ($facilitators as $facilitator_option) {
+        ?> 
+				<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
+        <?php
+			}
+        ?>
+        </select>
+        <input type="text" name="fttime" placeholder="Return time" id="fttime">
+    </div>
+
+<!-- Sign out form -->
+	<div>
+		<input type="submit" value="Sign Out" name="signout">
+	</div>
+	
+	</form>
+	</div>
+<!-- student information table rendering -->
+
 <table style="width:80%" class='data_table'>
     <tr>
         <th class='data_table'></th>
         <th class='data_table'>Student</th>
         <th class='data_table'>Status</th>
-        <th class='data_table'>Comment</th>
+        <th class='data_table'>Info</th>
     </tr>
     <?php
-//creates a row for each individual student
-    foreach ($users as $user) {
 
-//variable definitions:
-//queries for most recent entry for the current id
-		$raw = mysql_query("SELECT * FROM studentInfo WHERE name ='".$user."' ORDER BY time DESC LIMIT 1");
-//gets that as an array
-		$rowdata = mysql_fetch_array($raw);
-//gets the day that entry was entered
-		$day_data = new DateTime($rowdata[3]);
-//the day it was yesterday
-		$yesterday = new DateTime('yesterday 23:59:59');
-//defines what to display as current students status
-		$status = $rowdata[1];
-
-//if the last entry is not from today, make the students status display as 'not checked in'
-	if ($day_data < $yesterday) {
-		$status = 'Not Checked In';
-	}
-
-//checks to see if the student is not present, if they aren't it will display the present button next to their name
-	if ($status == 'Offsite' || $status == 'Checked Out' || $status == 'Field Trip' || $status == 'Not Checked In' || $status == 'Late') {
-        ?>
+									 
+while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS
+                                 
+									 
+		while ($latestdata = $result->fetch_assoc()) { // LOOPS THROUGH THE LATEST ROWS FROM THE EVENTS TABLE
 		
-		<tr>
-			<td class='data_table'>
-<!-- checkbox that gives student data to the form at the top -->
-				<input type='checkbox' name='person[]' value='<?php echo $rowdata[0]; ?>' form='main' class='c_box'>
-<!-- present button, passes hidden value equal to the current student -->
-				<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-					<input type='submit' value='P' class='p_button' name='present_button'>
-					<input type='hidden' name='present_bstudent' value='<?php echo $rowdata[0]; ?>'>
-				</form>
+		
+			if ($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Checked Out') {
+			?>
+			<tr>
+				<td class='data_table'>
+					<!-- checkbox that gives student data to the form at the top -->
+					<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
+					<!-- present button, passes hidden value equal to the current student -->
+					<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+						<input type='submit' value='P' class='p_button' name='present_button'>
+						<input type='hidden' name='present_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
+					</form>
+					<?php
+					//checks whether or not the late button should appear (only if the student is not checked in)
+					//gets the day that entry was entered
+					$day_data = new DateTime($latestdata['timestamp']);
+					//the day it was yesterday
+					$yesterday = new DateTime('yesterday 23:59:59');
+					if ($day_data < $yesterday) {
+                
+					?>
+					<!-- Late button with time input next to it -->
+					<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+						<input type='submit' value='Late' name='Late' class='l_button'>
+						<input type='time' name='late_time' placeholder='Return time'>
+						<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
+					</form>
+					<?php } ?>
+				</td>
+			<?php
+            
+            } else {
+            //displays user data without any buttons when they are present
+            ?>
+			<tr>
+				<td class='data_table'>
+					<!-- checkbox that gives student data to the form at the top -->
+					<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main'/>
+				</td>
+			<?php }// CLOSES IF/ELSE CONDITIONAL 
+			$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
+            <!-- displays current rows student name, that students status and any comment associated with that status -->
+				<td class='data_table'><?php print $latestdata['firstname'] . " " . $lastinitial; ?></td>
+				<td class='data_table'><?php echo $latestdata['statusname']; ?></td>
 				<?php
-//checks whether or not the late button should appear (only if the student is not checked in)
-				if ($day_data < $yesterday) { 
+				if ($latestdata['statusname'] == 'Offsite') {
+					$student_status = "at " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+				}
+				elseif ($latestdata['statusname'] == "Field Trip") {
+					$student_status = "with " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+				}
+				elseif ($latestdata['statusname'] == "Late") {
+					$student_status = "arriving at " . $latestdata['returntime'];
+				}
+				elseif ($latestdata['statusname'] == "Present" || $latestdata['statusname'] == "Checked Out" || $latestdata['statusname'] == "Not Checked In") {
+					$student_status = ' ';
+				}
 				?>
-<!-- Late button with time input next to it -->
-				<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-					<input type='submit' value='Late' name='Late' class='l_button'>
-					<input type='text' name='late_time' placeholder='Return time'>
-					<input type='hidden' name='late_student' value='<?php echo $rowdata[0]; ?>'>
-				</form>
-				<?php } ?>
-			</td>
-<!-- displays current rows student name, that students status and any comment associated with that status -->
-			<td class='data_table'><?php print $rowdata[0]; ?></td>
-			<td class='data_table'><?php print $status; ?></td>
-			<td class='data_table'><?php print $rowdata[2]; ?></td>
-        </tr>
-	<?php
-	//displays user data without any buttons when they are present
-	} else {
-	?>
-		<tr>
-			<td class='data_table'>
-<!-- checkbox that gives student data to the form at the top -->
-				<input type='checkbox' name='person[]' value='<?php echo $rowdata[0]; ?>' form='main'/>
-			</td>
-<!-- displays current rows student name, that students status and any comment associated with that status -->
-			<td class='data_table'><?php echo $rowdata[0]; ?></td>
-			<td class='data_table'><?php echo $status; ?></td>
-			<td class='data_table'><?php echo $rowdata[2] ?></td>
-        </tr>
-	<?php
-	}	
-}	
-   ?>
+				<td class='data_table'><?php echo $student_status ?></td>
+			</tr>
+<?php		
+		} // FINISHES THE WHILE LOOP THAT GOES THROUGH THE LATEST ROWS FROM THE EVENTS TABLE
+
+	}
+?>
+
 </table>
 </body>
 </html>
