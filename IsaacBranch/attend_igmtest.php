@@ -3,14 +3,14 @@
 <head>
 	<title>PSCS Attendance</title>
 	<link rel="stylesheet" type="text/css" href="attendance.css">
-	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="../css/jquery.timepicker.css">    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script src="../js/jquery.timepicker.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 		$(document).ready(function(){
 			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
-			$('#late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 		});
 	</script>
 </head>
@@ -43,7 +43,7 @@ if (!empty($_POST['person']) && isPost()){
 	if (!empty($_POST['present'])) {
 		foreach ($name as $student)
 		{
-			changestatus($student, '1', '', '');
+			changestatus($student, '1', '', '', '');
 		}
 	}
 
@@ -103,8 +103,8 @@ if (!empty($_POST['present_bstudent'])) {
 //late status querying -- "5" refers to "Late" in statusdata table
 if (!empty($_POST['Late'])) {
 	$name = $_POST['late_student'];
-	$status = "arriving at " . $_POST['late_time'];
-	changestatus($name, '5', $status);
+	$status = $_POST['late_time'];
+	changestatus($name, '5', '', $status);
 }
 
 ?>
@@ -112,7 +112,10 @@ if (!empty($_POST['Late'])) {
 
 
 <!-- top form for change status -->
-<div id='top_header'>
+<div id="tiptop">
+</div>
+<div id="top_header">
+<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>
 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
     <div>
         <input type="submit" value="Present" name="present">
@@ -139,7 +142,6 @@ if (!empty($_POST['Late'])) {
         </select>
         <input type="text" name="fttime" placeholder="Return time" id="fttime">
     </div>
-
 <!-- Sign out form -->
 	<div>
 		<input type="submit" value="Sign Out" name="signout">
@@ -147,10 +149,9 @@ if (!empty($_POST['Late'])) {
 	
 	</form>
 	</div>
-</div>
 <!-- student information table rendering -->
 
-<table width="60%" class='data_table'>
+<table width="60%" class='data_table' id='big_table'>
     <tr>
         <th class='data_table' style="width:10%"></th>
         <th class='data_table' style="width:10%">Student</th>
@@ -160,7 +161,7 @@ if (!empty($_POST['Late'])) {
 
 while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS
 				
-		$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp
+		$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
 									 FROM events 
 									 JOIN statusdata ON events.statusid = statusdata.statusid
 									 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
@@ -191,7 +192,7 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 					<!-- Late button with time input next to it -->
 					<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 						<input type='submit' value='Late' name='Late' class='l_button'>
-						<input type='input' name='late_time' placeholder='Expected' id="late_time">
+						<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 						<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
 					</form>
 					<?php } ?>
@@ -204,10 +205,22 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 				if ($day_data < $yesterday) { 
 					echo "Not checked in"; 
 					} 
-					else { 
-					echo $latestdata['statusname'] . "   "; 
+				else { 
+					echo $latestdata['statusname'] . " "; 
+					
+					if ($latestdata['statusname'] == "Offsite") {
+						echo "at " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
 					}
-					echo $latestdata['info'] ?></td>
+					if ($latestdata['statusname'] == "Field Trip") {
+						echo "with " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+					}
+
+					if ($latestdata['statusname'] == "Late") {
+						echo $latestdata['info'] . " arriving at " . $latestdata['returntime'];
+					}
+				}
+					?>
+					</td>
 			</tr>
 <?php		
 		} // FINISHES THE WHILE LOOP THAT GOES THROUGH THE LATEST ROWS FROM THE EVENTS TABLE

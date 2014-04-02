@@ -1,6 +1,6 @@
 <?php
 //changestatus inserts name, status and any comment associated into the studentInfo database
-function changestatus($f_id, $f_status, $f_info) {
+function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 	global $db_server;
 	$result = $db_server->query("SELECT timestamp FROM events WHERE studentid = '$f_id' ORDER BY timestamp DESC LIMIT 1");
 	$rowdata = $result->fetch_array(MYSQLI_BOTH);
@@ -24,8 +24,8 @@ function changestatus($f_id, $f_status, $f_info) {
 	$stmt->execute(); 		
 	$stmt->close();
 	
-	$stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info) VALUES (?, ?, ?)");
-	$stmt->bind_param('sss', $f_id, $f_status, $f_info);
+	$stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
+	$stmt->bind_param('ssss', $f_id, $f_status, $f_info, $f_returntime);
 	$stmt->execute(); 
 	$stmt->close();
 

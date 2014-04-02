@@ -15,6 +15,7 @@ echo '<form method="post" action="viewreport.php">
 }
 ?>
 <?php
+a:
 function completeCode() {
 if (!empty($_POST['submit'])) {
 echo '<form method="post" action="viewreport.php">
@@ -126,12 +127,17 @@ mysql_select_db("attendance", $db_server)
 						$newavailableoffsite = floor($newavailableoffsite);
 						$readable_offsiteif = 'If you want to have ' . $userhours . ' hours of offsite at the end of the year, you can spend ' . $newavailableoffsite . ' minutes a day offsite.';
 						echo '<b>';
+						
+						echo '<form method="post"><p>How many minutes per day could I spend offsite if I want to have ' . $_POST['hours'] . ' hours of offsite left at the end of the year?<input type="submit" name="submit4" value="submit4"></p>';
+					
 						echo $readable_offsiteif;
 						echo '</b>';
 						echo '<br />';
 						echo '<br />';
 						}
-						
+						if (!empty($_POST['submit4'])){
+						completeCode();
+						}
 						echo $readable_offsiteleft;
 							echo '<br />';
 						echo $readable_averagetimeout;	
@@ -142,15 +148,39 @@ mysql_select_db("attendance", $db_server)
 									<input type="text" name="selector3">
 									<input type="submit" name="submit3" value="submit3">
 									  </form>';
-									  
+									  echo '<style>
+								input[value="submit3"] {
+    background:url(http://www.photosurfer.com/images/drop-down-icon.png);
+    width:20px;
+    height:20px;
+	border-radius:15px;
+	font-size:0.1;
+	}
+	input[value="Go"] {
+    background:url(http://www.photosurfer.com/images/drop-down-icon.png);
+    width:20px;
+    height:20px;
+	border-radius:15px;
+	font-size:0.1;
+	}
+	input[value="submit4"] {
+    background:url(http://us.123rf.com/400wm/400/400/zeffss/zeffss0710/zeffss071000068/1796633-arrow-up-icon-isolated-on-black-background.jpg);
+    width:20px;
+    height:20px;
+	border-radius:15px;
+	font-size:0.1;
+	}
+	</style>
+';
 								
-									 if (isset($_POST['selector3'])) {
+									 if (!empty($_POST['submit3'])) {
 						
+									$selector3 = $_POST['selector3'];
 							$eventsquery = mysql_query("
 								SELECT studentid, statusid, timestamp, elapsed
 								FROM events
 								WHERE studentid = '$name'
-								AND statusid = '$_POST['selector3']'
+								AND statusid = '$selector3'
 								ORDER BY timestamp DESC
 								LIMIT 1
 								")
@@ -192,15 +222,15 @@ mysql_select_db("attendance", $db_server)
 			//$daysleft is me hardcoding in how many days there are left in the school year, we have to add in a query that pulls the amount of days left from a table or something.
 			//SEE LINE 120
 				
-			
-	if (!empty($_POST['submit'])) {
-				completeCode();
-				}
-					if (!empty($_POST['go']) && !empty($_POST['hidden'])) {
-					completeCode();
-					echo '<br />';
-					}
-					
+														if (!empty($_POST['submit4'])){
+																completeCode();
+																}
+														if (!empty($_POST['submit'])) {
+																completeCode();
+																}
+														if (!empty($_POST['go']) && !empty($_POST['hidden'])) {
+																completeCode();
+																}
 		?>
 			<style>
 			table {

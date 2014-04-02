@@ -43,7 +43,7 @@ if (!empty($_POST['person']) && isPost()){
 	if (!empty($_POST['present'])) {
 		foreach ($name as $student)
 		{
-			changestatus($student, '1', '', '');
+			changestatus($student, '1', '', '', '');
 		}
 	}
 
@@ -103,16 +103,15 @@ if (!empty($_POST['present_bstudent'])) {
 //late status querying -- "5" refers to "Late" in statusdata table
 if (!empty($_POST['Late'])) {
 	$name = $_POST['late_student'];
-	$status = "arriving at " . $_POST['late_time'];
-	changestatus($name, '5', $status);
+	$status = $_POST['late_time'];
+	changestatus($name, '5', '', $status);
 }
 
 ?>
 
-
-
 <!-- top form for change status -->
 
+<div id="top_header">
 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
     <div>
         <input type="submit" value="Present" name="present">
@@ -139,7 +138,6 @@ if (!empty($_POST['Late'])) {
         </select>
         <input type="text" name="fttime" placeholder="Return time" id="fttime">
     </div>
-
 <!-- Sign out form -->
 	<div>
 		<input type="submit" value="Sign Out" name="signout">
@@ -149,18 +147,17 @@ if (!empty($_POST['Late'])) {
 	</div>
 <!-- student information table rendering -->
 
-<table style="width:80%" class='data_table'>
+<table width="60%" class='data_table' id='big_table'>
     <tr>
-        <th class='data_table'></th>
-        <th class='data_table'>Student</th>
-        <th class='data_table'>Status</th>
-        <th class='data_table'>Info</th>
+        <th class='data_table' style="width:10%"></th>
+        <th class='data_table' style="width:10%">Student</th>
+        <th class='data_table' id='status_header' style="width:20%">Status</th>
     </tr>
     <?php
 
 while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS
 				
-		$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp
+		$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
 									 FROM events 
 									 JOIN statusdata ON events.statusid = statusdata.statusid
 									 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
@@ -199,9 +196,27 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 			<?php 
 			$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
             <!-- displays current rows student name, that students status and any comment associated with that status -->
-				<td class='data_table'><?php print $latestdata['firstname'] . " " . $lastinitial; ?></td>
-				<td class='data_table'><?php if ($day_data < $yesterday) { echo "Not checked in"; } else { echo $latestdata['statusname']; } ?></td>
-				<td class='data_table'><?php echo $latestdata['info'] ?></td>
+				<td class='student_data'><?php print $latestdata['firstname'] . " " . $lastinitial; ?></td>
+				<td class='status_data'><?php 
+				if ($day_data < $yesterday) { 
+					echo "Not checked in"; 
+					} 
+				else { 
+					echo $latestdata['statusname'] . " "; 
+					
+					if ($latestdata['statusname'] == "Offsite") {
+						echo "at " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+					}
+					if ($latestdata['statusname'] == "Field Trip") {
+						echo "with " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+					}
+
+					if ($latestdata['statusname'] == "Late") {
+						echo $latestdata['info'] . " arriving at " . $latestdata['returntime'];
+					}
+				}
+					?>
+					</td>
 			</tr>
 <?php		
 		} // FINISHES THE WHILE LOOP THAT GOES THROUGH THE LATEST ROWS FROM THE EVENTS TABLE

@@ -1,24 +1,31 @@
 <?php
-
 //changestatus inserts name, status and any comment associated into the studentInfo database
-function changestatus($f_name, $f_status, $f_comment) {
+function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 	global $db_server;
-	$result = $db_server->query("SELECT time FROM studentInfo WHERE name = '$f_name' ORDER BY time DESC LIMIT 1");
+	$result = $db_server->query("SELECT timestamp FROM events WHERE studentid = '$f_id' ORDER BY timestamp DESC LIMIT 1");
 	$rowdata = $result->fetch_array(MYSQLI_BOTH);
 
-    $last = new DateTime($rowdata[0]);
+    $last = new DateTime($rowdata['timestamp']);
     $now = new DateTime();
+	$lastdate = $last->format('Y-m-d');
+	$last330 = $lastdate . '15:30:00';
+	$lastendofday = new DateTime($last330);
     $nowstamp = $now->getTimestamp();
     $laststamp = $last->getTimestamp();
-    $minutes = round(($nowstamp - $laststamp)/60);
+    $lastendstamp = $lastendofday->getTimestamp();
+	if ($nowstamp > $lastendstamp) {
+		$minutes = round(($lastendstamp - $laststamp)/60);
+		} else {
+		$minutes = round(($nowstamp - $laststamp)/60);
+		}
 
-	$stmt = $db_server->prepare("UPDATE studentInfo SET elapsed = ? WHERE name = ? AND time = ?");
-	$stmt->bind_param('iss', $minutes, $f_name, $rowdata[0]);
+	$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
+	$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
 	$stmt->execute(); 		
 	$stmt->close();
 	
-	$stmt = $db_server->prepare("INSERT INTO studentInfo (name, status, comments) VALUES (?, ?, ?)");
-	$stmt->bind_param('sss', $f_name, $f_status, $f_comment);
+	$stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
+	$stmt->bind_param('ssss', $f_id, $f_status, $f_info, $f_returntime);
 	$stmt->execute(); 
 	$stmt->close();
 

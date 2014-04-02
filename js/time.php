@@ -64,7 +64,7 @@ mysql_select_db("attendance", $db_server)
 			echo "<br />";
 			$offsitehour = $roundedtest / 60;
 			$readableoffsiteleft = $offsitehour . " hours and " . $afterthecolon . " minutes of offsite left";
-			echo $readableoffsiteleft;
+			echo "<script>alert("echo $readableoffsiteleft;")</script>";
 		// $houroffsiteleft = round($minuteoffsiteleft 60);
 	  }
 ?>
