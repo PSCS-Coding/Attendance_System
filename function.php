@@ -24,8 +24,10 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 	$stmt->execute(); 		
 	$stmt->close();
 	
+	$whenreturn = new DateTime($f_returntime);
+	$returntimestring = $whenreturn->format('Y-m-d H:i:s');
 	$stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
-	$stmt->bind_param('ssss', $f_id, $f_status, $f_info, $f_returntime);
+	$stmt->bind_param('ssss', $f_id, $f_status, $f_info, $returntimestring);
 	$stmt->execute(); 
 	$stmt->close();
 

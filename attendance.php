@@ -193,7 +193,8 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 					</form>
 					<?php } ?>
 				</td>
-			<?php 
+			<?php
+			$returntimeobject = new DateTime($latestdata['returntime']);
 			$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
             <!-- displays current rows student name, that students status and any comment associated with that status -->
 				<td class='student_data'><?php print $latestdata['firstname'] . " " . $lastinitial; ?></td>
@@ -205,14 +206,14 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 					echo $latestdata['statusname'] . " "; 
 					
 					if ($latestdata['statusname'] == "Offsite") {
-						echo "at " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+						echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('H:i');
 					}
 					if ($latestdata['statusname'] == "Field Trip") {
-						echo "with " . $latestdata['info'] . " returning at " . $latestdata['returntime'];
+						echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('H:i');
 					}
 
 					if ($latestdata['statusname'] == "Late") {
-						echo $latestdata['info'] . " arriving at " . $latestdata['returntime'];
+						echo $latestdata['info'] . " arriving at " . $returntimeobject->format('H:i');
 					}
 				}
 					?>
