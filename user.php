@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PSCS Attendance student interface</title>
+	<title>PSCS Attendance</title>
 	<link rel="stylesheet" type="text/css" href="attendance.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
+			$('#late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+		});
+	</script>
 </head>
-<body>
-	<?php
-	//this doc depends on these variables being passed in thru the $_SESSION super global
-	session_start();
-
-	?><?php
+<!-- setup -->
+<link rel="stylesheet" type="text/css" href="attendance.css">
+<?php
     require_once("connection.php");
-   	require_once("function.php");
+    require_once("function.php");
     
-    //$id = $_SESSION['name'];
-	if (!empty($_GET['name'])) {
-	$_SESSION['name']=$_GET['name'];
-	}
-	
-	if (!empty($_GET['id'])) {
-	$_SESSION['id']=$_GET['id'];
-	}
-	
-	$id = $_SESSION['id'];
-	$facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
+    
+    //facilitator array, $facilitators is array of all from sql    
+    $facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
     
     $facilitators = array();
     while ($fac_row = $facget->fetch_row()) {
 		array_push ($facilitators, $fac_row[0]);
     }
+    
+    //current students array
+    $current_users_result = $db_server->query("SELECT studentid FROM studentdata WHERE current=1 ORDER BY firstname");
+    
+//===========================================
+//==========on submit button click===========
+//===========================================
 
-	
-if (!empty($_POST)){
+if (!empty($_POST['person']) && isPost()){
+		$name = $_POST['person'];
 
     //present    
-	if (!empty($_POST['present'])){
-			changestatus($id, '1', '', '', '');
+	if (!empty($_POST['present'])) {
+		foreach ($name as $student)
+		{
+			changestatus($student, '1', '', '', '');
+		}
 	}
 
     //offsite
@@ -43,7 +52,9 @@ if (!empty($_POST)){
 		if (!empty($_POST['offloc'])){
         		$info = $_POST['offloc'];
 			if (validTime($_POST['offtime'])){
-				changestatus($id, '2', $info, $_POST['offtime']);
+				foreach ($name as $student){
+				changestatus($student, '2', $info, $_POST['offtime']);
+				}
 			} else {
 			echo "that's not a valid time";
 			}
@@ -58,8 +69,10 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				changestatus($id, '3', $info, $_POST['fttime']);
-			} else { 
+				foreach ($name as $student){
+				changestatus($student, '3', $info, $_POST['fttime']);
+				}
+			} else {
 				echo "that's not a valid time";
 			}
 		} else {
@@ -69,21 +82,31 @@ if (!empty($_POST)){
 
 //Sign out querying -- "4" refers to "Checked Out" in statusdata table
 	if (!empty($_POST['signout'])) {
-			changestatus($id, '4', '', '');
+		$name = $_POST['person'];
+		foreach ($name as $student)
+		{
+			changestatus($student, '4', '', '');
+		}
 	}
+
+//error message when no boxes are checked
+} else if(isPost() && empty($_POST['person'])) {
+	echo "please choose a student";
 }
 
-$info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
-	$rowdata=mysqli_fetch_row($info);
-	$currentstatusid=$rowdata[0];
-	$convert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$currentstatusid."'");
-	$finalresult=mysqli_fetch_row($convert);
-	
-if ($finalresult[0] == "Field Trip"){
-echo $_SESSION['name'] . " is currently on a " . $finalresult[0];
-} else {
-echo $_SESSION['name'] . " is currently " . $finalresult[0];
+//individual present button querying -- "1" refers to "Present" in statusdata table
+if (!empty($_POST['present_bstudent'])) {
+	$name = $_POST['present_bstudent'];
+	changestatus($name, '1', '', '');
 }
+
+//late status querying -- "5" refers to "Late" in statusdata table
+if (!empty($_POST['Late'])) {
+	$name = $_POST['late_student'];
+	$status = $_POST['late_time'];
+	changestatus($name, '5', '', $status);
+}
+
 ?>
 
 <!-- top form for change status -->
@@ -99,6 +122,7 @@ echo $_SESSION['name'] . " is currently " . $finalresult[0];
         <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
 		<input type="text" name="offtime" placeholder='Return time' id="offtime">
     </div>
+    
     <div>
        <input type="submit" name="fieldtrip" value="Field Trip"> 
     
@@ -120,5 +144,89 @@ echo $_SESSION['name'] . " is currently " . $finalresult[0];
 	</div>
 	
 	</form>
+	</div>
+<!-- student information table rendering -->
+
+<table width="60%" class='data_table' id='big_table'>
+    <tr>
+        <th class='data_table' style="width:10%"></th>
+        <th class='data_table' style="width:10%">Student</th>
+        <th class='data_table' id='status_header' style="width:20%">Status</th>
+    </tr>
+    <?php
+
+while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS
+				
+		$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
+									 FROM events 
+									 JOIN statusdata ON events.statusid = statusdata.statusid
+									 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
+									 WHERE studentdata.studentid = $current_student_id[studentid] 
+									 ORDER BY timestamp DESC
+									 LIMIT 1") 
+									 or die(mysqli_error($db_server));
+                                     
+		while ($latestdata = $result->fetch_assoc()) { // LOOPS THROUGH THE LATEST ROWS FROM THE EVENTS TABLE
+			//gets the day that entry was entered
+			$day_data = new DateTime($latestdata['timestamp']);
+			//the day it was yesterday
+			$yesterday = new DateTime('yesterday 23:59:59');
+			?>
+			<tr>
+				<td class='data_table'>
+					<!-- checkbox that gives student data to the form at the top -->
+					<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
+
+					<?php if (($latestdata['statusname'] != 'Present') || ($day_data < $yesterday)) { // if the student is not present or hasn't updated since midnight, show a present button ?>
+					<!-- present button, passes hidden value equal to the current student -->
+					<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+						<input type='submit' value='P' class='p_button' name='present_button'>
+						<input type='hidden' name='present_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
+					</form>
+					<?php } // end "not present" if clause
+					if ($day_data < $yesterday) { // if the student hasn't updated status since midnight, display a late button ?>
+					<!-- Late button with time input next to it -->
+					<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+						<input type='submit' value='Late' name='Late' class='l_button'>
+						<input type='input' name='late_time' placeholder='Expected' id="late_time">
+						<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
+					</form>
+					<?php } ?>
+				</td>
+			<?php
+			$get_id = $latestdata['studentid'];
+			$get_name = $latestdata['firstname'];
+			$returntimeobject = new DateTime($latestdata['returntime']);
+			$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
+            <!-- displays current rows student name, that students status and any comment associated with that status -->
+				<td class='student_data'><a href="user.php?id=<?php echo $get_id; ?>&name=<?php echo $get_name;?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
+				<td class='status_data'><?php 
+				if ($day_data < $yesterday) { 
+					echo "Not checked in"; 
+					} 
+				else { 
+					echo $latestdata['statusname'] . " "; 
+					
+					if ($latestdata['statusname'] == "Offsite") {
+						echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('H:i');
+					}
+					if ($latestdata['statusname'] == "Field Trip") {
+						echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('H:i');
+					}
+
+					if ($latestdata['statusname'] == "Late") {
+						echo $latestdata['info'] . " arriving at " . $returntimeobject->format('H:i');
+					}
+				}
+					?>
+					</td>
+			</tr>
+<?php		
+		} // FINISHES THE WHILE LOOP THAT GOES THROUGH THE LATEST ROWS FROM THE EVENTS TABLE
+
+	}
+?>
+
+</table>
 </body>
 </html>
