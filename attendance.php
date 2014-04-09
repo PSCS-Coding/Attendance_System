@@ -194,10 +194,12 @@ while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS TH
 					<?php } ?>
 				</td>
 			<?php
+			$get_id = $latestdata['studentid'];
+			$get_name = $latestdata['firstname'];
 			$returntimeobject = new DateTime($latestdata['returntime']);
 			$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
             <!-- displays current rows student name, that students status and any comment associated with that status -->
-				<td class='student_data'><?php print $latestdata['firstname'] . " " . $lastinitial; ?></td>
+				<td class='student_data'><a href="user.php?id=<?php echo $get_id; ?>&name=<?php echo $get_name;?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
 				<td class='status_data'><?php 
 				if ($day_data < $yesterday) { 
 					echo "Not checked in"; 
