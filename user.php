@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+<?php session_start(); ?>
 <html>
 <head>
 	<title>PSCS Attendance student interface</title>
 	<link rel="stylesheet" type="text/css" href="attendance.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
+		
+	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
     <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -15,26 +17,39 @@
 	</script>
 </head>
 <body>
-	<?php
-	//this doc depends on these variables being passed in thru the $_SESSION super global
-	session_start();
 
-	?><?php
+<a href=attendance.php>Back to main page</a>
+<div>
+<div>
+	
+<?php
     require_once("connection.php");
    	require_once("function.php");
-    
-    //$id = $_SESSION['name'];
-	if (!empty($_GET['name'])) {
-	$_SESSION['name']=$_GET['name'];
+	
+	
+	if (!empty($_GET['name'])){
+		$name=$_GET['name'];
+		
+		if ($name != $_COOKIE['name']){
+		setcookie('name', $name);
+		}
+		
+	} elseif (!empty($_COOKIE['name'])){
+		$name=$_COOKIE['name'];
 	}
 	
-	if (!empty($_GET['id'])) {
-	$_SESSION['id']=$_GET['id'];
+	if (!empty($_GET['id'])){
+		$id=$_GET['id'];
+		
+		if ($id != $_COOKIE['id']){
+		setcookie('id', $id);
+		}
+		
+	} elseif (!empty($_COOKIE['id'])){
+		$id=$_COOKIE['id'];
 	}
 	
-	$id = $_SESSION['id'];
 	$facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
-    
     $facilitators = array();
     while ($fac_row = $facget->fetch_row()) {
 		array_push ($facilitators, $fac_row[0]);
@@ -87,13 +102,17 @@ $info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id.
 	$rowdata=mysqli_fetch_row($info);
 	$currentstatusid=$rowdata[0];
 	$convert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$currentstatusid."'");
-	$finalresult=mysqli_fetch_row($convert);
+	$currentstatus=mysqli_fetch_row($convert);
 	
-if ($finalresult[0] == "Field Trip"){
-echo $_SESSION['name'] . " is currently on a " . $finalresult[0];
-} else {
-echo $_SESSION['name'] . " is currently " . $finalresult[0];
-}
+	if (!empty($name) || !empty($id)){
+		if ($currentstatus[0] == "Field Trip"){
+			echo $name . " is currently on a " . $currentstatus[0];
+		} else {
+			echo $name . " is currently " . $currentstatus[0];
+		}
+	} else {
+		echo "Please go back to the main page and make a student selection";
+	}
 ?>
 
 <!-- top form for change status -->
