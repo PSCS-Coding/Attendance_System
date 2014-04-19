@@ -24,12 +24,15 @@
 			while ($blah = $status_result->fetch_assoc()) {
 				$status_array[] = $blah['statusname'];
 			}
+		//this function sorts multidimensional arrays by one of their subkeys
 	    //$a = the array to be sorted -- $subkey = the subkey to be sorted by
 		function subval_sort($a, $subkey, $result) {
-		//goes through the array, $k = the key, $v = value in the array?
+			
+			//dynamic variable naming to ensure the result array is named 'subkey'_array
 			$temp_varname = $result . "_array";
 			$$temp_varname = array();
 			
+			//goes through the array, $k = the key, $v = value in the array
 			foreach($a as $k=>$v) {
 				$b[$k] = $v[$subkey];
 			}
@@ -62,10 +65,10 @@
 	    $current_users_result = $db_server->query($studentquery);
 		
 	    
-	//===========================================
-	//==========on submit button click===========
-	//===========================================
+	// changestatus functions to create new entries in the database
+	//each only triggers if each field is correctly filled out, and the corresponding submit button has been pressed
 	
+	//checks value of either checkboxes - $name = all checked students
 	if (!empty($_POST['person']) && isPost()){
 			$name = $_POST['person'];
 	
@@ -137,30 +140,24 @@
 		changestatus($name, '5', '', $status);
 	}
 	
+	//absent buttons
 	if (!empty($_POST['Absent'])) {
 		$name = $_POST['late_student'];
 		changestatus($name, '7', '', '');
 	}
 	
-	//Variable that is equal to the current url/php file
-	$get_doc = basename($_SERVER['PHP_SELF']);
+	//basic checks to set a variable equal to the correct string to be passed into the get variable
+	//sortBy == the value that the table should be sorted by $r == whether to reverse sort
 	
-	if (!empty($_GET['sortBy'])) {
-		if ($_GET['sortBy'] == 'student') {
-			$sortBy = 'student';
-		}
-		if ($_GET['sortBy'] == 'status') {
-			$sortBy = 'status';
-		}
-	}
-	else {
-		$sortBy = 'student';
-	}
+	//default values, when get is empty
 	if (empty($_GET['sortBy'])) {
 		$getvar_sort_status = 'sortBy=status&r=0';
 		$getvar_sort_student = 'sortBy=student&r=0';
 	}
+	//triggers when get[sortby] is populated with values
 	else {
+		//correctly makes the table reverse sortable when a header is clicked twice
+		//also assigns the default value for the opposite sortby value when the get variable is populated
 		if ($_GET['sortBy'] == 'status' && $_GET['r'] == 0) {
 			$getvar_sort_status = 'sortBy=status&r=1';
 			$getvar_sort_student = 'sortBy=student&r=0';
@@ -180,8 +177,6 @@
 	}
 	?>
 	
-	
-	
 	<!-- top form for change status -->
 	<div id="tiptop">
 	</div>
@@ -190,6 +185,8 @@
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' style=''>
 	    <div style='float:right'> 
 			<?php
+			//button for the alternate status view option
+			//displays a button to return the user to the main page when at the alternate view
 			if (!empty($_POST['admin_view'])) {
 				?>
 				<input type='submit' value='Main View' name='main_view'>
@@ -201,23 +198,28 @@
 				<?php
 			}
 			?>
+			
 		</div>
 		<div>
+			<!-- top interface present button -->
 	        <input type="submit" value="Present" name="present">
 	    </div>
 	    
 	    <div>
+			<!-- top interface offsite -->
 	        <input type="submit" name="offsite" value="Offsite">
 	        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	    </div>
 	    
 	    <div>
+			<!-- top interface fieldtrip -->
 	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    
-	<!-- Creates the dropdown of facilitators -->
+			<!-- Creates the dropdown of facilitators -->
 			<select name='facilitator'><option value=''>Select Facilitator</option>
 	        <?php
+				//checks the database of facilitators to ensure the dropdown menu is correctly populated by all current staff/facilitators
 				foreach ($facilitators as $facilitator_option) {
 	        ?> 
 					<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
@@ -227,8 +229,9 @@
 	        </select>
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	    </div>
-	<!-- Sign out form -->
+	
 		<div>
+			<!-- top interface sign out button -->
 			<input type="submit" value="Sign Out" name="signout">
 		</div>
 		
@@ -239,13 +242,17 @@
 	<table width="80%" class='data_table' id='big_table'>
 	    <tr>
 	        <th class='data_table' style="width:10%"></th>
+			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='data_table' style="width:10%"><a href="attendance.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
 	        <th class='data_table' id='status_header' style="width:20%"><a href="attendance.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 	    </tr>
 	    <?php
-		if (!empty($_POST['admin_view'])) {
-			$student_data_array = array();
-				while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS	
+		
+		$student_data_array = array();
+			//loops through current students
+				while ($current_student_id = $current_users_result->fetch_assoc()) {
+					//fetches most recent data from the events table
+					//joins with the tables that key student names/status names to the ids in the events table
 					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
 										 FROM events 
 										 JOIN statusdata ON events.statusid = statusdata.statusid
@@ -254,17 +261,24 @@
 										 ORDER BY timestamp DESC
 										 LIMIT 1") 
 										 or die(mysqli_error($db_server));
-					$result_array = $result->fetch_assoc();				
+					$result_array = $result->fetch_assoc();
+					//pushed each individual students data into an array				
 					array_push($student_data_array, $result_array);
 				}
-	
-				?> <table id='status_display'> <?php		
+				
+		//renders alternate status view when chosen
+		if (!empty($_POST['admin_view'])) {
+			
+				//using the above data from the query, this renders the alternate status view
+				?> <table id='status_display'> <?php
+				//creates a table header for each of the possible status'	
 				foreach ($status_array as $status) {
-					
+					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
+					//only renders the table headers for status' that have students assigned to that status
 					if (!empty($sorted_data_array)) {
 					?>
-					<th><?php echo $status; ?></th>
+					<th style='float:left'><?php echo $status; ?></th>
 					<?php
 						foreach ($sorted_data_array as $student) {
 							?>
@@ -273,58 +287,49 @@
 						}
 					}	
 				} 
-		}
-
-			
-			$student_data_array = array();
-			while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS	
-				$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
-										 FROM events 
-										 JOIN statusdata ON events.statusid = statusdata.statusid
-										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-										 WHERE studentdata.studentid = $current_student_id[studentid] 
-										 ORDER BY timestamp DESC
-										 LIMIT 1")
-										 or die(mysqli_error($db_server));
-				$result_array = $result->fetch_assoc();
-				array_push($student_data_array, $result_array);
+		} //closes the alternate view for status
+	
+	//checks how the table should be sorted. Default is alphabetically by student
+	if (isset($_GET['sortBy'])) {
+		if ($_GET['sortBy'] == 'status')	{
+			$result_total_array = array();
+			foreach ($status_array as $status)	{
+				$result_array = subval_sort($student_data_array, 'statusname', $status);
+				array_push($result_total_array, $result_array);
 			}
-	if (isset($_GET['sortBy'])) {
-	if ($_GET['sortBy'] == 'status')	{
-		$result_total_array = array();
-		foreach ($status_array as $status)	{
-			$result_array = subval_sort($student_data_array, 'statusname', $status);
-			array_push($result_total_array, $result_array);
+			$student_data_array = $result_total_array;
 		}
-		$student_data_array = $result_total_array;
 	}
-	}
-	// we might need this...
+
 	if (isset($_GET['sortBy'])) {
-	if ($_GET['sortBy'] != 'status') {
-		$result_total_array = array();
-		array_push($result_total_array, $student_data_array);
-		$student_data_array = $result_total_array;
+		if ($_GET['sortBy'] != 'status') {
+			$result_total_array = array();
+			array_push($result_total_array, $student_data_array);
+			$student_data_array = $result_total_array;
+		}
 	}
-	}
+	
 	elseif (empty($_GET['sortBy'])) {
 		$result_total_array = array();
 		array_push($result_total_array, $student_data_array);
 		$student_data_array = $result_total_array;
 	}
+	
 	if (!empty($_GET['sortBy'])) {
-				if ($_GET['sortBy'] == 'status' && $_GET['r'] == 0) {
-					$student_data_array = array_reverse($student_data_array);
-				}
-			}
+		if ($_GET['sortBy'] == 'status' && $_GET['r'] == 0) {
+			$student_data_array = array_reverse($student_data_array);
+		}
+	}
+	//loops through student data array
+	//does it twice because when the table is sorted by status, the array containing the data has an extra dimension
 		foreach ($student_data_array as $mini_array) {
 			foreach ($mini_array as $latestdata) {
-					
+				//sets up relevant time and date data to automatically start a new day the first time the page is loaded
 				$day_data = new DateTime($latestdata['timestamp']);
-				//the day it was yesterday
 				$yesterday = new DateTime('yesterday 23:59:59');
+				//if the last entry for a student was yesterday, this makes an entry for 'not checked in'
 				if ($day_data < $yesterday) {
-						changestatus($latestdata['studentid'], '8', '', '');
+					changestatus($latestdata['studentid'], '8', '', '');
 				}
 				?>
 				<tr>
@@ -332,14 +337,20 @@
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
-						<?php if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent') || ($day_data < $yesterday)) { // if the student is not present or hasn't updated since midnight, show a present button ?>
-						<!-- present button, passes hidden value equal to the current student -->
+						<?php 
+						// if the student is not present or hasn't updated since midnight, show a present button 
+						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent') || ($day_data < $yesterday)) {
+						?>
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='P' class='p_button' name='present_button'>
 							<input type='hidden' name='present_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
-						<?php } // end "not present" if clause
-						if ($latestdata['statusname'] == 'Not Checked In') { // if the student hasn't updated status since midnight, display a late button ?>
+						
+						<?php 
+						}
+						// if the student hasn't updated status since midnight, display a late button
+						if ($latestdata['statusname'] == 'Not Checked In') {
+						?>
 						<!-- Late button with time input next to it -->
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='A' name='Absent' class='absent_button' style='float:left'>
@@ -350,10 +361,10 @@
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
-						
 						<?php } ?>
 					</td>
 				<?php 
+				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
 					<td class='student_data'><a style="text-decoration:none" href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
@@ -371,20 +382,12 @@
 						if ($latestdata['statusname'] == "Late") {
 							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('h:i');
 						}
-	
 						?>
 						</td>
 				</tr>
 	<?php		
 			} 
-			}
-
-
-		//================================================================================//
-		//================================================================================//
-		// FINISHES THE WHILE LOOP THAT GOES THROUGH THE LATEST ROWS FROM THE EVENTS TABLE//
-		//================================================================================//
-		//================================================================================//
+		}
 	?>
 	</table>
 	</table>
