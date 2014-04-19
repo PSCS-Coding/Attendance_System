@@ -2,7 +2,7 @@
 	<html>
 	<head>
 		<title>PSCS Attendance</title>
-		<link rel="stylesheet" type="text/css" href="attendance.css">
+		<link rel="stylesheet" type="text/css" href="InUse.css">
 		<link rel="stylesheet" type="text/css" href="../css/jquery.timepicker.css">    
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 	    <script src="../js/jquery.timepicker.min.js" type="text/javascript"></script>
@@ -33,6 +33,7 @@
 			foreach($a as $k=>$v) {
 				$b[$k] = $v[$subkey];
 			}
+			if (!empty($b)) {
 			asort($b);
 			foreach($b as $key=>$val) {
 				if ($val == $result) {
@@ -41,8 +42,8 @@
 			}
 				asort($$temp_varname);
 				return $$temp_varname;
-	    }
-		
+	   		}
+		}
 	    //facilitator array, $facilitators is array of all from sql    
 	    $facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
 	    
@@ -52,7 +53,14 @@
 	    }
 	    
 	    //current students array
-	    $current_users_result = $db_server->query("SELECT studentid FROM studentdata WHERE current=1 ORDER BY firstname");
+		$studentquery = "SELECT studentid FROM studentdata WHERE current=1 ORDER BY firstname";
+		if (!empty($_GET['sortBy'])) {
+			if ($_GET['sortBy'] == 'student' && $_GET['r'] == 1) {
+				$studentquery = "SELECT studentid FROM studentdata WHERE current=1 ORDER BY firstname DESC";
+			}
+		}
+	    $current_users_result = $db_server->query($studentquery);
+		
 	    
 	//===========================================
 	//==========on submit button click===========
@@ -148,6 +156,28 @@
 	else {
 		$sortBy = 'student';
 	}
+	if (empty($_GET['sortBy'])) {
+		$getvar_sort_status = 'sortBy=status&r=0';
+		$getvar_sort_student = 'sortBy=student&r=0';
+	}
+	else {
+		if ($_GET['sortBy'] == 'status' && $_GET['r'] == 0) {
+			$getvar_sort_status = 'sortBy=status&r=1';
+			$getvar_sort_student = 'sortBy=student&r=0';
+		}
+		if ($_GET['sortBy'] == 'student' && $_GET['r'] == 0) {
+			$getvar_sort_student = 'sortBy=student&r=1';
+			$getvar_sort_status = 'sortBy=status&r=0';
+		}
+		if ($_GET['sortBy'] == 'status' && $_GET['r'] == 1) {
+			$getvar_sort_status = 'sortBy=status&r=0';
+			$getvar_sort_student = 'sortBy=student&r=0';
+		}
+		if ($_GET['sortBy'] == 'student' && $_GET['r'] == 1) {
+			$getvar_sort_student = 'sortBy=student&r=0';
+			$getvar_sort_status = 'sortBy=status&r=0';
+		}
+	}
 	?>
 	
 	
@@ -157,8 +187,22 @@
 	</div>
 	<div id="top_header">
 	<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>
-	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
-	    <div>
+	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' style=''>
+	    <div style='float:right'> 
+			<?php
+			if (!empty($_POST['admin_view'])) {
+				?>
+				<input type='submit' value='Main View' name='main_view'>
+				<?php
+			}
+			else {			
+				?>
+				<input type='submit' value='Status View' name='admin_view'>
+				<?php
+			}
+			?>
+		</div>
+		<div>
 	        <input type="submit" value="Present" name="present">
 	    </div>
 	    
@@ -195,12 +239,42 @@
 	<table width="80%" class='data_table' id='big_table'>
 	    <tr>
 	        <th class='data_table' style="width:10%"></th>
-	        <th class='data_table' style="width:10%"><a href="attendance.php?sortBy=student">Student</a></th>
-	        <th class='data_table' id='status_header' style="width:20%"><a href="attendance.php?sortBy=status">Status</a></th>
+	        <th class='data_table' style="width:10%"><a href="attendance.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
+	        <th class='data_table' id='status_header' style="width:20%"><a href="attendance.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 	    </tr>
 	    <?php
+		if (!empty($_POST['admin_view'])) {
+			$student_data_array = array();
+				while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS	
+					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
+										 FROM events 
+										 JOIN statusdata ON events.statusid = statusdata.statusid
+										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
+										 WHERE studentdata.studentid = $current_student_id[studentid] 
+										 ORDER BY timestamp DESC
+										 LIMIT 1") 
+										 or die(mysqli_error($db_server));
+					$result_array = $result->fetch_assoc();				
+					array_push($student_data_array, $result_array);
+				}
 	
-	if ($sortBy != 'status') {
+				?> <table id='status_display'> <?php		
+				foreach ($status_array as $status) {
+					
+					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
+					if (!empty($sorted_data_array)) {
+					?>
+					<th><?php echo $status; ?></th>
+					<?php
+						foreach ($sorted_data_array as $student) {
+							?>
+							<tr><td><?php echo $student['firstname']; ?></td></tr>
+							<?php
+						}
+					}	
+				} 
+		}
+
 			
 			$student_data_array = array();
 			while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS	
@@ -215,13 +289,36 @@
 				$result_array = $result->fetch_assoc();
 				array_push($student_data_array, $result_array);
 			}
-			
-	
-	$num_array = count($student_data_array);
-	$array_key = 0;
-			//while ($latestdata = $student_data_array) { // LOOPS THROUGH THE LATEST ROWS FROM THE EVENTS TABLE
-				//gets the day that entry was entered
-			foreach ($student_data_array as $latestdata) {
+	if (isset($_GET['sortBy'])) {
+	if ($_GET['sortBy'] == 'status')	{
+		$result_total_array = array();
+		foreach ($status_array as $status)	{
+			$result_array = subval_sort($student_data_array, 'statusname', $status);
+			array_push($result_total_array, $result_array);
+		}
+		$student_data_array = $result_total_array;
+	}
+	}
+	// we might need this...
+	if (isset($_GET['sortBy'])) {
+	if ($_GET['sortBy'] != 'status') {
+		$result_total_array = array();
+		array_push($result_total_array, $student_data_array);
+		$student_data_array = $result_total_array;
+	}
+	}
+	elseif (empty($_GET['sortBy'])) {
+		$result_total_array = array();
+		array_push($result_total_array, $student_data_array);
+		$student_data_array = $result_total_array;
+	}
+	if (!empty($_GET['sortBy'])) {
+				if ($_GET['sortBy'] == 'status' && $_GET['r'] == 0) {
+					$student_data_array = array_reverse($student_data_array);
+				}
+			}
+		foreach ($student_data_array as $mini_array) {
+			foreach ($mini_array as $latestdata) {
 					
 				$day_data = new DateTime($latestdata['timestamp']);
 				//the day it was yesterday
@@ -259,7 +356,7 @@
 				<?php 
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
-					<td class='student_data'><a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
+					<td class='student_data'><a style="text-decoration:none" href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
 					<td class='status_data'><?php 
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
@@ -280,36 +377,8 @@
 				</tr>
 	<?php		
 			} 
-		}
-	if ($sortBy == 'status') {
-			$student_data_array = array();
-				while ($current_student_id = $current_users_result->fetch_assoc()) { // LOOPS THROUGH ALL OF THE CURRENT STUDENTS	
-					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
-										 FROM events 
-										 JOIN statusdata ON events.statusid = statusdata.statusid
-										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-										 WHERE studentdata.studentid = $current_student_id[studentid] 
-										 ORDER BY timestamp DESC
-										 LIMIT 1") 
-										 or die(mysqli_error($db_server));
-					$result_array = $result->fetch_assoc();				
-					array_push($student_data_array, $result_array);
-				}
-	
-				?> <table id='status_display'> <?php		
-				foreach ($status_array as $status) {
-					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
-					?>
-					<th><?php echo $status; ?></th>
-					<?php
-					foreach ($sorted_data_array as $student) {
-						?>
-						<tr><td><?php echo $student['firstname']; ?></td></tr>
-						<?php
-					}
-					
-				} 
-		}
+			}
+
 
 		//================================================================================//
 		//================================================================================//
