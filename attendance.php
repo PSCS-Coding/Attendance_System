@@ -13,6 +13,20 @@
 				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
+		<script type="text/javascript">
+			function setIdle(cb, seconds) {
+    			var timer; 
+    			var interval = seconds * 1000;
+    			function refresh() {
+            		clearInterval(timer);
+            		timer = setTimeout(cb, interval);
+    			};
+    		$(document).on('keypress, click, mousemove', refresh);
+    		refresh();
+			}
+			
+			setIdle(function() {location.href = location.href;}, 300);
+		</script>
 	</head>
 	<!-- setup -->
 	<?php
@@ -371,14 +385,12 @@
 					<td class='status_data'><?php 
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
-						
 						if ($latestdata['statusname'] == "Offsite") {
 							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('h:i');
 						}
 						if ($latestdata['statusname'] == "Field Trip") {
 							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('h:i');
 						}
-	
 						if ($latestdata['statusname'] == "Late") {
 							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('h:i');
 						}
