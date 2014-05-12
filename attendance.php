@@ -30,8 +30,10 @@
 	</head>
 	<!-- setup -->
 	<?php
-	    require_once("connection.php");
+	    require_once("../connection.php");
 	    require_once("function.php");
+		
+		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");
 			$result_array = array();
@@ -51,13 +53,17 @@
 				$b[$k] = $v[$subkey];
 			}
 			if (!empty($b)) {
+			if ($subkey == 'statusname') {
 			asort($b);
+			}
 			foreach($b as $key=>$val) {
 				if ($val == $result) {
 					array_push($$temp_varname, $a[$key]);
 				}	
 			}
+			if ($subkey == 'statusname') {
 				asort($$temp_varname);
+			}
 				return $$temp_varname;
 	   		}
 		}
@@ -90,7 +96,7 @@
 		if (!empty($_POST['present'])) {
 			foreach ($name as $student)
 			{
-				changestatus($student, '1', '', '', '');
+				changestatus($student, '1', '', '', $null_value);
 			}
 		}
 	
@@ -132,10 +138,18 @@
 			$name = $_POST['person'];
 			foreach ($name as $student)
 			{
-				changestatus($student, '4', '', '');
+				changestatus($student, '4', '', $null_value);
 			}
 		}
 	
+	//ind study
+		if (!empty($_POST['ind_study'])) {
+			$name = $_POST['person'];
+			foreach ($name as $student) {
+				changestatus($student, '6', '', $null_value);
+			}
+		}
+		
 	//error message when no boxes are checked
 	} else if(isPost() && empty($_POST['person'])) {
 		echo "please choose a student";
@@ -144,7 +158,7 @@
 	//individual present button querying -- "1" refers to "Present" in statusdata table
 	if (!empty($_POST['present_bstudent'])) {
 		$name = $_POST['present_bstudent'];
-		changestatus($name, '1', '', '');
+		changestatus($name, '1', '', $null_value);
 	}
 	
 	//late status querying -- "5" refers to "Late" in statusdata table
@@ -156,8 +170,8 @@
 	
 	//absent buttons
 	if (!empty($_POST['Absent'])) {
-		$name = $_POST['late_student'];
-		changestatus($name, '7', '', '');
+		$name = $_POST['absent_student'];
+		changestatus($name, '7', '', $null_value);
 	}
 	
 	//basic checks to set a variable equal to the correct string to be passed into the get variable
@@ -249,6 +263,9 @@
 			<input type="submit" value="Sign Out" name="signout">
 		</div>
 		
+		<div>
+			<!-- independent study -->
+			<input type='submit' value='Independent Study' name='ind_study'>
 		</form>
 		</div>
 	<!-- student information table rendering -->
@@ -280,26 +297,36 @@
 					array_push($student_data_array, $result_array);
 				}
 				
+		
 		//renders alternate status view when chosen
 		if (!empty($_POST['admin_view'])) {
 			
 				//using the above data from the query, this renders the alternate status view
-				?> <table id='status_display'> <?php
 				//creates a table header for each of the possible status'	
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
 					//only renders the table headers for status' that have students assigned to that status
 					if (!empty($sorted_data_array)) {
+					?> <div class='altview_status'> <?php
 					?>
-					<th style='float:left'><?php echo $status; ?></th>
+					<p><?php echo $status; ?></p>
+					<ul class='altview_list'>
 					<?php
 						foreach ($sorted_data_array as $student) {
+							if (!empty($student['returntime'])) {
+								$returntime_statusview = new DateTime($student['returntime']);
+								$returntime_statusview = $returntime_statusview->format('g:i');
+							}
+							else {
+								$returntime_statusview = '';
+							}
 							?>
-							<tr><td><?php echo $student['firstname']; ?></td></tr>
+							<li><?php echo $student['firstname'] . " " . $returntime_statusview; ?></li>
 							<?php
-						}
-					}	
+						} ?>
+					</ul> <?php
+					} ?> </div> <?php	
 				} 
 		} //closes the alternate view for status
 	
@@ -336,11 +363,18 @@
 	}
 	//loops through student data array
 	//does it twice because when the table is sorted by status, the array containing the data has an extra dimension
+	if (empty($_POST['admin_view'])) {
 		foreach ($student_data_array as $mini_array) {
 			foreach ($mini_array as $latestdata) {
 				//sets up relevant time and date data to automatically start a new day the first time the page is loaded
 				$day_data = new DateTime($latestdata['timestamp']);
 				$yesterday = new DateTime('yesterday 23:59:59');
+				$today = new DateTime();
+				$todaydate = $today->format('Y-m-d');
+			if ($day_data < $yesterday) {
+				$future_event_query = $db_server->query("SELECT * FROM preplannedevents WHERE eventdate = $todaydate") or die (mysqli_error($db_server));
+				$future_events = mysqli_fetch_assoc($future_event_query);
+			}
 				//if the last entry for a student was yesterday, this makes an entry for 'not checked in'
 				if ($day_data < $yesterday) {
 					changestatus($latestdata['studentid'], '8', '', '');
@@ -400,6 +434,7 @@
 	<?php		
 			} 
 		}
+	}
 	?>
 	</table>
 	</table>
