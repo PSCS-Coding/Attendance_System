@@ -1,13 +1,3 @@
-table {
-margin:auto;
-}
-th {
-    margin-left:5%;
-}
-.data_table {
-border:1px solid black;
-border-collapse:collapse;
-}
 form {
 margin:auto;
 }
@@ -23,11 +13,42 @@ float: left;
 .p_button {
 float: left;
 }
-.student_data, .status_data {
-	border:1px solid black;
-	border-collapse:collapse;
-	border-width:auto;
-}
 #status_header {
 	colspan=2;
+}
+
+body {
+position:relative;
+margin:0;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:80%;
+
+}
+
+#top_header {
+position:fixed;
+background-color:#fff;
+width:100%;
+
+}
+
+#main_table {
+padding-top: 216px;
+}
+
+tr:nth-child(odd) {
+background-color:#CCFFFF;
+}
+
+#big_table {
+border:0;
+width:700px;
+}
+
+#big_table th, #big_table td {
+padding:4px 14px;
+}
+
+.data_table, .select_col {
+width:auto;
 }

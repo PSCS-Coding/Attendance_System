@@ -3,9 +3,9 @@
 	<head>
 		<title>PSCS Attendance</title>
 		<link rel="stylesheet" type="text/css" href="attendance.css">
-		<link rel="stylesheet" type="text/css" href="../css/jquery.timepicker.css">    
+		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-	    <script src="../js/jquery.timepicker.min.js" type="text/javascript"></script>
+	    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
@@ -206,8 +206,6 @@
 	?>
 	
 	<!-- top form for change status -->
-	<div id="tiptop">
-	</div>
 	<div id="top_header">
 	<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' style=''>
@@ -268,14 +266,15 @@
 			<input type='submit' value='Independent Study' name='ind_study'>
 		</form>
 		</div>
+	</div>
 	<!-- student information table rendering -->
-	
-	<table width="80%" class='data_table' id='big_table'>
+	<div id="main_table">
+	<table class='data_table' id='big_table'>
 	    <tr>
-	        <th class='data_table' style="width:10%"></th>
+	        <th class='select_col'></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
-	        <th class='data_table' style="width:10%"><a href="attendance.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
-	        <th class='data_table' id='status_header' style="width:20%"><a href="attendance.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
+	        <th class='student_col'><a href="attendance.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
+	        <th class='status_col' id='status_header'><a href="attendance.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 	    </tr>
 	    <?php
 		
@@ -438,5 +437,6 @@
 	?>
 	</table>
 	</table>
+	</div>
 	</body>
 	</html>
