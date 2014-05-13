@@ -207,9 +207,9 @@
 	
 	<!-- top form for change status -->
 	<div id="top_header">
-	<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>
-	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' style=''>
-	    <div style='float:right'> 
+	<!--<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>-->
+	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
+	    <div id="changeview"> 
 			<?php
 			//button for the alternate status view option
 			//displays a button to return the user to the main page when at the alternate view
@@ -226,19 +226,31 @@
 			?>
 			
 		</div>
+		
 		<div>
 			<!-- top interface present button -->
 	        <input type="submit" value="Present" name="present">
 	    </div>
-	    
-	    <div>
+	   
+	   	<div>
+			<!-- top interface sign out button -->
+			<input type="submit" value="Check Out" name="signout">
+		</div>
+ 
+	   
+		<div>
+			<!-- independent study -->
+			<input type='submit' value='Independent Study' name='ind_study'>
+		</div>
+
+	    <div class="newline">
 			<!-- top interface offsite -->
 	        <input type="submit" name="offsite" value="Offsite">
 	        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	    </div>
 	    
-	    <div>
+	    <div class="newline">
 			<!-- top interface fieldtrip -->
 	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    
@@ -256,16 +268,7 @@
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	    </div>
 	
-		<div>
-			<!-- top interface sign out button -->
-			<input type="submit" value="Sign Out" name="signout">
-		</div>
-		
-		<div>
-			<!-- independent study -->
-			<input type='submit' value='Independent Study' name='ind_study'>
 		</form>
-		</div>
 	</div>
 	<!-- student information table rendering -->
 	<div id="main_table">
@@ -380,11 +383,18 @@
 				}
 				?>
 				<tr>
-					<td class='data_table'>
+					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
-						<?php 
+					</td>
+				<?php 
+				//variable equal to a students last name initial
+				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
+	            <!-- displays current rows student name, that students status and any comment associated with that status -->
+					<td class='student_data'>
+						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
+											<?php 
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent') || ($day_data < $yesterday)) {
 						?>
@@ -400,7 +410,7 @@
 						?>
 						<!-- Late button with time input next to it -->
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input type='submit' value='A' name='Absent' class='absent_button' style='float:left'>
+							<input type='submit' value='A' name='Absent' class='absent_button' >
 							<input type='hidden' name='absent_student' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
@@ -409,12 +419,8 @@
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
 						<?php } ?>
+
 					</td>
-				<?php 
-				//variable equal to a students last name initial
-				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
-	            <!-- displays current rows student name, that students status and any comment associated with that status -->
-					<td class='student_data'><a style="text-decoration:none" href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a></td>
 					<td class='status_data'><?php 
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 

@@ -7,14 +7,11 @@ border-collapse:collapse;
 .top_interface td {
 margin: auto;
 }
-.c_box {
-float: left;
-}
 .p_button {
 float: left;
 }
-#status_header {
-	colspan=2;
+.status_col, .student_col {
+text-align:left;
 }
 
 body {
@@ -29,26 +26,53 @@ font-size:80%;
 position:fixed;
 background-color:#fff;
 width:100%;
+}
 
+#top_header form div {
+padding: 8px;
+float:left;
+border:3px solid #999;
+border-collapse:collapse;
+background-color:#ddd;
 }
 
 #main_table {
-padding-top: 216px;
+padding-top: 140px;
+}
+
+.select_col {
+width:10px;
 }
 
 tr:nth-child(odd) {
-background-color:#CCFFFF;
+background-color:#ddd;
 }
 
 #big_table {
 border:0;
-width:700px;
+width:auto;
+margin:0 auto;
 }
 
 #big_table th, #big_table td {
-padding:4px 14px;
+padding:1px 14px;
 }
 
-.data_table, .select_col {
-width:auto;
+.student_data a {
+float:left;
+margin-right:10px;
+text-decoration:none;
+line-height:26px;
+}
+
+.student_data form {
+display:inherit;
+}
+
+#top_header form div#changeview {
+float:right;
+}
+
+.absent_button {
+float:left;
 }
