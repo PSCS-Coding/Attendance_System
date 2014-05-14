@@ -19,6 +19,7 @@ position:relative;
 margin:0;
 font-family:Verdana, Arial, Helvetica, sans-serif;
 font-size:80%;
+background-color:dimgrey;
 
 }
 
@@ -26,18 +27,23 @@ font-size:80%;
 position:fixed;
 background-color:#fff;
 width:100%;
+z-index:5;
+opacity:0.95;
 }
 
 #top_header form div {
-padding: 8px;
-float:left;
-border:3px solid #999;
-border-collapse:collapse;
-background-color:#ddd;
+padding: 8px 13px;
+float: left;
+border-left: 6px solid #999;
+}
+
+#top_header form div:first-child {
+border-left:none;
 }
 
 #main_table {
 padding-top: 140px;
+max-width:75%;
 }
 
 .select_col {
@@ -46,6 +52,12 @@ width:10px;
 
 tr:nth-child(odd) {
 background-color:#ddd;
+opacity:0.9;
+}
+
+tr:nth-child(even) {
+background-color:#fff;
+opacity:0.9;
 }
 
 #big_table {
@@ -67,12 +79,24 @@ line-height:26px;
 
 .student_data form {
 display:inherit;
+vertical-align:middle;
 }
 
 #top_header form div#changeview {
-float:right;
+border-left:0;
+clear:both;
 }
 
 .absent_button {
 float:left;
+}
+.newline {
+clear:both;
+border-left:0 !important;
+}
+
+#puttheimagehere {
+position:fixed;
+opacity:0.5;
+z-index:-1;
 }

@@ -28,6 +28,8 @@
 			setIdle(function() {location.href = location.href;}, 300);
 		</script>
 	</head>
+	<body>
+	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 	    require_once("../connection.php");
@@ -207,25 +209,9 @@
 	
 	<!-- top form for change status -->
 	<div id="top_header">
+	<div id="top_inner">
 	<!--<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>-->
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
-	    <div id="changeview"> 
-			<?php
-			//button for the alternate status view option
-			//displays a button to return the user to the main page when at the alternate view
-			if (!empty($_POST['admin_view'])) {
-				?>
-				<input type='submit' value='Main View' name='main_view'>
-				<?php
-			}
-			else {			
-				?>
-				<input type='submit' value='Status View' name='admin_view'>
-				<?php
-			}
-			?>
-			
-		</div>
 		
 		<div>
 			<!-- top interface present button -->
@@ -267,8 +253,27 @@
 	        </select>
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	    </div>
+		<div id="changeview"> 
+			<?php
+			//button for the alternate status view option
+			//displays a button to return the user to the main page when at the alternate view
+			if (!empty($_POST['admin_view'])) {
+				?>
+				<input type='submit' value='Main View' name='main_view'>
+				<?php
+			}
+			else {			
+				?>
+				<input type='submit' value='Status View' name='admin_view'>
+				<?php
+			}
+			?>
+			
+		</div>
+
 	
 		</form>
+		</div>
 	</div>
 	<!-- student information table rendering -->
 	<div id="main_table">
@@ -392,7 +397,7 @@
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
-					<td class='student_data'>
+					<td class='student_col'>
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
 											<?php 
 						// if the student is not present or hasn't updated since midnight, show a present button 
@@ -421,7 +426,7 @@
 						<?php } ?>
 
 					</td>
-					<td class='status_data'><?php 
+					<td class='status_col'><?php 
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
 						if ($latestdata['statusname'] == "Offsite") {
