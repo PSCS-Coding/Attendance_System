@@ -223,12 +223,6 @@
 			<input type="submit" value="Check Out" name="signout">
 		</div>
  
-	   
-		<div>
-			<!-- independent study -->
-			<input type='submit' value='Independent Study' name='ind_study'>
-		</div>
-
 	    <div class="newline">
 			<!-- top interface offsite -->
 	        <input type="submit" name="offsite" value="Offsite">
@@ -411,7 +405,7 @@
 						<?php 
 						}
 						// if the student hasn't updated status since midnight, display a late button
-						if ($latestdata['statusname'] == 'Not Checked In') {
+						if ($latestdata['statusname'] == 'Not Checked In' || $latestdata['statusname'] == 'Late') {
 						?>
 						<!-- Late button with time input next to it -->
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
@@ -430,13 +424,13 @@
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
 						if ($latestdata['statusname'] == "Offsite") {
-							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('h:i');
+							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
 						}
 						if ($latestdata['statusname'] == "Field Trip") {
-							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('h:i');
+							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
 						}
 						if ($latestdata['statusname'] == "Late") {
-							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('h:i');
+							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i');
 						}
 						?>
 						</td>

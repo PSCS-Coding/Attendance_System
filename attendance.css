@@ -43,7 +43,6 @@ border-left:none;
 
 #main_table {
 padding-top: 140px;
-max-width:75%;
 }
 
 .select_col {
@@ -64,21 +63,22 @@ opacity:0.9;
 border:0;
 width:auto;
 margin:0 auto;
+max-width:800px;
 }
 
 #big_table th, #big_table td {
 padding:1px 14px;
 }
 
-.student_data a {
+.student_col a {
 float:left;
 margin-right:10px;
 text-decoration:none;
 line-height:26px;
 }
 
-.student_data form {
-display:inherit;
+.student_col form {
+display:inline;
 vertical-align:middle;
 }
 
@@ -100,3 +100,25 @@ position:fixed;
 opacity:0.5;
 z-index:-1;
 }
+
+.altview_status {
+float:left;
+float: left;
+background-color: #ccc;
+margin: 10px;
+padding: 10px;
+
+}
+
+.altview_status>p {
+font-weight:bold;
+font-size:120%;
+}
+
+.altview_status ul, .altview_status li {
+list-style-type: none;
+        list-style-position:inside;
+        margin:0;
+        padding:0;
+		line-height:150%;
+ }
