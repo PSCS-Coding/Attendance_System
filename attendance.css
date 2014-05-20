@@ -42,7 +42,7 @@ border-left:none;
 }
 
 #main_table {
-padding-top: 140px;
+padding-top: 60px;
 }
 
 .select_col {
@@ -70,7 +70,7 @@ max-width:800px;
 padding:1px 14px;
 }
 
-.student_col a {
+.student_col a, .status_col a {
 float:left;
 margin-right:10px;
 text-decoration:none;
@@ -84,16 +84,17 @@ vertical-align:middle;
 
 #top_header form div#changeview {
 border-left:0;
-clear:both;
+float:right;
 }
 
 .absent_button {
 float:left;
 }
+
 .newline {
-clear:both;
+/*clear:both;
 border-left:0 !important;
-}
+*/}
 
 #puttheimagehere {
 position:fixed;
