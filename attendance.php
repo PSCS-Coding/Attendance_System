@@ -28,8 +28,17 @@
 			setIdle(function() {location.href = location.href;}, 300);
 		</script>
 	</head>
-	<body>
+	<body class="mainpage">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
+		<?php
+			session_start();
+			
+			//make this $_SESSION['adminSet'] if it's an admin-only page
+			if(!$_SESSION['set'])
+				{
+					header("location: main_login.php");
+			}
+		?>
 	<!-- setup -->
 	<?php
 	    require_once("../connection.php");
@@ -225,14 +234,13 @@
  
 	    <div class="newline">
 			<!-- top interface offsite -->
-	        <input type="submit" name="offsite" value="Offsite">
 	        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+	        <input type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
 	    <div class="newline">
 			<!-- top interface fieldtrip -->
-	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    
 			<!-- Creates the dropdown of facilitators -->
 			<select name='facilitator'><option value=''>Select Facilitator</option>
@@ -246,6 +254,7 @@
 	        ?>
 	        </select>
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
+	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
 		<div id="changeview"> 
 			<?php

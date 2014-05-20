@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>PSCS Attendance student interface</title>
-	<link rel="stylesheet" type="text/css" href="InUse.css">
+	<link rel="stylesheet" type="text/css" href="attendance.css">
 	<link rel='stylesheet' href="css/pikaday.css" />
 	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
@@ -18,7 +18,6 @@
 		});
 	</script>
 </head>
-<body>
 
 <?php
     require_once("../connection.php");
@@ -27,11 +26,9 @@
 	
 	if (!empty($_GET['name'])){
 		$name=$_GET['name'];
-	
+		
 	if (isset($name)){	
-		if ($name != $_COOKIE['name']){
 		setcookie('name', $name);
-		}
 	}	
 	} elseif (!empty($_COOKIE['name'])){
 		$name=$_COOKIE['name'];
@@ -42,7 +39,7 @@
 		if (!empty($_GET['id'])){
 			$id=$_GET['id'];
 			setcookie('id', $_GET['id']);
-			
+
 		} elseif (empty($_GET['id']) and !empty($_COOKIE['id'])) {
 			$id=$_COOKIE['id'];
 			
@@ -51,11 +48,6 @@
 		}
 	}
 	
-	?>
-	
-	<a style="text-decoration: none; color: black;" href=attendance.php>Back to main page </a>  <a style="text-decoration: none; color: black;" href=viewreports.php>  View reports for this user</a>
-	<br>
-	<?php
 	$facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
     $facilitators = array();
     while ($fac_row = $facget->fetch_row()) {
@@ -149,7 +141,7 @@ if (!empty($_POST)){
 	}
 
 //Sign out querying -- "4" refers to "Checked Out" in statusdata table
-	if (!empty($_POST['signout'])) {
+	if (!empty($_POST['checkout'])) {
 			changestatus($id, '4', '', '');
 			if (!empty($_POST['favorite'])){
 				favorite($id, '4', '', '');
@@ -283,111 +275,27 @@ if (!empty($_POST)){
 				if ($day_data < $yesterday) {
 						changestatus($id, '8', '', '');
 				}
-				
-	if (!empty($name) || !empty($id)){
-		?> <br> <?php
-		if ($currentstatus[0] == "Field Trip"){
-			echo $name . " is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
-			
-		} elseif ($currentstatus[0] == "Offsite") {
-			echo $name . " is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('h:i');
-		
-		} elseif ($currentstatus[0] == "Late"){
-			echo $name . " is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('h:i');
-		
-		} elseif ($currentstatus[0] == "Not Checked In") {
-			echo $name . " has not checked in today"; 
-		
-		} elseif ($currentstatus[0] == "Independent Study") {
-			echo $name . " is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('h:i');
-		
-		} else {
-			echo $name . " is currently " . $currentstatus[0];
-		}
-		
-	} else {
-		echo "Please go back to the main page and make a student selection";
-	}
-?>
-<br>
-<!-- top form for change status -->
+	?>			
 
-<div id="top_header">
-<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
-	<?php if ($currentstatus[0] != "Present"){
-		?>
-		<br>
-    <div>
-        <input type="submit" value="Present" name="present">
-    </div>
-    <?php } ?> 
-	<br>
-    <div>
-        <input type="submit" name="offsite" value="Offsite">
-        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
-		<input type="text" name="offtime" placeholder='Return time' id="offtime">
-    </div>
-	<br>
-    <div>
-       <input type="submit" name="fieldtrip" value="Field Trip"> 
-    
-<!-- Creates the dropdown of facilitators -->
-		<select name='facilitator'><option value=''>Select Facilitator</option>
-        <?php
-			foreach ($facilitators as $facilitator_option) {
-        ?> 
-				<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
-        <?php
-			}
-        ?>
-        </select>
-        <input type="text" name="fttime" placeholder="Return time" id="fttime">
-    </div>
-<!-- indi study form -->
-		<div>
-		<br>
-		<input type="submit" value="Independent Study" name="isstudy">
-		<input type="text" name="istime" placeholder="Return time" id="istime">
-	</div>
-	<div>
-		
-		<br>
-		<input type="submit" value="Late" name="late">
-		<input type="text" name="latetime" placeholder="Arrival time" id="latetime">
-			
-	</div>
-	<div>
-		
-		<br>
-		<input type="submit" value="Absent" name="absent">
+<body class="single-user">
 
-	</div>
-	<div>
-		<br>
-		<input type="submit" value="Sign Out" name="signout">
-	</div>
-	<br>
-		<?php
-	$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
-	$rowcnt =  $getfav->num_rows;
-		?>
-		<input type="checkbox" name="favorite"> save to favorites
-		<input type="checkbox" name="otherdate"> for other date
-	<?php if (!$rowcnt == 0){ ?>
-	<br>
-	<br>		
-	<h3>Favorites</h3>	
+	<div id="links">
+		<a href="attendance.php">Back to main page</a>  
+		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
+	</div>	
+	<?php /// SHOW FAVORITES BOX IFF APPROPRIATE
+		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
+		$rowcnt =  $getfav->num_rows;
+		if (!$rowcnt == 0) { 
+	?>
+		<div id="favorites">
+		<h3>Favorites</h3>	
 	<?php 
-	
-	
-	while ($rowcnt>0){
-	
-	$favorite=mysqli_fetch_row($getfav);
-	
-	$favconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$favorite[1]."'");
-	$outfav=mysqli_fetch_row($favconvert);
+		while ($rowcnt>0){
+		$favorite=mysqli_fetch_row($getfav);
+		$favconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$favorite[1]."'");
+		$outfav=mysqli_fetch_row($favconvert);
 
-	
 		if ($outfav[0] == "Field Trip"){
 			$fullstring =  "go on a " . $outfav[0] . " with " . $favorite[2] . "and be back at " . $returntimeobject->format('h:i');
 			
@@ -403,28 +311,103 @@ if (!empty($_POST)){
 		} else {
 			echo "be " . $outfav[0];
 		}
-	$postfav=$favorite[4];
-	
-	$delstring="del:" . $postfav;
-	
-	?> 	<input type="submit" value="<?php echo $fullstring ?>"name="<?php echo $postfav ?>">
-		<input type="submit" value="<?php echo "X" ?>" name="<?php echo $delstring ?>">
-	<?php $rowcnt=$rowcnt-1; ?> 	
-	<br>
-	<br>
-	<?php	
-	}
-	}
+		$postfav=$favorite[4];
+		$delstring="del:" . $postfav;
+	?> 	
+	<input form='main' type="submit" value="<?php echo $fullstring ?>"name="<?php echo $postfav ?>">
+	<input form='main' type="submit" value="<?php echo "X" ?>" name="<?php echo $delstring ?>">
+	<?php 
+		$rowcnt=$rowcnt-1; 
+		} 
 	?>
-<div>
-<div>
-<div>
-<div>
-	
-	<h3>choose a date</h3>
-	<div>
-	<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 	</div>
+	<?php 
+		}
+	?>
+
+	<?php if (!empty($name) || !empty($id)) { ?>
+	<h2 class="studentname"><?php echo $name; ?></h2><div class="statusmessage">
+		<?php
+		if ($currentstatus[0] == "Field Trip"){
+			echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
+			
+		} elseif ($currentstatus[0] == "Offsite") {
+			echo "is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('h:i');
+		
+		} elseif ($currentstatus[0] == "Late"){
+			echo "is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('h:i');
+		
+		} elseif ($currentstatus[0] == "Not Checked In") {
+			echo "has not checked in today"; 
+		
+		} elseif ($currentstatus[0] == "Independent Study") {
+			echo "is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('h:i');
+		
+		} else {
+			echo "is currently " . $currentstatus[0];
+		}
+		echo "</div>";	
+	} else {
+		echo "Please go back to the main page and make a student selection";
+	}
+	$_SESSION['bettername'] = $name;
+?>
+<!-- top form for change status -->
+
+<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
+	<?php if ($currentstatus[0] != "Present"){
+		?>
+    <div>
+        <input type="submit" value="Present" name="present">
+    </div>
+    <?php } ?> 
+    <div>
+        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
+		<input type="text" name="offtime" placeholder='Return time' id="offtime">
+        <input type="submit" name="offsite" value="Offsite">
+    </div>
+    <div>
+    
+		<!-- Creates the dropdown of facilitators -->
+		<select name='facilitator'><option value=''>Select Facilitator</option>
+        <?php
+			foreach ($facilitators as $facilitator_option) {
+        ?> 
+				<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
+        <?php
+			}
+        ?>
+        </select>
+        <input type="text" name="fttime" placeholder="Return time" id="fttime">
+       <input type="submit" name="fieldtrip" value="Field Trip"> 
+    </div>
+	<div>
+		<input type="text" name="istime" placeholder="Return time" id="istime">
+		<input type="submit" value="Independent Study" name="isstudy">
+	</div>
+	<div>
+		<input type="text" name="latetime" placeholder="Arrival time" id="latetime">
+		<input type="submit" value="Late" name="late">
+	</div>
+	<div>
+		<input type="submit" value="Absent" name="absent">
+	</div>
+	<div>
+		<input type="submit" value="Check Out" name="checkout">
+	</div>
+		<?php
+		?>
+	<div>
+		<input type="checkbox" name="favorite">Save to favorites
+	</div>
+	<div>
+		<input type="checkbox" name="otherdate">Take effect at this future date:
+		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
+	</div>
+	<?php
+		$_SESSION['idd']=$id;
+	?>
+
 	</form>	
 
 <script src="js/pikaday.js"></script>
