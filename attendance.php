@@ -404,7 +404,7 @@
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
 											<?php 
 						// if the student is not present or hasn't updated since midnight, show a present button 
-						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent') || ($day_data < $yesterday)) {
+						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
 						?>
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='P' class='p_button' name='present_button'>
