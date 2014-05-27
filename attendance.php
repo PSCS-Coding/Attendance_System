@@ -174,9 +174,14 @@
 	
 	//late status querying -- "5" refers to "Late" in statusdata table
 	if (!empty($_POST['Late'])) {
-		$name = $_POST['late_student'];
-		$status = $_POST['late_time'];
-		changestatus($name, '5', '', $status);
+		if (validTime($_POST['late_time'])) {
+			$name = $_POST['late_student'];
+			$status = $_POST['late_time'];
+			changestatus($name, '5', '', $status);
+			}
+		else {
+			echo "that's not a valid time";
+			}
 	}
 	
 	//absent buttons

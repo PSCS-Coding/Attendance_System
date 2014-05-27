@@ -120,6 +120,12 @@
 	}
 	
 	?>
+	<div id="top_header">
+		<div>
+			<a href="attendnace.php">Go to main attendance view</a>
+		</div>
+	</div>
+
 	<header>
 		<div>
 			<a href="attendnace.php">Go to main attendance view</a>

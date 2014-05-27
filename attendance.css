@@ -69,6 +69,7 @@ background-color:#fff;
 width:100%;
 z-index:5;
 opacity:0.95;
+min-height:2em;
 }
 
 #top_header form div {
@@ -80,6 +81,19 @@ border-left: 6px solid #999;
 #top_header form div:first-child {
 border-left:none;
 }
+
+#top_header div a {
+display:block;
+float:right;
+padding:0.5em;
+color:#000;
+text-decoration:none;
+}
+
+#top_header div a:hover {
+text-decoration:underline;
+}
+
 
 #main_table {
 padding-top: 60px;
@@ -147,7 +161,7 @@ z-index:-1;
 float:left;
 float: left;
 background-color: #ccc;
-margin: 10px;
+margin: 20px;
 padding: 10px;
 
 }
@@ -155,6 +169,7 @@ padding: 10px;
 .altview_status>p {
 font-weight:bold;
 font-size:120%;
+margin-bottom:0.5em;
 }
 
 .altview_status ul, .altview_status li {
