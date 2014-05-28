@@ -174,14 +174,9 @@
 	
 	//late status querying -- "5" refers to "Late" in statusdata table
 	if (!empty($_POST['Late'])) {
-		if (validTime($_POST['late_time'])) {
-			$name = $_POST['late_student'];
-			$status = $_POST['late_time'];
-			changestatus($name, '5', '', $status);
-			}
-		else {
-			echo "that's not a valid time";
-			}
+		$name = $_POST['late_student'];
+		$status = $_POST['late_time'];
+		changestatus($name, '5', '', $status);
 	}
 	
 	//absent buttons
@@ -387,12 +382,16 @@
 				$today = new DateTime();
 				$todaydate = $today->format('Y-m-d');
 			if ($day_data < $yesterday) {
-				$future_event_query = $db_server->query("SELECT * FROM preplannedevents WHERE eventdate = $todaydate") or die (mysqli_error($db_server));
+				$student = $latestdata['studentid'];
+				echo $student;
+				$future_event_query = $db_server->query("SELECT * FROM `preplannedevents` WHERE `eventdate` = '".$todaydate."' and `studentid` = '".$student."'") or die (mysqli_error($db_server));
 				$future_events = mysqli_fetch_assoc($future_event_query);
-			}
-				//if the last entry for a student was yesterday, this makes an entry for 'not checked in'
-				if ($day_data < $yesterday) {
-					changestatus($latestdata['studentid'], '8', '', '');
+				if($future_events!=False){ 
+				changestatus($student, $future_events['statusid'],$future_events['info'],$future_events['returntime']);
+				} else {
+				//if the last entry for a student was yesterday and there are no preplanned events, this makes an entry for 'not checked in'
+				changestatus($latestdata['studentid'], '8', '', '');
+				}
 				}
 				?>
 				<tr>
