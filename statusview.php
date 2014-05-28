@@ -1,7 +1,7 @@
 	<!DOCTYPE html>
 	<html>
 	<head>
-		<title>PSCS Attendance</title>
+		<title>PSCS Attendance: Status View</title>
 		<link rel="stylesheet" type="text/css" href="attendance.css">
 		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
@@ -122,15 +122,10 @@
 	?>
 	<div id="top_header">
 		<div>
-			<a href="attendnace.php">Go to main attendance view</a>
+			<a href="attendance.php">Return to main attendance view</a>
 		</div>
 	</div>
 
-	<header>
-		<div>
-			<a href="attendnace.php">Go to main attendance view</a>
-		</div>
-	</header>
 	
 	<!-- student information table rendering -->
 	    <?php

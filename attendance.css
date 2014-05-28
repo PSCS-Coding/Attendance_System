@@ -84,7 +84,6 @@ border-left:none;
 
 #top_header div a {
 display:block;
-float:right;
 padding:0.5em;
 color:#000;
 text-decoration:none;
@@ -146,22 +145,20 @@ float:right;
 float:left;
 }
 
-.newline {
-/*clear:both;
-border-left:0 !important;
-*/}
-
 #puttheimagehere {
 position:fixed;
 opacity:0.5;
 z-index:-1;
 }
 
+.error {
+}
+
 .altview_status {
 float:left;
 float: left;
 background-color: #ccc;
-margin: 20px;
+margin: 30px 10px;
 padding: 10px;
 
 }

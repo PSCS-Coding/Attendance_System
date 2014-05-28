@@ -120,10 +120,10 @@
 					changestatus($student, '2', $info, $_POST['offtime']);
 					}
 				} else {
-				echo "that's not a valid time";
+					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
 			} else {
-				echo "you need to fill out the location box before signing out to offsite";
+				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 			}
 		}
 	
@@ -137,10 +137,10 @@
 					changestatus($student, '3', $info, $_POST['fttime']);
 					}
 				} else {
-					echo "that's not a valid time";
+					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
 			} else {
-				echo "you need to chose a facilitator before signing out to field trip";
+				echo "<div class='error'>Please chose a facilitator before signing out to field trip.</div>";
 			}
 		}
 	
@@ -174,9 +174,14 @@
 	
 	//late status querying -- "5" refers to "Late" in statusdata table
 	if (!empty($_POST['Late'])) {
-		$name = $_POST['late_student'];
-		$status = $_POST['late_time'];
-		changestatus($name, '5', '', $status);
+		if (validTime($_POST['late_time'])) {
+			$name = $_POST['late_student'];
+			$status = $_POST['late_time'];
+			changestatus($name, '5', '', $status);
+			}
+		else {
+				echo "<div class='error'>Please enter a valid expected arrival time.</div>";
+			}
 	}
 	
 	//absent buttons
@@ -232,14 +237,14 @@
 			<input type="submit" value="Check Out" name="signout">
 		</div>
  
-	    <div class="newline">
+	    <div>
 			<!-- top interface offsite -->
 	        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
-	    <div class="newline">
+	    <div>
 			<!-- top interface fieldtrip -->
 	    
 			<!-- Creates the dropdown of facilitators -->
@@ -256,24 +261,9 @@
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
-		<div id="changeview"> 
-			<?php
-			//button for the alternate status view option
-			//displays a button to return the user to the main page when at the alternate view
-			if (!empty($_POST['admin_view'])) {
-				?>
-				<input type='submit' value='Main View' name='main_view'>
-				<?php
-			}
-			else {			
-				?>
-				<input type='submit' value='Status View' name='admin_view'>
-				<?php
-			}
-			?>
-			
+		<div>
+			<a href="statusview.php">Go to Status View</a>
 		</div>
-
 	
 		</form>
 		</div>
@@ -306,40 +296,7 @@
 					//pushed each individual students data into an array				
 					array_push($student_data_array, $result_array);
 				}
-				
-		
-		//renders alternate status view when chosen
-		if (!empty($_POST['admin_view'])) {
-			
-				//using the above data from the query, this renders the alternate status view
-				//creates a table header for each of the possible status'	
-				foreach ($status_array as $status) {
-					//calls the sort function to sort the array of students by subkey status
-					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
-					//only renders the table headers for status' that have students assigned to that status
-					if (!empty($sorted_data_array)) {
-					?> <div class='altview_status'> <?php
-					?>
-					<p><?php echo $status; ?></p>
-					<ul class='altview_list'>
-					<?php
-						foreach ($sorted_data_array as $student) {
-							if (!empty($student['returntime'])) {
-								$returntime_statusview = new DateTime($student['returntime']);
-								$returntime_statusview = $returntime_statusview->format('g:i');
-							}
-							else {
-								$returntime_statusview = '';
-							}
-							?>
-							<li><?php echo $student['firstname'] . " " . $returntime_statusview; ?></li>
-							<?php
-						} ?>
-					</ul> <?php
-					} ?> </div> <?php	
-				} 
-		} //closes the alternate view for status
-	
+					
 	//checks how the table should be sorted. Default is alphabetically by student
 	if (isset($_GET['sortBy'])) {
 		if ($_GET['sortBy'] == 'status')	{
