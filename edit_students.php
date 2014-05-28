@@ -101,15 +101,16 @@ table
 border-spacing:0px;
 }
 </style>
-<table style="width:500px">
+<table style="width:550px">
 	
    <tr>
       <th style="text-align:left">Name</th>
       <th style="text-align:left">Last Name</th>
       <th style="text-align:left">Start Date</th>
       <th style="text-align:left">YIS</th>
+      <th style="text-align:left">Advisor</th>
       <th style="text-align:left">Edit</th>
-	  <th style="text-align:left">Deactivate</th>
+	  <th style="text-align:left">NEW-WORD</th>
    </tr>
 <?php
 // loop through list of names 
@@ -132,11 +133,11 @@ while ($list = mysqli_fetch_assoc($result)) { ?>
 			
 			if ($list['yearinschool'] == $yearget->fetch_assoc()){
 			
-			?><option selected value= '<?php echo $year_option['id']; ?> '> <?php echo $year_option['yearinschool']; ?></option><?php
+			?><option selected value= '<?php echo $year_option['id']; ?> '> <?php echo $year_option['yis']; ?></option><?php
 			
 			} else {
 			
-			?>  <option value= '<?php echo $year_option['id']; ?> '> <?php echo $year_option['yearinschool']; ?></option> <?php
+			?>  <option value= '<?php echo $year_option['id']; ?> '> <?php echo $year_option['yis']; ?></option> <?php
 			
 			}
 		      }
@@ -148,10 +149,11 @@ while ($list = mysqli_fetch_assoc($result)) { ?>
 		<td><?php echo $list['lastname']; ?></td>
 		<td><?php echo $list['startdate']; ?></td>
 		<td><?php echo $list['yearinschool']; ?></td>
+		<td><?php echo $list['advisor']; ?></td>
 		
 		<td><input type="submit" name="edit-<?php echo $list['studentid']; ?>" value="Edit"></td>
 		<?php } ?>	
-		<td><button type="submit" name="delete" value="<?php echo $list['firstname']; ?>">Disable</button></td>
+		<td><button type="submit" name="delete" value="<?php echo $list['firstname']; ?>">X</button></td>
 	</tr>
 <?php 
 } // end while
