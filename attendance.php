@@ -374,14 +374,19 @@
 						
 						<?php 
 						}
-						// if the student hasn't updated status since midnight, display a late button
-						if ($latestdata['statusname'] == 'Not Checked In' || $latestdata['statusname'] == 'Late') {
+						// if the student is not checked in, display an absent button
+						if ($latestdata['statusname'] == 'Not Checked In') {
 						?>
-						<!-- Late button with time input next to it -->
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='A' name='Absent' class='absent_button' >
 							<input type='hidden' name='absent_student' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
+						<?php } 
+
+						// if the student is not checked in or is already late, display a late button
+						if ($latestdata['statusname'] == 'Not Checked In' || $latestdata['statusname'] == 'Late') {
+						?>
+						<!-- Late button with time input next to it -->
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='Late' name='Late' class='l_button'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
