@@ -1,5 +1,15 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
+<?php
+	session_start();
+
+	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
+			
+	//make this $_SESSION['adminSet'] if it's an admin-only page
+	if(!$_SESSION['set'])
+	{
+		header("location: main_login.php");
+	}
+?>
 <html>
 <head>
 	<title>PSCS Attendance student interface</title>
@@ -35,7 +45,7 @@
 	}
 	
 	if (empty($id)){
-		
+	
 		if (!empty($_GET['id'])){
 			$id=$_GET['id'];
 			setcookie('id', $_GET['id']);
@@ -235,10 +245,8 @@ if (!empty($_POST)){
 	$delstring="del:" . $postfav;
 	$pieces = explode(":", $delstring);
 	
-	$datetimeconvert=new DateTime($favorite[3]);
-	
 	if (!empty($_POST[$postfav])){
-		changestatus($favorite[0], $favorite[1], $favorite[2], $datetimeconvert);
+		changestatus($favorite[0], $favorite[1], $favorite[2],$favorite[3]);
 	}
 	if (!empty($_POST[$delstring])){
 	$stmt = $db_server->prepare("DELETE FROM cookiedata WHERE favid = ?");
@@ -246,9 +254,8 @@ if (!empty($_POST)){
 	$stmt->execute(); 		
 	$stmt->close();
 	}
-		$rowcnt=$rowcnt-1;
-}
-
+	$rowcnt=$rowcnt-1;
+	}
 	$info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
 	$rowdata=mysqli_fetch_row($info);
 	$currentstatusid=$rowdata[0];
@@ -283,7 +290,7 @@ if (!empty($_POST)){
 		<a href="attendance.php">Back to main page</a>  
 		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
 	</div>	
-	<?php /// SHOW FAVORITES BOX IFF APPROPRIATE
+	<?php /// SHOW FAVORITES BOX IF APPROPRIATE
 		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
 		$rowcnt =  $getfav->num_rows;
 		if (!$rowcnt == 0) { 
@@ -301,9 +308,15 @@ if (!empty($_POST)){
 			
 		} elseif ($outfav[0] == "Offsite") {
 			$fullstring =  "go " . $outfav[0] . " to " . $favorite[2] . " and be at school at " . $returntimeobject->format('h:i');
-		
+			
 		} elseif ($outfav[0] == "Late"){
 			$fullstring = "be " . $outfav[0] . " and be at school at " . $returntimeobject->format('h:i');
+			
+		} elseif ($outfav[0] == "Absent"){
+			$fullstring = "be " . $outfav[0];
+			
+		} elseif ($outfav[0] == "Checked Out"){
+			$fullstring = "be " . $outfav[0];
 		
 		} elseif ($outfav[0] == "Independent Study") {
 			$fullstring = "go on an " . $outfav[0] . " and be back at " . $returntimeobject->format('h:i');
@@ -405,11 +418,53 @@ if (!empty($_POST)){
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 	</div>
 	<?php
-		$_SESSION['idd']=$id;
-	?>
-
+		$_SESSION['idd']=$id; //pass id for view reports
+		
+				$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");
+		$precnt =  $preplannedquery->num_rows;
+		if (!$precnt == 0) { 
+		while ($precnt>0){
+		$preEvent=mysqli_fetch_row($preplannedquery);
+		$delstatid=$preEvent[5]; 
+		if (!empty($_POST[$delstatid])){
+		$stmt = $db_server->prepare("DELETE FROM preplannedevents WHERE eventid = ?");
+		$stmt->bind_param('i', $delstatid);
+		$stmt->execute(); 		
+		$stmt->close();
+		}
+		$precnt=$precnt-1; 
+		} 
+	}	
+		//pre planned events management
+		$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");
+		$precnt =  $preplannedquery->num_rows;
+		if (!$precnt == 0) { 
+		while ($precnt>0){
+		$preEvent=mysqli_fetch_row($preplannedquery);
+		$preEventDate=new DateTime($preEvent[2]);
+		$preEventTime=new DateTime($preEvent[3]);
+		$statconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$preEvent[1]."'");
+		$outstatconvert=mysqli_fetch_row($statconvert);
+		if ($outstatconvert[0] == "Late"){
+			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
+			?>
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<?php
+		} else {
+			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y');
+			?>
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<?php
+		}
+		?>
+		</br>
+		</br>
+		<?php
+		$precnt=$precnt-1; 
+		} 
+	}
+	?>	
 	</form>	
-
 <script src="js/pikaday.js"></script>
 <script>
     var picker = new Pikaday({ field: document.getElementById('chooseday') });
