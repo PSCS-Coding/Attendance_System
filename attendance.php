@@ -107,7 +107,7 @@
 		if (!empty($_POST['present'])) {
 			foreach ($name as $student)
 			{
-				changestatus($student, '1', '', '', $null_value);
+				changestatus($student, '1', '', '');
 			}
 		}
 	
@@ -145,22 +145,12 @@
 		}
 	
 	//Sign out querying -- "4" refers to "Checked Out" in statusdata table
-		if (!empty($_POST['signout'])) {
-			$name = $_POST['person'];
-			foreach ($name as $student)
-			{
-				changestatus($student, '4', '', $null_value);
-			}
-		}
-	
-	//ind study
-		if (!empty($_POST['ind_study'])) {
-			$name = $_POST['person'];
+		if (!empty($_POST['checkout'])) {
 			foreach ($name as $student) {
-				changestatus($student, '6', '', $null_value);
+				changestatus($student, '4', '', '');
 			}
 		}
-		
+			
 	//error message when no boxes are checked
 	} else if(isPost() && empty($_POST['person'])) {
 		echo "please choose a student";
@@ -234,7 +224,7 @@
 	   
 	   	<div>
 			<!-- top interface sign out button -->
-			<input type="submit" value="Check Out" name="signout">
+			<input type="submit" value="Check Out" name="checkout">
 		</div>
  
 	    <div>
@@ -404,8 +394,11 @@
 						if ($latestdata['statusname'] == "Field Trip") {
 							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
 						}
-						if ($latestdata['statusname'] == "Late") {
+						if ($latestdata['statusname'] == "Late" || $latestdata['statusname'] == "Independent Study") {
 							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i');
+						}
+						if ($latestdata['statusname'] == "Independent Study") {
+							echo $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
 						}
 						?>
 						</td>
