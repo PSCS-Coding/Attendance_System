@@ -153,7 +153,7 @@
 			
 	//error message when no boxes are checked
 	} else if(isPost() && empty($_POST['person'])) {
-		echo "please choose a student";
+		echo "<div class='error'>Please choose a student.</div>";
 	}
 	
 	//individual present button querying -- "1" refers to "Present" in statusdata table
@@ -394,7 +394,7 @@
 						if ($latestdata['statusname'] == "Field Trip") {
 							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
 						}
-						if ($latestdata['statusname'] == "Late" || $latestdata['statusname'] == "Independent Study") {
+						if ($latestdata['statusname'] == "Late") {
 							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i');
 						}
 						if ($latestdata['statusname'] == "Independent Study") {

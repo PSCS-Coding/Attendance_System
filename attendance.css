@@ -76,6 +76,7 @@ min-height:2em;
 padding: 8px 13px;
 float: left;
 border-left: 6px solid #999;
+height:25px;
 }
 
 #top_header form div:first-child {
@@ -152,6 +153,10 @@ z-index:-1;
 }
 
 .error {
+background-color: red;
+border-bottom: 1px solid red;
+color: #fff;
+padding: 5px;
 }
 
 .altview_status {
