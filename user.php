@@ -165,7 +165,7 @@ if (!empty($_POST)){
 // plan syntax is plan(id, statusid, chosen date, returntime, info);	
 	   //present    
 	if (!empty($_POST['present'])){
-			plan($id, '1', $endchoosedate, '', '');
+			?><div class="error">You cannot pre-plan being present</div><?php
 	}
 	//absent    
 	if (!empty($_POST['absent'])){
@@ -176,7 +176,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['offloc'])){
         		$info = $_POST['offloc'];
 			if (validTime($_POST['offtime'])){
-				plan($id, '2', $endchoosedate, $_POST['offtime'], $info);
+				?><div class="error">You cannot pre-plan being offsite</div><?php
 			} else {
 			echo "that's not a valid time";
 			}
@@ -219,7 +219,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				plan($id, '3', $endchoosedate, $_POST['fttime'], $info);
+				?><div class="error">You cannot pre-plan being on a fieldtrip</div><?php
 			} else { 
 				echo "that's not a valid time";
 			}
@@ -230,7 +230,8 @@ if (!empty($_POST)){
 
 //Sign out querying -- "4" refers to "Checked Out" in statusdata table
 	if (!empty($_POST['signout'])) {
-			plan($id, '4', $endchoosedate, '', '');
+			
+			?><div class="error">You cannot pre-plan being checked out, choose absent instead</div><?php
 	}
 }
 
@@ -286,10 +287,6 @@ if (!empty($_POST)){
 
 <body class="single-user">
 
-	<div id="links">
-		<a href="attendance.php">Back to main page</a>  
-		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
-	</div>	
 	<?php /// SHOW FAVORITES BOX IF APPROPRIATE
 		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
 		$rowcnt =  $getfav->num_rows;
@@ -337,34 +334,40 @@ if (!empty($_POST)){
 	<?php 
 		}
 	?>
-
+	<div id="single-body">
+	<div id="links">
+		<a href="attendance.php">Back to main page</a>  
+		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
+	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
-	<h2 class="studentname"><?php echo $name; ?></h2><div class="statusmessage">
+	<h2 class="studentname"><?php echo $name; ?></h2>
+		<div class="statusmessage">
 		<?php
-		if ($currentstatus[0] == "Field Trip"){
-			echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
+			if ($currentstatus[0] == "Field Trip"){
+				echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
+				
+			} elseif ($currentstatus[0] == "Offsite") {
+				echo "is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('h:i');
 			
-		} elseif ($currentstatus[0] == "Offsite") {
-			echo "is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('h:i');
-		
-		} elseif ($currentstatus[0] == "Late"){
-			echo "is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('h:i');
-		
-		} elseif ($currentstatus[0] == "Not Checked In") {
-			echo "has not checked in today"; 
-		
-		} elseif ($currentstatus[0] == "Independent Study") {
-			echo "is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('h:i');
-		
-		} else {
-			echo "is currently " . $currentstatus[0];
-		}
-		echo "</div>";	
-	} else {
+			} elseif ($currentstatus[0] == "Late"){
+				echo "is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('h:i');
+			
+			} elseif ($currentstatus[0] == "Not Checked In") {
+				echo "has not checked in today"; 
+			
+			} elseif ($currentstatus[0] == "Independent Study") {
+				echo "is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('h:i');
+			
+			} else {
+				echo "is currently " . $currentstatus[0];
+			} ?>
+		</div>			
+	<?php } else {
 		echo "Please go back to the main page and make a student selection";
-	}
-	$_SESSION['bettername'] = $name;
-?>
+		}
+		$_SESSION['bettername'] = $name;
+	?>
+
 <!-- top form for change status -->
 
 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
@@ -411,10 +414,10 @@ if (!empty($_POST)){
 		<?php
 		?>
 	<div>
-		<input type="checkbox" name="favorite">Save to favorites
+		<input type="checkbox" name="favorite">Also save this to favorites
 	</div>
 	<div>
-		<input type="checkbox" name="otherdate">Take effect at this future date:
+		<input type="checkbox" name="otherdate">Make this take effect at this future date:
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 	</div>
 	<?php
@@ -465,6 +468,7 @@ if (!empty($_POST)){
 	}
 	?>	
 	</form>	
+	</div>
 <script src="js/pikaday.js"></script>
 <script>
     var picker = new Pikaday({ field: document.getElementById('chooseday') });

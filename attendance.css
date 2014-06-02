@@ -60,7 +60,7 @@ background-color:dimgrey;
 
 body.single-user {
 padding: 2%;
-background-color: white;
+background-color: dimgrey;
 }
 
 #top_header {
@@ -182,8 +182,15 @@ list-style-type: none;
 		line-height:150%;
  }
 
+
+#single-body {
+background-color: white;
+max-width: 500px;
+padding: 20px;
+}
+
 .single-user #links {
-	float:right;
+font-size:10px;
 }
 .single-user #links a {
 text-decoration:none;
