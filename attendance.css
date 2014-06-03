@@ -97,6 +97,7 @@ text-decoration:underline;
 
 #main_table {
 padding-top: 60px;
+padding-bottom: 20px;
 }
 
 .select_col {
@@ -159,6 +160,12 @@ color: #fff;
 padding: 5px;
 }
 
+.mainpage .error {
+position: fixed;
+top: 44px;
+z-index: 10;
+}
+
 .altview_status {
 float:left;
 float: left;
@@ -187,6 +194,8 @@ list-style-type: none;
 background-color: white;
 max-width: 500px;
 padding: 20px;
+margin: auto;
+border-radius: 15px;
 }
 
 .single-user #links {
@@ -197,6 +206,11 @@ text-decoration:none;
 display:block;
 text-align:right;
 padding:10px;
+background-color: lightgray;
+}
+
+.single-user #links > a {
+float:right;
 }
 
 .single-user h2 {
@@ -217,8 +231,11 @@ padding-bottom:1em;
 }
 
 .single-user #favorites {
-float:right;
-background-color:#ccc;
+background-color:#eee;
 padding:1em;
-clear:right;
+margin-bottom:1em;
+}
+
+.deletefave {
+color:red;
 }

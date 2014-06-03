@@ -54,7 +54,7 @@
 			$id=$_COOKIE['id'];
 			
 		} else{
-			echo "go back to the main page and select a student";
+			echo "<div class='error'>Go back to the main page and select a student.</div>";
 		}
 	}
 	
@@ -91,10 +91,10 @@ if (!empty($_POST)){
 				favorite($id, '2', $info, $_POST['offtime']);
 			}
 			} else {
-			echo "that's not a valid time";
+			echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you need to fill out the location box before signing out to offsite";
+			echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 		}
 	}
 	
@@ -108,10 +108,10 @@ if (!empty($_POST)){
 				favorite($id, '5', $info, $_POST['latetime']);
 			}
 			} else {
-			echo "that's not a valid time";
+			echo "<div class='error'>Please enter a valid late time.</div>";
 			}
 		} else {
-			echo "you mush choose a return time before signing out to late";
+			echo "<div class='error'>You must choose a late time before signing out to late.</div>";
 		}
 	}
 	
@@ -125,10 +125,10 @@ if (!empty($_POST)){
 				favorite($id, '6', $info, $_POST['istime']);
 			}
 			} else {
-			echo "that's not a valid time";
+			echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you must choose a return time before signing out to independent study";
+			echo "<div class='error'>You must choose a return time before signing out to independent study.</div>";
 		}
 	}
 	
@@ -143,10 +143,10 @@ if (!empty($_POST)){
 				favorite($id, '3', $info, $_POST['fttime']);
 			}
 			} else { 
-				echo "that's not a valid time";
+				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you need to chose a facilitator before signing out to field trip";
+				echo "<div class='error'>Please chose a facilitator before signing out to field trip.</div>";
 		}
 	}
 
@@ -178,10 +178,10 @@ if (!empty($_POST)){
 			if (validTime($_POST['offtime'])){
 				?><div class="error">You cannot pre-plan being offsite</div><?php
 			} else {
-			echo "that's not a valid time";
+				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you need to fill out the location box before signing out to offsite";
+				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 		}
 	}
 	
@@ -192,10 +192,10 @@ if (!empty($_POST)){
 			if (validTime($_POST['latetime'])){
 				plan($id, '5', $endchoosedate, $_POST['latetime'], $info);
 			} else {
-			echo "that's not a valid time";
+			echo "<div class='error'>Please enter a valid late time.</div>";
 			}
 		} else {
-			echo "you mush choose a return time before signing out to late";
+			echo "<div class='error'>You must choose a late time before signing out to late.</div>";
 		}
 	}
 	
@@ -206,10 +206,10 @@ if (!empty($_POST)){
 			if (validTime($_POST['istime'])){
 				plan($id, '6', $endchoosedate, $_POST['istime'], $info);
 			} else {
-			echo "that's not a valid time";
+				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you must choose a return time before signing out to independent study";
+			echo "<div class='error'>You must choose a return time before signing out to independent study.</div>";
 		}
 	}
 	
@@ -221,17 +221,17 @@ if (!empty($_POST)){
 			if (validTime($_POST['fttime'])){
 				?><div class="error">You cannot pre-plan being on a fieldtrip</div><?php
 			} else { 
-				echo "that's not a valid time";
+				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
 		} else {
-			echo "you need to chose a facilitator before signing out to field trip";
+				echo "<div class='error'>Please chose a facilitator before signing out to field trip.</div>";
 		}
 	}
 
 //Sign out querying -- "4" refers to "Checked Out" in statusdata table
 	if (!empty($_POST['signout'])) {
 			
-			?><div class="error">You cannot pre-plan being checked out, choose absent instead</div><?php
+			?><div class="error">You cannot pre-plan being checked out, choose absent instead.</div><?php
 	}
 }
 
@@ -286,58 +286,14 @@ if (!empty($_POST)){
 	?>			
 
 <body class="single-user">
-
-	<?php /// SHOW FAVORITES BOX IF APPROPRIATE
-		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
-		$rowcnt =  $getfav->num_rows;
-		if (!$rowcnt == 0) { 
-	?>
-		<div id="favorites">
-		<h3>Favorites</h3>	
-	<?php 
-		while ($rowcnt>0){
-		$favorite=mysqli_fetch_row($getfav);
-		$favconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$favorite[1]."'");
-		$outfav=mysqli_fetch_row($favconvert);
-
-		if ($outfav[0] == "Field Trip"){
-			$fullstring =  "go on a " . $outfav[0] . " with " . $favorite[2] . "and be back at " . $returntimeobject->format('h:i');
-			
-		} elseif ($outfav[0] == "Offsite") {
-			$fullstring =  "go " . $outfav[0] . " to " . $favorite[2] . " and be at school at " . $returntimeobject->format('h:i');
-			
-		} elseif ($outfav[0] == "Late"){
-			$fullstring = "be " . $outfav[0] . " and be at school at " . $returntimeobject->format('h:i');
-			
-		} elseif ($outfav[0] == "Absent"){
-			$fullstring = "be " . $outfav[0];
-			
-		} elseif ($outfav[0] == "Checked Out"){
-			$fullstring = "be " . $outfav[0];
-		
-		} elseif ($outfav[0] == "Independent Study") {
-			$fullstring = "go on an " . $outfav[0] . " and be back at " . $returntimeobject->format('h:i');
-		
-		} else {
-			echo "be " . $outfav[0];
-		}
-		$postfav=$favorite[4];
-		$delstring="del:" . $postfav;
-	?> 	
-	<input form='main' type="submit" value="<?php echo $fullstring ?>"name="<?php echo $postfav ?>">
-	<input form='main' type="submit" value="<?php echo "X" ?>" name="<?php echo $delstring ?>">
-	<?php 
-		$rowcnt=$rowcnt-1; 
-		} 
-	?>
+	<div id="puttheimagehere">
+		<img src="img/mobius.png">
 	</div>
-	<?php 
-		}
-	?>
+
 	<div id="single-body">
 	<div id="links">
 		<a href="attendance.php">Back to main page</a>  
-		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
+		<!--<a href="viewreports.php">View reports for <?php // echo $name; ?></a>-->
 	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
 	<h2 class="studentname"><?php echo $name; ?></h2>
@@ -411,16 +367,69 @@ if (!empty($_POST)){
 	<div>
 		<input type="submit" value="Check Out" name="checkout">
 	</div>
-		<?php
-		?>
 	<div>
-		<input type="checkbox" name="favorite">Also save this to favorites
+		<input type="checkbox" name="favorite">Do this now, and also save this to favorites
 	</div>
-	<div>
-		<input type="checkbox" name="otherdate">Make this take effect at this future date:
+	
+		<?php /// SHOW FAVORITES BOX IF APPROPRIATE
+		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
+		$rowcnt =  $getfav->num_rows;
+		if (!$rowcnt == 0) { 
+	?>
+		<div id="favorites">
+		<h3>Favorites</h3>	
+	<?php 
+		while ($rowcnt>0){
+		$favorite=mysqli_fetch_row($getfav);
+		$favconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$favorite[1]."'");
+		$outfav=mysqli_fetch_row($favconvert);
+
+		if ($outfav[0] == "Field Trip"){
+			$fullstring =  "go on a " . $outfav[0] . " with " . $favorite[2] . "and be back at " . $returntimeobject->format('h:i');
+			
+		} elseif ($outfav[0] == "Offsite") {
+			$fullstring =  "go " . $outfav[0] . " to " . $favorite[2] . " and be at school at " . $returntimeobject->format('h:i');
+			
+		} elseif ($outfav[0] == "Late"){
+			$fullstring = "be " . $outfav[0] . " and be at school at " . $returntimeobject->format('h:i');
+			
+		} elseif ($outfav[0] == "Absent"){
+			$fullstring = "be " . $outfav[0];
+			
+		} elseif ($outfav[0] == "Checked Out"){
+			$fullstring = "be " . $outfav[0];
+		
+		} elseif ($outfav[0] == "Independent Study") {
+			$fullstring = "go on an " . $outfav[0] . " and be back at " . $returntimeobject->format('h:i');
+		
+		} else {
+			echo "be " . $outfav[0];
+		}
+		$postfav=$favorite[4];
+		$delstring="del:" . $postfav;
+	?>
+	<div class="singlefav">
+		<input form='main' type="submit" value="<?php echo $fullstring ?>"name="<?php echo $postfav ?>">
+		<input form='main' type="submit" value="<?php echo "X" ?>" name="<?php echo $delstring ?>" class="deletefave">
+	</div>
+	<?php 
+		$rowcnt=$rowcnt-1; 
+		} 
+	?>
+	</div>
+	<?php 
+		}
+	?>
+
+		<div>
+		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect at this future date:
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 	</div>
+
 	<?php
+		if (!empty($_SESSION['idd'])){
+		unset($_SESSION['idd']);
+		}
 		$_SESSION['idd']=$id; //pass id for view reports
 		
 				$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");

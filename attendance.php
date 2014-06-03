@@ -252,8 +252,11 @@
 	       <input type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
 		<div>
-			<a href="statusview.php">Go to Status View</a>
+			<a href="statusview.php">Status View</a>
 		</div>
+		<!--<div>
+			<a href="viewreports.php">View Reports</a>
+		</div>-->
 	
 		</form>
 		</div>

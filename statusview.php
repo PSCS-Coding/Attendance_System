@@ -171,7 +171,7 @@
 								<li>
 									<?php 
 										echo $student['firstname'] . " " . substr($student['lastname'], 0, 1) . " ";
-										if ($status == "Offsite" || $status == "Late") {echo $returntime_statusview;}
+										if ($status == "Offsite" || $status == "Late" || $status == "Field Trip") {echo $returntime_statusview;}
 									?>
 								</li>
 						<?php } ?>
