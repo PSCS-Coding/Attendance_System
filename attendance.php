@@ -140,7 +140,7 @@
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
 			} else {
-				echo "<div class='error'>Please chose a facilitator before signing out to field trip.</div>";
+				echo "<div class='error'>Please chose a valid facilitator.</div>";
 			}
 		}
 	
@@ -229,7 +229,15 @@
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
+	        <input list="offloc" name="offloc" placeholder="Offsite Location">
+<datalist id="offloc">
+  <option value="Oasis">
+  <option value="Specialty's">
+  <option value="Starbucks">
+  <option value="Thai Curry Simple">
+  <option value="Uwajimaya">
+  <option value="World Pizza">
+</datalist>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input type="submit" name="offsite" value="Offsite">
 	    </div>
@@ -254,9 +262,9 @@
 		<div>
 			<a href="statusview.php">Status View</a>
 		</div>
-		<!--<div>
+		<div>
 			<a href="viewreports.php">View Reports</a>
-		</div>-->
+		</div>
 	
 		</form>
 		</div>

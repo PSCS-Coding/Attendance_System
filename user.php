@@ -293,7 +293,7 @@ if (!empty($_POST)){
 	<div id="single-body">
 	<div id="links">
 		<a href="attendance.php">Back to main page</a>  
-		<!--<a href="viewreports.php">View reports for <?php // echo $name; ?></a>-->
+		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
 	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
 	<h2 class="studentname"><?php echo $name; ?></h2>
@@ -321,7 +321,6 @@ if (!empty($_POST)){
 	<?php } else {
 		echo "Please go back to the main page and make a student selection";
 		}
-		$_SESSION['bettername'] = $name;
 	?>
 
 <!-- top form for change status -->
@@ -427,9 +426,6 @@ if (!empty($_POST)){
 	</div>
 
 	<?php
-		if (!empty($_SESSION['idd'])){
-		unset($_SESSION['idd']);
-		}
 		$_SESSION['idd']=$id; //pass id for view reports
 		
 				$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");

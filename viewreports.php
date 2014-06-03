@@ -4,6 +4,7 @@
 <title>View Reports</title>
 </head>
 <body>
+<a style="float:right" href="attendance.php">Return to main view</a>
 <?php
 	session_start();
 
@@ -53,8 +54,9 @@ require("../connection.php");
 		}
 		if (!empty($_POST['studentlist'])){
         $id = $_POST['studentlist'];
-		
 		}
+		
+
 			$_SESSION['vrname'] = $id;
 					$id = $_SESSION['vrname'];
 		
