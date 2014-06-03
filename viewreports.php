@@ -48,15 +48,15 @@ require("../connection.php");
 		if (!empty($_SESSION['idd'])){
 		$id = $_SESSION['idd'];
 		}
-		if (!empty($_SESSION['name'])){
-		$id = $_SESSION['name'];
+		if (!empty($_SESSION['vrname'])){
+		$id = $_SESSION['vrname'];
 		}
 		if (!empty($_POST['studentlist'])){
         $id = $_POST['studentlist'];
 		
 		}
-			$_SESSION['name'] = $id;
-					$id = $_SESSION['name'];
+			$_SESSION['vrname'] = $id;
+					$id = $_SESSION['vrname'];
 		
 					$totalindstudy = 0;
 	//echo "<br/>".$name."<br/>".$id."<br/>";
@@ -421,7 +421,7 @@ echo "Absents: " . $num_absent; echo "<br />";
  <?php
 								
 														if (!empty($_POST['submit3'])){
-														$name = $_SESSION['name'];
+														$name = $_SESSION['vrname'];
 														$id = $_SESSION['name1'];
 										completeCode();
 								}

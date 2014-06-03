@@ -7,6 +7,23 @@
 </head>
 <body>
 <h1>[ADMIN] Edit Students</h1>
+
+	<?php
+			session_start();
+
+			$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
+			
+			//make this $_SESSION['adminSet'] if it's an admin-only page
+			if(!$_SESSION['adminSet'])
+				{
+					header("location: main_login.php");
+				}
+		?>
+
+
+
+
+
 <?php
 // set up mysql connection
 	require_once("../connection.php");

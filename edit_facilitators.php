@@ -8,7 +8,7 @@
 			$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
 			
 			//make this $_SESSION['adminSet'] if it's an admin-only page
-			if(!$_SESSION['set'])
+			if(!$_SESSION['adminSet'])
 				{
 					header("location: main_login.php");
 			}
@@ -18,23 +18,18 @@
 	require_once("../connection.php");
 //function document
 	require_once("function.php");
-
-// ADD A NEW Facilitator			
+	
 if (isset($_POST['addnew'])) {
-		if($_POST['advisor']=="Advisor?"){
-				echo "Please choose an advisor status.";
-		} else {
-$stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES (?, ?, ?)");
-$stmt->bind_param('sss', $_POST['newfacilitatorname'] , $_POST['newfacilitatoremail'] , $_POST['advisor']);
+$stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email) VALUES (?, ?)");
+$stmt->bind_param('ss', $_POST['newfacilitatorname'] , $_POST['newfacilitatoremail']);
 $stmt->execute(); 
-$stmt->close();
-		}
-}				
+$stmt->close();				
+}
 
 // EDIT (UPDATE) A Facilitator
 if (isset($_POST['save'])) {
- $stmt = $db_server->prepare("UPDATE facilitators SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?");
-	  $stmt->bind_param('sssi', $_POST['facilitatorname'], $_POST['email'], $_POST['advisor'], $_POST['id']);
+ $stmt = $db_server->prepare("UPDATE facilitators SET facilitatorname = ? , email = ? WHERE facilitatorid = ?");
+	  $stmt->bind_param('ssi', $_POST['facilitatorname'], $_POST['email'], $_POST['id']);
 	  $stmt->execute(); 
 	  $stmt->close();
 	} 
@@ -57,12 +52,6 @@ if(isset($_POST['delete'])) {
 <form style="margin-bottom:1em;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 	<input type="text" name="newfacilitatorname" placeholder="Facilitator Name" required><br />
 	<input type="text" name="newfacilitatoremail" placeholder="Facilitator Email"><br />
-<select name='advisor'><option>Advisor?</option>
-		<!--START OF GET OPTIONS AND QUERY STUFF-->
-	        <?php $advisorget = $db_server->query("SELECT * FROM staff ORDER BY info ASC");
-		      while ($advisor_option = $advisorget->fetch_assoc()) {
-	        ?>  <option value= '<?php echo $advisor_option['info']; ?> '> <?php echo $advisor_option['info']; ?></option>
-		<?php } ?></select><br />
 	<input type="submit" name="addnew" value="Add Facilitator" />
 </form>
 	 <style> 
@@ -89,7 +78,6 @@ border-spacing:0px;
    <tr>
       <th style="text-align:left">Name</th>
       <th style="text-align:left">Email</th>
-      <th style="text-align:left">Advisor</th>
       <th style="text-align:left">Edit</th>
 	  <th style="text-align:left">Delete</th>
    </tr>
@@ -105,41 +93,11 @@ while ($list = mysqli_fetch_assoc($result)) { ?>
 		?> 
 		<td><input type="text" name="facilitatorname" class="textbox" value="<?php echo $list['facilitatorname']; ?>" required></td>
 		<td><input type="text" name="email" class="textbox" value="<?php echo $list['email']; ?>"></td>
-		
-		
-		
-		
-		
-		<td><select name='advisor'><?php echo $list['advisor']; ?></option>
-	        <?php
-		     $staffget = $db_server->query("SELECT info FROM staff ORDER BY info ASC");
-		     
-		      while ($staff_option = $staffget->fetch_assoc()) {
-			
-			if (trim($list['info']) == $staff_option['advisor']){
-			
-			?><option selected value= '<?php echo $staff_option['advisor']; ?> '> <?php echo $staff_option['info']; ?></option><?php
-			
-			} else {
-			
-			?>  <option value= '<?php echo $staff_option['info']; ?> '> <?php echo $staff_option['info']; ?></option> <?php
-			
-			}
-		      }
-			?>
-	        </select></td>
-	        
-		
-		
-		
-		
-		
-		
+
 		<td><button type="submit" name="save" value="<?php echo $list['facilitatorid']; ?>">Save</button></td>
 		<?php } else { ?>
 		<td><?php echo $list['facilitatorname']; ?></td>
 		<td><?php echo $list['email']; ?></td>
-                <td><?php echo $list['advisor']; ?></td>
 		
 		<td><input type="submit" name="edit-<?php echo $list['facilitatorid']; ?>" value="Edit"></td>
 		<?php } ?>	
