@@ -24,8 +24,10 @@
 	require_once("../connection.php");
 //function document
 	require_once("function.php");
-
-// EDIT (UPDATE) GLOBALS
+//admin menu
+       include 'admin-navbar.php';
+	
+// EDIT (UPDATE) ALLOTTED HOURS
 if (isset($_POST['save'])) {
  $stmt = $db_server->prepare("UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE id = ?");
 	  $stmt->bind_param('iiii', $_POST['communityhours'], $_POST['offsitehours'], $_POST['IShours'], $_POST['save']); 
@@ -35,7 +37,7 @@ if (isset($_POST['save'])) {
 
 	
 
-// GET THE LIST OF GLOBAL
+// GET THE LIST OF ALLOTTED HOURS
 	$result = $db_server->query("SELECT * FROM allottedhours ORDER BY yis");
 
 ?>
@@ -70,10 +72,10 @@ border-spacing:0px;
 <?php
 // loop through list of names 
 while ($list = mysqli_fetch_assoc($result)) { ?>
-
+<tr>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 <input type="hidden" name="id" value="<?php echo $list['id']; ?>">
-	<tr>
+
 		<?php $editme = "edit-" . $list['id'];
 		if (isset($_POST[$editme])) { ?>
 		<td><?php echo $list['yis']; ?></td>
@@ -89,8 +91,8 @@ while ($list = mysqli_fetch_assoc($result)) { ?>
 		
 		<td><input type="submit" name="edit-<?php echo $list['id']; ?>" value="Edit"></td>
 		<?php } ?>
-	</tr>
-</form>
+		</form>
+		</tr>
 <?php 
 } // end while
 ?>

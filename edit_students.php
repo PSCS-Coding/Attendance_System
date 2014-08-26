@@ -29,6 +29,8 @@
 	require_once("../connection.php");
 //function document
 	require_once("function.php");
+	//admin menu
+       include 'admin-navbar.php';
 
 // ADD A NEW STUDENT			
 if (isset($_POST['addnew'])) {
@@ -78,9 +80,9 @@ if(isset($_POST['delete'])) {
 ?>
 
 <form style="margin-bottom:1em;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-	<input type="text" name="newfirstname" placeholder="First Name" required><br />
-	<input type="text" name="newlastname" placeholder="Last Name" required><br />
-	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required/><br />
+	<input type="text" name="newfirstname" placeholder="First Name" required>
+	<input type="text" name="newlastname" placeholder="Last Name" required>
+	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required/>
 	<input type="submit" name="addnew" value="Add Student" />
 </form>
 	 <style> 

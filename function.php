@@ -19,10 +19,10 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 		$minutes = round(($nowstamp - $laststamp)/60);
 		}
 
-	$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
-	$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
-	$stmt->execute(); 		
-	$stmt->close();
+	#$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
+	#$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
+	#$stmt->execute(); 		
+	#$stmt->close();
 	
 	$whenreturn = new DateTime($f_returntime);
 	$returntimestring = $whenreturn->format('Y-m-d H:i:s');
@@ -34,7 +34,7 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 //defines valid time entries for time text boxes
 //only allows integers and colons
 function validTime($inTime) {
-$pattern   =   "/^((([9])|([0-2])|([0-1][0-2])):?([0-5][0-9]))|(([0-3]):?([0-2][0-9])|([0-3][0]))$/";
+$pattern   =   "/^(((([9])|([0-2])|([0-1][0-2])):([0-5][0-9]))|(([3]):(([0-2][0-9])|([3][0]))))$/";;
  if(preg_match($pattern,$inTime)){
    return true;
  }

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <?php
+//login setup
 	session_start();
-
 	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-			
-	//make this $_SESSION['adminSet'] if it's an admin-only page
+	//make this $_SESSION['adminSet'] if it's an admin-only page and $_SESSION['set'] if its a public one
 	if(!$_SESSION['set'])
 	{
 		header("location: main_login.php");
@@ -30,10 +29,12 @@
 </head>
 
 <?php
+//load required external files
     require_once("../connection.php");
    	require_once("function.php");
 	
-	
+//load name and id from either get or cookie and sets a cookie for name if name is set
+
 	if (!empty($_GET['name'])){
 		$name=$_GET['name'];
 		
@@ -58,14 +59,15 @@
 		}
 	}
 	
+	//query faclitators from sql to get a list
 	$facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
     $facilitators = array();
     while ($fac_row = $facget->fetch_row()) {
 		array_push ($facilitators, $fac_row[0]);
     }
 
+// if another date has not been chosen, and the submit button has been pressed, change status
 if(empty($_POST['otherdate'])){
-	
 if (!empty($_POST)){
 
     //present    
@@ -77,7 +79,7 @@ if (!empty($_POST)){
 	if (!empty($_POST['absent'])){
 			changestatus($id, '7', '', '', '');
 			if (!empty($_POST['favorite'])){
-				favorite($id, '7', '', '');
+				favorite($id, '7', '', ''); // this line adds favorites for the current user if the add to favorites checkbox is checked
 			}
 	}
 
@@ -235,21 +237,19 @@ if (!empty($_POST)){
 	}
 }
 
-	
+	//query sql to get list of favorites for the current user and checkes if the favorite button or del favorite button has been pressed
 	$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
 	$rowcnt =  $getfav->num_rows;
-	
 	while ($rowcnt>0){
-	
 	$favorite=mysqli_fetch_row($getfav);
 	$postfav=$favorite[4];
 	$delstring="del:" . $postfav;
 	$pieces = explode(":", $delstring);
 	
-	if (!empty($_POST[$postfav])){
+	if (!empty($_POST[$postfav])){ // if the favorite button has been pressed
 		changestatus($favorite[0], $favorite[1], $favorite[2],$favorite[3]);
 	}
-	if (!empty($_POST[$delstring])){
+	if (!empty($_POST[$delstring])){ // if the delete favorite has been pressed
 	$stmt = $db_server->prepare("DELETE FROM cookiedata WHERE favid = ?");
 	$stmt->bind_param('i', $pieces[1]);
 	$stmt->execute(); 		
@@ -257,26 +257,30 @@ if (!empty($_POST)){
 	}
 	$rowcnt=$rowcnt-1;
 	}
+	//query to get current status and another to convert the status id to the clear text statusname
 	$info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
 	$rowdata=mysqli_fetch_row($info);
 	$currentstatusid=$rowdata[0];
 	$convert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$currentstatusid."'");
 	$currentstatus=mysqli_fetch_row($convert);
 	
+	//query returntime
 	$getreturn = $db_server->query("SELECT returntime FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
 	$returntime=mysqli_fetch_row($getreturn);
 	$finalreturn=$returntime[0];
 	$returntimeobject = new DateTime($finalreturn);
 	
+	//query info
 	$getwith = $db_server->query("SELECT info FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
 	$withrow=mysqli_fetch_row($getwith);
 	$finalwith=$withrow[0];
 	
+	//query timestamp
 	$getdate = $db_server->query("SELECT timestamp FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
 	$datedata=mysqli_fetch_row($getdate);
 	$currentdate=$datedata[0];
 	
-	
+	//set user to not checked in if the last status change was yesterday
 		$day_data = new DateTime($currentdate);
 				//the day it was yesterday
 				$yesterday = new DateTime('yesterday 23:59:59');
@@ -289,7 +293,7 @@ if (!empty($_POST)){
 	<div id="puttheimagehere">
 		<img src="img/mobius.png">
 	</div>
-
+<!-- render buttons and current status-->
 	<div id="single-body">
 	<div id="links">
 		<a href="attendance.php">Back to main page</a>  
@@ -298,7 +302,7 @@ if (!empty($_POST)){
 	<?php if (!empty($name) || !empty($id)) { ?>
 	<h2 class="studentname"><?php echo $name; ?></h2>
 		<div class="statusmessage">
-		<?php
+		<?php //render current status
 			if ($currentstatus[0] == "Field Trip"){
 				echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
 				
@@ -318,7 +322,7 @@ if (!empty($_POST)){
 				echo "is currently " . $currentstatus[0];
 			} ?>
 		</div>			
-	<?php } else {
+	<?php } else { // if a student is not chosen..
 		echo "Please go back to the main page and make a student selection";
 		}
 	?>
@@ -326,7 +330,7 @@ if (!empty($_POST)){
 <!-- top form for change status -->
 
 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main'>
-	<?php if ($currentstatus[0] != "Present"){
+	<?php if ($currentstatus[0] != "Present"){ //if the user is present, hide the present button
 		?>
     <div>
         <input type="submit" value="Present" name="present">
@@ -377,7 +381,7 @@ if (!empty($_POST)){
 	?>
 		<div id="favorites">
 		<h3>Favorites</h3>	
-	<?php 
+	<?php // render users favorites
 		while ($rowcnt>0){
 		$favorite=mysqli_fetch_row($getfav);
 		$favconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$favorite[1]."'");
@@ -407,7 +411,7 @@ if (!empty($_POST)){
 		$postfav=$favorite[4];
 		$delstring="del:" . $postfav;
 	?>
-	<div class="singlefav">
+	<div class="singlefav"> <!-- actual buttons for favorites---->
 		<input form='main' type="submit" value="<?php echo $fullstring ?>"name="<?php echo $postfav ?>">
 		<input form='main' type="submit" value="<?php echo "X" ?>" name="<?php echo $delstring ?>" class="deletefave">
 	</div>
@@ -418,6 +422,9 @@ if (!empty($_POST)){
 	</div>
 	<?php 
 		}
+		
+		
+		//render preplannedevents gui
 	?>
 
 		<div>
@@ -428,13 +435,14 @@ if (!empty($_POST)){
 	<?php
 		$_SESSION['idd']=$id; //pass id for view reports
 		
-				$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");
+		//query pre-planed events
+		$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");
 		$precnt =  $preplannedquery->num_rows;
 		if (!$precnt == 0) { 
 		while ($precnt>0){
 		$preEvent=mysqli_fetch_row($preplannedquery);
 		$delstatid=$preEvent[5]; 
-		if (!empty($_POST[$delstatid])){
+		if (!empty($_POST[$delstatid])){ //if delete preplannedevents pressed
 		$stmt = $db_server->prepare("DELETE FROM preplannedevents WHERE eventid = ?");
 		$stmt->bind_param('i', $delstatid);
 		$stmt->execute(); 		
@@ -443,16 +451,29 @@ if (!empty($_POST)){
 		$precnt=$precnt-1; 
 		} 
 	}	
-		//pre planned events management
+		//pre planned events actual button insert
 		$preplannedquery = $db_server->query("SELECT * FROM preplannedevents WHERE studentid = '".$id."'");
 		$precnt =  $preplannedquery->num_rows;
 		if (!$precnt == 0) { 
 		while ($precnt>0){
 		$preEvent=mysqli_fetch_row($preplannedquery);
 		$preEventDate=new DateTime($preEvent[2]);
+		$preId = $preEvent[5];
 		$preEventTime=new DateTime($preEvent[3]);
 		$statconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$preEvent[1]."'");
 		$outstatconvert=mysqli_fetch_row($statconvert);
+		
+		$newDateTime = new DateTIme();
+		if ($preEventDate < $newDateTime) {
+		echo "expire";
+		echo $preId;
+		$stmt = $db_server->prepare("DELETE FROM preplannedevents WHERE eventid = ?");
+		$stmt->bind_param('i', $preId);
+		$stmt->execute(); 		
+		$stmt->close();
+		} 
+
+
 		if ($outstatconvert[0] == "Late"){
 			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
 			?>

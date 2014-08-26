@@ -32,6 +32,8 @@
 	require_once("../connection.php");
 //function document
 	require_once("function.php");
+        //admin menu
+       include 'admin-navbar.php';
 
 // EDIT (UPDATE) GLOBALS
 if (isset($_POST['save'])) {

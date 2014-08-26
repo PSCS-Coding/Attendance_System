@@ -73,7 +73,7 @@ min-height:2em;
 }
 
 #top_header form div {
-padding: 8px 13px;
+padding: 8px 8px;
 float: left;
 border-left: 6px solid #999;
 height:25px;
@@ -131,6 +131,11 @@ float:left;
 margin-right:10px;
 text-decoration:none;
 line-height:26px;
+color: blue;
+}
+
+.student_col a:hover {
+text-decoration: underline;
 }
 
 .student_col form {

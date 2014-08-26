@@ -18,7 +18,9 @@
 // set up mysql connection
 	require_once("../connection.php");
 //function document
-	require_once("function.php");
+	//require_once("function.php");
+	//admin menu
+       include 'admin-navbar.php';
 				
 
 // EDIT (UPDATE) A Facilitator

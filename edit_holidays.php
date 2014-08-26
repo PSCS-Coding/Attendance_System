@@ -24,6 +24,8 @@
 	require_once("../connection.php");
 //function document
 	require_once("function.php");
+	//admin menu
+       include 'admin-navbar.php';
 
 // ADD A NEW HOLIDAY			
 if (isset($_POST['addnew'])) {
@@ -59,8 +61,8 @@ if(isset($_POST['delete'])) {
 ?>
 
 <form style="margin-bottom:1em;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-	Holiday Name: <input type="text" name="holidayname" placeholder="Spring Break" required><br />
-	Start Date: <input type="text" name="date" id="date" placeholder="Mon Mar 24 2014" required><br />
+	<input type="text" name="holidayname" placeholder="Holiday Name" required><br />
+	<input type="text" name="date" id="date" placeholder="Holiday Date" required><br />
 	<input type="submit" name="addnew" value="Add Holiday" />
 </form>
 	 <style> 

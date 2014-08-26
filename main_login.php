@@ -1,5 +1,6 @@
 <html>
 <head>
+    <title>Login :>)</title>
 </head>
 <body style="background-color: dimgray;">
     <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
@@ -74,6 +75,7 @@ if(isset($_POST['Submit']))
 		}
 	if($_SESSION['set'] == 1 || $_SESSION['adminSet'] == 1)
 		{
+		         echo $url;
 			header("location:$url");
 		}
 	else
