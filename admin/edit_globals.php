@@ -17,23 +17,9 @@
 <body>
 <h1>Edit Globals</h1>
 <?php
-	session_start();
 
-	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-	
-	//make this $_SESSION['adminSet'] if it's an admin-only page
-	if(!$_SESSION['adminSet'])
-	{
-		header("location: main_login.php");
-	}
-?>
-<?php
-// set up mysql connection
-	require_once("../connection.php");
-//function document
-	require_once("function.php");
-        //admin menu
-       include 'admin-navbar.php';
+require_once("../function.php");
+require_once("../../connection.php");
 
 // EDIT (UPDATE) GLOBALS
 if (isset($_POST['save'])) {
@@ -82,7 +68,7 @@ border-spacing:0px;
 	  <th style="text-align:left">Edit</th>
    </tr>
 <?php
-// loop through list of names 
+// loop through globals 
 while ($list = mysqli_fetch_assoc($result)) { ?>
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">

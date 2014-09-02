@@ -32,7 +32,7 @@ if (!empty($_POST['studentselect'])){
 	echo "Please choose a student ";
 }
 //current students array
-$studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
+$studentquery = "SELECT studentid, firstname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
 $current_users_result = array();
 while ($student = $current_users_query->fetch_array()) {
@@ -44,7 +44,7 @@ while ($student = $current_users_query->fetch_array()) {
 	<?php 
 	foreach($current_users_result as $student) {
 		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']; echo " " . $student['lastname'][0]?></option>
+		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
 		<?php
 	}
 	?>
@@ -193,11 +193,7 @@ foreach ($period as $date) {
 		$daystillend += 1;
 	}
 }
-if ($daystillend <= 0) {
-$minutesperday = "The school year is over!";
-} else {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
-}
 
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
@@ -237,8 +233,6 @@ foreach ($student_data_array as $event) {
 <?php }
 } ?>
 </table>
-<style>
-
 </div>
 </body>
 </html>

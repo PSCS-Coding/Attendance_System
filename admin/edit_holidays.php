@@ -9,23 +9,9 @@
 <body>
 <h1>Edit Holidays</h1>
 <?php
-	session_start();
 
-	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-	
-	//make this $_SESSION['adminSet'] if it's an admin-only page
-	if(!$_SESSION['adminSet'])
-	{
-		header("location: main_login.php");
-	}
-?>
-<?php
-// set up mysql connection
-	require_once("../connection.php");
-//function document
-	require_once("function.php");
-	//admin menu
-       include 'admin-navbar.php';
+require_once("../function.php");
+require_once("../../connection.php");
 
 // ADD A NEW HOLIDAY			
 if (isset($_POST['addnew'])) {
@@ -97,7 +83,7 @@ border-spacing:0px;
 	  <th style="text-align:left">Delete</th>
    </tr>
 <?php
-// loop through list of names 
+// loop through holidays 
 while ($list = mysqli_fetch_assoc($result)) { ?>
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">

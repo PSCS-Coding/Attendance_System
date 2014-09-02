@@ -4,10 +4,15 @@
 <?
 require_once('../connection.php');
 require_once('function.php');
-
+session_start();
 //The issue is that the queries don't fire 
 //I tried adding an or die to the original queries (they weren't prepared statements) and that didn't display any error
 //Tried switching to prepared statements, and that's where I stopped
+
+//Another issue is that when you press submit on an edit button, the variable $_GET['eventid'] does not update to
+//be the eventid of the edited row
+
+print_r($_GET);
 
 if (!empty($_GET['eventid'])) {
 	$eventid = $_GET['eventid'];
@@ -15,6 +20,7 @@ if (!empty($_GET['eventid'])) {
 	$changerow = "inline_edit_" . $_GET['eventid'];
 	$deleterow = "inline_delete_" . $_GET['eventid'];
 	if (!empty($_POST['edit_submit']) && (!empty($_POST['edit_submit']))) {
+	echo "go";
 		if (!empty($_POST['status_select'])) {
 			$statusid = $_POST['status_select'];
 			$update = $db_server->prepare("UPDATE events SET statusid=? WHERE eventid=?");
@@ -82,6 +88,10 @@ if (!empty($_POST['studentselect'])) {
 		<select name='studentselect'>
 		<?php 
 		foreach($current_users_result as $student) {
+		if ($_POST['studentselect'] = $student['studentid']) {
+		echo "same";
+		echo $student['studentid'];
+		}
 		?>
 			<option value='<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
 		<?php
@@ -118,6 +128,7 @@ $current_student = $student_data_array[0]['firstname'] . " " . $student_data_arr
 foreach ($student_data_array as $event) {
 	$postedit = "inline_edit_" . $event['eventid'];
 	if (!empty($_POST[$postedit])) {
+	
 ?>
 	<form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&event=<?echo $event['eventid']?>'>
 	<tr>
@@ -133,10 +144,10 @@ foreach ($student_data_array as $event) {
 			<input type='text' name='info_edit' placeholder='<? echo $event['info'] ?>'>
 		</td>
 		<td>
-			<input type='text' name='time_edit' placeholder='<? echo $event['returntime']?>'>
+			<input type='text' name='time_edit' placeholder='<? echo $event['returntime']?>'required>
 		</td>
 		<td>
-			<input type='text' name='stamp_edit' placeholder='<?echo $event['timestamp']?>'>
+			<input type='text' name='stamp_edit' placeholder='<?echo $event['timestamp']?>'required>
 		</td>
 		<td>
 			<input type='submit' name='edit_submit' value='Save Changes'>
@@ -157,7 +168,9 @@ foreach ($student_data_array as $event) {
 	<input type='submit' name="inline_edit_<?php echo $event['eventid']?>" value='Edit'>
 	<input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete'>
 	</tr>
+		</form>
 	<?
+
 	}
 }
 }
