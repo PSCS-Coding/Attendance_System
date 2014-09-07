@@ -1,3 +1,10 @@
+<?php session_start();
+			//make this $_SESSION['adminSet'] if it's an admin-only page
+			if(!$_SESSION['set'])
+				{
+					header("location: main_login.php");
+			}
+		?>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -30,18 +37,9 @@
 	</head>
 	<body class="mainpage">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
-		<?php
-			session_start();
-			
-			//make this $_SESSION['adminSet'] if it's an admin-only page
-			if(!$_SESSION['set'])
-				{
-					header("location: main_login.php");
-			}
-		?>
 	<!-- setup -->
 	<?php
-	    require_once("../connection.php");
+	    require_once("connection.php");
 	    require_once("function.php");
 		
 		$null_value = null;
@@ -122,7 +120,7 @@
 	?>
 	<div id="top_header">
 		<div>
-			<a href="attendance.php">Return to main attendance view</a>
+			<a href="index.php">Return to main attendance view</a>
 		</div>
 	</div>
 

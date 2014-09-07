@@ -1,11 +1,3 @@
-<?php
-	session_start();
-	//make this $_SESSION['adminSet'] if it's an admin-only page
-	if(!$_SESSION['set'])
-		{
-			header("location: main_login.php");
-		}
-?>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -38,9 +30,18 @@
 	</head>
 	<body class="mainpage">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
+		<?php
+			session_start();
+			
+			//make this $_SESSION['adminSet'] if it's an admin-only page
+			if(!$_SESSION['set'])
+				{
+					header("location: main_login.php");
+			}
+		?>
 	<!-- setup -->
 	<?php
-	    require_once("connection.php");
+	    require_once("../connection.php");
 	    require_once("function.php");
 		
 		$null_value = null;
@@ -212,6 +213,8 @@
 	
 	<!-- top form for change status -->
 	<div id="top_header">
+	<div id="top_inner">
+	<!--<IMG SRC ="http://pscs.org/wp-content/themes/Starkers/images/PSCSlogo.gif" id='pscs_logo'>-->
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
 		
 		<div>
@@ -264,6 +267,7 @@
 		</div>
 
 		</form>
+		</div>
 	</div>
 	<!-- student information table rendering -->
 	<div id="main_table">
@@ -271,8 +275,8 @@
 	    <tr>
 	        <th class='select_col'></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
-	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
-	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
+	        <th class='student_col'><a href="attendance.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
+	        <th class='status_col' id='status_header'><a href="attendance.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 	    </tr>
 	    <?php
 		

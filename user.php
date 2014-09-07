@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 //login setup
 	session_start();
@@ -8,29 +7,8 @@
 	{
 		header("location: main_login.php");
 	}
-?>
-<html>
-<head>
-	<title>PSCS Attendance student interface</title>
-	<link rel="stylesheet" type="text/css" href="attendance.css">
-	<link rel='stylesheet' href="css/pikaday.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-		$(document).ready(function(){
-			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
-			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
-			$('#latetime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
-			$('#istime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
-			$('#starttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
-		});
-	</script>
-</head>
-
-<?php
 //load required external files
-    require_once("../connection.php");
+    require_once("connection.php");
    	require_once("function.php");
 	
 //load name and id from either get or cookie and sets a cookie for name if name is set
@@ -58,7 +36,29 @@
 			echo "<div class='error'>Go back to the main page and select a student.</div>";
 		}
 	}
-	
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PSCS Attendance student interface</title>
+	<link rel="stylesheet" type="text/css" href="attendance.css">
+	<link rel='stylesheet' href="css/pikaday.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
+			$('#latetime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#istime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#starttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+		});
+	</script>
+</head>
+
+
+<?php
 	//query faclitators from sql to get a list
 	$facget = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname ASC");
     $facilitators = array();
@@ -296,7 +296,7 @@ if (!empty($_POST)){
 <!-- render buttons and current status-->
 	<div id="single-body">
 	<div id="links">
-		<a href="attendance.php">Back to main page</a>  
+		<a href="index.php">Back to main page</a>  
 		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
 	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
@@ -458,22 +458,9 @@ if (!empty($_POST)){
 		while ($precnt>0){
 		$preEvent=mysqli_fetch_row($preplannedquery);
 		$preEventDate=new DateTime($preEvent[2]);
-		$preId = $preEvent[5];
 		$preEventTime=new DateTime($preEvent[3]);
 		$statconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$preEvent[1]."'");
 		$outstatconvert=mysqli_fetch_row($statconvert);
-		
-		$newDateTime = new DateTIme();
-		if ($preEventDate < $newDateTime) {
-		echo "expire";
-		echo $preId;
-		$stmt = $db_server->prepare("DELETE FROM preplannedevents WHERE eventid = ?");
-		$stmt->bind_param('i', $preId);
-		$stmt->execute(); 		
-		$stmt->close();
-		} 
-
-
 		if ($outstatconvert[0] == "Late"){
 			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
 			?>

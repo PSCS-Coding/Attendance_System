@@ -1,5 +1,13 @@
+<html>
+<head>
+    <title>Login :>)</title>
+</head>
+<body style="background-color: dimgray;">
+    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+	<img src="img/mobius.png">
+    </div>
 <?php
-include("connection.php");
+include("../connection.php");
 
 session_start();
 
@@ -20,42 +28,8 @@ $_SESSION['adminPass'] = $row['adminPass'];
 if(isset($_SESSION['prevURL'])) 
    $url = $_SESSION['prevURL']; // holds url for last page visited.
 else 
-   $url = "index.php";
-?><?php
-if(isset($_POST['Submit']))
-{
-	if($_POST['mypassword'] == $_SESSION['password'])
-		{
-			$_SESSION['set'] = 1;
-			setcookie("login","student");
-		}
-	elseif($_POST['mypassword'] == $_SESSION['adminPass'])
-		{
-			$_SESSION['adminSet'] = 1;
-				
-				if($_SESSION['adminSet'])
-					{
-						$_SESSION['set'] = 1;
-						setcookie("login","admin");
-					}
-		}
-	if($_SESSION['set'] == 1 || $_SESSION['adminSet'] == 1)
-		{
-			header("location:$url");
-		}
-	else
-		die("Wrong password :^)");
-}
+   $url = "attendance.php";
 ?>
-<html>
-<head>
-<title>Log in to PSCS attendance system</title>
-</head>
-<body style="background-color: dimgray;">
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="img/mobius.png">
-    </div>
-
 <table width="300" border="0" align="center" cellpadding="0" cellspacing="1"
 bgcolor="#CCCCCC">
 <tr>
@@ -81,5 +55,32 @@ bgcolor="#FFFFFF">
 </form>
 </tr>
 </table>
+<?php
+if(isset($_POST['Submit']))
+{
+	if($_POST['mypassword'] == $_SESSION['password'])
+		{
+			$_SESSION['set'] = 1;
+			setcookie("login","student");
+		}
+	elseif($_POST['mypassword'] == $_SESSION['adminPass'])
+		{
+			$_SESSION['adminSet'] = 1;
+				
+				if($_SESSION['adminSet'])
+					{
+						$_SESSION['set'] = 1;
+						setcookie("login","admin");
+					}
+		}
+	if($_SESSION['set'] == 1 || $_SESSION['adminSet'] == 1)
+		{
+		         echo $url;
+			header("location:$url");
+		}
+	else
+		die("Wrong password :^)");
+}
+?>
 </body>
 </html>

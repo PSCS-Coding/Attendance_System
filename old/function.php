@@ -8,8 +8,8 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
     $last = new DateTime($rowdata['timestamp']);
     $now = new DateTime();
 	$lastdate = $last->format('Y-m-d');
-	$last330 = $lastdate . '15:30:00';
-	$lastendofday = new DateTime($last330);
+	$lastdayend = $lastdate . '15:30:00';
+	$lastendofday = new DateTime($lastdayend);
     $nowstamp = $now->getTimestamp();
     $laststamp = $last->getTimestamp();
     $lastendstamp = $lastendofday->getTimestamp();
@@ -19,10 +19,6 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 		$minutes = round(($nowstamp - $laststamp)/60);
 		}
 
-	#$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
-	#$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
-	#$stmt->execute(); 		
-	#$stmt->close();
 	
 	$whenreturn = new DateTime($f_returntime);
 	$returntimestring = $whenreturn->format('Y-m-d H:i:s');

@@ -1,7 +1,13 @@
+<html>
+<head>
+	<title>View Reports</title>
+</head>
+<body>
+<div class='viewreport'>
 <?php
 session_start();
 
-require_once("connection.php");
+require_once("../connection.php");
 require_once("function.php");
 
 $_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
@@ -17,16 +23,7 @@ if (!empty($_SERVER['HTTP_REFERER'])){
 		unset($_SESSION['idd']);
 	}
 }
-*/ ?><html>
-<head>
-	<title>View Reports</title>
-			<link rel="stylesheet" type="text/css" href="attendance.css">
-
-</head>
-<body class="view-reports">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
-	<div id="top_header">
-<?php
+*/
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_SESSION['idd'])) {
@@ -35,35 +32,25 @@ if (!empty($_POST['studentselect'])){
 	echo "Please choose a student ";
 }
 //current students array
-$studentquery = "SELECT studentid, firstname FROM studentdata WHERE current=1 ORDER BY firstname";
+$studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
 $current_users_result = array();
 while ($student = $current_users_query->fetch_array()) {
 	array_push($current_users_result, $student);
 }
 	?>
-	<div class="choose-report">
-	<p>View report for:</p>
 	<form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 	<select name='studentselect' class='studentselect'>
 	<?php 
 	foreach($current_users_result as $student) {
 		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
+		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']; echo " " . $student['lastname'][0]?></option>
 		<?php
 	}
 	?>
 	</select>
 	<input type='submit' name='studentsubmit' class='studentselect'>
 	</form>
-	</div>
-		<div>
-			<a href="index.php">Return to main attendance view</a>
-		</div>
-	</div>
-
-<div class='report-container'>
-
 	<?php
 
 //holidays array
@@ -85,7 +72,7 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		FROM events 
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-		WHERE studentdata.studentid = $current_student_idr
+		WHERE studentdata.studentid = $current_student_id
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -125,7 +112,6 @@ $num_absent = 0;
 //counts time
 //loops through each event for the given student
 foreach($student_data_array as $event_key => $event_val) {
-	if ($student_data_array['studentid'] != 8) {
 	if (count($student_data_array) != $event_key) {
 		//makes the timestamp into datetime obj
 		if (isset($student_data_array[$event_key+1])) {
@@ -177,13 +163,12 @@ foreach($student_data_array as $event_key => $event_val) {
 			}
 			if ($event_val['statusname'] == 'Absent') {
 				$num_absent += 1;
-				}
 			}
 		}
 	}
 }
 echo "<div class='reportdiv'>";
-echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>";
+echo "<p class='student_name'>" . $student_data_array[0]['firstname'] . "</p>";
 //Offsite information echoing
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
 $offsiteMin_remaining = $offsitehours_remaining % 60;
@@ -204,20 +189,17 @@ $enddate = new DateTime($globalsdata['enddate']);
 $interval = new DateInterval('P1D');
 $period = new DatePeriod($today, $interval, $enddate);
 foreach ($period as $date) {
-	if ($date->format('w') != 0 && $date->format('w') != 6) {
+	if ($date->format('w') != 0 || $date->format('w') != 6) {
 		$daystillend += 1;
 	}
 }
-
-if ($daystillend !=0) {
-$minutesperday = floor($offsitehours_remaining / $daystillend);
-echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
+if ($daystillend <= 0) {
+$minutesperday = "The school year is over!";
 } else {
-echo "<p class='reporttext'> The school year has ended.</p>";
+$minutesperday = floor($offsitehours_remaining / $daystillend);
 }
 
-echo "<p class='reporttext'> School days left until the end of the school year: " . $daystillend. "</p>";
-
+echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
 //Late information echoing
@@ -246,20 +228,17 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Timestamp</th>
 <?php
 foreach ($student_data_array as $event) {
-
-if ($event['statusname'] != "Not Checked In"){
 ?>
 	<tr>
 	<td><?php echo $event['statusname'] ?></td>
 	<td><?php echo $event['info'] ?></td>
 	<td><?php echo $event['timestamp'] ?></td>
-	
 	</tr>
-<?php } 
-}
-
+<?php }
 } ?>
 </table>
+<style>
+
 </div>
 </body>
 </html>

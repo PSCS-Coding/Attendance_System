@@ -70,6 +70,7 @@ width:100%;
 z-index:5;
 opacity:0.95;
 min-height:2em;
+top:0;
 }
 
 #top_header form div {
@@ -88,6 +89,7 @@ display:block;
 padding:0.5em;
 color:#000;
 text-decoration:none;
+text-align:center;
 }
 
 #top_header div a:hover {
@@ -122,7 +124,7 @@ max-width:800px;
 width:800px;
 }
 
-#big_table th, #big_table td {
+#big_table th, #big_table td, .eventlog th, .eventlog td {
 padding:1px 14px;
 }
 
@@ -243,4 +245,48 @@ margin-bottom:1em;
 
 .deletefave {
 color:red;
+}
+
+body.view-reports {
+background-color:dimgrey;
+}
+
+div.report-container {
+background-color: #fff;
+max-width: 800px;
+margin: 3em auto 0;
+padding: 2em;
+}
+
+.choose-report {
+padding: 0.5em;
+border-right: 6px solid #999;
+padding-right: 1em;
+margin-right: 1em;}
+
+.choose-report p {
+vertical-align: baseline;
+line-height: 1.7em;
+margin-right: 1em;
+}
+
+.choose-report p, .choose-report form, .view-reports #top_header div, .view-reports #top_header div a {
+display:inline-block;
+}
+
+.view-reports #top_header {
+text-align:center;
+}
+
+.report-container h1 {
+font-size: 2em;
+margin-bottom: 1em;
+}
+
+.reporttext {
+margin-bottom:0.5em;
+}
+
+.eventlog th, .eventlog td {
+line-height:2em;
 }
