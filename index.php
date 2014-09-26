@@ -231,7 +231,7 @@
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= '<?php echo $place_option['place']; ?> '></option> <?php } ?>>
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>>
 </datalist>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input type="submit" name="offsite" value="Offsite">
