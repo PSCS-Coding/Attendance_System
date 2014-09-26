@@ -228,12 +228,10 @@
 			<!-- top interface offsite -->
 	        <input list="offloc" name="offloc" placeholder="Offsite Location">
 <datalist id="offloc">
-  <option value="Oasis">
-  <option value="Specialty's">
-  <option value="Starbucks">
-  <option value="Thai Curry Simple">
-  <option value="Uwajimaya">
-  <option value="World Pizza">
+  <?php
+		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
+		      while ($place_option = $placeget->fetch_assoc()) {
+	        ?>  <option value= '<?php echo $place_option['place']; ?> '></option> <?php } ?>>
 </datalist>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input type="submit" name="offsite" value="Offsite">
@@ -275,7 +273,6 @@
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 	    </tr>
 	    <?php
-		
 		$student_data_array = array();
 			//loops through current students
 				while ($current_student_id = $current_users_result->fetch_assoc()) {
