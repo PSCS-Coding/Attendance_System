@@ -152,6 +152,7 @@ foreach($student_data_array as $event_key => $event_val) {
 		if ($event_datetime_2 >= $event_late){
 			$event_datetime_2 = clone $event_late;
 		}
+		// Hey!  We need to add logic right here to test whether, after the 9:00 and 3:30 adjustments immediately above, event 1 is still *before* event 2.  Otherwise, having (for example) a "checked out" event at 3:45 will result in a 15 minute diff below being deducted from offsitehours_remaining.  Logic should be something like if event1 > event 2, continue? 
 		//diff between adjacent events
 		$elapsed = $event_datetime_2->diff($event_datetime_1);
 		//format as total minutes

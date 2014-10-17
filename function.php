@@ -19,6 +19,7 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 		$minutes = round(($nowstamp - $laststamp)/60);
 		}
 
+	// can't these next four lines be deleted, since they seem to apply only to Easton's old "elapsed" method of time tracking?
 	#$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
 	#$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
 	#$stmt->execute(); 		
