@@ -85,7 +85,7 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		FROM events 
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-		WHERE studentdata.studentid = $current_student_idr
+		WHERE studentdata.studentid = $current_student_id
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -152,9 +152,12 @@ foreach($student_data_array as $event_key => $event_val) {
 		if ($event_datetime_2 >= $event_late){
 			$event_datetime_2 = clone $event_late;
 		}
-		// Hey!  We need to add logic right here to test whether, after the 9:00 and 3:30 adjustments immediately above, event 1 is still *before* event 2.  Otherwise, having (for example) a "checked out" event at 3:45 will result in a 15 minute diff below being deducted from offsitehours_remaining.  Logic should be something like if event1 > event 2, continue? 
-		//diff between adjacent events
-		$elapsed = $event_datetime_2->diff($event_datetime_1);
+		
+		if ($event_datetime_2 > $event_datetime_1) { // without this logic, you can end up with (adjusted) event 1 coming *after* event 2!  (For example, a "checked out" event at 3:45 will result in a 15 minute diff.)
+			$elapsed = $event_datetime_2->diff($event_datetime_1);
+		} else {
+			$elapsed = $event_datetime_1->diff($event_datetime_1);
+		}
 		//format as total minutes
 		$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
 		
@@ -222,9 +225,12 @@ echo "<p class='reporttext'> School days left until the end of the school year: 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
 //Late information echoing
-echo "<p class='reporttext'> You have been late " . $num_lates . " times.</p>";
-echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected . " times. </p>";
-echo "<p class='reporttext'> You have been absent " . $num_absent . " times. </p>";
+echo "<p class='reporttext'> You have been late " . $num_lates;
+if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
+if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+echo "<p class='reporttext'> You have been absent " . $num_absent;
+if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 
 //IS information echoing
 $studyHrs_remaining = floor($studyhours_remaining / 60);
@@ -242,18 +248,21 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 /*}*/
 ?>
 <table class='eventlog'>
+<th>Date</th>
+<th>Time</th>
 <th>Status</th>
 <th>Info</th>
-<th>Timestamp</th>
 <?php
 foreach ($student_data_array as $event) {
 
 if ($event['statusname'] != "Not Checked In"){
+	$pretty_time = new DateTime($event['timestamp']);
 ?>
-	<tr>
+	<tr class="<?php echo $event['statusname'] ?>">
+	<td><?php echo $pretty_time->format('D, M j') ?></td>
+	<td><?php echo $pretty_time->format('g:i a') ?></td>
 	<td><?php echo $event['statusname'] ?></td>
 	<td><?php echo $event['info'] ?></td>
-	<td><?php echo $event['timestamp'] ?></td>
 	
 	</tr>
 <?php } 
