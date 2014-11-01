@@ -85,7 +85,7 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		FROM events 
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-		WHERE studentdata.studentid = $current_student_idr
+		WHERE studentdata.studentid = $current_student_id
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -245,6 +245,7 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Info</th>
 <th>Timestamp</th>
 <?php
+//$reversed_student_array = array_reverse($student_data_array);
 foreach ($student_data_array as $event) {
 
 if ($event['statusname'] != "Not Checked In"){
