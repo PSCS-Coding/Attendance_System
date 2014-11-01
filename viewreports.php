@@ -253,7 +253,8 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Status</th>
 <th>Info</th>
 <?php
-foreach ($student_data_array as $event) {
+$reversed_student_array = array_reverse($student_data_array);
+foreach ($reversed_student_array as $event) {
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);

@@ -292,7 +292,8 @@ line-height:2em;
 }
 
 .view-reports tr {
-	background-color: white;
+	background-color: #f0f0f0;
+	border: 2px solid white;
 }
 
 .view-reports tr:first-child {
