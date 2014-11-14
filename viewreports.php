@@ -254,8 +254,13 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Info</th>
 <?php
 <<<<<<< HEAD
+<<<<<<< HEAD
 //$reversed_student_array = array_reverse($student_data_array);
 foreach ($student_data_array as $event) {
+=======
+$reversed_student_array = array_reverse($student_data_array);
+foreach ($reversed_student_array as $event) {
+>>>>>>> nic-working
 =======
 $reversed_student_array = array_reverse($student_data_array);
 foreach ($reversed_student_array as $event) {
