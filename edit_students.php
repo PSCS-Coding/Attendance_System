@@ -145,7 +145,8 @@ while ($list = mysqli_fetch_assoc($result)) { ?>
 				
 		<td><button type="submit" name="save" value="<?php echo $list['studentid']; ?>">Save</button></td>
 		<?php } else { ?>
-		<td><?php echo $list['firstname']; ?></td>
+		<td><?php echo str_replace("Anthony","AWESOME",$list['firstname']); ?></td>
+		<?php // echo str_replace("Anthony","AWESOME",$list['firstname']); ?>
 		<td><?php echo $list['lastname']; ?></td>
 		<td><?php echo $list['startdate']; ?></td>
 		<td><?php echo $list['yearinschool']; ?></td>
