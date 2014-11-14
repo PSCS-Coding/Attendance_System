@@ -290,3 +290,27 @@ margin-bottom:0.5em;
 .eventlog th, .eventlog td {
 line-height:2em;
 }
+
+.view-reports tr {
+	background-color: #f0f0f0;
+	border: 2px solid white;
+}
+
+.view-reports tr:first-child {
+	background-color: #DDD;
+	font-weight: bold;
+}
+
+.view-reports tr.Offsite {
+	background-color: #D2B48C;
+}
+
+.view-reports tr.Absent {
+	background-color: #FF6347;
+}
+
+.view-reports tr.Late {
+	background-color: #B0E0E6;
+}
+
+
