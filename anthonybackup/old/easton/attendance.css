@@ -1,0 +1,12 @@
+th {
+    margin-left:5%;
+}
+table,th,td {
+    
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
