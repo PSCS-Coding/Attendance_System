@@ -7,7 +7,7 @@
 <li><a href="edit_facilitators.php">Edit_Facilitators</a></li>
 <li><a href="edit_globals.php">Edit_Globals</a></li>
 <li><a href="edit_passwords.php">Edit_Passwords</a></li>
-<li><a href="edit_locations.php">Edit_Offsite_Locations</a></li>
+<li><a href="edit_passwords.php">Edit_Offsite_Locations</a></li>
 <li><a href="edit_allottedhours.php">Edit_Allotted_Hours</a></li>
 </ul>
 </div>

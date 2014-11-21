@@ -1,5 +1,4 @@
 <?php
-require_once("connection.php");
 //changestatus inserts name, status and any comment associated into the studentInfo database
 function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 	global $db_server;
@@ -20,6 +19,7 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime) {
 		$minutes = round(($nowstamp - $laststamp)/60);
 		}
 
+	// can't these next four lines be deleted, since they seem to apply only to Easton's old "elapsed" method of time tracking?
 	#$stmt = $db_server->prepare("UPDATE events SET elapsed = ? WHERE studentid = ? AND timestamp = ?");
 	#$stmt->bind_param('iss', $minutes, $f_id, $rowdata[0]);
 	#$stmt->execute(); 		
@@ -77,7 +77,8 @@ function favorite($id, $status, $info, $returntime) {
 	}
 }
 
-function plan($id, $status, $eventdate, $returntime, $info) { //function for pre-planning events
+//function plan
+function plan($id, $status, $eventdate, $returntime, $info) {
 	global $db_server;
 	
 	if (!empty($returntime)){
@@ -93,7 +94,7 @@ function plan($id, $status, $eventdate, $returntime, $info) { //function for pre
 	$stmt->close();
 }
 
-function login(){ //logs you in
+function login(){
 	global $login;
 		if (isset($_SESSION['student'])){
 		return True;
@@ -106,146 +107,9 @@ function login(){ //logs you in
 
 function sendmail($facilitator, $message){
 $headers = 'From: PSCS Attendance' . "\r\n" .
-    'Reply-To: DO-NOT-REPLY@code.pscs.org' . "\r\n" .
+    'Reply-To: code.pscs.org' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
 mail($facilitator, "PSCS Attendance", $message, $headers);
 }
-
-function validDate($v_date){ // ===================================== valid date function ============================================================
-require_once("connection.php");
-global $db_server;
-$globalsQuery = $db_server->query("SELECT *
-								  FROM globals
-								  ");
-
-$holidayQuery = $db_server->query("SELECT *
-								  FROM holidays
-								  ");
-								  
-while($globalsArray = $globalsQuery->fetch_assoc()) {
-	$startDate = $globalsArray['startdate'];
-	$endDate = $globalsArray['enddate'];
-	$startTime = $globalsArray['starttime'];
-	$endTime = $globalsArray['endtime'];
-	}
-
-$currentDate = new DateTime($startDate);
-$endDate = new DateTime($endDate);
-$dateList = array();
-
-while ($currentDate <= $endDate) {
-	$weekday = $currentDate->format("w");
-		if ($weekday != 0 && $weekday != 6) {
-	$currentDateString = $currentDate->format("Y-m-d");
-	
-	 array_push($dateList, $currentDateString);
-	}
-	date_add($currentDate, date_interval_create_from_date_string('1 day'));
-	}
-	
-	// remove holidays 
-	$rowcnt =  $holidayQuery->num_rows;
-	while ($rowcnt>0){
-	$holidayRow = mysqli_fetch_row($holidayQuery);
-	$currentHoliday = $holidayRow[2];
-	if (in_array($currentHoliday, $dateList)){
-	$key = array_search($currentHoliday, $dateList);
-	unset($dateList[$key]);
-	}
-	$rowcnt = $rowcnt-1;
-	}
-	if (!in_array($v_date, $dateList)){
-	return false;
-	} else {
-	return true;
-	}
-}
-function daysLeft(){ // ===================================== num school days ============================================================
-require_once("connection.php");
-global $db_server;
-$globalsQuery = $db_server->query("SELECT *
-								  FROM globals
-								  ");
-
-$holidayQuery = $db_server->query("SELECT *
-								  FROM holidays
-								  ");
-								  
-while($globalsArray = $globalsQuery->fetch_assoc()) {
-	$startDate = $globalsArray['startdate'];
-	$endDate = $globalsArray['enddate'];
-	$startTime = $globalsArray['starttime'];
-	$endTime = $globalsArray['endtime'];
-	}
-
-$currentDate = new DateTime($startDate);
-$endDate = new DateTime($endDate);
-$dateList = array();
-
-while ($currentDate <= $endDate) {
-	$weekday = $currentDate->format("w");
-		if ($weekday != 0 && $weekday != 6) {
-	$currentDateString = $currentDate->format("Y-m-d");
-	
-	 array_push($dateList, $currentDateString);
-	}
-	date_add($currentDate, date_interval_create_from_date_string('1 day'));
-	}
-	
-	// remove holidays 
-	$rowcnt =  $holidayQuery->num_rows;
-	while ($rowcnt>0){
-	$holidayRow = mysqli_fetch_row($holidayQuery);
-	$currentHoliday = $holidayRow[2];
-	if (in_array($currentHoliday, $dateList)){
-	$key = array_search($currentHoliday, $dateList);
-	unset($dateList[$key]);
-	}
-	$rowcnt = $rowcnt-1;
-	}
-	return count($dateList);
-}
-
-
-
-
-
-
-
-
-function idToName($id){
-global $db_server;
-$query = $db_server->query("SELECT firstname FROM studentdata WHERE studentid = $id");
-$tempvar = $query->fetch_assoc();
-$name = $tempvar['firstname'];
-return($name);
-}
-
-function statconvert($id){
-global $db_server;
-$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $id");
-$tempvar = $query->fetch_assoc();
-$name = $tempvar['statusname'];
-return($name);
-}
-
-// Apirl Fools Stuff
-
-$currtoday = date("n.j");
-
-$aprfools = '4.1';
-//         month day
-
-
-if ($currtoday == $aprfools) {
-  
- // FLIP PAGES UPSIDEDOWN SCRIPT
-  echo "<script>['', '-ms-', '-webkit-', '-o-', '-moz-'].map(function(prefix){
-	document.body.style[prefix + 'transform'] = 'rotate(180deg)';
-});</script>" ;
-  
-  echo "<font color=pink>";
-}
-
 
 ?>
