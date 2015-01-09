@@ -82,7 +82,7 @@ $student_data_array = array();
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
-		FROM events 
+		FROM events
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
@@ -213,6 +213,10 @@ foreach ($period as $date) {
 	}
 }
 
+//experimental line to keep track of how many days are left in the school year... i also changed the date in the database from may 11 to june 17, the real end date
+
+$daystillend = daysLeft();
+
 if ($daystillend !=0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
@@ -253,18 +257,8 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Status</th>
 <th>Info</th>
 <?php
-<<<<<<< HEAD
-<<<<<<< HEAD
-//$reversed_student_array = array_reverse($student_data_array);
-foreach ($student_data_array as $event) {
-=======
 $reversed_student_array = array_reverse($student_data_array);
 foreach ($reversed_student_array as $event) {
->>>>>>> nic-working
-=======
-$reversed_student_array = array_reverse($student_data_array);
-foreach ($reversed_student_array as $event) {
->>>>>>> nic-working
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
