@@ -334,6 +334,7 @@
 				$todaydate = $today->format('Y-m-d');
 			if ($day_data < $yesterday) {
 				$student = $latestdata['studentid'];
+				echo $student; // it's possible this line of code is some legacy of testing, that creates the occasionally-observed line of id numbers at the top of the page, that disappears on reload.  CANDIDATE FOR DELETION
 				$future_event_query = $db_server->query("SELECT * FROM `preplannedevents` WHERE `eventdate` = '".$todaydate."' and `studentid` = '".$student."'") or die (mysqli_error($db_server));
 				$future_events = mysqli_fetch_assoc($future_event_query);
 				if($future_events!=False){ 
