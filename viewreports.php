@@ -125,7 +125,7 @@ $num_absent = 0;
 //counts time
 //loops through each event for the given student
 foreach($student_data_array as $event_key => $event_val) {
-	if ($student_data_array['studentid'] != 8) {
+	if ($student_data_array[$event_key]['statusname'] != "Not Checked In") {
 	if (count($student_data_array) != $event_key) {
 		//makes the timestamp into datetime obj
 		if (isset($student_data_array[$event_key+1])) {
