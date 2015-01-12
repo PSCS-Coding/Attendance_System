@@ -201,7 +201,9 @@ echo $readable_offsiteleft;
 $offsiteHrs_used = floor(($offsitehours_used) / 60);
 $offsiteMin_used = $offsitehours_used % 60;
 
-$daystillend = 0;
+//below is the deprecated days till end function
+
+/*$daystillend = 0;
 $today = New DateTime();
 $today = $today->SetTime(0, 0, 0);
 $enddate = new DateTime($globalsdata['enddate']);
@@ -212,9 +214,9 @@ foreach ($period as $date) {
 		$daystillend += 1;
 	}
 }
+*/
 
-//experimental line to keep track of how many days are left in the school year... i also changed the date in the database from may 11 to june 17, the real end date
-
+// this uses a function from functions.php
 $daystillend = daysLeft();
 
 if ($daystillend !=0) {
