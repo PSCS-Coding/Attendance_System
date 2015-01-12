@@ -179,6 +179,7 @@ while($globalsArray = $globalsQuery->fetch_assoc()) {
 	$endTime = $globalsArray['endtime'];
 	}
 
+$startDate = new DateTime($startDate);
 $currentDate = new DateTime();
 $endDate = new DateTime($endDate);
 $dateList = array();
@@ -204,7 +205,8 @@ while ($currentDate <= $endDate) {
 	}
 	$rowcnt = $rowcnt-1;
 	}
-	return count($dateList);
+	$returnInfo = count($dateList);
+	return($returnInfo);
 }
 
 function idToName($id){

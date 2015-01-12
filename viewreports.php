@@ -219,14 +219,14 @@ foreach ($period as $date) {
 // this uses a function from functions.php
 $daystillend = daysLeft();
 
-if ($daystillend !=0) {
+if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
 } else {
 echo "<p class='reporttext'> The school year has ended.</p>";
 }
 
-echo "<p class='reporttext'> School days left until the end of the school year: " . $daystillend. "</p>";
+echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
