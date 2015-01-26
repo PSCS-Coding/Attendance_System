@@ -474,11 +474,11 @@ if (!empty($_POST)){
 			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
 			<?php
 		}
-		}
 		?>
 		</br>
 		</br>
 		<?php
+		}
 		$precnt=$precnt-1; 
 		} 
 	}
