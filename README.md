@@ -1,2 +1,4 @@
 # Attendance_System
-an attendance system used a puget sound community school created by the students
+An attendance system used by Puget Sound Community school created by the students.
+attendance.pscs.org
+pscs.org
