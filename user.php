@@ -461,6 +461,8 @@ if (!empty($_POST)){
 		$preEventTime=new DateTime($preEvent[3]);
 		$statconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$preEvent[1]."'");
 		$outstatconvert=mysqli_fetch_row($statconvert);
+		$today = new dateTime();
+		if ($preEventDate > $today) { 
 		if ($outstatconvert[0] == "Late"){
 			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
 			?>
@@ -471,6 +473,7 @@ if (!empty($_POST)){
 			?>
 			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
 			<?php
+		}
 		}
 		?>
 		</br>
