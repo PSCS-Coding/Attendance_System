@@ -257,10 +257,22 @@
 		<div>
 			<a href="statusview.php">Status View</a>
 		</div>
+        <!-- Link To Admin Page -->
+        <?php
+                       if (isset($_COOKIE['login'])) {
+                           
+    if ($_COOKIE['login'] == "admin") {
+    echo '<div><a href="/a">Admin</a></div>';
+        
+        }
+    } 
+        ?>
 		<div>
 			<a href="viewreports.php">View Reports</a>
 		</div>
-
+        <div>
+			<a href="main_login.php">Logout</a>
+		</div>
 		</form>
 	</div>
 	<!-- student information table rendering -->
