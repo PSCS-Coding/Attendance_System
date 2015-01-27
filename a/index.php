@@ -36,7 +36,7 @@
 	 <div align="center">
          
          <h1 class="headerr">
-             Edit PSCS
+             Edit Attendance
          </h1>
          
          <div class="options">
