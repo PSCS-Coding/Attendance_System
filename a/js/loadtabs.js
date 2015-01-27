@@ -8,7 +8,7 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv4").hide("slow");
     $("#showdiv3").hide("slow");
     $("#showdiv2").hide("slow");
-    $("#showdiv1").toggle("slow");
+    $("#showdiv1").show();
   });
 
   // LOAD TAB 2 (Facilitators)
@@ -19,7 +19,7 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv4").hide("slow");
     $("#showdiv3").hide("slow");
     $("#showdiv1").hide("slow");
-    $("#showdiv2").slideToggle("slow");
+    $("#showdiv2").show();
 });
   
   // LOAD TAB 3 (Allotted-Hours)
@@ -30,7 +30,7 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv4").hide("slow");
     $("#showdiv2").hide("slow");
     $("#showdiv1").hide("slow");
-    $("#showdiv3").slideToggle("slow");
+    $("#showdiv3").show();
 });
   
   // LOAD TAB 4 (PASSWORDS)
@@ -41,7 +41,7 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv3").hide("slow");
     $("#showdiv2").hide("slow");
     $("#showdiv1").hide("slow");
-    $("#showdiv4").slideToggle("slow");
+    $("#showdiv4").show();
 });
   
   // LOAD TAB 5 (HOLIDAYS)
@@ -52,7 +52,7 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv3").hide("slow");
     $("#showdiv2").hide("slow");
     $("#showdiv1").hide("slow");
-    $("#showdiv5").slideToggle("slow");
+    $("#showdiv5").show();
 });
   // LOAD TAB 6 (GLOBALS)
   $("#showdiv6").hide();
@@ -62,6 +62,16 @@ $( "#button1" ).on( "click", function() {
     $("#showdiv3").hide("slow");
     $("#showdiv2").hide("slow");
     $("#showdiv1").hide("slow");
-    $("#showdiv6").slideToggle("slow");
+    $("#showdiv6").show();
+});
+      // LOAD TAB 7 (EVENTS)
+  $("#showdiv7").hide();
+  $("#button7").click(function(){
+    $("#showdiv6").hide("slow");
+    $("#showdiv5").hide("slow");
+    $("#showdiv3").hide("slow");
+    $("#showdiv2").hide("slow");
+    $("#showdiv1").hide("slow");
+    $("#showdiv7").show();
 });
       });
