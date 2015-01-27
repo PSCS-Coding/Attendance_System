@@ -17,9 +17,9 @@ $_SESSION['username'] = $row['username'];
 $_SESSION['password'] = $row['password'];
 $_SESSION['adminPass'] = $row['adminPass'];
 
-if(isset($_SESSION['prevURL'])) 
-   $url = $_SESSION['prevURL']; // holds url for last page visited.
-else 
+//if(isset($_SESSION['prevURL'])) 
+//   $url = $_SESSION['prevURL']; // holds url for last page visited.
+//else 
    $url = "index.php";
 ?><?php
 if(isset($_POST['Submit']))
