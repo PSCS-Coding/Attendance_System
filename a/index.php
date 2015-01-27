@@ -45,10 +45,10 @@
              <a href="?p=Students" id="button1" class="button">Students</a>
              <a href="?p=Events" id="button7" disabled class="button">Events</a>
              <a href="?p=Holidays" id="button5" class="button">Holidays</a>
-        <a href="?p=Pws" id="button4" class="button">Pws</a >
+        <a href="?p=Pws" id="button4" class="button">Passwords</a >
         <a href="?p=Facilitators" id="button2" class="button">Facilitators</a>
         <a href="?p=Allotted-Hours" id="button3" class="button">Allotted Hours</a>
-        <a href="?p=Globals" id="button6" class="button">Pws</a>
+        <a href="?p=Globals" id="button6" class="button">Globals</a>
              
 </div>
 	    <?php

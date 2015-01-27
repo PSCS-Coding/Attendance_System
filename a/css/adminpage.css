@@ -9,67 +9,67 @@
     opacity: 0.8;
 }
 .options {
-    margin: 30px 27%;
     padding: 25px 15px 25px 15px;
     background-color: gray;
     border-radius: 5px;
     color: black;
-    min-width: 560px;
+    min-width: 577px;
+    max-width: 577px;
     opacity: 0.95;
     display: flex;
 }
 .allottedhours {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     opacity: 0.85;
 }
 .facilitators {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     opacity: 0.85;
 }
 .globals {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     opacity: 0.85;
 }
 .holidays {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     opacity: 0.85;
 }
 .passwords {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     opacity: 0.85;
 }
 .students {
-    margin: 30px 30%;
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 300px;
+    min-width: 500px;
+    max-width: 500px;
     opacity: 0.85;
 }
 table {
@@ -125,4 +125,19 @@ border-spacing:0px;
 .btn:hover {
   background: #7a7a7a;
   text-decoration: none;
+}
+.button {
+  font-family: Arial;
+  color: grey;
+  font-size: 11px;
+  background: lightgray;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  border-right: 3px solid #999;
+}
+
+.button:hover {
+  background: #7a7a7a;
+  text-decoration: none;
+  color: lightgray;
 }
