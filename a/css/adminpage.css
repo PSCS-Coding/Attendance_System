@@ -135,6 +135,9 @@ border-spacing:0px;
   text-decoration: none;
   border-right: 3px solid #999;
 }
+a.button:last-child {
+    border-right: 0;
+}
 
 .button:hover {
   background: #7a7a7a;
