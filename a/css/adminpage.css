@@ -3,10 +3,11 @@
     background-color: lightgray;
     border-radius: 5px;
     color: black;
-    min-width: 260px;
+    min-width: 300px;
     padding: 5px 0px 0px 0px;
     width: 10px;
     opacity: 0.8;
+    color: #4C4C4C;
 }
 .options {
     padding: 25px 15px 25px 15px;
@@ -23,8 +24,8 @@
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
     opacity: 0.85;
 }
 .facilitators {
@@ -32,8 +33,8 @@
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
     opacity: 0.85;
 }
 .globals {
@@ -41,8 +42,8 @@
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
     opacity: 0.85;
 }
 .holidays {
@@ -50,8 +51,8 @@
     background-color: darkgray;
     border-radius: 5px;
     color: black;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
     opacity: 0.85;
 }
 .passwords {
