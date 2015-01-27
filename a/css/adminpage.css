@@ -144,3 +144,7 @@ a.button:last-child {
   text-decoration: none;
   color: lightgray;
 }
+
+td, th {
+    padding: 5px 7px;
+}
