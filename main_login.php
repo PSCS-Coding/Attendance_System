@@ -51,35 +51,73 @@ if(isset($_POST['Submit']))
 <head>
 <title>Log in to PSCS attendance system</title>
 </head>
+
+<style>
+    #loginform {
+	text-align: center;
+	margin-top: 3em;
+	background-color: grey;
+	padding: 3px 12px;
+	width: 270px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 5px;
+	opacity: 0.9;
+    }
+    .logintext {
+	margin: 100px;
+    }
+    .textbox { 
+	border: 1px solid #848484; 
+	-webkit-border-radius: 30px; 
+	-moz-border-radius: 30px; 
+	border-radius: 30px; 
+	outline:0; 
+	height:20px; 
+	width: 150px; 
+	padding-left:10px; 
+	padding-right:10px; 
+      }
+      .spacer {
+	padding: 6px;
+      }
+      p {
+	color: lightgey;
+      }
+    .button {
+      border-radius: 5px;
+      border: 0;
+      font-family: Arial;
+      color: black;
+      font-size: 12px;
+      background: lightgray;
+      text-decoration: none;
+    }
+    a.button:last-child {
+	border-right: 0;
+    }
+    
+    .button:hover {
+	background: rgb(190, 190, 190);
+	text-decoration: none;
+	color: gray;
+    }
+
+</style>
+
 <body style="background-color: dimgray;">
     <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
 	<img src="img/mobius.png">
     </div>
+    <div id="loginform">
+<form name="form1" method="post" action="main_login.php" style="padding-top: 10px;">
 
-<table width="300" border="0" align="center" cellpadding="0" cellspacing="1"
-bgcolor="#CCCCCC">
-<tr>
-<form name="form1" method="post" action="main_login.php">
-<td>
-<table width="100%" border="0" cellpadding="3" cellspacing="1"
-bgcolor="#FFFFFF">
-<tr>
-<td colspan="3"><strong>Login </strong>
-</td>
-<tr>
-<td>Password</td>
-<td>:</td>
-<td><input name="mypassword" type="password" id="mypassword" required></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td><input type="submit" name="Submit" value="Login"></td>
-</tr>
-</table>
-</td>
+<strong class="logintext">Login </strong>
+<div class="spacer"></div>
+    Password :
+<input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">
+<a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
 </form>
-</tr>
-</table>
+        </div>
 </body>
 </html>
