@@ -222,7 +222,8 @@ background-color: white;
 max-width: 500px;
 padding: 20px;
 margin: auto;
-border-radius: 15px;
+border-radius: 10px;
+opacity: 0.85;
 }
 
 .single-user #links {
