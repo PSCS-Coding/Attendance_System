@@ -43,9 +43,7 @@ border-collapse:collapse;
 .top_interface td {
 margin: auto;
 }
-.p_button {
-float: left;
-}
+
 .status_col, .student_col {
 text-align:left;
 }
@@ -65,16 +63,17 @@ background-color: dimgrey;
 
 #top_header {
 position:fixed;
-background-color:#fff;
+background-color:white;
 width:100%;
 z-index:5;
-opacity:0.95;
+opacity:0.9;
 min-height:2em;
 top:0;
 }
 
 #top_header form div {
-padding: 8px 8px;
+padding: 2px 8px;
+padding-top: 6px;
 float: left;
 border-left: 6px solid #999;
 height:25px;
@@ -87,18 +86,19 @@ border-left:none;
 #top_header div a {
 display:block;
 padding:0.5em;
-color:#000;
+color:#5F5F5F;
 text-decoration:none;
 text-align:center;
 }
 
 #top_header div a:hover {
-text-decoration:underline;
+text-decoration: none;
+color:#939393;
 }
 
 
 #main_table {
-padding-top: 60px;
+padding-top: 55px;
 padding-bottom: 20px;
 }
 
@@ -165,6 +165,26 @@ background-color: red;
 border-bottom: 1px solid red;
 color: #fff;
 padding: 5px;
+}
+
+.button {
+  border-radius: 5px;
+  border: 0;
+  font-family: Arial;
+  color: rgb(86, 86, 86);
+  font-size: 12.5px;
+  background: rgb(228, 228, 228);
+  text-decoration: none;
+}
+
+a.button:last-child {
+    border-right: 0;
+}
+
+.button:hover {
+  background: rgb(190, 190, 190);
+  text-decoration: none;
+  color: gray;
 }
 
 .mainpage .error {
