@@ -137,7 +137,8 @@ color: blue;
 }
 
 .student_col a:hover {
-text-decoration: underline;
+text-decoration: none;
+color: rgb(0, 0, 97);
 }
 
 .student_col form {
