@@ -6,7 +6,7 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     global $db_server;
     $result = $db_server->query("SELECT timestamp FROM events WHERE studentid='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $rowdata = $result->fetch_array(MYSQLI_BOTH);
-
+    $f_info = strip_tags($f_info);
     $last = new DateTime($rowdata['timestamp']);
     $now = new DateTime();
     $lastdate = $last->format('Y-m-d');
@@ -62,7 +62,7 @@ function favorite($id, $status, $info, $returntime)
     } else {
         $returntimestring="";
     }
-
+    $info = strip_tags($info);
     $getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
     $frowcnt =  $getfav->num_rows;
 
@@ -80,7 +80,7 @@ function favorite($id, $status, $info, $returntime)
 function plan($id, $status, $eventdate, $returntime, $info)
 {
     global $db_server;
-
+    $info = strip_tags($info);
     if (!empty($returntime)) {
         $whenreturn = new DateTime($returntime);
         $returntimestring = $whenreturn->format('H:i:s');
