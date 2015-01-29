@@ -371,7 +371,7 @@
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
-					<td class='student_col'>
+					<td class='student_col' style="width: 14%;">
 					<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
 											
 						</td>
@@ -380,7 +380,7 @@
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
 						?>
-						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post' style="width: 260px">
+						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
 							<input type='submit' value='P' class='p_button tablebutton' name='present_button'>
 							<input type='hidden' name='present_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
 						
