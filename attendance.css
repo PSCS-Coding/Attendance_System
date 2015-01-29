@@ -130,7 +130,7 @@ padding:1px 14px;
 
 .student_col a, .status_col a {
 float:left;
-margin-right:10px;
+margin-right:-16px;
 text-decoration:none;
 line-height:26px;
 color: blue;
