@@ -55,7 +55,6 @@ if(isset($_POST['Submit']))
 ?>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="attendance.css">
 <title>Log in to PSCS attendance system</title>
 </head>
 
