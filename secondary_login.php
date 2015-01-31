@@ -59,7 +59,7 @@ if(isset($_POST['Submit']))
 ?>
 <html>
 <head>
-<title>Log in to PSCS attendance system</title>
+<title>PSCS attendance system login</title>
 </head>
 
 <style>
