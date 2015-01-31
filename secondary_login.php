@@ -2,6 +2,7 @@
 include("connection.php");
 
 //echo htmlspecialchars($_GET["logout"]);
+//get logout from url
 if (htmlspecialchars($_GET["logout"]) == "1"){  
     // delete cookie
    setcookie("login", "", time()-3600);
@@ -14,6 +15,7 @@ if ($_COOKIE["login"] == "admin") {
     //redirect if student loads page
     echo '<META http-equiv="refresh" content="0;URL=index.php">';
 } else {
+    //delete login cookie
     setcookie("login", "", time()-3600);
 }
 
