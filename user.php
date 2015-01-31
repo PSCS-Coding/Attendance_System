@@ -1,15 +1,8 @@
 <?php
-//login setup
-	session_start();
-	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-	//make this $_SESSION['adminSet'] if it's an admin-only page and $_SESSION['set'] if its a public one
-	if(!$_SESSION['set'])
-	{
-		header("location: main_login.php");
-	}
 //load required external files
     require_once("connection.php");
    	require_once("function.php");
+    require_once("login.php")'
 	
 //load name and id from either get or cookie and sets a cookie for name if name is set
 

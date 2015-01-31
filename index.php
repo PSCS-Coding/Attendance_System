@@ -1,11 +1,3 @@
-<?php
-	session_start();
-	//make this $_SESSION['adminSet'] if it's an admin-only page
-	if(!$_SESSION['set'])
-		{
-			header("location: main_login.php");
-		}
-?>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -40,6 +32,7 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
+        require_once("login.php");
 	    require_once("connection.php");
 	    require_once("function.php");
 		
@@ -271,7 +264,7 @@
 			<a href="viewreports.php">View Reports</a>
 		</div>
         <div>
-			<a href="main_login.php">Logout</a>
+			<a href="secondary_login.php?logout=1">Logout</a>
 		</div>
 		</form>
 	</div>
