@@ -8,8 +8,10 @@ if (htmlspecialchars($_GET["logout"]) == "1"){
 }
 
 if ($_COOKIE["login"] == "admin") {
- echo '<META http-equiv="refresh" content="0;URL=index.php">';    
+    //remove cookie if admin loads page
+    setcookie("login", "", time()-3600);
 } elseif ($_COOKIE["login"] == "student") {
+    //redirect if student loads page
     echo '<META http-equiv="refresh" content="0;URL=index.php">';
 } else {
     setcookie("login", "", time()-3600);
