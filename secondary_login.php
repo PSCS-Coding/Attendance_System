@@ -1,12 +1,18 @@
 <?php
 include("connection.php");
-
+error_reporting(-1);
 //echo htmlspecialchars($_GET["logout"]);
 //get logout from url
-if (htmlspecialchars($_GET["logout"]) == "1"){  
+if (!empty($_GET["logout"])) {
+    
+if (htmlspecialchars($_GET["logout"]) == "1") {
     // delete cookie
-   setcookie("login", "", time()-3600);
+    setcookie("login", "", time()-3600);
 }
+
+}
+ 
+if (!empty($_GET["logout"])) {
 
 if ($_COOKIE["login"] == "admin") {
     //remove cookie if admin loads page
@@ -18,8 +24,10 @@ if ($_COOKIE["login"] == "admin") {
     //delete login cookie
     setcookie("login", "", time()-3600);
 }
+    
+}
 
-if($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
+if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
 {
     $row = $result->fetch_assoc();
 	
