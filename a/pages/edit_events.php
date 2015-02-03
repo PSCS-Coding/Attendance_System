@@ -6,7 +6,7 @@ if (!empty($_GET['eventid'])) {
 	$eventid = $_GET['eventid'];
 	$changerow = "inline_edit_" . $_GET['eventid'];
 	$deleterow = "inline_delete_" . $_GET['eventid'];
-	if (!empty($_POST['edit_submit'])) {
+	if (!empty($_POST['edit_submit'])) { // THESE FUNCTIONS UPDATE AN EDITED EVENT
 		if (!empty($_POST['status_select'])) {
 			$statusid = $_POST['status_select'];
 			$update = $db_server->prepare("UPDATE events SET statusid=? WHERE eventid=?");
@@ -110,7 +110,7 @@ while ($student_data_result = $result->fetch_assoc()) {
 }
 $current_student = $student_data_array[0]['firstname'] . " " . $student_data_array[0]['lastname'];
 ?>
-<p><?php echo $current_student; ?></p>
+<h2>Events for: <?php echo $current_student; ?></h2>
 <table class='eventlog'>
 <th>ID</th>
 <th>Status</th>
@@ -146,8 +146,8 @@ foreach ($student_data_array as $event) {
 			<input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']?>'>
 		</td>
 		<td>
-			<input type='submit' name='edit_submit' value='Save Changes'>
-                           <!--ADD DISCARD CHANGES BUTTON HERE-->
+			<input type='submit' name='edit_submit' value='Save'>
+                        <input type='submit' name='cancel_submit' value='Cancel'>
 		</td>
 	</tr>
 	</form>
@@ -164,7 +164,7 @@ foreach ($student_data_array as $event) {
 	<form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
          <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
          <input type='submit' name="inline_edit_<?php echo $event['eventid']?>" value='Edit'>
-         <input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete'>
+         <input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete' onclick="return confirm('Are you sure?');">
         </form>
 	</tr>
 	<?php
