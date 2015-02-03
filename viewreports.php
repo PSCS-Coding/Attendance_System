@@ -1,23 +1,4 @@
-<?php
-session_start();
-
-require_once("connection.php");
-require_once("function.php");
-
-$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-
-//make this $_SESSION['adminSet'] if it's an admin-only page
-if(!$_SESSION['set']) {
-	header("location: main_login.php");
-}
-/*
-if (!empty($_SERVER['HTTP_REFERER'])){
-	$previousURL = substr($_SERVER['HTTP_REFERER'], 0, 40);
-	if ($previousURL != "http://code.pscs.org/attendance/user.php"){
-		unset($_SESSION['idd']);
-	}
-}
-*/ ?><html>
+<html>
 <head>
 	<title>View Reports</title>
 			<link rel="stylesheet" type="text/css" href="attendance.css">
@@ -27,6 +8,10 @@ if (!empty($_SERVER['HTTP_REFERER'])){
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
+require_once("connection.php");
+require_once("function.php");
+require_once("login.php");
+
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_SESSION['idd'])) {

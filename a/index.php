@@ -1,15 +1,3 @@
-<?php
-    session_start();
-
-    $_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-    
-    //make this $_SESSION['adminSet'] if it's an admin-only page
-    if(!$_SESSION['adminSet'])
-	    {
-		    header("location: ../../main_login.php");
-	    }
-?>
-
 <!DOCTYPE html>
     <html>
         <head>
@@ -30,6 +18,8 @@
             <?php
          // set up mysql connection
 	 error_reporting(0);
+     $userlevel = "admin";
+     require_once("../login.php");
 	 require_once("../connection.php");
 	 require_once("../function.php");
          ?>
