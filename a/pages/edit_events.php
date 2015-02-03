@@ -76,11 +76,6 @@ if (!empty($_POST['studentselect'])) {
       <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css"/ >
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <script src="../js/jquery.datetimepicker.js"></script>
-      <script type="text/javascript">
-         $(document).ready(function(){
-            $('#stamp_edit').datetimepicker();
-         })
-      </script>
    </head>
 <body>
 
@@ -124,9 +119,11 @@ $current_student = $student_data_array[0]['firstname'] . " " . $student_data_arr
 <th>Timestamp</th>
 <th></th>
 <?php
+global $timestamp_to_edit;
 foreach ($student_data_array as $event) {
 	$postedit = "inline_edit_" . $event['eventid'];
 	if (!empty($_POST[$postedit])) {
+         $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker
 ?>
 	<form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
 	<tr>
@@ -176,6 +173,20 @@ foreach ($student_data_array as $event) {
 } // end if isset studentid
 ?>
 </table>
-
+<script type="text/javascript"> // This is down here so that the appropriate record's timestamp can be used as default value
+   $(document).ready(function(){
+      $('#stamp_edit').datetimepicker({
+         onGenerate:function( ct ){
+            jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+               .addClass('xdsoft_disabled');
+         },
+         minDate:'2014/09/08',
+         maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+         format:'Y-m-d H:i:s',
+         value: '<?php echo $timestamp_to_edit; ?>',
+         step: 5,
+      }); 
+   });
+</script>
 </body>
 </html>
