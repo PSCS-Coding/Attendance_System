@@ -20,12 +20,12 @@ if ($_COOKIE["login"] == "admin") {
 } elseif ($_COOKIE["login"] == "student") {
     //remove cookie if student loads page
     setcookie("login", "", time()-3600);
-} else {
+}  }
+        else {
     //delete login cookie
     setcookie("login", "", time()-3600);
 }
     
-}
 
 if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
 {
