@@ -173,53 +173,55 @@ if (!empty($_POST['studentselect'])) {
          <?php
          global $timestamp_to_edit;
          foreach ($student_data_array as $event) {
-            $postedit = "inline_edit_" . $event['eventid'];
-            if (!empty($_POST[$postedit])) {
-               $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker
-         ?>
-         <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
-           <tr class="editing-row" style="background-color: orange;">
+            if ($event['statusname'] != 'Not Checked In') {
+               $postedit = "inline_edit_" . $event['eventid'];
+               if (!empty($_POST[$postedit])) {
+                  $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker
+            ?>
+            <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
+              <tr class="editing-row" style="background-color: orange;">
+                  <td><?php echo $event['eventid'] ?></td>
+                  <td>
+                     <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']?>'> <!--TODO Format Timestamp-->
+                  </td>
+                  <td>
+                     <select name='status_select'>
+                        <?php foreach($status_array as $status) { ?>
+                           <option value='<? echo $status['statusid'] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected';} ?>><? echo $status['statusname'] ?></option>
+                        <?php } ?>
+                     </select>
+                  </td>
+                  <td>
+                     <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
+                  </td>
+                  <td>
+                     <input type='text' name='time_edit' value='<?php echo $event['returntime']?>'>
+                  </td>
+                  <td>
+                     <input type='submit' name='edit_submit' value='Save'>
+                     <input type='submit' name='cancel_submit' value='Cancel'>
+                  </td>
+              </tr>
+            </form>
+            <?php } else { ?>
+            <tr>
                <td><?php echo $event['eventid'] ?></td>
+               <td><?php echo $event['timestamp'] ?></td>
+               <td><?php echo $event['statusname'] ?></td>
+               <td><?php echo $event['info'] ?></td>
+               <td><?php echo $event['returntime'] ?></td>
                <td>
-                  <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']?>'>
+                  <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
+                   <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
+                   <input type='submit' name="inline_edit_<?php echo $event['eventid']?>" value='Edit'>
+                   <input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete' onclick="return confirm('Are you sure you want to delete this event?');">
+                  </form>
                </td>
-               <td>
-                  <select name='status_select'>
-                     <?php foreach($status_array as $status) { ?>
-                        <option value='<? echo $status['statusid'] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected';} ?>><? echo $status['statusname'] ?></option>
-                     <?php } ?>
-                  </select>
-               </td>
-               <td>
-                  <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
-               </td>
-               <td>
-                  <input type='text' name='time_edit' value='<?php echo $event['returntime']?>'>
-               </td>
-               <td>
-                  <input type='submit' name='edit_submit' value='Save'>
-                  <input type='submit' name='cancel_submit' value='Cancel'>
-               </td>
-           </tr>
-         </form>
-         <?php } else { ?>
-         <tr>
-            <td><?php echo $event['eventid'] ?></td>
-            <td><?php echo $event['timestamp'] ?></td>
-            <td><?php echo $event['statusname'] ?></td>
-            <td><?php echo $event['info'] ?></td>
-            <td><?php echo $event['returntime'] ?></td>
-            <td>
-               <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
-                <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
-                <input type='submit' name="inline_edit_<?php echo $event['eventid']?>" value='Edit'>
-                <input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete' onclick="return confirm('Are you sure you want to delete this event?');">
-               </form>
-            </td>
-         </tr>
-         <?php
-           } //end else
-         } // end foreach
+            </tr>
+            <?php
+              } //end else
+            } // end if not Not Checked in  
+         } // end foreach event
       } // end if isset studentid
       ?>
       </table>
