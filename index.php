@@ -209,15 +209,53 @@
 		}
 	}
 
+
+
         // THIS IS FOR THE "Check Out" Buttons at the end of the day
-        $current_time = date('h:i A');
-        $co_start = "3:25 pm";
-        $co_end = "3:35 pm";
-        $date1 = DateTime::createFromFormat('H:i a', $current_time);
-        $date2 = DateTime::createFromFormat('H:i a', $co_start);
-        $date3 = DateTime::createFromFormat('H:i a', $co_end);
-	?>
-	
+
+/*
+$cooldate = date('h:i');
+$newdate = strtotime ( '-10 minute' , strtotime ( $cooldate ) ) ;
+$newdate = date ( 'h:i' , $newdate );
+
+echo $newdate;
+*/
+
+
+
+
+
+
+
+        $current_time = date('h:i a');
+        $globalsresult = $db_server->query("SELECT * FROM globals");
+        while ($list = mysqli_fetch_assoc($globalsresult))
+        {
+            $pretty_end_time = new DateTime($list['endtime']);
+            $co_start_time = date($list['endtime']);
+            $co_start = strtotime ( '-10 minute' , strtotime ( $co_start_time ) ) ;
+            $co_start = date ( 'h:i a' , $co_start );
+            
+            $co_end_time = date($list['endtime']);
+            $co_end = strtotime ( '+10 minute' , strtotime ( $co_end_time ) ) ;
+            $co_end = date ( 'h:i a' , $co_end );
+        }
+        $date1 = DateTime::createFromFormat('h:i a', $current_time);
+        $date2 = DateTime::createFromFormat('h:i a', $co_start);
+        $date3 = DateTime::createFromFormat('h:i a', $co_end);
+        if ($date1 > $date2 && $date1 < $date3) {
+            
+        if ($pretty_end_time->format('hi a') < date('hi a')) { ?>
+        
+            <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
+        
+        <?php } elseif ($pretty_end_time->format('hi a') > date('hi a')) { ?>
+        
+            <div class='COTimer COTbad'>Current Time: <?php echo date('g:i a'); ?></div>
+        
+       <?php } else { ?>
+        <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
+        <?php } }?>
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
