@@ -154,6 +154,13 @@
 		changestatus($name, '1', '', $null_value);
 	}
 	
+
+//individual Checked Out button querying -- "4" refers to "Checked Out" in statusdata table
+	if (!empty($_POST['co_bstudent'])) {
+		$name = $_POST['co_bstudent'];
+		changestatus($name, '4', '', $null_value);
+	}
+
 	//late status querying -- "5" refers to "Late" in statusdata table
 	if (!empty($_POST['Late'])) {
 		if (validTime($_POST['late_time'])) {
@@ -201,6 +208,14 @@
 			$getvar_sort_status = 'sortBy=status&r=0';
 		}
 	}
+
+        // THIS IS FOR THE "Check Out" Buttons at the end of the day
+        $current_time = date('h:i A');
+        $co_start = "3:25 pm";
+        $co_end = "3:35 pm";
+        $date1 = DateTime::createFromFormat('H:i a', $current_time);
+        $date2 = DateTime::createFromFormat('H:i a', $co_start);
+        $date3 = DateTime::createFromFormat('H:i a', $co_end);
 	?>
 	
 	<!-- top form for change status -->
@@ -361,7 +376,21 @@
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
 					<td class='student_col'>
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
-											<?php 
+                        
+                        <!-- IF CHECK OUT IS NEAR -->
+				<?php if ($date1 > $date2 && $date1 < $date3)
+                    {
+                    if ($latestdata['statusname'] != 'Checked Out')
+                    {
+                        ?>
+                        
+                        <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+							<input type='submit' value='Check&nbsp;Out' class='p_button' name='co_button'>
+							<input type='hidden' name='co_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
+						</form>
+                        
+                     <?php   } }
+                
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
 						?>
