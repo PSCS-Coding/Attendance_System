@@ -212,39 +212,30 @@
 
 
         // THIS IS FOR THE "Check Out" Buttons at the end of the day
-
-/*
-$cooldate = date('h:i');
-$newdate = strtotime ( '-10 minute' , strtotime ( $cooldate ) ) ;
-$newdate = date ( 'h:i' , $newdate );
-
-echo $newdate;
-*/
-
-
-
-
-
-
-
+        //Sets current time
         $current_time = date('h:i a');
+        //Query for globals
         $globalsresult = $db_server->query("SELECT * FROM globals");
         while ($list = mysqli_fetch_assoc($globalsresult))
         {
+            // Making time look nice
             $pretty_end_time = new DateTime($list['endtime']);
+            // Code for checking if 10 min before globals.endtime
             $co_start_time = date($list['endtime']);
             $co_start = strtotime ( '-10 minute' , strtotime ( $co_start_time ) ) ;
             $co_start = date ( 'h:i a' , $co_start );
             
+            // Code for checking if 10 min after globals.endtime
             $co_end_time = date($list['endtime']);
             $co_end = strtotime ( '+10 minute' , strtotime ( $co_end_time ) ) ;
             $co_end = date ( 'h:i a' , $co_end );
         }
+        //Making Varibles possible
         $date1 = DateTime::createFromFormat('h:i a', $current_time);
         $date2 = DateTime::createFromFormat('h:i a', $co_start);
         $date3 = DateTime::createFromFormat('h:i a', $co_end);
+        // Checking if between globals.endtime time
         if ($date1 > $date2 && $date1 < $date3) {
-            
         if ($pretty_end_time->format('hi a') < date('hi a')) { ?>
         
             <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
@@ -254,6 +245,7 @@ echo $newdate;
             <div class='COTimer COTbad'>Current Time: <?php echo date('g:i a'); ?></div>
         
        <?php } else { ?>
+        //pointer
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
 	<!-- top form for change status -->
@@ -416,8 +408,11 @@ echo $newdate;
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
                         
                         <!-- IF CHECK OUT IS NEAR -->
-				<?php if ($date1 > $date2 && $date1 < $date3)
-                    {
+				<?php
+                // Checking if checkout times are within range
+                if ($date1 > $date2 && $date1 < $date3) {
+                  //checking if before checkout time  
+                if ($pretty_end_time->format('hi a') > date('hi a')) {
                     if ($latestdata['statusname'] != 'Checked Out')
                     {
                         ?>
@@ -427,7 +422,7 @@ echo $newdate;
 							<input type='hidden' name='co_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
                         
-                     <?php   } }
+                     <?php   } } }
                 
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
