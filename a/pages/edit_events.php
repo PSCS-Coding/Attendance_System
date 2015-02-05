@@ -21,7 +21,7 @@ if (!empty($_GET['eventid'])) {
 			$update->execute();
 			$update->close();
 		}
-		if (!empty($_POST['time_edit'])) {
+		if (!empty($_POST['returntime_edit'])) {
 			$time = $_POST['time_edit'];
 			$update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
 			$update->bind_param('ss', $time, $eventid);
@@ -88,36 +88,53 @@ if (!empty($_POST['studentselect'])) {
          margin: 1em;
          display: inline-block;
       }
-      .new-event input {
+      .new-event input, .editing-row input {
          width: 100%;
       }
-      h2 {
-         margin: 2em;
+      .new-event td {
+         padding: 1em;
+      }
+      h1, h2 {
+         margin: 1em;
          text-align: center;
          font-size: 2em;
+         color: #fff;
       }
       h2 span {
          font-weight: bold;
       }
+      .eventlog {
+         margin: 1em auto;
+      }
+      .centerr {
+         margin: 0 auto;
+         display: inline-block;
+      }
+      
    </style>
 </head>
 
 <body>
 
-<?php if (!empty($_POST[$deleterow])) {
-   echo "<div class='message'>Event #".$eventid." was deleted.</div>";
+
+<?php if (!empty($_GET['eventid'])) {
+   if (!empty($_POST[$deleterow])) {
+      echo "<div class='message'>Event #".$eventid." was deleted.</div>";
+   }
 } ?>
 
    <h1 class="headerr">Edit Events</h1>
-     
-   <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
-      <select name='studentselect'>
-         <?php foreach($current_users_result as $student) { ?>
-            <option value='<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
-         <?php } ?>
-      </select>
-      <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
-   </form>
+   
+   <div class="centerr"> 
+      <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
+         <select name='studentselect'>
+            <?php foreach($current_users_result as $student) { ?>
+               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?></option> <!--TODO DISPLAY ACTIVE STUDENT-->
+            <?php } ?>
+         </select>
+         <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
+      </form>
+   </div>
 
    <?php 
       if (isset($current_student_id)) {
@@ -136,20 +153,20 @@ if (!empty($_POST['studentselect'])) {
          $current_student = $student_data_array[0]['firstname'] . " " . $student_data_array[0]['lastname'];
    ?>
       <h2>Events for: <span><?php echo $current_student; ?></span></h2>
-      <table class='eventlog'>
+      <table class='newevent eventlog'>
          <tr>
-            <th>ID</th>
+            
             <th>Timestamp</th>
             <th>Status</th>
             <th>Info</th>
             <th>Return Time</th>
-            <th>Edit</th>
+            <th></th>
          </tr>
          <tr class="new-event"> <!--TODO put new event in its own table at top-->
             <form method="post" name="new_event" action="<?php echo basename($_SERVER['PHP_SELF']); ?>">
-               <td>Auto</td>
+               
                 <td>
-                  <input type='text' id='new_timestamp' name='new_timestamp'>
+                  <input type='text' id='new_timestamp' name='new_timestamp' placeholder='Timestamp'>
                </td>
                <td>
                   <select name='new_status'>
@@ -163,26 +180,37 @@ if (!empty($_POST['studentselect'])) {
                   <input type='text' name='new_info' placeholder="Info">
                </td>
                <td>
-                  <input type='text' id="new_return" name='new_return' placeholder="Return time">
+                  <input type='text' id="new_return" name='new_return' placeholder="Return time"> <!--MAKE HH:MM-->
                </td>
                <td>
                   <input type='submit' name='new_submit' value='Add New Event'>
                </td>
             </form>
          </tr>
+      </table>
+      <table class='eventlog'>
+         <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Status</th>
+            <th>Info</th>
+            <th>Return Time</th>
+            <th>Edit</th>
+         </tr>
          <?php
          global $timestamp_to_edit;
          foreach ($student_data_array as $event) {
             if ($event['statusname'] != 'Not Checked In') {
                $postedit = "inline_edit_" . $event['eventid'];
+               $nice_timestamp = new DateTime($event['timestamp']);
                if (!empty($_POST[$postedit])) {
-                  $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker
+                  $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below                 
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
               <tr class="editing-row" style="background-color: orange;">
                   <td><?php echo $event['eventid'] ?></td>
                   <td>
-                     <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']?>'> <!--TODO Format Timestamp-->
+                     <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']; ?>'>
                   </td>
                   <td>
                      <select name='status_select'>
@@ -195,7 +223,7 @@ if (!empty($_POST['studentselect'])) {
                      <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
                   </td>
                   <td>
-                     <input type='text' name='time_edit' value='<?php echo $event['returntime']?>'>
+                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $event['returntime'];} ?>'>
                   </td>
                   <td>
                      <input type='submit' name='edit_submit' value='Save'>
@@ -206,10 +234,10 @@ if (!empty($_POST['studentselect'])) {
             <?php } else { ?>
             <tr>
                <td><?php echo $event['eventid'] ?></td>
-               <td><?php echo $event['timestamp'] ?></td>
+               <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
-               <td><?php echo $event['returntime'] ?></td>
+               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo substr($event['returntime'],0,5);} ?></td>
                <td>
                   <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
                    <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
@@ -238,6 +266,13 @@ if (!empty($_POST['studentselect'])) {
             value: '<?php echo $timestamp_to_edit; ?>',
             step: 5,
          });
+         $('#returntime_edit').datetimepicker({
+            datepicker: false,
+            format:'H:i:s',
+            minTime:'09:00',
+            maxTime:'15:31',
+            step: 5,
+         }); 
          $('#new_timestamp').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
