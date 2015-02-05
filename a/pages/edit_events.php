@@ -78,6 +78,7 @@ if (!empty($_POST['studentselect'])) {
    <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
    <link rel="stylesheet" type="text/css" href="../../attendance.css">
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+   <script src="../js/scrollTo.js"></script>
    <script src="../js/jquery.datetimepicker.js"></script>
    <style type="text/css">
       .message {
@@ -289,7 +290,8 @@ if (!empty($_POST['studentselect'])) {
             minTime:'09:00',
             maxTime:'15:31',
             step: 5,
-         }); 
+         });
+	 $('body').scrollTo('.editing-row',{duration:'500', offsetTop : '150'});
       });
    </script>
 </body>
