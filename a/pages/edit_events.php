@@ -208,7 +208,7 @@ if (!empty($_POST['studentselect'])) {
                   $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below                 
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
-              <tr class="editing-row" style="background-color: orange;">
+              <tr class="editing-row" style="background-color: rgb(121, 121, 121);">
                   <td><?php echo $event['eventid'] ?></td>
                   <td>
                      <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']; ?>'>
