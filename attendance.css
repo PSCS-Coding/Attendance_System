@@ -72,7 +72,7 @@ top:0;
 }
 
 #top_header form div {
-padding: 2px 8px;
+padding: 3px 0.5%;
 padding-top: 6px;
 float: left;
 border-left: 6px solid #999;
@@ -168,25 +168,7 @@ color: #fff;
 padding: 5px;
 }
 
-.button {
-  border-radius: 5px;
-  border: 0;
-  font-family: Arial;
-  color: rgb(86, 86, 86);
-  font-size: 12.5px;
-  background: rgb(228, 228, 228);
-  text-decoration: none;
-}
 
-a.button:last-child {
-    border-right: 0;
-}
-
-.button:hover {
-  background: rgb(190, 190, 190);
-  text-decoration: none;
-  color: gray;
-}
 
 .mainpage .error {
 position: fixed;
