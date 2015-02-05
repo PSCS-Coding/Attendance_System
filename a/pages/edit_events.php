@@ -106,17 +106,21 @@ if (!empty($_POST['studentselect'])) {
       }
       .eventlog {
          margin: 1em auto;
+	 opacity: 0.9;
       }
       .centerr {
          margin: 0 auto;
-         display: inline-block;
+         text-align: center;
       }
       
    </style>
 </head>
 
-<body>
+<body style="background-color: dimgray;">
 
+    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+	<img src="../img/mobius.png">
+    </div>
 
 <?php if (!empty($_GET['eventid'])) {
    if (!empty($_POST[$deleterow])) {
