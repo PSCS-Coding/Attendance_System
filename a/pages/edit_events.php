@@ -291,7 +291,7 @@ if (!empty($_POST['studentselect'])) {
             maxTime:'15:31',
             step: 5,
          });
-	 $('body').scrollTo('.editing-row',{duration:'500', offsetTop : '150'});
+	 $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
       });
    </script>
 </body>
