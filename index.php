@@ -154,6 +154,13 @@
 		changestatus($name, '1', '', $null_value);
 	}
 	
+
+//individual Checked Out button querying -- "4" refers to "Checked Out" in statusdata table
+	if (!empty($_POST['co_bstudent'])) {
+		$name = $_POST['co_bstudent'];
+		changestatus($name, '4', '', $null_value);
+	}
+
 	//late status querying -- "5" refers to "Late" in statusdata table
 	if (!empty($_POST['Late'])) {
 		if (validTime($_POST['late_time'])) {
@@ -201,8 +208,46 @@
 			$getvar_sort_status = 'sortBy=status&r=0';
 		}
 	}
-	?>
-	
+
+
+
+        // THIS IS FOR THE "Check Out" Buttons at the end of the day
+        //Sets current time
+        $current_time = date('h:i a');
+        //Query for globals
+        $globalsresult = $db_server->query("SELECT * FROM globals");
+        while ($list = mysqli_fetch_assoc($globalsresult))
+        {
+            // Making time look nice
+            $pretty_end_time = new DateTime($list['endtime']);
+            // Code for checking if 10 min before globals.endtime
+            $co_start_time = date($list['endtime']);
+            $co_start = strtotime ( '-10 minute' , strtotime ( $co_start_time ) ) ;
+            $co_start = date ( 'h:i a' , $co_start );
+            
+            // Code for checking if 10 min after globals.endtime
+            $co_end_time = date($list['endtime']);
+            $co_end = strtotime ( '+10 minute' , strtotime ( $co_end_time ) ) ;
+            $co_end = date ( 'h:i a' , $co_end );
+        }
+        //Making Varibles possible
+        $date1 = DateTime::createFromFormat('h:i a', $current_time);
+        $date2 = DateTime::createFromFormat('h:i a', $co_start);
+        $date3 = DateTime::createFromFormat('h:i a', $co_end);
+        // Checking if between globals.endtime time
+        if ($date1 > $date2 && $date1 < $date3) {
+        if ($pretty_end_time->format('hi a') < date('hi a')) { ?>
+        
+            <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
+        
+        <?php } elseif ($pretty_end_time->format('hi a') > date('hi a')) { ?>
+        
+            <div class='COTimer COTbad'>Current Time: <?php echo date('g:i a'); ?></div>
+        
+       <?php } else { ?>
+        //pointer
+        <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
+        <?php } }?>
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
@@ -361,7 +406,24 @@
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
 					<td class='student_col'>
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
-											<?php 
+                        
+                        <!-- IF CHECK OUT IS NEAR -->
+				<?php
+                // Checking if checkout times are within range
+                if ($date1 > $date2 && $date1 < $date3) {
+                  //checking if before checkout time  
+                if ($pretty_end_time->format('hi a') > date('hi a')) {
+                    if ($latestdata['statusname'] != 'Checked Out')
+                    {
+                        ?>
+                        
+                        <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+							<input type='submit' value='Check&nbsp;Out' class='p_button' name='co_button'>
+							<input type='hidden' name='co_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
+						</form>
+                        
+                     <?php   } } }
+                
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
 						?>
