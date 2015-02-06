@@ -22,7 +22,7 @@ if (!empty($_GET['eventid'])) {
 			$update->close();
 		}
 		if (!empty($_POST['returntime_edit'])) {
-			$time = $_POST['time_edit'];
+			$time = $_POST['returntime_edit'];
 			$update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
 			$update->bind_param('ss', $time, $eventid);
 			$update->execute();
@@ -55,7 +55,7 @@ if (!empty($_POST['new_submit'])) { // TODO require return times for field trip 
       $stmt->close();
    } else {
       // error handling because they didn't provide both a timestamp and a status
-      echo "<div class='error'>You must supply both timestamp and status.</div>";
+      echo "<div class='error'>To add an event, you must supply both a timestamp and a status.</div>";
    }
 }
 
