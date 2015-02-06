@@ -15,7 +15,7 @@ if (!empty($_GET['eventid'])) {
 			$update->close();
 		}
 		if (!empty($_POST['info_edit'])) {
-			$info = $_POST['info_edit'];
+			$info = strip_tags($_POST['info_edit']);
 			$update = $db_server->prepare("UPDATE events SET info=? WHERE eventid=?");
 			$update->bind_param('si', $info, $eventid);
 			$update->execute();
