@@ -243,7 +243,12 @@ display:block;
 text-align:right;
 padding:10px;
 background-color: lightgray;
+color: 	gray;
 }
+
+.single-user #links a:hover {
+background-color: rgb(190, 190, 190); 	
+} 
 
 .single-user #links > a {
 float:right;
