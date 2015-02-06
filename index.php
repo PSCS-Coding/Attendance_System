@@ -213,7 +213,8 @@
 
         // THIS IS FOR THE "Check Out" Buttons at the end of the day
         //Sets current time
-        $current_time = date('h:i a');
+       $phpdatetime = new dateTime();
+       $current_time = $phpdatetime->format('h:i a');
         //Query for globals
         $globalsresult = $db_server->query("SELECT * FROM globals");
         while ($list = mysqli_fetch_assoc($globalsresult))
@@ -245,7 +246,6 @@
             <div class='COTimer COTbad'>Current Time: <?php echo date('g:i a'); ?></div>
         
        <?php } else { ?>
-        //pointer
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
 	<!-- top form for change status -->
