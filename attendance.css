@@ -68,7 +68,7 @@ position:fixed;
 background-color:#fff;
 width:100%;
 z-index:5;
-opacity:0.95;
+opacity:0.85;
 min-height:2em;
 top:0;
 }
@@ -201,10 +201,12 @@ border-bottom: 1px solid #A9F5A9;
 .altview_status {
 float:left;
 float: left;
-background-color: #ccc;
-margin: 30px 10px;
+background-color: #E8E8E8;
+margin: 35px 10px;
 padding: 10px;
-
+opacity: 0.8;
+border-radius: 2px;
+text-align: center;
 }
 
 .altview_status>p {
