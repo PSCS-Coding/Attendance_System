@@ -218,7 +218,7 @@ if (!empty($_POST['studentselect'])) {
               </tr>
             </form>
             <?php } else { ?>
-            <tr>
+            <tr class="<?php echo $event['statusname'] ?>">
                <td><?php echo $event['eventid'] ?></td>
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
