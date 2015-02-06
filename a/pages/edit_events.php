@@ -46,6 +46,18 @@ if (!empty($_GET['eventid'])) {
 	
 	}
 }
+if (!empty($_POST['new_submit'])) { // TODO require return times for field trip and offsite??
+   if (!empty($_POST['new_timestamp']) && !empty($_POST['new_status_id'])) {
+      // write to the database
+      $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime, timestamp) VALUES (?, ?, ?, ?, ?)");
+      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $_POST['new_info'], $_POST['new_return'], $_POST['new_timestamp']);
+      $stmt->execute();
+      $stmt->close();
+   } else {
+      // error handling because they didn't provide both a timestamp and a status
+      echo "<div class='error'>You must supply both timestamp and status.</div>";
+   }
+}
 
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
@@ -84,18 +96,20 @@ if (!empty($_POST['studentselect'])) {
 
 <body class="edit-events">
 
-    <div id="puttheimagehere">
-	<img src="../img/mobius.png">
-    </div>
+   <div id="puttheimagehere">
+       <img src="../img/mobius.png">
+   </div>
 
 <?php if (!empty($_GET['eventid'])) {
    if (!empty($_POST[$deleterow])) {
-      echo "<div class='message'>Event #".$eventid." was deleted.</div>";
+      echo "<div class='error'>Event #".$eventid." was deleted.</div>";
    }
 } ?>
 
    <h1 class="headerr">Edit Events</h1>
-   
+   <div class="centerr" style="margin: 1em;">
+      <a href="../" style="color: #fff;">Temporary link to main admin interface</a>
+   </div>
    <div class="centerr"> 
       <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
          <select name='studentselect'>
@@ -134,13 +148,13 @@ if (!empty($_POST['studentselect'])) {
             <th></th>
          </tr>
          <tr class="new-event">
-            <form method="post" name="new_event" action="<?php echo basename($_SERVER['PHP_SELF']); ?>">
+            <form method="post" name="new_event" action="<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>">
                
                 <td>
                   <input type='text' id='new_timestamp' name='new_timestamp' placeholder='Timestamp'>
                </td>
                <td>
-                  <select name='new_status'>
+                  <select name='new_status_id'>
                      <option value="">Select...</option>
                      <?php foreach($status_array as $status) { ?>
                         <option value='<? echo $status['statusid'] ?>'><? echo $status['statusname'] ?></option>
@@ -156,6 +170,7 @@ if (!empty($_POST['studentselect'])) {
                <td>
                   <input type='submit' name='new_submit' value='Add New Event'>
                </td>
+               <input type="hidden" name="new_event_student_id" value="<?php echo $_GET['id']; ?>">
             </form>
          </tr>
       </table>
@@ -177,7 +192,7 @@ if (!empty($_POST['studentselect'])) {
                if (!empty($_POST[$postedit])) {
                   $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below                 
             ?>
-            <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
+            <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
               <tr class="editing-row">
                   <td><?php echo $event['eventid'] ?></td>
                   <td>
@@ -210,7 +225,7 @@ if (!empty($_POST['studentselect'])) {
                <td><?php echo $event['info'] ?></td>
                <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo substr($event['returntime'],0,5);} ?></td>
                <td>
-                  <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
+                  <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
                    <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
                    <input type='submit' name="inline_edit_<?php echo $event['eventid']?>" value='Edit'>
                    <input type='submit' name="inline_delete_<?php echo $event['eventid']?>" value='Delete' onclick="return confirm('Are you sure you want to delete this event?');">

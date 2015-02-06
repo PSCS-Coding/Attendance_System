@@ -28,7 +28,7 @@
          <h1 class="headerr">
              Edit Attendance
          </h1>
-	<div><a href="pages/edit_events.php" style="color:red; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>   
+	<div><a href="pages/edit_events.php" style="color:#fff; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>   
          
          <div class="options">
               <a href="../" id="goodbye" class="btn">Back to main page</a>

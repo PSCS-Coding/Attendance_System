@@ -351,6 +351,7 @@ line-height:2em;
          padding: 0.5em;
          margin: 1em;
          display: inline-block;
+	 position: absolute;
       }
       .new-event input, .editing-row input {
          width: 100%;
