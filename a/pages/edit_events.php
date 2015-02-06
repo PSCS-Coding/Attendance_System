@@ -49,8 +49,9 @@ if (!empty($_GET['eventid'])) {
 if (!empty($_POST['new_submit'])) { // TODO require return times for field trip and offsite??
    if (!empty($_POST['new_timestamp']) && !empty($_POST['new_status_id'])) {
       // write to the database
+      $newinfo = strip_tags($_POST['new_info']);
       $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime, timestamp) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $_POST['new_info'], $_POST['new_return'], $_POST['new_timestamp']);
+      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $newinfo, $_POST['new_return'], $_POST['new_timestamp']);
       $stmt->execute();
       $stmt->close();
    } else {
