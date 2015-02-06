@@ -26,6 +26,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+	width: 100%;
 }
 
 
@@ -280,9 +281,12 @@ background-color:dimgrey;
 
 div.report-container {
 background-color: #fff;
-max-width: 800px;
+max-width: 510px;
 margin: 3em auto 0;
 padding: 2em;
+border-radius: 3px;
+opacity: 0.9;
+margin-bottom: 25px;
 }
 
 .choose-report {
