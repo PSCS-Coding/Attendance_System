@@ -314,3 +314,46 @@ line-height:2em;
 }
 
 
+
+/*EDIT EVENTS*/
+      body .edit-events {
+         background-color: dimgray
+      }
+      
+      .edit-events .message {
+         color: red;
+         background: #fff;
+         border: 1px solid red;
+         padding: 0.5em;
+         margin: 1em;
+         display: inline-block;
+      }
+      .new-event input, .editing-row input {
+         width: 100%;
+      }
+      .new-event td {
+         padding: 1em;
+      }
+      .edit-events h1, .edit-events h2 {
+         margin: 1em;
+         text-align: center;
+         font-size: 2em;
+         color: #fff;
+      }
+      .edit-events h2 span {
+         font-weight: bold;
+      }
+      .edit-events .eventlog {
+         margin: 1em auto;
+	 opacity: 0.9;
+      }
+      .edit-events .centerr {
+         margin: 0 auto;
+         text-align: center;
+      }
+      .edit-events .editing-row {
+         background-color: rgb(178, 178, 178);
+      }
+      
+
+

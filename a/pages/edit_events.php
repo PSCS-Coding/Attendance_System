@@ -80,45 +80,11 @@ if (!empty($_POST['studentselect'])) {
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    <script src="../js/scrollTo.js"></script>
    <script src="../js/jquery.datetimepicker.js"></script>
-   <style type="text/css">
-      .message {
-         color: red;
-         background: #fff;
-         border: 1px solid red;
-         padding: 0.5em;
-         margin: 1em;
-         display: inline-block;
-      }
-      .new-event input, .editing-row input {
-         width: 100%;
-      }
-      .new-event td {
-         padding: 1em;
-      }
-      h1, h2 {
-         margin: 1em;
-         text-align: center;
-         font-size: 2em;
-         color: #fff;
-      }
-      h2 span {
-         font-weight: bold;
-      }
-      .eventlog {
-         margin: 1em auto;
-	 opacity: 0.9;
-      }
-      .centerr {
-         margin: 0 auto;
-         text-align: center;
-      }
-      
-   </style>
 </head>
 
-<body style="background-color: dimgray;">
+<body class="edit-events">
 
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+    <div id="puttheimagehere">
 	<img src="../img/mobius.png">
     </div>
 
@@ -134,7 +100,7 @@ if (!empty($_POST['studentselect'])) {
       <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
          <select name='studentselect'>
             <?php foreach($current_users_result as $student) { ?>
-               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?></option> <!--TODO DISPLAY ACTIVE STUDENT-->
+               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?></option>
             <?php } ?>
          </select>
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
@@ -167,7 +133,7 @@ if (!empty($_POST['studentselect'])) {
             <th>Return Time</th>
             <th></th>
          </tr>
-         <tr class="new-event"> <!--TODO put new event in its own table at top-->
+         <tr class="new-event">
             <form method="post" name="new_event" action="<?php echo basename($_SERVER['PHP_SELF']); ?>">
                
                 <td>
@@ -212,7 +178,7 @@ if (!empty($_POST['studentselect'])) {
                   $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below                 
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?echo $current_student_id?>&eventid=<?echo $event['eventid']?>'>
-              <tr class="editing-row" style="background-color: rgb(178, 178, 178)">
+              <tr class="editing-row">
                   <td><?php echo $event['eventid'] ?></td>
                   <td>
                      <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']; ?>'>
