@@ -338,3 +338,28 @@ line-height:2em;
 	background-color: #B0E0E6;
 }
 
+.COTimer{
+background-color: green;
+border-bottom: 1px solid green;
+color: black;
+padding: 5px;
+}
+
+.mainpage .COTimer {
+position: fixed;
+top: 44px;
+right: 0px;
+width: 200px;
+z-index: 10;
+}
+
+.COTbad{
+background-color: #F78181;
+border-bottom: 1px solid #F78181;
+}
+
+.COTgood{
+background-color: #A9F5A9;
+border-bottom: 1px solid #A9F5A9;
+}
+
