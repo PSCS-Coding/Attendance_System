@@ -21,6 +21,7 @@
 		if (!empty($_GET['id'])){
 			$id=$_GET['id'];
 			setcookie('id', $_GET['id']);
+			$_SESSION['idd']=$id;
 
 		} elseif (empty($_GET['id']) and !empty($_COOKIE['id'])) {
 			$id=$_COOKIE['id'];
