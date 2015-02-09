@@ -20,7 +20,7 @@ if (!empty($_POST['studentselect'])){
 	echo "Please choose a student ";
 }
 //current students array
-$studentquery = "SELECT studentid, firstname FROM studentdata WHERE current=1 ORDER BY firstname";
+$studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
 $current_users_result = array();
 while ($student = $current_users_query->fetch_array()) {
@@ -31,10 +31,12 @@ while ($student = $current_users_query->fetch_array()) {
 	<p>View report for:</p>
 	<form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 	<select name='studentselect' class='studentselect'>
-	<?php 
+	<?php
+	
 	foreach($current_users_result as $student) {
+		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
+		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
 		<?php
 	}
 	?>
