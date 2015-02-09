@@ -4,7 +4,7 @@
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
             <script src="js/loadtabs.js"></script>
 	    <link rel='stylesheet' href="css/pikaday.css" />
-        <link rel='stylesheet' href="css/adminpage.css" />
+	    <link rel="stylesheet" type="text/css" href="../attendance.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 
             <title>Admin Page</title>

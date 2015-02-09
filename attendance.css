@@ -350,3 +350,158 @@ line-height:2em;
 	background-color: #B0E0E6;
 }
 
+
+/* ADMIN PAGE STYLING */
+
+.headerr {
+    margin: 30px 30%;
+    background-color: lightgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 300px;
+    padding: 5px 0px 0px 0px;
+    width: 10px;
+    opacity: 0.8;
+    color: #4C4C4C;
+}
+.options {
+    padding: 25px 15px 25px 15px;
+    background-color: gray;
+    border-radius: 5px;
+    color: black;
+    min-width: 630px;
+    max-width: 630px;
+    opacity: 0.95;
+    display: -webkit-flex;
+    display: flex;
+}
+.allottedhours {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 500px;
+    max-width: 500px;
+    opacity: 0.85;
+}
+.facilitators {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 500px;
+    max-width: 500px;
+    opacity: 0.85;
+}
+.globals {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 500px;
+    max-width: 500px;
+    opacity: 0.85;
+}
+.holidays {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 500px;
+    max-width: 500px;
+    opacity: 0.85;
+}
+.passwords {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 400px;
+    max-width: 400px;
+    opacity: 0.85;
+}
+.students {
+    padding: 25px 15px 25px 15px;
+    background-color: darkgray;
+    border-radius: 5px;
+    color: black;
+    min-width: 500px;
+    max-width: 500px;
+    opacity: 0.85;
+}
+table {
+    width: 100%;
+}
+th {
+ text-align:left;   
+}
+a {
+    color: blue;
+    text-decoration: none;
+    display: block;
+}
+
+a:hover 
+{
+     color:dimgray; 
+     text-decoration:none; 
+     cursor:pointer;  
+}
+.textbox { 
+    background-color: #BDD7F1; 
+    border: solid 1px #646464; 
+    outline: none; 
+    padding: 2px 2px; 
+} 
+tr:nth-child(odd)
+{
+background:#E6E6E6;
+}
+tr:nth-child(even)
+{
+background:#FAFAFA;
+}
+table
+{
+border-spacing:0px;
+}
+
+.btn {
+  -webkit-border-radius: 60;
+  -moz-border-radius: 60;
+  border-radius: 60px;
+  font-family: Arial;
+  color: #bdbdbd;
+  font-size: 10px;
+  background: #6b6b6b;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.btn:hover {
+  background: #7a7a7a;
+  text-decoration: none;
+}
+.button {
+  font-family: Arial;
+  color: grey;
+  font-size: 11px;
+  background: lightgray;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  border-right: 3px solid #999;
+}
+a.button:last-child {
+    border-right: 0;
+}
+
+.button:hover {
+  background: #7a7a7a;
+  text-decoration: none;
+  color: lightgray;
+}
+
+td, th {
+    padding: 5px 7px;
+}
