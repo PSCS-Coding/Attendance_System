@@ -1,12 +1,4 @@
 <?php
-//login setup
-	session_start();
-	$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-	//make this $_SESSION['adminSet'] if it's an admin-only page and $_SESSION['set'] if its a public one
-	if(!$_SESSION['set'])
-	{
-		header("location: main_login.php");
-	}
 //load required external files
     require_once("connection.php");
    	require_once("function.php");
@@ -28,6 +20,7 @@
 		if (!empty($_GET['id'])){
 			$id=$_GET['id'];
 			setcookie('id', $_GET['id']);
+			$_SESSION['idd']=$id;
 
 		} elseif (empty($_GET['id']) and !empty($_COOKIE['id'])) {
 			$id=$_COOKIE['id'];
@@ -297,7 +290,7 @@ if (!empty($_POST)){
 	<div id="single-body">
 	<div id="links">
 		<a href="index.php">Back to main page</a>  
-		<a href="viewreports.php">View reports for <?php echo $name; ?></a>
+		<a href="viewreports.php?id=<?php echo $_GET['id']; ?>">View reports for <?php echo $name; ?></a>
 	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
 	<h2 class="studentname"><?php echo $name; ?></h2>
@@ -489,5 +482,6 @@ if (!empty($_POST)){
 <script>
     var picker = new Pikaday({ field: document.getElementById('chooseday') });
 </script>
+<?php require_once("login.php"); ?>
 </body>
 </html>

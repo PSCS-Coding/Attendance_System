@@ -1,10 +1,3 @@
-<?php session_start();
-			//make this $_SESSION['adminSet'] if it's an admin-only page
-			if(!$_SESSION['set'])
-				{
-					header("location: main_login.php");
-			}
-		?>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -41,7 +34,7 @@
 	<?php
 	    require_once("connection.php");
 	    require_once("function.php");
-		
+		require_once("login.php");
 		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");

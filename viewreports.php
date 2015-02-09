@@ -1,23 +1,4 @@
-<?php
-session_start();
-
-require_once("connection.php");
-require_once("function.php");
-
-$_SESSION['prevURL'] = $_SERVER['REQUEST_URI'];
-
-//make this $_SESSION['adminSet'] if it's an admin-only page
-if(!$_SESSION['set']) {
-	header("location: main_login.php");
-}
-/*
-if (!empty($_SERVER['HTTP_REFERER'])){
-	$previousURL = substr($_SERVER['HTTP_REFERER'], 0, 40);
-	if ($previousURL != "http://code.pscs.org/attendance/user.php"){
-		unset($_SESSION['idd']);
-	}
-}
-*/ ?><html>
+<html>
 <head>
 	<title>View Reports</title>
 			<link rel="stylesheet" type="text/css" href="attendance.css">
@@ -27,15 +8,19 @@ if (!empty($_SERVER['HTTP_REFERER'])){
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
+require_once("connection.php");
+require_once("function.php");
+require_once("login.php");
+
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
-} elseif(!empty($_SESSION['idd'])) {
-	$current_student_id = $_SESSION['idd'];
+} elseif(!empty($_GET['id'])) {
+	$current_student_id = $_GET['id'];
 } else {
 	echo "Please choose a student ";
 }
 //current students array
-$studentquery = "SELECT studentid, firstname FROM studentdata WHERE current=1 ORDER BY firstname";
+$studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
 $current_users_result = array();
 while ($student = $current_users_query->fetch_array()) {
@@ -46,10 +31,12 @@ while ($student = $current_users_query->fetch_array()) {
 	<p>View report for:</p>
 	<form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 	<select name='studentselect' class='studentselect'>
-	<?php 
+	<?php
+	
 	foreach($current_users_result as $student) {
+		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?></option>
+		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
 		<?php
 	}
 	?>
