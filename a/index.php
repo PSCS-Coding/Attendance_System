@@ -9,7 +9,7 @@
 
             <title>Admin Page</title>
         </head>
-                <body style="background-color: dimgray;">
+                <body class="adminpagebody" style="background-color: dimgray;">
     <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
 	<img src="img/mobius.png">
     </div>
