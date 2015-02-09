@@ -100,9 +100,44 @@ $studyhours_remaining = $study_all;
 $offsitehours_remaining = $offsite_all;
 $commhours_remaining = $commhours_all;
 
-$studyhours_used = 0;
+$query = $db_server->query("SELECT yearinschool FROM studentdata WHERE studentid = $current_student_id");
+$tempvar = $query->fetch_assoc();
+$studentYis = $tempvar['yearinschool'];
+
+$query = $db_server->query("SELECT startdate FROM studentdata WHERE studentid = $current_student_id");
+$tempvar = $query->fetch_assoc();
+$studentStartDate = $tempvar['startdate'];
+
+$startDateStamp = new DateTime($studentStartDate);
+$yearDateStamp = new DateTime($startdate);
+
+if ($startDateStamp > $yearDateStamp){ // if a student is mid-year, then nerf the number of IS and offsite hours they have
+echo "new student";
+$remainingDays = daysLeftFromDate($studentStartDate);
+$totalDays = daysLeftFromDate($startdate);
+
+$baseHours = $remainingDays / $totalDays;
+$baseISHours = $remainingDays / $totalDays;
+$totalISHours = $study_all / 60;
+$totalHours = $offsite_all / 60;
+$baseHours = $baseHours * $totalHours;
+$baseISHours = $baseISHours * $totalISHours;
+
 $offsitehours_used = 0;
-$commhours_used = 0;
+$commhours_used = -$baseHours * 60;
+$studyhours_used = 0;
+$studyhours_remaining = $study_all - $baseISHours * 60;
+$offsitehours_remaining = $offsite_all - $baseHours * 60;
+$commhours_remaining = $commhours_all - $baseHours * 60;
+
+} else { // if not a new student, do nothing
+	$offsitehours_used = 0;
+	$commhours_used = 0;
+	$studyhours_used = 0;
+	$studyhours_remaining = $study_all;
+	$offsitehours_remaining = $offsite_all;
+	$commhours_remaining = $commhours_all;
+}
 
 $num_lates = 0;
 $num_unexpected = 0;
