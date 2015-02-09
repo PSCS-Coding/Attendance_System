@@ -112,7 +112,6 @@ $startDateStamp = new DateTime($studentStartDate);
 $yearDateStamp = new DateTime($startdate);
 
 if ($startDateStamp > $yearDateStamp){ // if a student is mid-year, then nerf the number of IS and offsite hours they have
-echo "new student";
 $remainingDays = daysLeftFromDate($studentStartDate);
 $totalDays = daysLeftFromDate($startdate);
 
