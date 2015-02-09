@@ -14,8 +14,8 @@ require_once("login.php");
 
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
-} elseif(!empty($_SESSION['idd'])) {
-	$current_student_id = $_SESSION['idd'];
+} elseif(!empty($_GET['id'])) {
+	$current_student_id = $_GET['id'];
 } else {
 	echo "Please choose a student ";
 }
