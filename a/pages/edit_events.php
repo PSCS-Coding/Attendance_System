@@ -115,7 +115,8 @@ if (!empty($_POST['studentselect'])) {
       <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
          <select name='studentselect'>
             <?php foreach($current_users_result as $student) { ?>
-               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?></option>
+		<?php $lastinitial = substr($student['lastname'], 0, 1); ?>
+               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
             <?php } ?>
          </select>
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
