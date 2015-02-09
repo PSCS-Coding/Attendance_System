@@ -34,6 +34,8 @@ td {
 vertical-align:middle;
 }
 
+
+
 form {
 margin:auto;
 }
@@ -100,6 +102,10 @@ color:#939393;
 #main_table {
 padding-top: 55px;
 padding-bottom: 20px;
+}
+
+.student_col_buttons {
+    display: inline-flex;
 }
 
 .select_col {
