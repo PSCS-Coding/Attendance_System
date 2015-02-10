@@ -106,6 +106,8 @@ padding-bottom: 20px;
 
 .student_col_buttons {
     display: inline-flex;
+    vertical-align: middle;
+    height: 25px;
 }
 
 .select_col {
