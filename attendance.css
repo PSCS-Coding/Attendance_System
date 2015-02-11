@@ -50,6 +50,10 @@ margin: auto;
 text-align:left;
 }
 
+.status_col {
+	min-width: 380px;
+}
+
 body {
 position:relative;
 margin:0;
