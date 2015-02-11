@@ -464,7 +464,7 @@
 						<?php } ?>
 
 					</td>
-					<td class='status_col' style="padding-right: 30%;"><?php 
+					<td class='status_col'><?php 
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
 						if ($latestdata['statusname'] == "Offsite") {
