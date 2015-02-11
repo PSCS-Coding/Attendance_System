@@ -109,6 +109,8 @@ $commhours_used = 0;
 $num_lates = 0;
 $num_unexpected = 0;
 $num_absent = 0;
+
+$offsiteremaining = $offsitehours_remaining / 60;
 //counts time
 //loops through each event for the given student
 foreach($student_data_array as $event_key => $event_val) {
@@ -216,6 +218,14 @@ echo "<p class='reporttext'> The school year has ended.</p>";
 echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
+
+$daysInYear = daysLeftFromDate($globalsdata['startdate']);
+
+$yearPercent = floor($daystillend / $daysInYear * 100);
+
+$offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
+
+echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite</p>";
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
