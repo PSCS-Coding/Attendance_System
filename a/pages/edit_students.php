@@ -134,9 +134,9 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 	?>
 <!-- Reactivate Student -->	
         
-<form action="/a/?p=Students" method="post">
-    <input type="hidden" name="activate" value="yes" />
-    <input type="hidden" name="activateid" value="<?php echo $row['studentid']; ?>" />
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+    <input type="hidden" name="activate" id="activate" value="yes" />
+    <input type="hidden" name="activateid" id="activateid" value="<?php echo $row['studentid']; ?>" />
     <input type="submit" value="REACTIVATE" />
 </form>    
 </td>
