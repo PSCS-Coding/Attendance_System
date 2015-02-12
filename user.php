@@ -290,7 +290,7 @@ if (!empty($_POST)){
 	<div id="single-body">
 	<div id="links">
 		<a href="index.php">Back to main page</a>  
-		<a href="viewreports.php?id=<?php echo $_GET['id']; ?>">View reports for <?php echo $name; ?></a>
+		<a href="viewreports.php?id=<?php echo $id; ?>">View reports for <?php echo $name; ?></a>
 	</div>	
 	<?php if (!empty($name) || !empty($id)) { ?>
 	<h2 class="studentname"><?php echo $name; ?></h2>
