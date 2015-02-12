@@ -34,6 +34,8 @@ td {
 vertical-align:middle;
 }
 
+
+
 form {
 margin:auto;
 }
@@ -43,11 +45,18 @@ border-collapse:collapse;
 .top_interface td {
 margin: auto;
 }
-.p_button {
-float: left;
-}
+
 .status_col, .student_col {
 text-align:left;
+}
+
+.status_col {
+	min-width: 380px;
+	max-width: 400px;
+	padding: 5px 5px 5px inherit !important;
+}
+.late_time {
+	height: 14px;
 }
 
 body {
@@ -65,16 +74,17 @@ background-color: dimgrey;
 
 #top_header {
 position:fixed;
-background-color:#fff;
+background-color:white;
 width:100%;
 z-index:5;
-opacity:0.95;
+opacity:0.9;
 min-height:2em;
 top:0;
 }
 
 #top_header form div {
-padding: 8px 8px;
+padding: 3px 0.5%;
+padding-top: 6px;
 float: left;
 border-left: 6px solid #999;
 height:25px;
@@ -87,19 +97,26 @@ border-left:none;
 #top_header div a {
 display:block;
 padding:0.5em;
-color:#000;
+color:#5F5F5F;
 text-decoration:none;
 text-align:center;
 }
 
 #top_header div a:hover {
-text-decoration:underline;
+text-decoration: none;
+color:#939393;
 }
 
 
 #main_table {
-padding-top: 60px;
+padding-top: 55px;
 padding-bottom: 20px;
+}
+
+.student_col_buttons {
+    display: inline-flex;
+    vertical-align: middle;
+    height: 25px;
 }
 
 .select_col {
@@ -130,14 +147,15 @@ padding:1px 14px;
 
 .student_col a, .status_col a {
 float:left;
-margin-right:10px;
+margin-right:-16px;
 text-decoration:none;
 line-height:26px;
 color: blue;
 }
 
 .student_col a:hover {
-text-decoration: underline;
+text-decoration: none;
+color: rgb(0, 0, 97);
 }
 
 .student_col form {
@@ -166,6 +184,8 @@ border-bottom: 1px solid red;
 color: #fff;
 padding: 5px;
 }
+
+
 
 .mainpage .error {
 position: fixed;
@@ -227,7 +247,8 @@ background-color: white;
 max-width: 500px;
 padding: 20px;
 margin: auto;
-border-radius: 15px;
+border-radius: 10px;
+opacity: 0.85;
 }
 
 .single-user #links {

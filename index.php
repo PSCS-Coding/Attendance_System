@@ -1,6 +1,9 @@
 	<!DOCTYPE html>
 	<html>
 	<head>
+		
+		
+		
 		<title>PSCS Attendance</title>
 		<link rel="stylesheet" type="text/css" href="attendance.css">
 		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
@@ -254,12 +257,12 @@
 		
 		<div>
 			<!-- top interface present button -->
-	        <input type="submit" value="Present" name="present">
+	        <input class="button" type="submit" value="Present" name="present">
 	    </div>
 	   
 	   	<div>
 			<!-- top interface sign out button -->
-			<input type="submit" value="Check Out" name="checkout">
+			<input class="button" type="submit" value="Check Out" name="checkout">
 		</div>
  
 	    <div>
@@ -272,7 +275,7 @@
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
 </datalist>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
-	        <input type="submit" name="offsite" value="Offsite">
+	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
 	    <div>
@@ -290,7 +293,7 @@
 	        ?>
 	        </select>
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
-	       <input type="submit" name="fieldtrip" value="Field Trip"> 
+	       <input class="button" type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
 		<div>
 			<a href="statusview.php">Status View</a>
@@ -320,7 +323,9 @@
 	        <th class='select_col'></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
+			<th></th>
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
+			
 	    </tr>
 	    <?php
 		$student_data_array = array();
@@ -406,7 +411,9 @@
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
 					<td class='student_col'>
 						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
-                        
+					</td>
+					<td class="student_col_buttons">
+						                    
                         <!-- IF CHECK OUT IS NEAR -->
 				<?php
                 // Checking if checkout times are within range
@@ -423,34 +430,33 @@
 						</form>
                         
                      <?php   } } }
-                
 						// if the student is not present or hasn't updated since midnight, show a present button 
 						if (($latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Checked Out') || ($day_data < $yesterday)) {
 						?>
 						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input type='submit' value='P' class='p_button' name='present_button'>
+							<input type='submit' value='P' class='p_button tablebutton' name='present_button'>
 							<input type='hidden' name='present_bstudent' value='<?php echo $latestdata['studentid']; ?>'>
 						</form>
-						
 						<?php 
 						}
 						// if the student is not checked in, display an absent button
 						if ($latestdata['statusname'] == 'Not Checked In') {
 						?>
-						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input type='submit' value='A' name='Absent' class='absent_button' >
+                            <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+							<input class="tablebutton" type='submit' value='A' name='Absent' class='absent_button' >
 							<input type='hidden' name='absent_student' value='<?php echo $latestdata['studentid']; ?>'>
-						</form>
+                                </form>
 						<?php } 
 
 						// if the student is not checked in or is already late, display a late button
 						if ($latestdata['statusname'] == 'Not Checked In' || $latestdata['statusname'] == 'Late') {
 						?>
 						<!-- Late button with time input next to it -->
-						<form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input type='submit' value='Late' name='Late' class='l_button'>
+                            <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
+							<input class="tablebutton" type='submit' value='Late' name='Late' class='l_button'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
+                                </form>
 						</form>
 						<?php } ?>
 
@@ -481,5 +487,6 @@
 	</table>
 	</table>
 	</div>
+	
 	</body>
 	</html>
