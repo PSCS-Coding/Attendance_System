@@ -214,7 +214,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				?><div class="error">You cannot pre-plan being on a fieldtrip</div><?php
+				plan($id, '3', $endchoosedate, $_POST['fttime'], $info);
 			} else { 
 				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
@@ -458,6 +458,12 @@ if (!empty($_POST)){
 		if ($preEventDate > $today) { 
 		if ($outstatconvert[0] == "Late"){
 			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
+			?>
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<?php
+			
+		} elseif ($outstatconvert[0] == "Field Trip"){
+			echo $name . " will be on a " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", and will return at " . $preEventTime->format('g:i');
 			?>
 			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
 			<?php
