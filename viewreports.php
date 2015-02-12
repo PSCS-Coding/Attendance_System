@@ -102,13 +102,49 @@ $studyhours_remaining = $study_all;
 $offsitehours_remaining = $offsite_all;
 $commhours_remaining = $commhours_all;
 
-$studyhours_used = 0;
+$query = $db_server->query("SELECT yearinschool FROM studentdata WHERE studentid = $current_student_id");
+$tempvar = $query->fetch_assoc();
+$studentYis = $tempvar['yearinschool'];
+
+$query = $db_server->query("SELECT startdate FROM studentdata WHERE studentid = $current_student_id");
+$tempvar = $query->fetch_assoc();
+$studentStartDate = $tempvar['startdate'];
+
+$startDateStamp = new DateTime($studentStartDate);
+$yearDateStamp = new DateTime($startdate);
+
+if ($startDateStamp > $yearDateStamp){ // if a student is mid-year, then nerf the number of IS and offsite hours they have
+$remainingDays = daysLeftFromDate($studentStartDate);
+$totalDays = daysLeftFromDate($startdate);
+
+$baseHours = $remainingDays / $totalDays;
+$baseISHours = $remainingDays / $totalDays;
+$totalISHours = $study_all / 60;
+$totalHours = $offsite_all / 60;
+$baseHours = $baseHours * $totalHours;
+$baseISHours = $baseISHours * $totalISHours;
+
 $offsitehours_used = 0;
-$commhours_used = 0;
+$commhours_used = -$baseHours * 60;
+$studyhours_used = 0;
+$studyhours_remaining = $study_all - $baseISHours * 60;
+$offsitehours_remaining = $offsite_all - $baseHours * 60;
+$commhours_remaining = $commhours_all - $baseHours * 60;
+
+} else { // if not a new student, do nothing
+	$offsitehours_used = 0;
+	$commhours_used = 0;
+	$studyhours_used = 0;
+	$studyhours_remaining = $study_all;
+	$offsitehours_remaining = $offsite_all;
+	$commhours_remaining = $commhours_all;
+}
 
 $num_lates = 0;
 $num_unexpected = 0;
 $num_absent = 0;
+
+$offsiteremaining = $offsitehours_remaining / 60;
 //counts time
 //loops through each event for the given student
 foreach($student_data_array as $event_key => $event_val) {
@@ -216,6 +252,14 @@ echo "<p class='reporttext'> The school year has ended.</p>";
 echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
+
+$daysInYear = daysLeftFromDate($globalsdata['startdate']);
+
+$yearPercent = floor($daystillend / $daysInYear * 100);
+
+$offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
+
+echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite</p>";
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
