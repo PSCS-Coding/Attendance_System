@@ -55,6 +55,9 @@ text-align:left;
 	max-width: 400px;
 	padding: 5px 5px 5px inherit !important;
 }
+.late_time {
+	height: 14px;
+}
 
 body {
 position:relative;
