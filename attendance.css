@@ -505,11 +505,22 @@ a.button:last-child {
 td, th {
     padding: 5px 7px;
 }
+
+.view-reports tr.Offsite, .edit-events tr.Offsite {
+    background-color: #D2B48C;
+}
+
+.view-reports tr.Absent, .edit-events tr.Absent {
+    background-color: #FF6347;
+}
+
+.view-reports tr.Late, .edit-events tr.Late {
+    background-color: #B0E0E6;
+}
 /*EDIT EVENTS*/
       body .edit-events {
          background-color: dimgray
       }
-
       .edit-events .message {
          color: red;
          background: #fff;
@@ -517,7 +528,6 @@ td, th {
          padding: 0.5em;
          margin: 1em;
          display: inline-block;
-     position: absolute;
       }
       .new-event input, .editing-row input {
          width: 100%;
@@ -536,7 +546,7 @@ td, th {
       }
       .edit-events .eventlog {
          margin: 1em auto;
-     opacity: 0.9;
+         opacity: 0.9;
       }
       .edit-events .centerr {
          margin: 0 auto;
