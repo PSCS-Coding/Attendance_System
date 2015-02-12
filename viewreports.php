@@ -255,7 +255,7 @@ echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " 
 
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
 
-$yearPercent = floor($daystillend / $daysInYear * 100);
+$yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
