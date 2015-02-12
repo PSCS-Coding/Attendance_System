@@ -52,6 +52,8 @@ text-align:left;
 
 .status_col {
 	min-width: 380px;
+	max-width: 400px;
+	padding: 5px 5px 5px inherit !important;
 }
 
 body {
