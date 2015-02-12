@@ -99,8 +99,9 @@ body.single-user {
 
 
 #main_table {
-    padding-top: 60px;
-    padding-bottom: 20px;
+	padding-top: 60px;
+	padding-bottom: 20px;
+	opacity: 0.95;
 }
 
 .select_col {
