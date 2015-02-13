@@ -284,7 +284,7 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
-<table class='eventlog'>
+<table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
 <th>Status</th>
