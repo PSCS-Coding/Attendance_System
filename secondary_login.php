@@ -2,11 +2,11 @@
 // Plain text cookie
 $admincookie = "admin1387409";
 $studentcookie = "student634729779";
-$md5cookie = "721803798127429126846";
+$md5US = "721803798127429126846";
 
 // Secure Cookie
 $secureadmincookie= md5($admincookie);
-$md5= md5($md5cookie);
+$md5= md5($md5US);
 $securestudentcookie= md5($studentcookie);
 
 include("connection.php");
