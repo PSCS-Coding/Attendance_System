@@ -299,9 +299,13 @@ background-color:dimgrey;
 
 div.report-container {
 background-color: #fff;
-max-width: 800px;
+max-width: 680px;
 margin: 3em auto 0;
 padding: 2em;
+border-radius: 3px;
+opacity: 0.85;
+margin-bottom: 25px;
+margin-top: 50px;
 }
 
 .choose-report {
@@ -335,6 +339,10 @@ margin-bottom:0.5em;
 
 .eventlog th, .eventlog td {
 line-height:2em;
+}
+
+.eventlog {
+width:100%;
 }
 
 .view-reports tr, .edit-events tr {
