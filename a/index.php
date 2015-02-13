@@ -1,9 +1,10 @@
 <!DOCTYPE html>
     <html>
         <head>
+            <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
             <script src="js/loadtabs.js"></script>
-	    <link rel='stylesheet' href="css/pikaday.css" />
+        <link rel='stylesheet' href="css/pikaday.css" />
         <link rel='stylesheet' href="css/adminpage.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 
@@ -11,28 +12,28 @@
         </head>
                 <body style="background-color: dimgray;">
     <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="img/mobius.png">
+    <img src="img/mobius.png">
     </div>
-		
-		
+
+
             <?php
          // set up mysql connection
-	 error_reporting(0);
+     error_reporting(0);
      $userlevel = "admin";
      require_once("../login.php");
-	 require_once("../connection.php");
-	 require_once("../function.php");
+     require_once("../connection.php");
+     require_once("../function.php");
          ?>
-	 <div align="center">
-         
+     <div align="center">
+
          <h1 class="headerr">
              Edit Attendance
          </h1>
-	<div><a href="pages/edit_events.php" style="color:#fff; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>   
-         
+    <div><a href="pages/edit_events.php" style="color:#fff; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>
+
          <div class="options">
               <a href="../" id="goodbye" class="btn">Back to main page</a>
-             
+
              <a href="?p=Students" id="button1" class="button">Students</a>
              <a href="?p=Events" id="button7" class="button">Events</a>
              <a href="?p=Holidays" id="button5" class="button">Holidays</a>
@@ -40,34 +41,34 @@
         <a href="?p=Facilitators" id="button2" class="button">Facilitators</a>
         <a href="?p=Allotted-Hours" id="button3" class="button">Allotted Hours</a>
         <a href="?p=Globals" id="button6" class="button">Globals</a>
-             
+
 </div>
-	    <?php
+        <?php
 //echo htmlspecialchars($_GET["page"]);
-if (htmlspecialchars($_GET["p"]) == "Students"){  
+if (htmlspecialchars($_GET["p"]) == "Students"){
     //include_once('edit_students.php');
    include ('JSUrl/studentjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Facilitators"){  
-    include_once('JSUrl/facilitatorjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Facilitators"){
+    include_once('JSUrl/facilitatorjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Allotted-Hours"){  
-    include_once('JSUrl/allotted-hoursjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Allotted-Hours"){
+    include_once('JSUrl/allotted-hoursjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Pws"){  
-    include_once('JSUrl/passwordsjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Pws"){
+    include_once('JSUrl/passwordsjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Holidays"){  
-    include_once('JSUrl/holidaysjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Holidays"){
+    include_once('JSUrl/holidaysjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Globals"){  
-    include_once('JSUrl/globalsjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Globals"){
+    include_once('JSUrl/globalsjs.php');
 }
-if (htmlspecialchars($_GET["p"]) == "Events"){  
-    include_once('JSUrl/eventsjs.php');    
+if (htmlspecialchars($_GET["p"]) == "Events"){
+    include_once('JSUrl/eventsjs.php');
 }
 ?>
-            
+
 <!----- ALL TABS/PAGES ON ADMIN PAGE ----->
 
 
@@ -75,7 +76,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv1">
 <?php
 // Get Student Page
-    include_once("pages/edit_students.php");	
+    include_once("pages/edit_students.php");
 ?>
 </div>
 
@@ -83,7 +84,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv2">
 <?php
 // Get Facilitators page
-    include_once("pages/edit_facilitators.php");	
+    include_once("pages/edit_facilitators.php");
 ?>
 </div>
 
@@ -91,7 +92,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv3">
 <?php
 // Get Allotted-Hours page
-    include_once("pages/edit_allottedhours.php");	
+    include_once("pages/edit_allottedhours.php");
 ?>
 </div>
 
@@ -99,7 +100,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv4">
 <?php
 // Get Get Passwords
-    include_once("pages/edit_passwords.php");	
+    include_once("pages/edit_passwords.php");
 ?>
 </div>
 
@@ -107,7 +108,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv5">
 <?php
 // Get Holidays Page
-    include_once("pages/edit_holidays.php");	
+    include_once("pages/edit_holidays.php");
 ?>
 </div>
 
@@ -115,17 +116,17 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv6">
 <?php
 // Get Globals
-    include_once("pages/edit_globals.php");	
+    include_once("pages/edit_globals.php");
 ?>
 </div>
 <!----- Events PAGE ----->
 <div id="showdiv7">
 <?php
 // Get Globals
-    include_once("pages/edit_events.php");	
+    include_once("pages/edit_events.php");
 ?>
 </div>
-	 </div>
+     </div>
                 </body>
-        
+
     </html>
