@@ -1,29 +1,28 @@
 <?php
 include("connection.php");
-error_reporting(-1);
 //echo htmlspecialchars($_GET["logout"]);
 //get logout from url
 if (!empty($_GET["logout"])) {
     
 if (htmlspecialchars($_GET["logout"]) == "1") {
     // delete cookie
-    setcookie("login", "", time()-3600);
+    setcookie("loginV2", "", time()-3600);
 }
 
 }
  
 if (!empty($_GET["logout"])) {
 
-if ($_COOKIE["login"] == "admin") {
+if (password_verify('admin12873912', $_COOKIE["loginV2"])) {
     //remove cookie if admin loads page
-    setcookie("login", "", time()-3600);
-} elseif ($_COOKIE["login"] == "student") {
+    setcookie("loginV2", "", time()-3600);
+} elseif (password_verify('student87162387', $_COOKIE["loginV2"])) {
     //remove cookie if student loads page
-    setcookie("login", "", time()-3600);
+    setcookie("loginV2", "", time()-3600);
 }  }
         else {
     //delete login cookie
-    setcookie("login", "", time()-3600);
+    setcookie("loginV2", "", time()-3600);
 }
     
 
@@ -42,17 +41,19 @@ $adminpassword = $row['adminPass'];
 //else 
    $url = "index.php";
 ?><?php
+$pwdadmin = password_hash('admin12873912', PASSWORD_DEFAULT);
+$pwdstudent = password_hash('student87162387', PASSWORD_DEFAULT);
 if(isset($_POST['Submit']))
 {
 	if($_POST['mypassword'] == $defaultpassword)
 		{
             $logindefault = 1;
-			setcookie("login", "student", time()+28800); // 8 hours
+			setcookie("loginV2", $pwdstudent, time()+28800); // 8 hours
 		}
 	elseif($_POST['mypassword'] == $adminpassword)
 		{
             $loginadmin = 1;
-            setcookie("login", "admin", time()+28800); // 8 hours
+            setcookie("loginV2", $pwdadmin, time()+28800); // 8 hours
 					
 		}
 	if ($loginadmin == 1)
