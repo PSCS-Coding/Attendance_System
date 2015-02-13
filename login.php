@@ -1,11 +1,11 @@
         <?php
-        if (isset($_COOKIE["login"])) {
+        if (isset($_COOKIE["loginV2"])) {
   
-            if ($_COOKIE["login"] == "admin") {
+            if (password_verify('admin12873912', $_COOKIE["loginV2"])) {
                 
                 // Give Full Access
                 
-            } elseif ($_COOKIE["login"] == "student") {
+            } elseif (password_verify('student87162387', $_COOKIE["loginV2"])) {
                 
                 if ($userlevel == "admin") {
                     echo '<META http-equiv="refresh" content="0;URL=secondary_login.php">';   
