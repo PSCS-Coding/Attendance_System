@@ -66,6 +66,7 @@ if(isset($_POST['Submit']))
 ?>
 <html>
 <head>
+<link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 <title>PSCS attendance system login</title>
 </head>
 
