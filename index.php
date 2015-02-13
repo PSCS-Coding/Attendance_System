@@ -273,7 +273,7 @@
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
 </datalist>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
-	        <input class="button" type="submit" name="offsite" value="Offsite">
+	        <input class="button" type="submit" name="offsite" value="Offsite" maxlength="50">
 	    </div>
 	    
 	    <div>
