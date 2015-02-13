@@ -298,7 +298,7 @@
 		</div>
         <!-- Link To Admin Page -->
         <?php
-                       if (isset($_COOKIE['login'])) {
+                       if (isset($_COOKIE['loginV2'])) {
                            
     if (password_verify('admin12873912', $_COOKIE["loginV2"])) {
     echo '<div><a href="/a">Admin</a></div>';
