@@ -249,19 +249,36 @@ background-color: white;
 max-width: 500px;
 padding: 20px;
 margin: auto;
-border-radius: 10px;
+border-radius: 3px;
 opacity: 0.85;
 }
 
 .single-user #links {
 font-size:10px;
 }
+
 .single-user #links a {
 text-decoration:none;
 display:block;
 text-align:right;
 padding:10px;
 background-color: lightgray;
+color:rgb(73, 73, 73);
+border-right: 3px solid rgb(165, 165, 165);
+border-radius: 3px 0px 0px 3px;
+}
+
+.single-user #links a:first-child {
+border-right: none;
+border-radius: 0px 3px 3px 0px;
+}
+
+.single-user #links a:hover {
+text-decoration:none;
+display:block;
+text-align:right;
+padding:10px;
+background-color: rgb(189, 189, 189);
 }
 
 .single-user #links > a {
