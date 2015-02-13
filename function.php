@@ -77,10 +77,22 @@ function favorite($id, $status, $info, $returntime)
 }
 
 //function plan
-function plan($id, $status, $eventdate, $returntime, $info)
+function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
 {
     global $db_server;
     $info = strip_tags($info);
+	$startDate = DateTime::createFromFormat( 'U', $eventdate );
+	
+	//print_r($startDate);
+	
+	if($endeventdate != null){
+		echo "end event date set!";
+		$endDate = DateTime::createFromFormat( 'U', $endeventdate);
+		print_r($endDate);
+	}
+	
+	//$eventdate->format('Y-m-d');
+	
     if (!empty($returntime)) {
         $whenreturn = new DateTime($returntime);
         $returntimestring = $whenreturn->format('H:i:s');
