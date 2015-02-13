@@ -221,10 +221,12 @@ border-bottom: 1px solid #A9F5A9;
 .altview_status {
 float:left;
 float: left;
-background-color: #ccc;
-margin: 30px 10px;
+background-color: white;
+margin: 35px 10px;
 padding: 10px;
-
+border-radius: 3px;
+opacity: 0.8;
+text-align: center;
 }
 
 .altview_status>p {
