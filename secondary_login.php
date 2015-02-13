@@ -1,7 +1,5 @@
 <?php
 include("connection.php");
-$pwdadmin = password_hash('admin12873912', PASSWORD_DEFAULT);
-$pwdstudent = password_hash('student87162387', PASSWORD_DEFAULT);
 //echo htmlspecialchars($_GET["logout"]);
 //get logout from url
 if (!empty($_GET["logout"])) {
@@ -43,6 +41,8 @@ $adminpassword = $row['adminPass'];
 //else 
    $url = "index.php";
 ?><?php
+$pwdadmin = password_hash('admin12873912', PASSWORD_DEFAULT);
+$pwdstudent = password_hash('student87162387', PASSWORD_DEFAULT);
 if(isset($_POST['Submit']))
 {
 	if($_POST['mypassword'] == $defaultpassword)
