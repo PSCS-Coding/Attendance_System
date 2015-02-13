@@ -298,9 +298,10 @@
 		</div>
         <!-- Link To Admin Page -->
         <?php
-                       if (isset($_COOKIE['login'])) {
+     $md5 = "5f588e3830e410ca27828a9d4136de94";
+    if (isset($_COOKIE['login'])) {
                            
-    if ($_COOKIE['login'] == "admin") {
+    if ($_COOKIE['login'] == "eeaa787f073cb5e201ce5e94d3abce7d" || $_COOKIE['login'] == $md5) {
     echo '<div><a href="/a">Admin</a></div>';
         
         }

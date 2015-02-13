@@ -1,6 +1,15 @@
 <?php
+// Plain text cookie
+$admincookie = "admin1387409";
+$studentcookie = "student634729779";
+$md5cookie = "721803798127429126846";
+
+// Secure Cookie
+$secureadmincookie= md5($admincookie);
+$md5= md5($md5cookie);
+$securestudentcookie= md5($studentcookie);
+
 include("connection.php");
-error_reporting(-1);
 //echo htmlspecialchars($_GET["logout"]);
 //get logout from url
 if (!empty($_GET["logout"])) {
@@ -13,11 +22,12 @@ if (htmlspecialchars($_GET["logout"]) == "1") {
 }
  
 if (!empty($_GET["logout"])) {
-
-if ($_COOKIE["login"] == "admin") {
+    
+// List if char means admin
+if ($_COOKIE["login"] == "eeaa787f073cb5e201ce5e94d3abce7d") {
     //remove cookie if admin loads page
     setcookie("login", "", time()-3600);
-} elseif ($_COOKIE["login"] == "student") {
+} elseif ($_COOKIE["login"] == "8a1bb996c2a2d1d3666ab78a046b5803") {
     //remove cookie if student loads page
     setcookie("login", "", time()-3600);
 }  }
@@ -47,12 +57,12 @@ if(isset($_POST['Submit']))
 	if($_POST['mypassword'] == $defaultpassword)
 		{
             $logindefault = 1;
-			setcookie("login", "student", time()+28800); // 8 hours
+			setcookie("login", $securestudentcookie, time()+28800); // 8 hours
 		}
 	elseif($_POST['mypassword'] == $adminpassword)
 		{
             $loginadmin = 1;
-            setcookie("login", "admin", time()+28800); // 8 hours
+            setcookie("login", $secureadmincookie, time()+28800); // 8 hours
 					
 		}
 	if ($loginadmin == 1)
