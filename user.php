@@ -36,6 +36,7 @@
 	<title>PSCS Attendance student interface</title>
 	<link rel="stylesheet" type="text/css" href="attendance.css">
 	<link rel='stylesheet' href="css/pikaday.css" />
+    <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
     <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>

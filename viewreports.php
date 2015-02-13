@@ -2,7 +2,7 @@
 <head>
 	<title>View Reports</title>
 			<link rel="stylesheet" type="text/css" href="attendance.css">
-
+            <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 </head>
 <body class="view-reports">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>

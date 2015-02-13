@@ -47,12 +47,12 @@ if(isset($_POST['Submit']))
 	if($_POST['mypassword'] == $defaultpassword)
 		{
             $logindefault = 1;
-			setcookie("login", "student", time()+3600); // 1 hour
+			setcookie("login", "student", time()+28800); // 8 hours
 		}
 	elseif($_POST['mypassword'] == $adminpassword)
 		{
             $loginadmin = 1;
-            setcookie("login", "admin", time()+3600); // 1 hour
+            setcookie("login", "admin", time()+28800); // 8 hours
 					
 		}
 	if ($loginadmin == 1)
@@ -68,6 +68,7 @@ if(isset($_POST['Submit']))
 <html>
 <head>
 <title>PSCS attendance system login</title>
+<link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 </head>
 
 <style>
