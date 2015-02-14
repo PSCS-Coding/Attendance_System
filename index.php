@@ -328,19 +328,7 @@
 			echo "<input type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . $groupsResult[$j]["name"] . "'>";
 			echo "</div> ";
 		}
-		for ($k = 0; $k < count($groupsResult); $k++) {
-			if (!empty($_POST[$groupsResult[$k]["name"]])) {
-				$ids = explode(",", $groupsResult[$k]['studentids']);
-				for ($l = 0; $l < count($ids); $l++) {
-					echo $ids[$l];
-					}
-	echo"<script>
-    document.getElementById(30).checked = true;
-</script>";
-//echo "hollllllllllllllllllll";
-		}
-	}
-				?>
+	?>
 		</form>
 	</div>
 	<!-- student information table rendering -->
@@ -433,6 +421,15 @@
 	
 					</td>
 				<?php 
+						for ($k = 0; $k < count($groupsResult); $k++) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentids']);
+				for ($l = 0; $l < count($ids); $l++) {
+					echo $ids[$l];
+					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+				}
+			}	
+		}	
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
