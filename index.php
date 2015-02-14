@@ -325,9 +325,17 @@
 		<?php
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<div>";
-			echo "<input type='submit' name='submit' value='" . $groupsResult[$j]["name"] . "'>";
+			echo "<input type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . $groupsResult[$j]["name"] . "'>";
 			echo "</div> ";
 		}
+		for ($k = 0; $k < count($groupsResult); $k++) {
+	if (!empty($_POST[$groupsResult[$k]["name"]])) {
+	echo"<script>
+    document.getElementById(30).checked = true;
+</script>";
+echo "hollllllllllllllllllll";
+	}
+}
 				?>
 		</form>
 	</div>
@@ -498,12 +506,6 @@
 			} 
 		}
 	}
-	//for ($k = 0; $k < count($groupsResult); $k++) {
-	//if (!empty($_POST[$groupsResult[$k]["name"])) {
-	echo"<script>
-    document.getElementById(30).checked = true;
-</script>";
-//}
 	?>
 	</table>
 	</table>
