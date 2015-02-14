@@ -1,7 +1,7 @@
         <?php
         // Set passwords for comparison later in document
-        $adminpass = "eeaa787f073cb5e201ce5e94d3abce7d";
-        $studentpass = "8a1bb996c2a2d1d3666ab78a046b5803";
+        $adminpass = md5("admin1387409");
+        $studentpass = md5("student634729779");
         $md5 = "5f588e3830e410ca27828a9d4136de94";
         if (!empty($_COOKIE["login"])) {
   
