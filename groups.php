@@ -15,6 +15,12 @@ $groupsResult = array();
 while ($group = $groupsQuery->fetch_array()) {
 	array_push($groupsResult, $group);
 }
+echo "<form method='post'>";	
+for ($j = 0; $j < count($groupsResult); $j++) {
+	echo "<input type='submit' name='submit' value='" . $groupsResult[$j]["name"] . "'>";
+	echo "<br />";
+	}
+echo "</form>";
 print_r($groupsResult);
 echo "<br /><br /><br />";
 $ids = explode(",", $groupsResult[0]['studentids']);
@@ -28,5 +34,5 @@ echo $ids[$i];
     </form>
   
 <script>
-    document.getElementById('69').checked = true;
+    document.getElementById(69).checked = true;
 </script>
