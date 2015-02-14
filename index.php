@@ -272,8 +272,8 @@
 		      while ($place_option = $placeget->fetch_assoc()) {
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
 </datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
-	        <input class="button" type="submit" name="offsite" value="Offsite" maxlength="50">
+			<input type="text" name="offtime" placeholder='Return time' id="offtime" maxlength="20">
+	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
 	    <div>
