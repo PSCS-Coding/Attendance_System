@@ -329,13 +329,17 @@
 			echo "</div> ";
 		}
 		for ($k = 0; $k < count($groupsResult); $k++) {
-	if (!empty($_POST[$groupsResult[$k]["name"]])) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentids']);
+				for ($l = 0; $l < count($ids); $l++) {
+					echo $ids[$l];
+					}
 	echo"<script>
     document.getElementById(30).checked = true;
 </script>";
-echo "hollllllllllllllllllll";
+//echo "hollllllllllllllllllll";
+		}
 	}
-}
 				?>
 		</form>
 	</div>
