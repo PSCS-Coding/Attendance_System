@@ -88,9 +88,6 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
 		$endDate = new DateTime($endeventdate);
 		$dayDiff = $endDate->diff($startDate)->format("%a");
 		$dayDiff = $dayDiff + 1;
-		if ($endDate < $startDate){
-			echo "start date after end date";
-		}
 		echo $dayDiff-1;
 	}
 	
@@ -112,7 +109,11 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
     $stmt->bind_param('iisss', $id, $status, $eventdate, $returntimestring, $info);
     $stmt->execute();
     $stmt->close();
-	$eventdate = $eventdate + 24*60*60;
+	if ($endDate < $startDate){
+			$eventdate = $eventdate - 24*60*60;
+	} else {
+		$eventdate = $eventdate + 24*60*60;
+	}
 	$dayDiff--;
 	}
 }
