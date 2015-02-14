@@ -33,7 +33,7 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
-        require_once("login.php");
+    //    require_once("login.php");
 	    require_once("connection.php");
 	    require_once("function.php");
 		
@@ -44,6 +44,16 @@
 			while ($blah = $status_result->fetch_assoc()) {
 				$status_array[] = $blah['statusname'];
 			}
+		
+		//time for fetching groups!!
+		$groupsQuery = $db_server->query("SELECT name, studentids FROM groups ORDER BY name DESC");
+			$groupsResult = array();
+			while ($group = $groupsQuery->fetch_array()) {
+				array_push($groupsResult, $group);
+				$groupsCount += 1;
+			}
+		
+		
 		//this function sorts multidimensional arrays by one of their subkeys
 	    //$a = the array to be sorted -- $subkey = the subkey to be sorted by
 		function subval_sort($a, $subkey, $result) {
@@ -312,6 +322,12 @@
         <div>
 			<a href="secondary_login.php?logout=1">Logout</a>
 		</div>
+		<?php
+			for ($g = 0; $g < $groupsCount; $g++);
+				echo "<div>";
+				echo "<input type='submit' name='submit' value='" . $groupsResult[$g]['name'] . "'>";
+				echo "</div>";
+				?>
 		</form>
 	</div>
 	<!-- student information table rendering -->
@@ -400,7 +416,7 @@
 				<tr>
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
-						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
+						<input type='checkbox' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
 					</td>
 				<?php 
@@ -481,6 +497,11 @@
 			} 
 		}
 	}
+	if (!empty($_POST["newgroup"])) {
+	echo"<script>
+    document.getElementById(30).checked = true;
+</script>";
+}
 	?>
 	</table>
 	</table>
