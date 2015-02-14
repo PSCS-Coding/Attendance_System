@@ -83,14 +83,15 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
     global $db_server;
     $info = strip_tags($info);
 	$startDate = DateTime::createFromFormat( 'U', $eventdate );
-	
-	//print_r($startDate);
-	
+
 	if($endeventdate != null){
-		echo "end event date set!";
 		$endDate = new DateTime($endeventdate);
 		$dayDiff = $endDate->diff($startDate)->format("%a");
 		$dayDiff = $dayDiff + 1;
+		if ($endDate < $startDate){
+			echo "start date after end date";
+		}
+		echo $dayDiff-1;
 	}
 	
     if (!empty($returntime)) {
@@ -100,7 +101,7 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
         $returntimestring="";
     }
         
-	while ($dayDiff > 0){
+	while ($dayDiff != 0){
 		
     $stmt = $db_server->prepare(
         "INSERT INTO preplannedevents
