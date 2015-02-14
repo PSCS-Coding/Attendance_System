@@ -88,7 +88,6 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
 		$endDate = new DateTime($endeventdate);
 		$dayDiff = $endDate->diff($startDate)->format("%a");
 		$dayDiff = $dayDiff + 1;
-		echo $dayDiff-1;
 	}
 	
     if (!empty($returntime)) {
