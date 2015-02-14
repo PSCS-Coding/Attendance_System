@@ -425,7 +425,7 @@
 			if (!empty($_POST[$groupsResult[$k]["name"]])) {
 				$ids = explode(",", $groupsResult[$k]['studentids']);
 				for ($l = 0; $l < count($ids); $l++) {
-					echo $ids[$l];
+					//echo $ids[$l];
 					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
 				}
 			}	
