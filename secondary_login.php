@@ -1,9 +1,20 @@
 <?php
-// Plain text cookie
-$admincookie = "admin1387409";
-$studentcookie = "student634729779";
 
 include("connection.php");
+
+if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
+{
+    $row = $result->fetch_assoc();
+	
+    $result->free();
+}
+$logindefault = 0;
+$loginadmin = 0;
+// This is for admin cookie and password compairison
+$studentpassword = $row['password'];
+$adminpassword = $row['adminPass'];
+
+
 //echo htmlspecialchars($_GET["logout"]);
 //get logout from url
 if (!empty($_GET["logout"])) {
@@ -18,10 +29,10 @@ if (htmlspecialchars($_GET["logout"]) == "1") {
 if (!empty($_GET["logout"])) {
     
 // List if char means admin
-if ($_COOKIE["login"] == md5($admincookie)) {
+if ($_COOKIE["login"] == $adminpassword) {
     //remove cookie if admin loads page
     setcookie("login", "", time()-3600);
-} elseif ($_COOKIE["login"] == md5($studentcookie)) {
+} elseif ($_COOKIE["login"] == $studentpassword) {
     //remove cookie if student loads page
     setcookie("login", "", time()-3600);
 }  }
@@ -29,17 +40,6 @@ if ($_COOKIE["login"] == md5($admincookie)) {
     //delete login cookie
     setcookie("login", "", time()-3600);
 }
-
-if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
-{
-    $row = $result->fetch_assoc();
-	
-    $result->free();
-}
-$logindefault = 0;
-$loginadmin = 0;
-$defaultpassword = $row['password'];
-$adminpassword = $row['adminPass'];
 //if(isset($_SESSION['prevURL'])) 
 //   $url = $_SESSION['prevURL']; // holds url for last page visited.
 //else 
@@ -47,15 +47,15 @@ $adminpassword = $row['adminPass'];
 ?><?php
 if(isset($_POST['Submit']))
 {
-	if($_POST['mypassword'] == $defaultpassword)
+	if(md5($_POST['mypassword']) == $studentpassword)
 		{
             $logindefault = 1;
-			setcookie("login", md5($studentcookie), time()+28800); // 8 hours
+			setcookie("login", $studentpassword, time()+28800); // 8 hours
 		}
-	elseif($_POST['mypassword'] == $adminpassword)
+	elseif(md5($_POST['mypassword']) == $adminpassword)
 		{
             $loginadmin = 1;
-            setcookie("login", md5($admincookie), time()+28800); // 8 hours
+            setcookie("login", $adminpassword, time()+28800); // 8 hours
 					
 		}
 	if ($loginadmin == 1)
