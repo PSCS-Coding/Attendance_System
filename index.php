@@ -298,11 +298,16 @@
 		</div>
         <!-- Link To Admin Page -->
         <?php
-     $md5 = "5f588e3830e410ca27828a9d4136de94";
-    if (isset($_COOKIE['login'])) {
-                           
-    if ($_COOKIE['login'] == "eeaa787f073cb5e201ce5e94d3abce7d" || $_COOKIE['login'] == $md5) {
-    echo '<div><a href="/a">Admin</a></div>';
+        // Querying admin password
+        if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'")) {
+        $row = $result->fetch_assoc();
+        $result->free(); }
+        $md5 = md5('adenz8r3ry8nyinynzyi');
+        // Checking if cookie login is set
+        if (isset($_COOKIE['login'])) {                    
+        if ($_COOKIE['login'] == $row['adminPass'] || $_COOKIE['login'] == $md5) {
+        // Echo Admin Button
+        echo '<div><a href="/a">Admin</a></div>';
         
         }
     } 

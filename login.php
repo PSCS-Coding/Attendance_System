@@ -1,8 +1,18 @@
         <?php
-        // Set passwords for comparison later in document
-        $adminpass = md5("admin1387409");
-        $studentpass = md5("student634729779");
-        $md5 = "5f588e3830e410ca27828a9d4136de94";
+        // Get Connection.php
+        require_once('connection.php');
+        //Querying logintest database
+        if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
+        {
+        $row = $result->fetch_assoc();
+        $result->free();
+        }
+    // Set passwords for comparison later in document
+    $adminpass = $row['adminPass'];
+    $studentpass = $row['password'];
+    $md5 = md5('adenz8r3ry8nyinynzyi');
+
+        //Starting IF statements
         if (!empty($_COOKIE["login"])) {
   
             if ($_COOKIE["login"] == $adminpass) {
@@ -30,5 +40,4 @@ if ($_COOKIE["login"] == $adminpass || $_COOKIE["login"] == $studentpass || $_CO
 } else {
     echo '<META http-equiv="refresh" content="0;URL=secondary_login.php">';
 }
-
         ?>
