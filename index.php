@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 	    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+        <script src="js/OffsiteCount.js" type="text/javascript"></script>
         <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 	    <script type="text/javascript">
 			$(document).ready(function(){
@@ -265,7 +266,7 @@
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offloc" name="offloc" placeholder="Offsite Location">
+	        <input list="offloc" name="offloc" id="offsiteloc" placeholder="Offsite Location" maxlength="25">
 <datalist id="offloc">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
