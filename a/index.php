@@ -17,7 +17,6 @@
 		
             <?php
          // set up mysql connection
-	 error_reporting(0);
      $userlevel = "admin";
      require_once("../login.php");
 	 require_once("../connection.php");
