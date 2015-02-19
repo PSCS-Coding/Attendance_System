@@ -418,6 +418,7 @@ if (!empty($_POST)){
 
 		<div>
 		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
+		<br>
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
 	</div>
