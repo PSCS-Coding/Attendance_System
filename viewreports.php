@@ -11,9 +11,7 @@ if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
-} else {
-	echo "Please choose a student ";
-}
+} 
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
@@ -43,10 +41,14 @@ while ($student = $current_users_query->fetch_array()) {
 			<a href="index.php">Return to main attendance view</a>
 		</div>
 	</div>
-
 <div class='report-container'>
-
+<?php
+if (!isset($_POST['studentselect'])) {
+?>
+    <h1>Who Are You?</h1>
+    Select a name from the dropdown above
 	<?php
+} //Close if statment
 
 //holidays array
 $holiday_data_array = array();
