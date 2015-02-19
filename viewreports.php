@@ -1,17 +1,12 @@
 <html>
 <head>
 	<title>View Reports</title>
-			<link rel="stylesheet" type="text/css" href="attendance.css">
-            <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
+    <?php require_once('header.php'); ?>
 </head>
 <body class="view-reports">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
-require_once("connection.php");
-require_once("function.php");
-require_once("login.php");
-
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {

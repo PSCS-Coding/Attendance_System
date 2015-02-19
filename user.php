@@ -34,12 +34,7 @@
 <html>
 <head>
 	<title>PSCS Attendance student interface</title>
-	<link rel="stylesheet" type="text/css" href="attendance.css">
-	<link rel='stylesheet' href="css/pikaday.css" />
-    <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+    <?php require_once('header.php'); ?>
     <script type="text/javascript">
 		$(document).ready(function(){
 			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
