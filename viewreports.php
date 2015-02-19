@@ -210,6 +210,17 @@ echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>"
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
 $offsiteMin_remaining = $offsitehours_remaining % 60;
 
+$objstarttime = new DateTime($starttime);
+$objendtime = new DateTime($endtime);
+$daydiff = $objstarttime->diff($objendtime);
+$minutesinday = $daydiff->format('%i');
+$hoursinday = $daydiff->format('%h');
+$hoursinday = $hoursinday * 60;
+$totalminsinday = $hoursinday + $minutesinday;
+$totalminsinday / 60;
+
+$fulldaysleft = floor($offsitehours_remaining / $minutesinday);
+
 $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes of offsite left. </p>";
 if ($offsitehours_remaining < 0) {
 	$readable_offsiteleft = "<p class='reporttext'> You are out of offsite! You are over by " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes. </p>";
@@ -247,6 +258,8 @@ echo "<p class='reporttext'> The school year has ended.</p>";
 echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
+
+echo "<p class='reporttext'> You have &asymp; " . round($totalminsinday/$offsiteHrs_used, 1) . " full days of offsite left </p>";
 
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
 
