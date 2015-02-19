@@ -2,11 +2,7 @@
 	<html>
 	<head>
 		<title>PSCS Attendance: Status View</title>
-		<link rel="stylesheet" type="text/css" href="attendance.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-	    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
-        <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
+		<?php require_once('header.php') ?>
 	    <script type="text/javascript">
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
@@ -33,9 +29,6 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
-	    require_once("connection.php");
-	    require_once("function.php");
-		require_once("login.php");
 		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");
