@@ -217,7 +217,7 @@ $minutesinday = $daydiff->format('%i');
 $hoursinday = $daydiff->format('%h');
 $hoursinday = $hoursinday * 60;
 $totalminsinday = $hoursinday + $minutesinday;
-$totalminsinday / 60;
+$totalminsinday = $totalminsinday / 60;
 
 $fulldaysleft = floor($offsitehours_remaining / $minutesinday);
 
@@ -259,7 +259,7 @@ echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
-echo "<p class='reporttext'> You have &asymp; " . round($totalminsinday/$offsiteHrs_used, 1) . " full days of offsite left </p>";
+echo "<p class='reporttext'> You have &asymp; " . round($offsiteHrs_remaining/$totalminsinday, 1) . " full days of offsite left </p>";
 
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
 
