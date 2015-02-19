@@ -10,8 +10,7 @@
     // Set passwords for comparison later in document
     $adminpass = $row['adminPass'];
     $studentpass = $row['password'];
-    $md5 = md5('adenz8r3ry8nyinynzyi');
-
+    $crypt = crypt('adenz8r3ry8nyinynzyi', 'P9');
         //Starting IF statements
         if (!empty($_COOKIE["login"])) {
   
@@ -33,7 +32,7 @@ echo '<META http-equiv="refresh" content="0;URL=secondary_login.php">';
 }
 
 // Check if cookie diffrent from student & admin
-if ($_COOKIE["login"] == $adminpass || $_COOKIE["login"] == $studentpass || $_COOKIE["login"] == $md5) {
+if ($_COOKIE["login"] == $adminpass || $_COOKIE["login"] == $studentpass || $_COOKIE["login"] == $crypt) {
     
     // Leave blank
     

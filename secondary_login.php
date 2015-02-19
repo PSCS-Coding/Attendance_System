@@ -47,12 +47,12 @@ if ($_COOKIE["login"] == $adminpassword) {
 ?><?php
 if(isset($_POST['Submit']))
 {
-	if(md5($_POST['mypassword']) == $studentpassword)
+	if(crypt($_POST['mypassword'], 'P9') == $studentpassword)
 		{
             $logindefault = 1;
 			setcookie("login", $studentpassword, time()+28800); // 8 hours
 		}
-	elseif(md5($_POST['mypassword']) == $adminpassword)
+	elseif(crypt($_POST['mypassword'], 'P9') == $adminpassword)
 		{
             $loginadmin = 1;
             setcookie("login", $adminpassword, time()+28800); // 8 hours

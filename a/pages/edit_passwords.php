@@ -5,14 +5,18 @@
 <?php 
     // CHANGE PASSWORD
 if (!empty($_POST['saveadminpass'])) {
- $updatepass = $db_server->prepare("UPDATE logintest SET adminPass = ? WHERE password = ?");
-	  $updatepass->bind_param('si', md5($_POST['adminpassword']), $_POST['id']);
+// Adding Crypt to admin password
+    $AdminCrypt = crypt($_POST['adminpassword'], 'P9');
+ $updatepass = $db_server->prepare("UPDATE login SET adminPass = ? WHERE password = ?");
+	  $updatepass->bind_param('si', $AdminCrypt, $_POST['id']);
 	  $updatepass->execute(); 
 	  $updatepass->close();
 	}
 if (!empty($_POST['savestudentpass'])) {
- $updatepass = $db_server->prepare("UPDATE logintest SET password = ? WHERE password = ?");
-	  $updatepass->bind_param('si', md5($_POST['password']), $_POST['id']);
+// Adding Crypt to student password
+    $StudentCrypt = crypt($_POST['password'], 'P9');
+ $updatepass = $db_server->prepare("UPDATE login SET password = ? WHERE password = ?");
+	  $updatepass->bind_param('si', $StudentCrypt, $_POST['id']);
 	  $updatepass->execute(); 
 	  $updatepass->close();
 	} 
