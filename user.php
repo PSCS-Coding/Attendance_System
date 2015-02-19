@@ -153,14 +153,14 @@ if (!empty($_POST)){
 
 
 	$endchoosedate=strtotime($_POST['chooseday']);
-// plan syntax is plan(id, statusid, chosen date, returntime, info);	
+// plan syntax is plan(id, statusid, chosen date, returntime, info, thru date);	
 	   //present    
 	if (!empty($_POST['present'])){
 			?><div class="error">You cannot pre-plan being present</div><?php
 	}
 	//absent    
 	if (!empty($_POST['absent'])){
-			plan($id, '7', $endchoosedate, '', '');
+			plan($id, '7', $endchoosedate, '', '', $_POST['secondchoosedate']);
 			}
     //offsite
 	if (!empty($_POST['offsite'])) {
@@ -181,7 +181,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['latetime'])){
 				$info="";
 			if (validTime($_POST['latetime'])){
-				plan($id, '5', $endchoosedate, $_POST['latetime'], $info);
+				plan($id, '5', $endchoosedate, $_POST['latetime'], $info, $_POST['secondchoosedate']);
 			} else {
 			echo "<div class='error'>Please enter a valid late time.</div>";
 			}
@@ -195,7 +195,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['istime'])){
 				$info="";
 			if (validTime($_POST['istime'])){
-				plan($id, '6', $endchoosedate, $_POST['istime'], $info);
+				plan($id, '6', $endchoosedate, $_POST['istime'], $info, $_POST['secondchoosedate']);
 			} else {
 				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
@@ -210,7 +210,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				plan($id, '3', $endchoosedate, $_POST['fttime'], $info);
+				plan($id, '3', $endchoosedate, $_POST['fttime'], $info, $_POST['secondchoosedate']);
 			} else { 
 				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
@@ -417,8 +417,9 @@ if (!empty($_POST)){
 	?>
 
 		<div>
-		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect at this future date:
+		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
+		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
 	</div>
 
 	<?php
@@ -483,6 +484,7 @@ if (!empty($_POST)){
 <script src="js/pikaday.js"></script>
 <script>
     var picker = new Pikaday({ field: document.getElementById('chooseday') });
+	var picker = new Pikaday({ field: document.getElementById('secondchoosedate') });
 </script>
 <?php require_once("login.php"); ?>
 </body>

@@ -77,10 +77,19 @@ function favorite($id, $status, $info, $returntime)
 }
 
 //function plan
-function plan($id, $status, $eventdate, $returntime, $info)
+function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
 {
+	$dayDiff = 1;
     global $db_server;
     $info = strip_tags($info);
+	$startDate = DateTime::createFromFormat( 'U', $eventdate );
+
+	if($endeventdate != null){
+		$endDate = new DateTime($endeventdate);
+		$dayDiff = $endDate->diff($startDate)->format("%a");
+		$dayDiff = $dayDiff + 1;
+	}
+	
     if (!empty($returntime)) {
         $whenreturn = new DateTime($returntime);
         $returntimestring = $whenreturn->format('H:i:s');
@@ -88,6 +97,12 @@ function plan($id, $status, $eventdate, $returntime, $info)
         $returntimestring="";
     }
         
+	if (empty($endDate)){
+		$endDate = $startDate;
+	}
+	
+	while ($dayDiff != 0){
+		
     $stmt = $db_server->prepare(
         "INSERT INTO preplannedevents
         (studentid, statusid, eventdate, returntime, info)
@@ -97,6 +112,14 @@ function plan($id, $status, $eventdate, $returntime, $info)
     $stmt->bind_param('iisss', $id, $status, $eventdate, $returntimestring, $info);
     $stmt->execute();
     $stmt->close();
+
+	if ($endDate < $startDate){
+			$eventdate = $eventdate - 24*60*60;
+	} else {
+		$eventdate = $eventdate + 24*60*60;
+	}
+	$dayDiff--;
+	}
 }
 
 function login()
