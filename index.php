@@ -299,13 +299,13 @@
         <!-- Link To Admin Page -->
         <?php
         // Querying admin password
-        if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'")) {
+        if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'")) {
         $row = $result->fetch_assoc();
         $result->free(); }
-        $md5 = md5('adenz8r3ry8nyinynzyi');
+        $crypt = crypt('adenz8r3ry8nyinynzyi', 'P9');
         // Checking if cookie login is set
         if (isset($_COOKIE['login'])) {                    
-        if ($_COOKIE['login'] == $row['adminPass'] || $_COOKIE['login'] == $md5) {
+        if ($_COOKIE['login'] == $row['adminPass'] || $_COOKIE['login'] == $crypt) {
         // Echo Admin Button
         echo '<div><a href="/a">Admin</a></div>';
         
