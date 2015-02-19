@@ -2,7 +2,7 @@
 
 include("connection.php");
 
-if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
+if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
 {
     $row = $result->fetch_assoc();
 	

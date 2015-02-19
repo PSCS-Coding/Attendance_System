@@ -19,7 +19,7 @@ if (!empty($_POST['savestudentpass'])) {
 	
 
 // GET THE LIST OF PASSWORDS
-	$passwordresult = $db_server->query("SELECT * FROM logintest ORDER BY password");
+	$passwordresult = $db_server->query("SELECT * FROM login ORDER BY password");
     ?>
     
 <div class="passwords">
