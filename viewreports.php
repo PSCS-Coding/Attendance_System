@@ -46,23 +46,9 @@ while ($student = $current_users_query->fetch_array()) {
 <div class='report-container'>
 <?php
 if (!isset($_POST['studentselect'])) {
-?>  <form method='post' id='studentform' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
+?>
     <h1>Who Are You?</h1>
-    Select your name to view your custom report:
-    &nbsp;
-	<select name='studentselect'>
-	<?php
-	foreach($current_users_result as $student) {
-		$lastinitial = substr($student['lastname'], 0, 1); ?>
-		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
-		<?php
-	}
-	?>
-	</select>
-    &nbsp;
-	<input type='submit' name='studentsubmit' value="Select">
-	</form>
+    Select a name from the dropdown above
 	<?php
 } //Close if statment
 
