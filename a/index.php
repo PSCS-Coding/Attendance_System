@@ -6,7 +6,7 @@
 	    <link rel='stylesheet' href="css/pikaday.css" />
         <link rel='stylesheet' href="css/adminpage.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-
+<link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
             <title>Admin Page</title>
         </head>
                 <body style="background-color: dimgray;">

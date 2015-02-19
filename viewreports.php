@@ -1,17 +1,12 @@
 <html>
 <head>
 	<title>View Reports</title>
-			<link rel="stylesheet" type="text/css" href="attendance.css">
-
+    <?php require_once('header.php'); ?>
 </head>
 <body class="view-reports">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
-require_once("connection.php");
-require_once("function.php");
-require_once("login.php");
-
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
@@ -284,7 +279,7 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
-<table class='eventlog'>
+<table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
 <th>Status</th>

@@ -1,14 +1,7 @@
 	<!DOCTYPE html>
 	<html>
 	<head>
-		
-		
-		
-		<title>PSCS Attendance</title>
-		<link rel="stylesheet" type="text/css" href="attendance.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-	    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+        <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
@@ -35,9 +28,6 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
-        require_once("login.php");
-	    require_once("connection.php");
-	    require_once("function.php");
 		
 		$null_value = null;
 		
@@ -274,7 +264,7 @@
 		      while ($place_option = $placeget->fetch_assoc()) {
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
 </datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+			<input type="text" name="offtime" placeholder='Return time' id="offtime" maxlength="20">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
