@@ -11,9 +11,7 @@ if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
-} else {
-	echo "Please choose a student ";
-}
+} 
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
