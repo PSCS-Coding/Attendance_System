@@ -292,6 +292,14 @@ margin-bottom:1em;
 .deletefave {
 color:red;
 }
+.single-user #preplanned {
+background-color:#eee;
+padding:1em;
+}
+
+.deletePrePlanned {
+color:red;
+}
 
 body.view-reports {
 background-color:dimgrey;
