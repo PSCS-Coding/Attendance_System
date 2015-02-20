@@ -257,7 +257,7 @@
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offloc" name="offloc" placeholder="Offsite Location">
+	        <input list="offloc" name="offloc" placeholder="Offsite Location" class="offloc">
 <datalist id="offloc">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
