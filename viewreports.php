@@ -259,7 +259,7 @@ echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
-echo "<p class='reporttext'> You have &asymp; " . round($offsiteHrs_remaining/$totalminsinday, 1) . " full days of offsite left </p>";
+echo "<p class='reporttext'> You have &asymp; " . round($offsiteHrs_remaining/$totalminsinday, 1) . " full days of offsite left.</p>";
 
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
 
@@ -267,7 +267,7 @@ $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
-echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite</p>";
+echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite.</p>";
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
