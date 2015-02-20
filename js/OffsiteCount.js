@@ -3,11 +3,11 @@ $(document).ready(function(){
         var max = 25;
         var len = $(this).val().length;
         if (len >= max) {
-            $('#offloc').addClass('deletefave');           
+            $('#offloc').addClass('toolong');           
         } 
         else {
             var ch = max - len;
-            $('#offloc').removeClass('deletefave');          
+            $('#offloc').removeClass('toolong');          
         }
     });    
 });

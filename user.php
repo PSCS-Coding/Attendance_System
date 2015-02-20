@@ -326,7 +326,7 @@ if (!empty($_POST)){
     </div>
     <?php } ?> 
     <div>
-        <input type="text" name="offloc" placeholder='Location' autocomplete='on' maxlength="25">
+        <input type="text" name="offloc" placeholder='Location' autocomplete='on' maxlength="25" id="offloc">
 		<input type="text" name="offtime" placeholder='Return time' id="offtime">
         <input type="submit" name="offsite" value="Offsite">
     </div>
