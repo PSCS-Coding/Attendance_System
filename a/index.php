@@ -33,7 +33,7 @@
               <a href="../" id="goodbye" class="btn">Back to main page</a>
              
              <a href="?p=Students" id="button1" class="button">Students</a>
-             <a href="?p=Events" id="button7" class="button">Events</a>
+             <a href="#" id="#" class="button">Events</a>
              <a href="?p=Holidays" id="button5" class="button">Holidays</a>
         <a href="?p=Pws" id="button4" class="button">Passwords</a >
         <a href="?p=Facilitators" id="button2" class="button">Facilitators</a>
@@ -43,8 +43,9 @@
 </div>
 	    <?php
 //echo htmlspecialchars($_GET["page"]);
+if (isset($_GET["p"])) {
+
 if (htmlspecialchars($_GET["p"]) == "Students"){  
-    //include_once('edit_students.php');
    include ('JSUrl/studentjs.php');
 }
 if (htmlspecialchars($_GET["p"]) == "Facilitators"){  
@@ -64,6 +65,7 @@ if (htmlspecialchars($_GET["p"]) == "Globals"){
 }
 if (htmlspecialchars($_GET["p"]) == "Events"){  
     include_once('JSUrl/eventsjs.php');    
+}
 }
 ?>
             
@@ -121,7 +123,7 @@ if (htmlspecialchars($_GET["p"]) == "Events"){
 <div id="showdiv7">
 <?php
 // Get Globals
-    include_once("pages/edit_events.php");	
+    //include_once("pages/edit_events.php");	
 ?>
 </div>
 	 </div>
