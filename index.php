@@ -290,10 +290,16 @@
 		</div>
         <!-- Link To Admin Page -->
         <?php
-                       if (isset($_COOKIE['login'])) {
-                           
-    if ($_COOKIE['login'] == "admin") {
-    echo '<div><a href="/a">Admin</a></div>';
+        // Querying admin password
+        if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'")) {
+        $row = $result->fetch_assoc();
+        $result->free(); }
+        $crypt = crypt('adenz8r3ry8nyinynzyi', 'P9');
+        // Checking if cookie login is set
+        if (isset($_COOKIE['login'])) {                    
+        if ($_COOKIE['login'] == $row['adminPass'] || $_COOKIE['login'] == $crypt) {
+        // Echo Admin Button
+        echo '<div><a href="/a">Admin</a></div>';
         
         }
     } 
