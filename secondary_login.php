@@ -1,42 +1,50 @@
 <?php
 include("connection.php");
-error_reporting(-1);
-//echo htmlspecialchars($_GET["logout"]);
-//get logout from url
-if (!empty($_GET["logout"])) {
-    
-if (htmlspecialchars($_GET["logout"]) == "1") {
-    // delete cookie
-    setcookie("login", "", time()-3600);
-}
 
-}
- 
-if (!empty($_GET["logout"])) {
+$phpdatetime = new dateTime();
+$currentDate = $phpdatetime->format('dym');
 
-if ($_COOKIE["login"] == "admin") {
-    //remove cookie if admin loads page
-    setcookie("login", "", time()-3600);
-} elseif ($_COOKIE["login"] == "student") {
-    //remove cookie if student loads page
-    setcookie("login", "", time()-3600);
-}  }
-        else {
-    //delete login cookie
-    setcookie("login", "", time()-3600);
-}
-    
-
-if ($result = $db_server->query("SELECT * FROM logintest WHERE username='pscs'"))
+if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
 {
     $row = $result->fetch_assoc();
 	
     $result->free();
 }
-$logindefault = 0;
-$loginadmin = 0;
-$defaultpassword = $row['password'];
-$adminpassword = $row['adminPass'];
+$studentPW = $row['password'];
+$adminPW = $row['adminPass'];
+// Appdends date to password
+$SecureAdminPW = $adminPW;
+$SecureAdminPW .= crypt($currentDate, 'M7');
+$SecureStudentPW = $studentPW;
+$SecureStudentPW .= crypt($currentDate, 'M7');
+
+
+$StudentLogin = 0;
+$AdminLogin = 0;
+//echo htmlspecialchars($_GET["logout"]);
+//get logout from url
+if (!empty($_GET["logout"])) {
+    
+if (($_GET["logout"]) == "1") {
+    // delete cookie
+    setcookie("login", "", time()-3600);
+}
+    
+}
+if (!empty($_GET["logout"])) {
+    
+if ($_COOKIE["login"] == $SecureAdminPW) {
+    //remove cookie if admin loads page
+    setcookie("login", "", time()-3600);
+} elseif ($_COOKIE["login"] == $SecureStudentPW) {
+    //remove cookie if student loads page
+    setcookie("login", "", time()-3600);
+}
+} else {
+    //delete login cookie
+    setcookie("login", "", time()-3600);
+}
+
 //if(isset($_SESSION['prevURL'])) 
 //   $url = $_SESSION['prevURL']; // holds url for last page visited.
 //else 
@@ -44,24 +52,24 @@ $adminpassword = $row['adminPass'];
 ?><?php
 if(isset($_POST['Submit']))
 {
-	if($_POST['mypassword'] == $defaultpassword)
+	if (crypt($_POST['mypassword'], 'P9') == $studentPW)
 		{
-            $logindefault = 1;
-			setcookie("login", "student", time()+28800); // 8 hours
+            $StudentLogin = 1;
+			setcookie("login", $SecureStudentPW, time()+28800); // 8 hours
 		}
-	elseif($_POST['mypassword'] == $adminpassword)
+	elseif (crypt($_POST['mypassword'], 'P9') == $adminPW)
 		{
-            $loginadmin = 1;
-            setcookie("login", "admin", time()+28800); // 8 hours
-					
+            $AdminLogin = 1;
+            setcookie("login", $SecureAdminPW, time()+28800); // 8 hours		
 		}
-	if ($loginadmin == 1)
-		{
-			header("location:$url");
-		} elseif ($logindefault == 1) {
+	if ($AdminLogin == 1) {
+        
+     header("location:$url");
+        
+		} elseif ($StudentLogin == 1) {
+        
         echo '<META http-equiv="refresh" content="0;URL=index.php">';
-    }
-	else
+    } else
 		die("Wrong password :^)");
 }
 ?>
@@ -121,7 +129,6 @@ if(isset($_POST['Submit']))
 	text-decoration: none;
 	color: gray;
     }
-
 </style>
 
 <body style="background-color: dimgray;">

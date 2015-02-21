@@ -28,7 +28,6 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
-		
 		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");
@@ -289,12 +288,10 @@
 			<a href="statusview.php">Status View</a>
 		</div>
         <!-- Link To Admin Page -->
-        <?php
-                       if (isset($_COOKIE['login'])) {
-                           
-    if ($_COOKIE['login'] == "admin") {
+        <?php        
+    if (isset($_COOKIE['login'])) {
+    if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
     echo '<div><a href="/a">Admin</a></div>';
-        
         }
     } 
         ?>
