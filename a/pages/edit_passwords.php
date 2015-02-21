@@ -4,61 +4,47 @@
      
 <?php 
     // CHANGE PASSWORD
-if (isset($_POST['savepass'])) {
- $updatepass = $db_server->prepare("UPDATE logintest SET adminPass = ? , password = ? WHERE password = ?");
-	  $updatepass->bind_param('ssi', $_POST['adminpassword'], $_POST['password'], $_POST['id']);
+if (!empty($_POST['saveadminpass'])) {
+// Adding Crypt to admin password
+    $AdminCrypt = crypt($_POST['adminpassword'], 'P9');
+ $updatepass = $db_server->prepare("UPDATE login SET adminPass = ? WHERE password = ?");
+	  $updatepass->bind_param('si', $AdminCrypt, $_POST['id']);
+	  $updatepass->execute(); 
+	  $updatepass->close();
+	}
+if (!empty($_POST['savestudentpass'])) {
+// Adding Crypt to student password
+    $StudentCrypt = crypt($_POST['password'], 'P9');
+ $updatepass = $db_server->prepare("UPDATE login SET password = ? WHERE password = ?");
+	  $updatepass->bind_param('si', $StudentCrypt, $_POST['id']);
 	  $updatepass->execute(); 
 	  $updatepass->close();
 	} 
 	
 
 // GET THE LIST OF PASSWORDS
-	$passwordresult = $db_server->query("SELECT * FROM logintest ORDER BY password");
+	$passwordresult = $db_server->query("SELECT * FROM login ORDER BY password");
     ?>
     
 <div class="passwords">
-<table>
-   <tr>
-      <th>Admin Password:</th>
-      <th>Default Password:</th>
-      <th>Edit</th>
-   </tr>
 <?php
 // loop through passwords
 while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>
 
 <form action="?p=Pws" method="post">
 <input type="hidden" name="id" value="<?php echo $passlist['password']; ?>">
-	<tr>
-		<?php $editme = "editpass-" . $passlist['password'];
-		if (isset($_POST[$editme])) { 
-		?> 
-		<td><input type="text" name="adminpassword" value="<?php echo $passlist['adminPass']; ?>" required></td>
-		<td><input type="text" name="password" value="<?php echo $passlist['password']; ?>"></td>
-	    
-		<td><button type="submit" name="savepass" value="<?php echo $passlist['password']; ?>">Save</button></td>
-		<?php } else { ?>
-        
-<?php
-    // Admin Password
-    $apass = $passlist['adminPass'];
-    $newapass = str_ireplace($apass, "confidential", $apass);
-    // Default Password
-    $dpass = $passlist['password'];
-    $newdpass = str_ireplace($dpass, "confidential", $dpass);
-?>
-                <td><?php echo $newapass ?></td>
-                </div>
-		<td><?php echo $newdpass ?></td>
-		
-		<td><input type="submit" name="editpass-<?php echo $passlist['password']; ?>" value="Edit"></td>
-		<?php } ?>	
-	</tr>
+        <div id="adminpwd">
+		<input type="password" name="adminpassword" placeholder="New Admin Password" autocomplete="off">
+    <button type="submit" name="saveadminpass" value="<?php echo $passlist['password']; ?>">Update</button>
+    </div>
+    <div id="studentpwd">
+		<input type="password" name="password" placeholder="New Student Password" autocomplete="off">
+    <button type="submit" name="savestudentpass" value="<?php echo $passlist['password']; ?>">Update</button>
+	    	</div>
 </form>
 <?php 
 } // end while
 ?>
-</table>
 </div>
 </body>
 </html>
