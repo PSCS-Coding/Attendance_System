@@ -43,7 +43,7 @@ while ($student = $current_users_query->fetch_array()) {
 	</div>
 <div class='report-container'>
 <?php
-if (!isset($_POST['studentselect'])) {
+if (!isset($_POST['studentselect']) && (empty($_GET['id']))) {
 ?>
     <h1>Who Are You?</h1>
     Select a name from the dropdown above
