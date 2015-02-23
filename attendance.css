@@ -321,6 +321,11 @@ padding:1em;
 color:red;
 }
 
+.toolong {
+	background: red;
+	color: white;
+}
+
 body.view-reports {
 background-color:dimgrey;
 }

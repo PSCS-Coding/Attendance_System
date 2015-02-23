@@ -326,7 +326,7 @@ if (!empty($_POST)){
     </div>
     <?php } ?> 
     <div>
-        <input type="text" name="offloc" placeholder='Location' autocomplete='on'>
+        <input type="text" name="offloc" placeholder='Location' autocomplete='on' maxlength="25" id="offloc">
 		<input type="text" name="offtime" placeholder='Return time' id="offtime">
         <input type="submit" name="offsite" value="Offsite">
     </div>
@@ -419,8 +419,19 @@ if (!empty($_POST)){
 		
 		//render preplannedevents gui
 	?>
+<<<<<<< HEAD
 <div id="preplanned">
 		<h3>Pre Planed Events</h3>
+=======
+
+		<div>
+		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
+		<br>
+		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
+		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
+	</div>
+
+>>>>>>> master
 	<?php
 		$_SESSION['idd']=$id; //pass id for view reports
 		

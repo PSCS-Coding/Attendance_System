@@ -97,6 +97,10 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
         $returntimestring="";
     }
         
+	if (empty($endDate)){
+		$endDate = $startDate;
+	}
+	
 	while ($dayDiff != 0){
 		
     $stmt = $db_server->prepare(
@@ -108,6 +112,7 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
     $stmt->bind_param('iisss', $id, $status, $eventdate, $returntimestring, $info);
     $stmt->execute();
     $stmt->close();
+
 	if ($endDate < $startDate){
 			$eventdate = $eventdate - 24*60*60;
 	} else {
