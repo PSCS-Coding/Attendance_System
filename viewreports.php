@@ -43,7 +43,7 @@ while ($student = $current_users_query->fetch_array()) {
 	</div>
 <div class='report-container'>
 <?php
-if (!isset($_POST['studentselect'])) {
+if (!isset($_POST['studentselect']) && (empty($_GET['id']))) {
 ?>
     <h1>Who Are You?</h1>
     Select a name from the dropdown above
@@ -212,6 +212,17 @@ echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>"
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
 $offsiteMin_remaining = $offsitehours_remaining % 60;
 
+$objstarttime = new DateTime($starttime);
+$objendtime = new DateTime($endtime);
+$daydiff = $objstarttime->diff($objendtime);
+$minutesinday = $daydiff->format('%i');
+$hoursinday = $daydiff->format('%h');
+$hoursinday = $hoursinday * 60;
+$totalminsinday = $hoursinday + $minutesinday;
+$totalminsinday = $totalminsinday / 60;
+
+$fulldaysleft = floor($offsitehours_remaining / $minutesinday);
+
 $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes of offsite left. </p>";
 if ($offsitehours_remaining < 0) {
 	$readable_offsiteleft = "<p class='reporttext'> You are out of offsite! You are over by " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes. </p>";
@@ -250,13 +261,15 @@ echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
+echo "<p class='reporttext'> You have &asymp; " . round($offsiteHrs_remaining/$totalminsinday, 1) . " full days of offsite left.</p>";
+
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
 
 $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
-echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite</p>";
+echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete and you have used " . $offsitePercent . "% of your offsite.</p>";
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;

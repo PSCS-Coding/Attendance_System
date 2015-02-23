@@ -28,7 +28,6 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
-		
 		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");
@@ -257,14 +256,18 @@
  
 	    <div>
 			<!-- top interface offsite -->
+<<<<<<< HEAD
 	        <input list="offloc" name="offloc" placeholder="Offsite Location" class="offloc">
+=======
+	        <input list="offloc" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25">
+>>>>>>> master
 <datalist id="offloc">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
 </datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime" maxlength="20">
+			<input type="text" name="offtime" placeholder='Return time' id="offtime" maxlength="25">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -289,12 +292,10 @@
 			<a href="statusview.php">Status View</a>
 		</div>
         <!-- Link To Admin Page -->
-        <?php
-                       if (isset($_COOKIE['login'])) {
-                           
-    if ($_COOKIE['login'] == "admin") {
+        <?php        
+    if (isset($_COOKIE['login'])) {
+    if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
     echo '<div><a href="/a">Admin</a></div>';
-        
         }
     } 
         ?>
