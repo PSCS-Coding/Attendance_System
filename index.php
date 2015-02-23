@@ -417,7 +417,7 @@
 				<tr>
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
-						<input type='checkbox' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
+						<input type='checkbox' name='person[]' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
 					</td>
 				<?php 
