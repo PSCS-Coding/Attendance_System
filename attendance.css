@@ -440,3 +440,6 @@ width:100%;
       .edit-events .editing-row {
          background-color: rgb(178, 178, 178);
       }
+.ui-timepicker-input {
+    width: 80px;
+}
