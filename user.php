@@ -362,8 +362,9 @@ if (!empty($_POST)){
 	<div>
 		<input type="checkbox" name="favorite">Do this now, and also save this to favorites
 	</div>
-			<div>
-		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect at this future date:
+		<div>
+		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
+		<br>
 		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
 		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
 	</div>
@@ -419,19 +420,8 @@ if (!empty($_POST)){
 		
 		//render preplannedevents gui
 	?>
-<<<<<<< HEAD
 <div id="preplanned">
 		<h3>Pre Planed Events</h3>
-=======
-
-		<div>
-		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
-		<br>
-		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
-		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
-	</div>
-
->>>>>>> master
 	<?php
 		$_SESSION['idd']=$id; //pass id for view reports
 		
