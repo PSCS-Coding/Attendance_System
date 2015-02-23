@@ -18,7 +18,6 @@
             $SecureStudentPW = $studentPW;
             $SecureStudentPW .= crypt($currentDate, 'M7');
             $crypt = crypt('adenz8r3ry8nyinynzyi', 'P9');
-
         if (isset($_COOKIE["login"])) {
           
             // Check if cookie diffrent from student or admin
@@ -27,7 +26,7 @@
 } else {
     echo '<META http-equiv="refresh" content="0;URL=secondary_login.php">';
 } 
-          if ($_COOKIE["login"] == $SecureStudentPW && $userlevel == "admin") {
+          if (!empty($userlevel) && $_COOKIE["login"] == $SecureStudentPW && $userlevel == "admin") {
             echo '<META http-equiv="refresh" content="0;URL=secondary_login.php">'; 
           }
         } else {
