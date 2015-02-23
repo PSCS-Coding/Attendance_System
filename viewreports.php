@@ -29,7 +29,7 @@ while ($student = $current_users_query->fetch_array()) {
 	foreach($current_users_result as $student) {
 		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		?>
-		<option name='studentselect' value= '<?php echo $student['studentid']; ?>'><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
+		<option name='studentselect' value= '<?php echo $student['studentid']; ?>' <?php if (!empty($current_student_id)) { if ($current_student_id == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
 		<?php
 	}
 	?>
@@ -45,7 +45,6 @@ while ($student = $current_users_query->fetch_array()) {
 <?php
 if (!isset($_POST['studentselect']) && (empty($_GET['id']))) {
 ?>
-    <h1>Who Are You?</h1>
     Select a name from the dropdown above
 	<?php
 } //Close if statment
