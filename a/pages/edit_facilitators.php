@@ -1,79 +1,118 @@
 <html>
 <body>
 <h1 class="headerr">Edit Facilitators</h1>
-
+<div class="facilitators">
 <?php 
-//Edit Facilitators
-if (isset($_POST['addnewfacilitator'])) {
-    $stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email) VALUES (?, ?)");
-    $stmt->bind_param('ss', $_POST['newfacilitatorname'] , $_POST['newfacilitatoremail']);
+// Making facilitator name look nice
+if (isset($_POST['addFacilitatorTXT'])) {
+$newFacilitatorName = $_POST['addFacilitatorTXT'];
+$newFacilitatorName = ucfirst(strtolower($newFacilitatorName));
+// Making facilitator email with name
+$newFacilitatorEmail = $_POST['addFacilitatorTXT'];
+$newFacilitatorEmail .= "@pscs.org";
+$newFacilitatorEmail = strtolower($newFacilitatorEmail);
+}
+// Add Facilitator to Database
+if (!empty($_POST['addFacilitatorTXT'])) {
+    $stmt = $db_server->prepare("INSERT INTO facilitators (FacName, FacEmail, advisor) VALUES (?, ?, ?)");
+    $stmt->bind_param('ssi', $newFacilitatorName , $newFacilitatorEmail , $_POST['AdvisorDropDown']);
     $stmt->execute(); 
     $stmt->close();				
 }
 
-// EDIT A Facilitator
-if (isset($_POST['savefacilitator'])) {
-    $stmt = $db_server->prepare("UPDATE facilitators SET facilitatorname = ? , email = ? WHERE facilitatorid = ?");
-    $stmt->bind_param('ssi', $_POST['facilitatorname'], $_POST['email'], $_POST['id']);
+// Update facilitator
+if (!empty($_POST['UpdateFac'])) {
+    $stmt = $db_server->prepare("UPDATE facilitators SET FacName = ? , FacEmail = ? , advisor = ? WHERE FacID = ?");
+    $stmt->bind_param('ssii', $_POST['UpdatedFacName'], $_POST['UpdatedFacEmail'], $_POST['UpdateAdvisorDropdown'], $_POST['id']);
     $stmt->execute(); 
     $stmt->close();
 } 
 
-// DELETE A FACILITATOR
-if(isset($_POST['deletefacilitator'])) {
-$stmt = $db_server->prepare("DELETE FROM facilitators WHERE facilitatorid = ?");
+// Remove Facilitator
+if(!empty($_POST['DelFac'])) {
+$stmt = $db_server->prepare("DELETE FROM facilitators WHERE FacID = ?");
 $stmt->bind_param('i', $_POST['id']);
 $stmt->execute(); 		
 $stmt->close();
 }
-	
-	
 
-// GET THE LIST OF FACILITATORS
-	$facilitatorsresult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname");
+// Query facilitator table
+$FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY FacName");
+
+// Display added facilitator at top of page
+if (!empty($_POST['addFacilitatorTXT'])) {
+    echo "Added $newFacilitatorName as a facilitator!";
+}
 ?>
     
-<div class="facilitators">
-<form style="margin-bottom:1em;" action="?p=Facilitators" method="post">
-	<input type="text" name="newfacilitatorname" placeholder="Facilitator Name" required>
-	<input type="text" name="newfacilitatoremail" placeholder="Facilitator Email">
-	<input type="submit" name="addnewfacilitator" value="Add Facilitator" />
-</form>
+<form action="?p=Facilitators" method="post">
+    <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name">
+    <select name="AdvisorDropDown">
+  <option selected value="0">Advisor?</option>
+  <option value="1">Yes</option>
+  <option value="0">No</option>
+</select>
+        <input type="submit" name="addFacilitatorBTN" value="Add Facilitator">
+    </form>
     
-<table>
+    <br />
+    
+    <table>
    <tr>
       <th>Name</th>
       <th>Email</th>
+      <th>Advisor</th>
       <th>Edit</th>
-	  <th>Delete</th>
+	  <th>Remove</th>
    </tr>
 <?php
 // Make list of all facilitators 
-while ($facilitatorlist = mysqli_fetch_assoc($facilitatorsresult)) { ?>
-
+while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<input type="hidden" name="id" value="<?php echo $facilitatorlist['facilitatorid']; ?>">
-	<tr>
-		<?php $editme = "editfacilitators-" . $facilitatorlist['facilitatorid'];
-		if (isset($_POST[$editme])) { 
+            <?php if ($FacList['advisor'] == 1) {
+            $niceAdvisor = "Yes";
+        } else {
+           $niceAdvisor = "No"; 
+        }
+            ?>
+<!-- This is for editing facilitators (How it knows what facilitator you close) -->
+<input type="hidden" name="id" value="<?php echo $FacList['FacID']; ?>">
+    	<tr>
+            
+		<?php $editme = "EditFac-" . $FacList['FacID'];
+		if (!empty($_POST[$editme])) { 
 		?> 
-		<td><input type="text" name="facilitatorname" class="textbox" value="<?php echo $facilitatorlist['facilitatorname']; ?>" required></td>
-		<td><input type="text" name="email" class="textbox" value="<?php echo $facilitatorlist['email']; ?>"></td>
-
-		<td><button type="submit" name="savefacilitator" value="<?php echo $facilitatorlist['facilitatorid']; ?>">Save</button></td>
+        <!-- Displays if you clicked the "Edit Button" -->
+		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['FacName']; ?>" required></td>
+		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['FacEmail']; ?>"></td>
+        <td>            <select name="UpdateAdvisorDropdown">
+            <option selected value="0"><?php echo $niceAdvisor ?></option>
+            <!-- Checking if facilitator is an avisor -->
+            <?php if ($niceAdvisor == "No") {
+            echo '<option value="1">Yes</option>';
+            } else {
+            echo '<option value="0">No</option>';
+            } ?>
+            </select>
+            </td>
+		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">Update</button></td> 
 		<?php } else { ?>
-		<td><?php echo $facilitatorlist['facilitatorname']; ?></td>
-		<td><?php echo $facilitatorlist['email']; ?></td>
-		
-		<td><input type="submit" name="editfacilitators-<?php echo $facilitatorlist['facilitatorid']; ?>" value="Edit"></td>
+            
+        <!-- Displays when you first load the page (Static Text) -->    
+		<td><?php echo $FacList['FacName']; ?></td>
+		<td><?php echo $FacList['FacEmail']; ?></td>
+        <td><?php echo $niceAdvisor ?></td>
+		<td><input type="submit" name="EditFac-<?php echo $FacList['FacID']; ?>" value="Edit"></td>
+            
 		<?php } ?>	
-		<td><button type="submit" name="deletefacilitator" value="<?php echo $facilitatorlist['facilitatorname']; ?>">Delete</button></td>
+            
+		<td><button type="submit" name="DelFac" value="<?php echo $FacList['FacName']; ?>">Remove</button></td>
+            
 	</tr>
-</form>
-<?php 
-} // end while
-?>
-</table>
+    
+        </form>
+        <?php } // Ends while loop for facilitator info ?>
+    </table>
 </div>
 </body>
 </html>
