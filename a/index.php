@@ -22,25 +22,20 @@
 	 require_once("../connection.php");
 	 require_once("../function.php");
          ?>
-	 <div align="center">
-         
-         <h1 class="headerr">
-             Edit Attendance
-         </h1>
-	<div><a href="pages/edit_events.php" style="color:#fff; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>   
-         
-         <div class="options">
-              <a href="../" id="goodbye" class="btn">Back to main page</a>
-             
-             <a href="?p=Students" id="button1" class="button">Students</a>
-             <a href="#" id="#" class="button">Events</a>
-             <a href="?p=Holidays" id="button5" class="button">Holidays</a>
-        <a href="?p=Pws" id="button4" class="button">Passwords</a >
-        <a href="?p=Facilitators" id="button2" class="button">Facilitators</a>
-        <a href="?p=Allotted-Hours" id="button3" class="button">Allotted Hours</a>
-        <a href="?p=Globals" id="button6" class="button">Globals</a>
-             
-</div>
+        <div id="navigation">
+            <h1 class="header">Admin GUI</h1>
+            <a href="../" class="option">Back to Main Page</a>
+            <a href="?p=Students" id="button1" class="option">Students</a>
+            <a href="?p=Facilitators" id="button2" class="option">Facilitators</a>
+            <a href="?p=Allotted-Hours" id="button3" class="option">Allotted Hours</a>
+            <a href="?p=Pws" id="button4" class="option">Passwords</a>
+            <a href="?p=Holidays" id="button5" class="option">Holidays</a>
+            <a href="?p=Globals" id="button6" class="option">Globals</a>
+            <a href="pages/edit_events.php" id="#" class="option">Events</a>
+            <a href="?p=Groups" id="button8" class="disabled">Groups</a>
+            <a href="?p=Stats" id="button9" class="disabled">Student Stats</a>
+                    </div>            
+	 <div align="center" id="main">
 	    <?php
 //echo htmlspecialchars($_GET["page"]);
 if (isset($_GET["p"])) {
