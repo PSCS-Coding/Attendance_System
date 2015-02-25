@@ -9,6 +9,12 @@
     opacity: 0.8;
     color: #4C4C4C;
 }
+.sussess {
+background-color: #B5FA9D;
+}
+.errors {
+background-color: #FF6B6B;
+}
 .options {
     padding: 25px 15px 25px 15px;
     background-color: gray;
@@ -168,8 +174,27 @@ margin-right: auto;
     width: 20%;
     height: 100%;
     opacity: 0.8;
+border-right: 5px solid #404040;   
+background-color: #616161;
+}
+#TopHeader {
+    position: fixed;
+    top: 0%;
+    left: 20.4%;
+    width: 100%;
+    height: 10%;
+    opacity: 0.8;
+    z-index: 5;
 border-right: 5px solid black;   
 background-color: #616161;
+}
+.Myheader {
+ text-align: center;
+ font-weight: 900;
+ font-family: "Verdana";
+ color: white;
+ left: 1.5%;
+ margin-right: 20%;
 }
 #navigation .header {
  text-align: center;
@@ -210,4 +235,14 @@ text-decoration: none;
 }
 #main {
 margin-left: 18%;
+margin-top: 6%;
+}
+#sussess {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    width: 15%;
+    height: 5%;
+    z-index: 4;
+background-color: #B5FA9D;
 }

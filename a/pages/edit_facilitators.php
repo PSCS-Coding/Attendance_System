@@ -1,6 +1,5 @@
 <html>
 <body>
-<h1 class="headerr">Edit Facilitators</h1>
 <div class="facilitators">
 <?php 
 // Making facilitator name look nice

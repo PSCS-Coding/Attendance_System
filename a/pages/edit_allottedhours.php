@@ -1,7 +1,5 @@
 <html>
-<body>
-<h1 class="headerr">Edit Allotted Hours</h1>
-         
+<body>         
 <?php
 // EDIT ALLOTTED HOURS
 if (isset($_POST['saveallotted'])) {

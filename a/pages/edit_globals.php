@@ -1,7 +1,5 @@
 <html>
-<body>
-<h1 class="headerr">Edit Globals</h1>
-       
+<body> 
 <?php
 
     // EDIT (UPDATE) GLOBALS

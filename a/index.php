@@ -22,8 +22,19 @@
 	 require_once("../connection.php");
 	 require_once("../function.php");
          ?>
+                    <div id="TopHeader">
+                        <?php 
+                    if (isset($_GET["p"])) {
+                        $headerText = "Update ";
+                        $headerText .= $_GET["p"];
+                    } else {
+                    $headerText = "Welcome Admin!";  
+                    }
+                        ?>
+                    <h1 class="Myheader"><?php echo $headerText; ?></h1>
+                    </div>
         <div id="navigation">
-            <h1 class="header">Admin GUI</h1>
+            <h1 class="header">2.0.1 DEV</h1>
             <a href="../" class="option">Back to Main Page</a>
             <a href="?p=Students" id="button1" class="option">Students</a>
             <a href="?p=Facilitators" id="button2" class="option">Facilitators</a>

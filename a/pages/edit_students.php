@@ -1,26 +1,32 @@
 <html>
 <body>
-<h1 class="headerr">Edit Students</h1>
- 
 <!-- UPDATE FUNCTIONS -->     
 <?php 
+$ErrorMsgs = null;
+$SussessMsgs = null;
 // ADD A NEW STUDENT			
 if (isset($_POST['addnewstudent'])) {
+    if ($_POST['newAdvisor'] != "novalue") {
     $timestamp = strtotime($_POST['startdate']);
-    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, startdate) VALUES (?, ?, FROM_UNIXTIME(?))");
-    $stmt->bind_param('sss', $_POST['newfirstname'] , $_POST['newlastname'] , $timestamp);
+    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
+    $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
-}				
+    $NewName = $_POST['newfirstname'];
+    $SussessMsgs = "Sussessfully added student $NewName!";
+    }
+    }				
 
 	
 // EDIT (UPDATE) A STUDENT
 if (isset($_POST['savestudent'])) {
     $timestamp = strtotime($_POST['editstartdate']);
-    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , yearinschool = ?      WHERE studentid = ?");
-    $stmt->bind_param('sssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['yearinschool'], $_POST['id']);
+    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
+    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['id']);
     $stmt->execute(); 
     $stmt->close();
+    $NewName = $_POST['firstname'];
+    $SussessMsgs = "Sussessfully modified student $NewName";
 } 
 
 // DELETE A STUDENT
@@ -30,32 +36,39 @@ if(isset($_POST['deletestudent'])) {
 	$stmt->execute();
 	$stmt->close();
 }
-	
-//Reactivate Student
-if (!empty($_POST['activate']) && !empty($_POST['activateid']))
-{
-    $activateid  = get_post('activateid');
+
+// Reactivate Student
+if (isset($_POST['Reactivate'])) {
     $stmt = $db_server->prepare("UPDATE studentdata SET current = 1 WHERE studentid = ?");
-    $stmt->bind_param('s', $activateid);
-    $stmt->execute(); 		
+    $stmt->bind_param('i', $_POST['id2']);
+    $stmt->execute(); 
     $stmt->close();
-}
-	
+} 
 // Query for student list
 	$studentresult = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
-    
+<?php echo "<font color='red'>$ErrorMsgs</font>"; ?>
+<?php echo "<font color='#B5FA9D'>$SussessMsgs</font>"; ?>
 <div class="students">
 <form style="margin-bottom:1em;" action="?p=Students" method="post">
-	<input type="text" name="newfirstname" placeholder="First Name" required>
-	<input type="text" name="newlastname" placeholder="Last Name" required>
-	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required/>
+	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
+	<input type="text" name="newlastname" placeholder="Last Name" required size="12">
+	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required size="10"/>
+    <select name='newAdvisor'>
+            <option selected value="novalue">Advisor</option>
+	        <?php // Query for advisor table
+				 $GetFacilitators = $db_server->query("SELECT FacName FROM facilitators WHERE advisor = 1 ORDER BY FacName");
+				 while ($FacList = $GetFacilitators->fetch_assoc()) { ?>  
+				 <option value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+				<?php } ?>
+	        </select>
 	<input type="submit" name="addnewstudent" value="Add Student" />
 </form>
 <table>
    <tr>
-      <th>Name</th>
-      <th>Last Name</th>
+      <th>First</th>
+      <th>Last</th>
       <th>Start Date</th>
+      <th>Advisor</th>
       <th>YIS</th>
       <th>Edit</th>
 	  <th>Hide</th>
@@ -70,9 +83,29 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 		<?php $editme = "edit-" . $list['studentid'];
 		if (isset($_POST[$editme])) { 
 		$adjusteddate = new DateTime($list['startdate']);?> 
-		<td><input type="text" name="firstname" class="textbox" value="<?php echo $list['firstname']; ?>" required></td>
-		<td><input type="text" name="lastname" class="textbox" value="<?php echo $list['lastname']; ?>" required></td>
-		<td><input type="text" name="editstartdate" id="editstartdate" class="textbox" value="<?php echo $adjusteddate->format('m d Y'); ?>" required></td>
+		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $list['firstname']; ?>" required></td>
+		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $list['lastname']; ?>" required></td>
+		<td><input type="text" size="15" name="editstartdate" id="editstartdate" class="textbox" value="<?php echo $adjusteddate->format('m d Y'); ?>" required></td>
+        		<td>
+			<select name='selectedadvisor'>
+	        <?php
+                // Query for advisor table
+				 $GetFacilitators = $db_server->query("SELECT FacName FROM facilitators WHERE advisor = 1 ORDER BY FacName");
+            
+				 while ($FacList = $GetFacilitators->fetch_assoc()) {
+                     
+					if ($list['advisor'] == $FacList['FacName']) { ?>
+                
+				<option selected value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+					<?php } else { ?>  
+						<option value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+				<?php
+					}
+			     }
+			?>
+	        </select>
+		</td>
+			
 		<td>
 			<select name='yearinschool'>
 	        <?php
@@ -94,6 +127,13 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 		<td><?php echo $list['firstname']; ?></td>
 		<td><?php echo $list['lastname']; ?></td>
 		<td><?php echo $list['startdate']; ?></td>
+        <?php 
+        $listAdvisor = $list['advisor'];
+        if (empty($listAdvisor)) {
+         $listAdvisor = "<font color='red'>???</font>";
+        }
+        ?>
+        <td><?php echo $listAdvisor; ?></td>
 		<td><?php echo $list['yearinschool']; ?></td>
 		
 		<td><input type="submit" name="edit-<?php echo $list['studentid']; ?>" value="Edit"></td>
@@ -105,49 +145,31 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 } // end while for student data
 ?>
 </table>
-
+<br />    
+<table>
+   <tr>
+      <th>First</th>
+      <th>Last</th>
+      <th>Start Date</th>
+      <th>Reactivate</th>
+   </tr>
 <?php
+
 // Query to get all deleted students
 	$result = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
-	$rows = $result->num_rows;
-	?>
-
-    <h2>Deactivated Students</h2>
-	<table class='table'>
-		<tr>
-        <th class='table_head'> Student Name </th>
-	<th class='table_head'> Start Date </th>
-	<th class='table_head'> Reactivate Student </th>
-        </tr>
-	<?php
-		for ($j = 0 ; $j < $rows ; ++$j)
-		{
-		$row = $result->fetch_assoc();
-	?>
-	
-	<?php
-		echo "<tr>";
-		echo "<td>" . $row['firstname'] . " " . $row['lastname'] . "</td>" ;
-		echo "<td>" . $row['startdate'] . "</td>";
-		echo "<td>";
-	
-	?>
-<!-- Reactivate Student -->	
-        
-<form action="/a/?p=Students" method="post">
-    <input type="hidden" name="activate" value="yes" />
-    <input type="hidden" name="activateid" value="<?php echo $row['studentid']; ?>" />
-    <input type="submit" value="REACTIVATE" />
-</form>    
-</td>
-</tr>
-	<?php } ?> 
+    
+    while ($list2 = mysqli_fetch_assoc($result)) { ?>
+        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+        <input type="hidden" name="id2" value="<?php echo $list2['studentid']; ?>">
+            <tr>
+        <td><?php echo $list2['firstname']; ?></td>
+		<td><?php echo $list2['lastname']; ?></td>
+		<td><?php echo $list2['startdate']; ?></td>
+        <td><button type="submit" name="Reactivate" value="<?php echo $list2['studentid']; ?>">Reactivate</button></td>
+                </tr>
+        </form>
+    <?php } ?>
     </table>
-<?php
-function get_post($var) {
-return mysql_real_escape_string($_POST[$var]);
-}
-?>
 </div>
 </body>
 </html>

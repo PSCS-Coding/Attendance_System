@@ -1,7 +1,5 @@
 <html>
 <body>
-<h1 class="headerr">Edit Holidays</h1>
-    
 <!-- UPDATE FUNCTIONS -->     
 <?php
 // ADD A NEW HOLIDAY			
@@ -16,16 +14,16 @@ $stmt->close();
 // EDIT (UPDATE) A HOLIDAY
 if (isset($_POST['saveholiday'])) {
  $date = strtotime($_POST['date']);
- $stmt = $db_server->prepare("UPDATE holidays SET holidayname = ? , date = FROM_UNIXTIME(?) WHERE id = ?");
-	  $stmt->bind_param('ssi', $_POST['holidayname'], $date, $_POST['id']);
+ $stmt = $db_server->prepare("UPDATE holidays SET holidayname = ? , date = FROM_UNIXTIME(?) WHERE HolidayID = ?");
+	  $stmt->bind_param('ssi', $_POST['holidayname'], $date, $_POST['HolidayID']);
 	  $stmt->execute(); 
 	  $stmt->close();
 	} 
 
 // DELETE A HOLIDAY
 if(isset($_POST['deleteholiday'])) {
-	$stmt = $db_server->prepare("DELETE FROM holidays WHERE id = ?");
-	$stmt->bind_param('i', $_POST['id']);
+	$stmt = $db_server->prepare("DELETE FROM holidays WHERE HolidayID = ?");
+	$stmt->bind_param('i', $_POST['HolidayID']);
 	$stmt->execute(); 		
 	$stmt->close();
 	}
@@ -55,20 +53,20 @@ if(isset($_POST['deleteholiday'])) {
 while ($list = mysqli_fetch_assoc($holidayresult)) { ?>
 
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<input type="hidden" name="id" value="<?php echo $list['id']; ?>">
+<input type="hidden" name="HolidayID" value="<?php echo $list['HolidayID']; ?>">
 	<tr>
-		<?php $editme = "edit-" . $list['id'];
+		<?php $editme = "edit-" . $list['HolidayID'];
 		if (isset($_POST[$editme])) { 
 		$adjusteddate = new DateTime($list['date']);
 		?> 
 		<td><input type="text" name="holidayname" class="textbox" value="<?php echo $list['holidayname']; ?>" required></td>
 		<td><input type="text" name="date" class="textbox" id="editdate" value="<?php echo $adjusteddate->format('m d Y'); ?>" required></td>
-		<td><button type="submit" name="saveholiday" value="<?php echo $list['studentid']; ?>">Save</button></td>
+		<td><button type="submit" name="saveholiday" value="<?php echo $list['HolidayID']; ?>">Save</button></td>
 		<?php } else { ?>
 		<td><?php echo $list['holidayname']; ?></td>
 		<td><?php echo $list['date']; ?></td>
 		
-		<td><input type="submit" name="edit-<?php echo $list['id']; ?>" value="Edit"></td>
+		<td><input type="submit" name="edit-<?php echo $list['HolidayID']; ?>" value="Edit"></td>
 		<?php } ?>	
 		<td><button type="submit" name="deleteholiday" value="<?php echo $list['holidayname']; ?>">Delete</button></td>
 	</tr>
