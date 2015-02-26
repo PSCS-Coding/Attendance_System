@@ -46,7 +46,7 @@ if (!empty($_POST['savestudentpass'])) {
 while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>
 
 <form action="?p=Pws" method="post">
-<input type="hPassIDden" name="PassPassID" value="<?php echo $passlist['password']; ?>">
+<input type="hidden" name="PassPassID" value="<?php echo $passlist['password']; ?>">
         <div id="adminpwd">
 		<input type="password" name="adminpassword" placeholder="New Admin Password" autocomplete="off">
     <button type="submit" name="saveadminpass" value="<?php echo $passlist['password']; ?>">Update</button>
