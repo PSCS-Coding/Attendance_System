@@ -28,7 +28,7 @@ $newFacilitatorEmail = strtolower($newFacilitatorEmail);
 }
 // Add Facilitator to Database
 if (!empty($_POST['addFacilitatorTXT'])) {
-    $stmt = $db_server->prepare("INSERT INTO facilitators (FacName, FacEmail, advisor) VALUES (?, ?, ?)");
+    $stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES (?, ?, ?)");
     $stmt->bind_param('ssi', $newFacilitatorName , $newFacilitatorEmail , $_POST['AdvisorDropDown']);
     $stmt->execute(); 
     $stmt->close();				
@@ -36,7 +36,7 @@ if (!empty($_POST['addFacilitatorTXT'])) {
 
 // Update facilitator
 if (!empty($_POST['UpdateFac'])) {
-    $stmt = $db_server->prepare("UPDATE facilitators SET FacName = ? , FacEmail = ? , advisor = ? WHERE FacID = ?");
+    $stmt = $db_server->prepare("UPDATE facilitators SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?");
     $stmt->bind_param('ssii', $_POST['UpdatedFacName'], $_POST['UpdatedFacEmail'], $_POST['UpdateAdvisorDropdown'], $_POST['id']);
     $stmt->execute(); 
     $stmt->close();
@@ -44,14 +44,14 @@ if (!empty($_POST['UpdateFac'])) {
 
 // Remove Facilitator
 if(!empty($_POST['DelFac'])) {
-$stmt = $db_server->prepare("DELETE FROM facilitators WHERE FacID = ?");
+$stmt = $db_server->prepare("DELETE FROM facilitators WHERE facilitatorid = ?");
 $stmt->bind_param('i', $_POST['id']);
 $stmt->execute(); 		
 $stmt->close();
 }
 
 // Query facilitator table
-$FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY FacName");
+$FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname");
 
 // Display added facilitator at top of page
 if (!empty($_POST['addFacilitatorTXT'])) {
@@ -90,15 +90,15 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
         }
             ?>
 <!-- This is for editing facilitators (How it knows what facilitator you close) -->
-<input type="hidden" name="id" value="<?php echo $FacList['FacID']; ?>">
+<input type="hidden" name="id" value="<?php echo $FacList['facilitatorid']; ?>">
     	<tr>
             
-		<?php $editme = "EditFac-" . $FacList['FacID'];
+		<?php $editme = "EditFac-" . $FacList['facilitatorid'];
 		if (!empty($_POST[$editme])) { 
 		?> 
         <!-- Displays if you clicked the "Edit Button" -->
-		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['FacName']; ?>" required></td>
-		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['FacEmail']; ?>"></td>
+		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['facilitatorname']; ?>" required></td>
+		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['email']; ?>"></td>
         <td>            <select name="UpdateAdvisorDropdown">
             <option selected value="0"><?php echo $niceAdvisor ?></option>
             <!-- Checking if facilitator is an avisor -->
@@ -113,14 +113,14 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
 		<?php } else { ?>
             
         <!-- Displays when you first load the page (Static Text) -->    
-		<td><?php echo $FacList['FacName']; ?></td>
-		<td><?php echo $FacList['FacEmail']; ?></td>
+		<td><?php echo $FacList['facilitatorname']; ?></td>
+		<td><?php echo $FacList['email']; ?></td>
         <td><?php echo $niceAdvisor ?></td>
-		<td><input type="submit" name="EditFac-<?php echo $FacList['FacID']; ?>" value="Edit"></td>
+		<td><input type="submit" name="EditFac-<?php echo $FacList['facilitatorid']; ?>" value="Edit"></td>
             
 		<?php } ?>	
             
-		<td><button type="submit" name="DelFac" value="<?php echo $FacList['FacName']; ?>">Remove</button></td>
+		<td><button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Remove</button></td>
             
 	</tr>
     
