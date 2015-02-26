@@ -315,7 +315,9 @@ function calculateStats($current_student_id) //======================== passes o
 {
 	
 global $db_server;
-//holidays array
+
+if (isset($current_student_id)) {
+	//holidays array
 $holiday_data_array = array();
 $holiday_dt_array = array();
 $holidayquery = "SELECT date FROM holidays";
@@ -327,7 +329,6 @@ while ($holiday_data = $holiday_result->fetch_array()) {
 foreach ($holiday_dt_array as $k) {
 	array_push($holiday_data_array, $k[0]);
 }
-if (isset($current_student_id)) {
 $student_data_array = array();
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
@@ -510,9 +511,13 @@ $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
 array_push($returnArray,$offsitePercent);
-	
+
+return $returnArray;	
+} else {
+	return null;
 }
 
+}
 
 
 
