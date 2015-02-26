@@ -1,7 +1,23 @@
 <html>
-<body>
+        <head>
+        <?php require_once('header.php'); ?>
+    </head>
+                <body style="background-color: dimgray;">
+    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+	<img src="../img/mobius.png">
+    </div>
+                                        <div id="TopHeader">
+                    <h1 class="Myheader">Update Holidays</h1>
+                    </div>
+<div id="main">
 <!-- UPDATE FUNCTIONS -->     
 <?php
+
+         // set up mysql connection
+     $userlevel = "admin";
+     require_once("../../login.php");
+	 require_once("../../connection.php");
+	 require_once("../../function.php");
 // ADD A NEW HOLIDAY			
 if (isset($_POST['addnewholiday'])) {
 $date = strtotime($_POST['date']);
@@ -85,5 +101,6 @@ while ($list = mysqli_fetch_assoc($holidayresult)) { ?>
     var picker = new Pikaday({ field: document.getElementById('editdate') });
 </script>
     </div>
+                    </div>
 </body>
 </html>

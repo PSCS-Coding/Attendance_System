@@ -1,7 +1,22 @@
 <html>
-<body>
+        <head>
+        <?php require_once('header.php'); ?>
+    </head>
+                <body style="background-color: dimgray;">
+    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+	<img src="../img/mobius.png">
+    </div>
+                    <div id="TopHeader">
+                    <h1 class="Myheader">Update Students</h1>
+                    </div>
+                    <div id="main">
 <!-- UPDATE FUNCTIONS -->     
 <?php 
+         // set up mysql connection
+     $userlevel = "admin";
+     require_once("../../login.php");
+	 require_once("../../connection.php");
+	 require_once("../../function.php");
 $ErrorMsgs = null;
 $SussessMsgs = null;
 // ADD A NEW STUDENT			
@@ -56,9 +71,9 @@ if (isset($_POST['Reactivate'])) {
     <select name='newAdvisor'>
             <option selected value="novalue">Advisor</option>
 	        <?php // Query for advisor table
-				 $GetFacilitators = $db_server->query("SELECT FacName FROM facilitators WHERE advisor = 1 ORDER BY FacName");
+				 $GetFacilitators = $db_server->query("SELECT facilitatorname FROM facilitators WHERE advisor = 1 ORDER BY facilitatorname");
 				 while ($FacList = $GetFacilitators->fetch_assoc()) { ?>  
-				 <option value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+				 <option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 				<?php } ?>
 	        </select>
 	<input type="submit" name="addnewstudent" value="Add Student" />
@@ -94,11 +109,11 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
             
 				 while ($FacList = $GetFacilitators->fetch_assoc()) {
                      
-					if ($list['advisor'] == $FacList['FacName']) { ?>
+					if ($list['advisor'] == $FacList['facilitatorname']) { ?>
                 
-				<option selected value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+				<option selected value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 					<?php } else { ?>  
-						<option value="<?php echo $FacList['FacName']; ?>"><?php echo $FacList['FacName']; ?></option>
+						<option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 				<?php
 					}
 			     }
@@ -171,5 +186,6 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
     <?php } ?>
     </table>
 </div>
+                    </div>
 </body>
 </html>

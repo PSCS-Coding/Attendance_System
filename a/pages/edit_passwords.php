@@ -1,6 +1,22 @@
 <html>
-<body>
+        <head>
+        <?php require_once('header.php'); ?>
+    </head>
+                <body style="background-color: dimgray;">
+    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
+	<img src="../img/mobius.png">
+    </div>
+                                        <div id="TopHeader">
+                    <h1 class="Myheader">Update Passwords</h1>
+                    </div>
+    <div id="main">
 <?php 
+         // set up mysql connection
+     $userlevel = "admin";
+     require_once("../../login.php");
+	 require_once("../../connection.php");
+	 require_once("../../function.php");
+
     // CHANGE PASSWORD
 if (!empty($_POST['saveadminpass'])) {
 // Adding Crypt to admin password
@@ -44,5 +60,6 @@ while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>
 } // end while
 ?>
 </div>
+        </div>
 </body>
 </html>
