@@ -30,17 +30,18 @@ if(isset($_POST['deletestudent'])) {
 	$stmt->execute();
 	$stmt->close();
 }
-	
-//Reactivate Student
-if (!empty($_POST['activate']) && !empty($_POST['activateid']))
-{
-    $activateid  = get_post('activateid');
+
+// Reactivate Student
+if (isset($_POST['Reactivate'])) {
     $stmt = $db_server->prepare("UPDATE studentdata SET current = 1 WHERE studentid = ?");
-    $stmt->bind_param('s', $activateid);
-    $stmt->execute(); 		
+    $stmt->bind_param('i', $_POST['id2']);
+    $stmt->execute(); 
     $stmt->close();
-}
-	
+} 
+
+// Query to get all deleted students
+	$result2 = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
+
 // Query for student list
 	$studentresult = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
     
@@ -53,8 +54,8 @@ if (!empty($_POST['activate']) && !empty($_POST['activateid']))
 </form>
 <table>
    <tr>
-      <th>Name</th>
-      <th>Last Name</th>
+      <th>First</th>
+      <th>Last</th>
       <th>Start Date</th>
       <th>YIS</th>
       <th>Edit</th>
@@ -106,48 +107,27 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 ?>
 </table>
 
-<?php
-// Query to get all deleted students
-	$result = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
-	$rows = $result->num_rows;
-	?>
-
-    <h2>Deactivated Students</h2>
-	<table class='table'>
-		<tr>
-        <th class='table_head'> Student Name </th>
-	<th class='table_head'> Start Date </th>
-	<th class='table_head'> Reactivate Student </th>
-        </tr>
-	<?php
-		for ($j = 0 ; $j < $rows ; ++$j)
-		{
-		$row = $result->fetch_assoc();
-	?>
-	
-	<?php
-		echo "<tr>";
-		echo "<td>" . $row['firstname'] . " " . $row['lastname'] . "</td>" ;
-		echo "<td>" . $row['startdate'] . "</td>";
-		echo "<td>";
-	
-	?>
-<!-- Reactivate Student -->	
-        
-<form action="/a/?p=Students" method="post">
-    <input type="hidden" name="activate" value="yes" />
-    <input type="hidden" name="activateid" value="<?php echo $row['studentid']; ?>" />
-    <input type="submit" value="REACTIVATE" />
-</form>    
-</td>
-</tr>
-	<?php } ?> 
+<br />    
+<table>
+   <tr>
+      <th>First</th>
+      <th>Last</th>
+      <th>Start Date</th>
+      <th>Reactivate</th>
+   </tr>
+<?php  
+    while ($list2 = mysqli_fetch_assoc($result2)) { ?>
+        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+        <input type="hidden" name="id2" value="<?php echo $list2['studentid']; ?>">
+            <tr>
+        <td><?php echo $list2['firstname']; ?></td>
+		<td><?php echo $list2['lastname']; ?></td>
+		<td><?php echo $list2['startdate']; ?></td>
+        <td><button type="submit" name="Reactivate" value="<?php echo $list2['studentid']; ?>">Reactivate</button></td>
+                </tr>
+        </form>
+    <?php } ?>
     </table>
-<?php
-function get_post($var) {
-return mysql_real_escape_string($_POST[$var]);
-}
-?>
 </div>
 </body>
 </html>
