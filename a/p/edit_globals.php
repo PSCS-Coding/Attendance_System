@@ -4,9 +4,7 @@
 	<?php require_once('header.php'); ?>
 </head>
                 <body style="background-color: dimgray;">
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="../img/mobius.png">
-    </div>                    <div id="TopHeader">
+                    <div id="TopHeader">
                     <h1 class="Myheader">Update Globals</h1>
                     </div>
                     <div align="center" id="main">

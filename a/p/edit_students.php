@@ -4,9 +4,6 @@
 	<?php require_once('header.php'); ?>
 </head>
                 <body style="background-color: dimgray;">
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="../img/mobius.png">
-    </div>
                     <div id="TopHeader">
                     <h1 class="Myheader">Update Students</h1>
                     </div>
@@ -101,7 +98,7 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 			<select name='selectedadvisor'>
 	        <?php
                 // Query for advisor table
-				 $GetFacilitators = $db_server->query("SELECT FacName FROM facilitators WHERE advisor = 1 ORDER BY FacName");
+				 $GetFacilitators = $db_server->query("SELECT facilitatorname FROM facilitators WHERE advisor = 1 ORDER BY facilitatorname");
             
 				 while ($FacList = $GetFacilitators->fetch_assoc()) {
                      
