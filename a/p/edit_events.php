@@ -94,6 +94,7 @@ if (!empty($_POST['studentselect'])) {
                                         <div id="TopHeader">
                     <h1 class="Myheader">Update Events</h1>
                     </div>
+    <div align="center" id="main">
 <body class="edit-events">
 
    <div id="puttheimagehere">
@@ -276,5 +277,6 @@ if (!empty($_POST['studentselect'])) {
 	 $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
       });
    </script>
+    </div>
 </body>
 </html>

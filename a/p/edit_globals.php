@@ -9,7 +9,7 @@
     </div>                    <div id="TopHeader">
                     <h1 class="Myheader">Update Globals</h1>
                     </div>
-                    <div id="main">
+                    <div align="center" id="main">
 <?php
 
          // set up mysql connection

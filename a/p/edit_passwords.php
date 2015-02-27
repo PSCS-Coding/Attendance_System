@@ -10,7 +10,7 @@
                                         <div id="TopHeader">
                     <h1 class="Myheader">Update Passwords</h1>
                     </div>
-    <div id="main">
+    <div align="center" id="main">
 <?php 
          // set up mysql connection
      $userlevel = "admin";
