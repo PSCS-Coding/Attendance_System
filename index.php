@@ -256,8 +256,8 @@
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offloc" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offloc">
+	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
+<datalist id="offlocDropdown" name="offlocDropdown">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {

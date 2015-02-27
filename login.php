@@ -1,22 +1,22 @@
         <?php
         require_once("connection.php");
         
-        $phpdatetime = new dateTime();
-        $currentDate = $phpdatetime->format('dym');
+        $LoginPhpDateTime = new dateTime();
+        $currentLoginDate = $LoginPhpDateTime->format('dym');
 
-        if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
+        if ($LoginResult = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
 {
-        $row = $result->fetch_assoc();
+        $LoginRow = $LoginResult->fetch_assoc();
 	
-        $result->free();
+        $LoginResult->free();
 }
-            $studentPW = $row['password'];
-            $adminPW = $row['adminPass'];
+            $studentPW = $LoginRow['password'];
+            $adminPW = $LoginRow['adminPass'];
             // Appdends date to password
             $SecureAdminPW = $adminPW;
-            $SecureAdminPW .= crypt($currentDate, 'M7');
+            $SecureAdminPW .= crypt($currentLoginDate, 'M7');
             $SecureStudentPW = $studentPW;
-            $SecureStudentPW .= crypt($currentDate, 'M7');
+            $SecureStudentPW .= crypt($currentLoginDate, 'M7');
             $crypt = crypt('adenz8r3ry8nyinynzyi', 'P9');
         if (isset($_COOKIE["login"])) {
           
