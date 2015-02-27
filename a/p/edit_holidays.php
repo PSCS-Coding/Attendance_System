@@ -13,12 +13,6 @@
 <div align="center" id="main">
 <!-- UPDATE FUNCTIONS -->     
 <?php
-
-         // set up mysql connection
-     $userlevel = "admin";
-     require_once("../../login.php");
-	 require_once("../../connection.php");
-	 require_once("../../function.php");
 // ADD A NEW HOLIDAY			
 if (isset($_POST['addnewholiday'])) {
 $date = strtotime($_POST['date']);

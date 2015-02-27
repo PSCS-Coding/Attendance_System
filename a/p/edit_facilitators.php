@@ -12,12 +12,6 @@
                     <div align="center" id="main">
 <div class="facilitators">
 <?php 
-         // set up mysql connection
-     $userlevel = "admin";
-     require_once("../../login.php");
-	 require_once("../../connection.php");
-	 require_once("../../function.php");
-
 // Making facilitator name look nice
 if (isset($_POST['addFacilitatorTXT'])) {
 $newFacilitatorName = $_POST['addFacilitatorTXT'];

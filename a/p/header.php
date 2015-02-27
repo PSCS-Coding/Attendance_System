@@ -7,4 +7,10 @@
 <script src="../js/jquery.datetimepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" /> 
 <link rel="shortcut icon" type="image/png" href="../img/mobius.png"/>
-<?php require_once('NavBar.php'); ?>
+<?php 
+require_once('NavBar.php');
+     $userlevel = "admin";
+     require_once("../../login.php");
+	 require_once("../../connection.php");
+	 require_once("../../function.php");
+?>

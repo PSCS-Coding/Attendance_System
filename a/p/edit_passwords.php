@@ -12,12 +12,6 @@
                     </div>
     <div align="center" id="main">
 <?php 
-         // set up mysql connection
-     $userlevel = "admin";
-     require_once("../../login.php");
-	 require_once("../../connection.php");
-	 require_once("../../function.php");
-
     // CHANGE PASSWORD
 if (!empty($_POST['saveadminpass'])) {
 // Adding Crypt to admin password

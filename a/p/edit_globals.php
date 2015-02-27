@@ -11,13 +11,6 @@
                     </div>
                     <div align="center" id="main">
 <?php
-
-         // set up mysql connection
-     $userlevel = "admin";
-     require_once("../../login.php");
-	 require_once("../../connection.php");
-	 require_once("../../function.php");
-
     // EDIT (UPDATE) GLOBALS
 if (isset($_POST['save'])) {
  $editstartdate = strtotime($_POST['editstartdate']);
