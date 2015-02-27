@@ -10,8 +10,6 @@
                     <div align="center" id="main">
 <!-- UPDATE FUNCTIONS -->     
 <?php 
-$ErrorMsgs = null;
-$SussessMsgs = null;
 // ADD A NEW STUDENT			
 if (isset($_POST['addnewstudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
@@ -20,8 +18,6 @@ if (isset($_POST['addnewstudent'])) {
     $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
-    $NewName = $_POST['newfirstname'];
-    $SussessMsgs = "Sussessfully added student $NewName!";
     }
     }				
 
@@ -33,8 +29,6 @@ if (isset($_POST['savestudent'])) {
     $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['id']);
     $stmt->execute(); 
     $stmt->close();
-    $NewName = $_POST['firstname'];
-    $SussessMsgs = "Sussessfully modified student $NewName";
 } 
 
 // DELETE A STUDENT
@@ -54,10 +48,8 @@ if (isset($_POST['Reactivate'])) {
 } 
 // Query for student list
 	$studentresult = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
-<?php echo "<font color='red'>$ErrorMsgs</font>"; ?>
-<?php echo "<font color='#B5FA9D'>$SussessMsgs</font>"; ?>
 <div class="students">
-<form style="margin-bottom:1em;" action="?p=Students" method="post">
+<form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
 	<input type="text" name="newlastname" placeholder="Last Name" required size="12">
 	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required size="10"/>
@@ -85,7 +77,7 @@ if (isset($_POST['Reactivate'])) {
 // loop through list of names 
 while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form action="" method="post">
 <input type="hidden" name="id" value="<?php echo $list['studentid']; ?>">
 	<tr>
 		<?php $editme = "edit-" . $list['studentid'];
@@ -93,7 +85,7 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 		$adjusteddate = new DateTime($list['startdate']);?> 
 		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $list['firstname']; ?>" required></td>
 		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $list['lastname']; ?>" required></td>
-		<td><input type="text" size="15" name="editstartdate" id="editstartdate" class="textbox" value="<?php echo $adjusteddate->format('m d Y'); ?>" required></td>
+		<td><input type="text" size="11" name="editstartdate" id="editstartdate" class="textbox" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required></td>
         		<td>
 			<select name='selectedadvisor'>
 	        <?php

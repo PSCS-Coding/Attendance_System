@@ -37,14 +37,14 @@ if (!empty($_POST['savestudentpass'])) {
 // loop through passwords
 while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>
 
-<form action="?p=Pws" method="post">
+<form action="" method="post">
 <input type="hidden" name="PassPassID" value="<?php echo $passlist['password']; ?>">
         <div id="adminpwd">
-		<input type="password" name="adminpassword" placeholder="New Admin Password" autocomplete="off">
+		<input type="password" name="adminpassword" placeholder="New Admin Password" autocomplete="off" size="20">
     <button type="submit" name="saveadminpass" value="<?php echo $passlist['password']; ?>">Update</button>
     </div>
     <div id="studentpwd">
-		<input type="password" name="password" placeholder="New Student Password" autocomplete="off">
+		<input type="password" name="password" placeholder="New Student Password" autocomplete="off" size="20">
     <button type="submit" name="savestudentpass" value="<?php echo $passlist['password']; ?>">Update</button>
 	    	</div>
 </form>

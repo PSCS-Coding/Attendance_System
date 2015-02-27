@@ -51,8 +51,8 @@ if (!empty($_POST['addFacilitatorTXT'])) {
 }
 ?>
     
-<form action="?p=Facilitators" method="post">
-    <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name">
+<form action="" method="post">
+    <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name" size="15">
     <select name="AdvisorDropDown">
   <option selected value="0">Advisor?</option>
   <option value="1">Yes</option>
@@ -74,7 +74,7 @@ if (!empty($_POST['addFacilitatorTXT'])) {
 <?php
 // Make list of all facilitators 
 while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form action="" method="post">
             <?php if ($FacList['advisor'] == 1) {
             $niceAdvisor = "Yes";
         } else {
@@ -89,8 +89,8 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
 		if (!empty($_POST[$editme])) { 
 		?> 
         <!-- Displays if you clicked the "Edit Button" -->
-		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['facilitatorname']; ?>" required></td>
-		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['email']; ?>"></td>
+		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['facilitatorname']; ?>" required size="15"></td>
+		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['email']; ?>" size="15"></td>
         <td>            <select name="UpdateAdvisorDropdown">
             <option selected value="0"><?php echo $niceAdvisor ?></option>
             <!-- Checking if facilitator is an avisor -->

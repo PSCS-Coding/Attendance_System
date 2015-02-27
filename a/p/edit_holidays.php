@@ -43,9 +43,9 @@ if(isset($_POST['deleteholiday'])) {
 	 ?>
     
 <div class="holidays">
-<form style="margin-bottom:1em;" action="?p=Holidays" method="post">
-	<input type="text" name="holidayname" placeholder="Holiday Name" required>
-	<input type="text" name="date" id="date" placeholder="Holiday Date" required>
+<form style="margin-bottom:1em;" action="" method="post">
+	<input type="text" name="holidayname" placeholder="Holiday Name" required size="15">
+	<input type="text" name="date" id="date" placeholder="Holiday Date" required size="15">
 	<input type="submit" name="addnewholiday" value="Add Holiday" />
 </form>
     
@@ -60,15 +60,15 @@ if(isset($_POST['deleteholiday'])) {
 // Make list of holidays
 while ($list = mysqli_fetch_assoc($holidayresult)) { ?>
 
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form action="" method="post">
 <input type="hidden" name="HolidayID" value="<?php echo $list['HolidayID']; ?>">
 	<tr>
 		<?php $editme = "edit-" . $list['HolidayID'];
 		if (isset($_POST[$editme])) { 
 		$adjusteddate = new DateTime($list['date']);
 		?> 
-		<td><input type="text" name="holidayname" class="textbox" value="<?php echo $list['holidayname']; ?>" required></td>
-		<td><input type="text" name="date" class="textbox" id="editdate" value="<?php echo $adjusteddate->format('m d Y'); ?>" required></td>
+		<td><input type="text" name="holidayname" class="textbox" value="<?php echo $list['holidayname']; ?>" required size="15"></td>
+		<td><input type="text" name="date" class="textbox" id="editdate" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required size="15"></td>
 		<td><button type="submit" name="saveholiday" value="<?php echo $list['HolidayID']; ?>">Save</button></td>
 		<?php } else { ?>
 		<td><?php echo $list['holidayname']; ?></td>
