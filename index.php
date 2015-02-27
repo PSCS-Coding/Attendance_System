@@ -407,7 +407,7 @@
                 if ($date1 > $date2 && $date1 < $date3) {
                   //checking if before checkout time  
                 if ($pretty_end_time->format('hi a') > date('hi a')) {
-                    if ($latestdata['statusname'] != 'Checked Out' && $latestdata['statusname'] != 'Absent')
+                    if ($latestdata['statusname'] != 'Checked Out' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Independent Study')
                     {
                         ?>
                         
