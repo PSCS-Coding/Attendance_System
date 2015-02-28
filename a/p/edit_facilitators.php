@@ -6,7 +6,7 @@
                 <body style="background-color: dimgray;">
                     <div id="TopHeader">
                     <h1 class="Myheader">Update Facilitators</h1>
-                    </div>
+                        </div>
                     <div align="center" id="main">
 <div class="facilitators">
 <?php 

@@ -182,13 +182,19 @@ background-color: #616161;
 border-right: 5px solid black;   
 background-color: #616161;
 }
+#TopHeader.Error {
+ background-color: #FF5A5A;   
+}
+#TopHeader.Sussess {
+ background-color: #5CE27C;   
+}
 .Myheader {
  text-align: center;
  font-weight: 900;
  font-family: "Verdana";
  color: white;
- left: 1.5%;
  margin-right: 20%;
+padding-bottom: 0%;
 }
 #navigation .header {
  text-align: center;
