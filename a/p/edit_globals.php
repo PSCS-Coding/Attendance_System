@@ -47,8 +47,8 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 			$adjustedstartdate = new DateTime($list['startdate']);
 			$adjustedenddate = new DateTime($list['enddate']);
 		?> 
-        <td><input type="text" name="editstartdate" id="editstartdate" value="<?php echo $adjustedstartdate->format('m d Y'); ?>" required size="15"></td>
-		<td><input type="text" name="editenddate" id="editenddate" value="<?php echo $adjustedenddate->format('m d Y'); ?>" required size="15"></td>
+        <td><input type="text" name="editstartdate" id="EStartDate" value="<?php echo $adjustedstartdate->format('m-d-Y'); ?>" required size="15"></td>
+		<td><input type="text" name="editenddate" id="EEndDate" value="<?php echo $adjustedenddate->format('m-d-Y'); ?>" required size="15"></td>
 		<td><input type="text" name="starttime" value="<?php echo $list['starttime']; ?>" required size="10"></td>
                 <td><input type="text" name="endtime" value="<?php echo $list['endtime']; ?>" required size="10"></td>
 		<td><button type="submit" name="save" value="<?php echo $list['id']; ?>">Save</button></td>
@@ -71,11 +71,11 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
   <!-- date picker javascript -->          
 <script src="js/pikaday.js"></script>
 <script>
-    var picker = new Pikaday({ field: document.getElementById('editstartdate') });
+    var picker = new Pikaday({ field: document.getElementById('EEndDate') });
 </script>
 <script src="js/pikaday.js"></script>
 <script>
-    var picker = new Pikaday({ field: document.getElementById('editenddate') });
+    var picker = new Pikaday({ field: document.getElementById('EStartDate') });
 </script>
 </body>
 </html>

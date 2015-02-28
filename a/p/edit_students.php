@@ -52,7 +52,7 @@ if (isset($_POST['Reactivate'])) {
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
 	<input type="text" name="newlastname" placeholder="Last Name" required size="12">
-	<input type="text" name="startdate" id="startdate" placeholder="Start Date" required size="10"/>
+	<input type="text" name="startdate" id="NewStartDate" placeholder="Start Date" required size="10"/>
     <select name='newAdvisor'>
             <option selected value="novalue">Advisor</option>
 	        <?php // Query for advisor table
@@ -85,7 +85,7 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 		$adjusteddate = new DateTime($list['startdate']);?> 
 		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $list['firstname']; ?>" required></td>
 		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $list['lastname']; ?>" required></td>
-		<td><input type="text" size="11" name="editstartdate" id="editstartdate" class="textbox" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required></td>
+		<td><input type="text" size="11" name="editstartdate" id="EStartDate" class="textbox" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required></td>
         		<td>
 			<select name='selectedadvisor'>
 	        <?php
@@ -172,5 +172,13 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
     </table>
 </div>
                     </div>
+                      <!-- date picker javascript -->          
+<script src="js/pikaday.js"></script>
+<script>
+    var picker = new Pikaday({ field: document.getElementById('NewStartDate') });
+</script>
+                    <script>
+    var picker = new Pikaday({ field: document.getElementById('EStartDate') });
+</script>
 </body>
 </html>
