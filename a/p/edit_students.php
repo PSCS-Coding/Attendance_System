@@ -3,30 +3,32 @@
 	<title>Edit Students</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                    <div id="TopHeader">
-                    <h1 class="Myheader">Update Students</h1>
-                    </div>
-                    <div align="center" id="main">
+                <body>
 <!-- UPDATE FUNCTIONS -->     
 <?php 
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Students";
 // ADD A NEW STUDENT			
-if (isset($_POST['addnewstudent'])) {
+if (isset($_POST['AddStudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
     $timestamp = strtotime($_POST['startdate']);
     $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
     $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
+    } else {
+     $HeaderStatus = "Error";
+     $HeaderInfo = "Please select a valid advisor.";
     }
-    }				
+    }
 
 	
 // EDIT (UPDATE) A STUDENT
-if (isset($_POST['savestudent'])) {
+if (isset($_POST['UpdateStudent'])) {
     $timestamp = strtotime($_POST['editstartdate']);
     $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
-    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['id']);
+    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['StudentIDS']);
     $stmt->execute(); 
     $stmt->close();
 } 
@@ -42,12 +44,16 @@ if(isset($_POST['deletestudent'])) {
 // Reactivate Student
 if (isset($_POST['Reactivate'])) {
     $stmt = $db_server->prepare("UPDATE studentdata SET current = 1 WHERE studentid = ?");
-    $stmt->bind_param('i', $_POST['id2']);
+    $stmt->bind_param('i', $_POST['DelStudentIDS']);
     $stmt->execute(); 
     $stmt->close();
 } 
 // Query for student list
-	$studentresult = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
+	$StudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
+                                        <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+                    <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+                    </div>
+                    <div align="center" id="main">
 <div class="students">
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
@@ -61,7 +67,7 @@ if (isset($_POST['Reactivate'])) {
 				 <option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 				<?php } ?>
 	        </select>
-	<input type="submit" name="addnewstudent" value="Add Student" />
+	<input type="submit" name="AddStudent" value="Add Student" />
 </form>
 <table>
    <tr>
@@ -75,16 +81,16 @@ if (isset($_POST['Reactivate'])) {
    </tr>
 <?php
 // loop through list of names 
-while ($list = mysqli_fetch_assoc($studentresult)) { ?>
+while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 
 <form action="" method="post">
-<input type="hidden" name="id" value="<?php echo $list['studentid']; ?>">
+<input type="hidden" name="StudentIDS" value="<?php echo $StuDataList['studentid']; ?>">
 	<tr>
-		<?php $editme = "edit-" . $list['studentid'];
+		<?php $editme = "edit-" . $StuDataList['studentid'];
 		if (isset($_POST[$editme])) { 
-		$adjusteddate = new DateTime($list['startdate']);?> 
-		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $list['firstname']; ?>" required></td>
-		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $list['lastname']; ?>" required></td>
+		$adjusteddate = new DateTime($StuDataList['startdate']);?> 
+		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $StuDataList['firstname']; ?>" required></td>
+		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $StuDataList['lastname']; ?>" required></td>
 		<td><input type="text" size="11" name="editstartdate" id="EStartDate" class="textbox" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required></td>
         		<td>
 			<select name='selectedadvisor'>
@@ -94,7 +100,7 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
             
 				 while ($FacList = $GetFacilitators->fetch_assoc()) {
                      
-					if ($list['advisor'] == $FacList['facilitatorname']) { ?>
+					if ($StuDataList['advisor'] == $FacList['facilitatorname']) { ?>
                 
 				<option selected value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 					<?php } else { ?>  
@@ -111,7 +117,7 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 	        <?php
 				 $yearget = $db_server->query("SELECT yis FROM allottedhours ORDER BY yis ASC");
 				 while ($year_option = $yearget->fetch_assoc()) {
-					if ($list['yearinschool'] == $year_option['yis']) { ?>
+					if ($StuDataList['yearinschool'] == $year_option['yis']) { ?>
 						<option selected value="<?php echo $year_option['yis']; ?>"><?php echo $year_option['yis']; ?></option>
 					<?php } else { ?>  
 						<option value="<?php echo $year_option['yis']; ?>"> <?php echo $year_option['yis']; ?></option> 
@@ -122,31 +128,32 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 	        </select>
 		</td>
 				
-		<td><button type="submit" name="savestudent" value="<?php echo $list['studentid']; ?>">Save</button></td>
+		<td><button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Save</button></td>
 		<?php } else { ?>
-		<td><?php echo $list['firstname']; ?></td>
-		<td><?php echo $list['lastname']; ?></td>
-		<td><?php echo $list['startdate']; ?></td>
+		<td><?php echo $StuDataList['firstname']; ?></td>
+		<td><?php echo $StuDataList['lastname']; ?></td>
+		<td><?php echo $StuDataList['startdate']; ?></td>
         <?php 
-        $listAdvisor = $list['advisor'];
-        if (empty($listAdvisor)) {
-         $listAdvisor = "<font color='red'>???</font>";
+        $StuDataListAdvisor = $StuDataList['advisor'];
+        if (empty($StuDataListAdvisor)) {
+         $StuDataListAdvisor = "<font color='red'>???</font>";
         }
         ?>
-        <td><?php echo $listAdvisor; ?></td>
-		<td><?php echo $list['yearinschool']; ?></td>
+        <td><?php echo $StuDataListAdvisor; ?></td>
+		<td><?php echo $StuDataList['yearinschool']; ?></td>
 		
-		<td><input type="submit" name="edit-<?php echo $list['studentid']; ?>" value="Edit"></td>
+		<td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit"></td>
 		<?php } ?>	
-		<td><button type="submit" name="deletestudent" value="<?php echo $list['studentid']; ?>">X</button></td>
+		<td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button></td>
 	</tr>
 	</form>
 <?php 
 } // end while for student data
 ?>
 </table>
-<br />    
+<br /> 
 <table>
+    <h1>Hidden Students</h1>
    <tr>
       <th>First</th>
       <th>Last</th>
@@ -156,16 +163,16 @@ while ($list = mysqli_fetch_assoc($studentresult)) { ?>
 <?php
 
 // Query to get all deleted students
-	$result = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
+	$DelStudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
     
-    while ($list2 = mysqli_fetch_assoc($result)) { ?>
+    while ($DelStuDataList = mysqli_fetch_assoc($DelStudentData)) { ?>
         <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-        <input type="hidden" name="id2" value="<?php echo $list2['studentid']; ?>">
+        <input type="hidden" name="DelStudentIDS" value="<?php echo $DelStuDataList['studentid']; ?>">
             <tr>
-        <td><?php echo $list2['firstname']; ?></td>
-		<td><?php echo $list2['lastname']; ?></td>
-		<td><?php echo $list2['startdate']; ?></td>
-        <td><button type="submit" name="Reactivate" value="<?php echo $list2['studentid']; ?>">Reactivate</button></td>
+        <td><?php echo $DelStuDataList['firstname']; ?></td>
+		<td><?php echo $DelStuDataList['lastname']; ?></td>
+		<td><?php echo $DelStuDataList['startdate']; ?></td>
+        <td><button type="submit" name="Reactivate" value="<?php echo $DelStuDataList['studentid']; ?>">Reactivate</button></td>
                 </tr>
         </form>
     <?php } ?>
