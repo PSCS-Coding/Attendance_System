@@ -3,35 +3,50 @@
 	<title>Edit Passwords</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                                        <div id="TopHeader">
-                    <h1 class="Myheader">Update Passwords</h1>
-                    </div>
-    <div align="center" id="main">
+                <body>
 <?php 
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Passwords";
     // CHANGE PASSWORD
 if (!empty($_POST['saveadminpass'])) {
+    if ($_POST['adminpassword'] != null) {
 // Adding Crypt to admin password
     $AdminCrypt = crypt($_POST['adminpassword'], 'P9');
  $updatepass = $db_server->prepare("UPDATE login SET adminPass = ? WHERE password = ?");
 	  $updatepass->bind_param('si', $AdminCrypt, $_POST['PassID']);
 	  $updatepass->execute(); 
 	  $updatepass->close();
-	}
+     $HeaderStatus = "Sussess";
+     $HeaderInfo = "Sussessfully updated admin password.";
+	} else {
+     $HeaderStatus = "Error";
+     $HeaderInfo = "Please enter a valid password.";
+    }
+}
 if (!empty($_POST['savestudentpass'])) {
+    if ($_POST['password'] != null) {
 // Adding Crypt to student password
     $StudentCrypt = crypt($_POST['password'], 'P9');
  $updatepass = $db_server->prepare("UPDATE login SET password = ? WHERE password = ?");
 	  $updatepass->bind_param('si', $StudentCrypt, $_POST['PassID']);
 	  $updatepass->execute(); 
 	  $updatepass->close();
-	} 
-	
+     $HeaderStatus = "Sussess";
+     $HeaderInfo = "Sussessfully updated student password.";
+	} else {
+     $HeaderStatus = "Error";
+     $HeaderInfo = "Please enter a valid password.";
+    }
+}
 
 // GET THE LIST OF PASSWORDS
 	$passwordresult = $db_server->query("SELECT * FROM login ORDER BY password");
     ?>
-    
+            <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+              <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+                </div>
+            <div align="center" id="main">
 <div class="passwords">
 <?php
 // loop through passwords

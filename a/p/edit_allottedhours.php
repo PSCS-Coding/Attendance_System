@@ -3,12 +3,11 @@
 	<title>Edit Allotted Hours</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                                        <div id="TopHeader">
-                    <h1 class="Myheader">Update Allotted-Hours</h1>
-                    </div>
-                    <div align="center" id="main">
+                <body>
 <?php
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Allotted Hours";
 // EDIT ALLOTTED HOURS
 if (isset($_POST['saveallotted'])) {
     $updatehours = $db_server->prepare("UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE id = ?");
@@ -20,7 +19,10 @@ if (isset($_POST['saveallotted'])) {
 // Query for allotted hours
 $hoursresult = $db_server->query("SELECT * FROM allottedhours ORDER BY yis");
 ?>
-    
+<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+  <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+   </div>
+ <div align="center" id="main">
 <div class="allottedhours">
 <table>
    <tr>

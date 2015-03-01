@@ -3,13 +3,12 @@
 	<title>Edit Holidays</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                                        <div id="TopHeader">
-                    <h1 class="Myheader">Update Holidays</h1>
-                    </div>
-<div align="center" id="main">
+                <body>
 <!-- UPDATE FUNCTIONS -->     
 <?php
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Holidays";
 // ADD A NEW HOLIDAY			
 if (isset($_POST['addnewholiday'])) {
 $date = strtotime($_POST['date']);
@@ -17,7 +16,10 @@ $stmt = $db_server->prepare("INSERT INTO holidays (holidayname, date) VALUES (?,
 $stmt->bind_param('ss', $_POST['holidayname'] , $date);
 $stmt->execute(); 
 $stmt->close();
-}				
+$HolidayName = $_POST['holidayname'];
+$HeaderStatus = "Sussess";
+$HeaderInfo = "Sussessfully added holiday: $HolidayName";
+}
 
 // EDIT (UPDATE) A HOLIDAY
 if (isset($_POST['saveholiday'])) {
@@ -30,10 +32,12 @@ if (isset($_POST['saveholiday'])) {
 
 // DELETE A HOLIDAY
 if(isset($_POST['deleteholiday'])) {
-	$stmt = $db_server->prepare("DELETE FROM holidays WHERE HolidayID = ?");
+	$stmt = $db_server->prepare("DELETE FROM holidays WHERE id = ?");
 	$stmt->bind_param('i', $_POST['HolidayID']);
 	$stmt->execute(); 		
 	$stmt->close();
+$HeaderStatus = "Error";
+$HeaderInfo = "Deleted Holiday.";
 	}
 	
 	
@@ -41,7 +45,10 @@ if(isset($_POST['deleteholiday'])) {
 // GET THE LIST OF HOLIDAYS
 	$holidayresult = $db_server->query("SELECT * FROM holidays ORDER BY date");
 	 ?>
-    
+                <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+              <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+                </div>
+            <div align="center" id="main">
 <div class="holidays">
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="holidayname" placeholder="Holiday Name" required size="15">
@@ -61,15 +68,15 @@ if(isset($_POST['deleteholiday'])) {
 while ($list = mysqli_fetch_assoc($holidayresult)) { ?>
 
 <form action="" method="post">
-<input type="hidden" name="HolidayID" value="<?php echo $list['HolidayID']; ?>">
+<input type="hidden" name="HolidayID" value="<?php echo $list['id']; ?>">
 	<tr>
-		<?php $editme = "edit-" . $list['HolidayID'];
+		<?php $editme = "edit-" . $list['id'];
 		if (isset($_POST[$editme])) { 
 		$adjusteddate = new DateTime($list['date']);
 		?> 
 		<td><input type="text" name="holidayname" class="textbox" value="<?php echo $list['holidayname']; ?>" required size="15"></td>
 		<td><input type="text" name="date" class="textbox" id="editdate" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required size="15"></td>
-		<td><button type="submit" name="saveholiday" value="<?php echo $list['HolidayID']; ?>">Save</button></td>
+		<td><button type="submit" name="saveholiday" value="<?php echo $list['id']; ?>">Save</button></td>
 		<?php } else { ?>
 		<td><?php echo $list['holidayname']; ?></td>
 		<td><?php echo $list['date']; ?></td>

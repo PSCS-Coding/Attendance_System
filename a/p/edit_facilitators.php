@@ -3,28 +3,21 @@
 	<title>Edit Facilitators</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                    <div id="TopHeader">
-                    <h1 class="Myheader">Update Facilitators</h1>
-                        </div>
-                    <div align="center" id="main">
-<div class="facilitators">
-<?php 
-// Making facilitator name look nice
-if (isset($_POST['addFacilitatorTXT'])) {
-$newFacilitatorName = $_POST['addFacilitatorTXT'];
-$newFacilitatorName = ucfirst(strtolower($newFacilitatorName));
-// Making facilitator email with name
-$newFacilitatorEmail = $_POST['addFacilitatorTXT'];
-$newFacilitatorEmail .= "@pscs.org";
-$newFacilitatorEmail = strtolower($newFacilitatorEmail);
-}
+                <body>
+<?php
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Facilitators";
 // Add Facilitator to Database
 if (!empty($_POST['addFacilitatorTXT'])) {
+    $newFacilitatorName = $_POST['addFacilitatorTXT'];
+    $newFacilitatorEmail = $_POST['addFacilitatorEmail'];
     $stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES (?, ?, ?)");
     $stmt->bind_param('ssi', $newFacilitatorName , $newFacilitatorEmail , $_POST['AdvisorDropDown']);
     $stmt->execute(); 
-    $stmt->close();				
+    $stmt->close();	
+    $HeaderStatus = "Sussess";
+    $HeaderInfo = "Added $newFacilitatorName as a facilitator.";
 }
 
 // Update facilitator
@@ -41,19 +34,21 @@ $stmt = $db_server->prepare("DELETE FROM facilitators WHERE facilitatorid = ?");
 $stmt->bind_param('i', $_POST['id']);
 $stmt->execute(); 		
 $stmt->close();
+$HeaderStatus = "Error";
+$HeaderInfo = "Deleted Facilitator.";
 }
 
 // Query facilitator table
 $FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname");
-
-// Display added facilitator at top of page
-if (!empty($_POST['addFacilitatorTXT'])) {
-    echo "Added $newFacilitatorName as a facilitator!";
-}
 ?>
-    
+<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+  <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+   </div>
+ <div align="center" id="main">
+    <div class="facilitators">
 <form action="" method="post">
     <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name" size="15">
+    <input type="text" name="addFacilitatorEmail" placeholder="Email" size="12">
     <select name="AdvisorDropDown">
   <option selected value="0">Advisor?</option>
   <option value="1">Yes</option>

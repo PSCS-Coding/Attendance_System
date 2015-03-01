@@ -3,12 +3,11 @@
 	<title>Edit Globals</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body style="background-color: dimgray;">
-                    <div id="TopHeader">
-                    <h1 class="Myheader">Update Globals</h1>
-                    </div>
-                    <div align="center" id="main">
+                <body>
 <?php
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Globals";
     // EDIT (UPDATE) GLOBALS
 if (isset($_POST['save'])) {
  $editstartdate = strtotime($_POST['editstartdate']);
@@ -24,7 +23,10 @@ if (isset($_POST['save'])) {
 // GET THE LIST OF GLOBALS
 $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
     ?>	
-    
+                <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+              <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+                </div>
+            <div align="center" id="main">
 <div class="globals">
 <table>
     

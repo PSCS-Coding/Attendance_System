@@ -13,10 +13,13 @@ $HeaderInfo = "Update Students";
 if (isset($_POST['AddStudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
     $timestamp = strtotime($_POST['startdate']);
+    $newStudentName = $_POST['newfirstname'];
     $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
     $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
+    $HeaderStatus = "Sussess";
+    $HeaderInfo = "Added $newStudentName as a student.";
     } else {
      $HeaderStatus = "Error";
      $HeaderInfo = "Please select a valid advisor.";
@@ -36,9 +39,11 @@ if (isset($_POST['UpdateStudent'])) {
 // DELETE A STUDENT
 if(isset($_POST['deletestudent'])) {
     $stmt = $db_server->prepare("UPDATE studentdata SET current = 0 WHERE studentid = ?");
-	$stmt->bind_param('i', $_POST['id']);
+	$stmt->bind_param('i', $_POST['StudentIDS']);
 	$stmt->execute();
 	$stmt->close();
+    $HeaderStatus = "Error";
+    $HeaderInfo = "Deactivated Student.";
 }
 
 // Reactivate Student
@@ -47,6 +52,8 @@ if (isset($_POST['Reactivate'])) {
     $stmt->bind_param('i', $_POST['DelStudentIDS']);
     $stmt->execute(); 
     $stmt->close();
+    $HeaderStatus = "Sussess";
+    $HeaderInfo = "Reactivated Student.";
 } 
 // Query for student list
 	$StudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
