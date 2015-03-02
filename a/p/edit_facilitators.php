@@ -2,6 +2,7 @@
 <head>
 	<title>Edit Facilitators</title>
 	<?php require_once('header.php'); ?>
+	<script src="js/jquery.min.js"></script>
 </head>
 <body class="adminpage edit-facilitators">
 <?php
@@ -117,5 +118,19 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
     </table>
 </div>
                     </div>
+ 
+ <script>
+	$(document).ready(function() {
+		$('#TopHeader').delay(1500).fadeOut('fast');
+		setTimeout(function() {
+			$('#TopHeader').removeClass();
+			$('#TopHeader .MyHeader').text('Update Facilitators');
+		}, 1700);
+		$('#TopHeader').fadeIn('fast');
+		
+	
+	});
+ </script>
+ 
 </body>
 </html>
