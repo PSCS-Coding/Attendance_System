@@ -11,7 +11,7 @@
         }
         
         #top_header .button {
-            font-size: 0em;
+            font-size: 0.7em;
             width: 60px;
         }
         #top_header input:not(.button) {

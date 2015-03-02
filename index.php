@@ -284,18 +284,18 @@
 	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	       <input class="button" type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
-		<div>
+		<div class="statusview_button">
 			<a href="statusview.php">Status View</a>
 		</div>
         <!-- Link To Admin Page -->
         <?php        
     if (isset($_COOKIE['login'])) {
     if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
-    echo '<div><a href="/a">Admin</a></div>';
+    echo '<div class="admin_button"><a href="/a">Admin</a></div>';
         }
     } 
         ?>
-		<div>
+		<div class="viewreports_button">
 			<a href="viewreports.php">View Reports</a>
 		</div>
         <div>
@@ -303,6 +303,35 @@
 		</div>
 		</form>
 	</div>
+	
+	<script>
+		$(document).ready(function() {
+			$(window).resize(function() {
+				if($(window).width() < 1020) {
+					$('.viewreports_button a').text('Reports');
+					$('.statusview_button a').text('Status');
+					$('.admin_button a').text('A');
+				}
+				else {
+					$('.viewreports_button a').text('View Reports');
+					$('.statusview_button a').text('Status View');
+					$('.admin_button a').text('Admin');
+				}
+			});
+			
+			if($(window).width() < 1020) {
+				$('.viewreports_button a').text('Reports');
+				$('.statusview_button a').text('Status');
+				$('.admin_button a').text('A');
+			}
+			else {
+				$('.viewreports_button a').text('View Reports');
+				$('.statusview_button a').text('Status View');
+				$('.admin_button a').text('Admin');
+			}
+		});
+	</script>
+	
 	<!-- student information table rendering -->
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
