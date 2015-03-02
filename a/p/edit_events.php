@@ -88,13 +88,13 @@ if (!empty($_POST['studentselect'])) {
    
 <head>
    <title>Edit Events</title>
-   <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
    <link rel="stylesheet" type="text/css" href="../../attendance.css">
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-   <script src="../js/scrollTo.js"></script>
-   <script src="../js/jquery.datetimepicker.js"></script>
+   <?php require_once('header.php'); ?>
 </head>
-
+                                        <div id="TopHeader">
+                    <h1 class="Myheader">Update Events</h1>
+                    </div>
+    <div align="center" id="main">
 <body class="edit-events">
 
    <div id="puttheimagehere">
@@ -106,11 +106,7 @@ if (!empty($_POST['studentselect'])) {
       echo "<div class='error'>Event #".$eventid." was deleted.</div>";
    }
 } ?>
-
-   <h1 class="headerr">Edit Events</h1>
-   <div class="centerr" style="margin: 1em;">
-      <a href="../" style="color: #fff;">Temporary link to main admin interface</a>
-   </div>
+    
    <div class="centerr"> 
       <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
          <select name='studentselect'>
@@ -281,5 +277,6 @@ if (!empty($_POST['studentselect'])) {
 	 $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
       });
    </script>
+    </div>
 </body>
 </html>
