@@ -19,7 +19,7 @@
             <a href="Globals" class="option">Globals</a>
             <a href="Events" class="option">Events</a>
             <a href="Groups" class="disabled">Groups</a>
-            <a href="Stats" class="disabled">Student Stats</a>
+            <a href="leaderboards.php" class="option">LeaderBoards</a>
                     </div>            
 	 <div align="center" id="main">
                     </div>
