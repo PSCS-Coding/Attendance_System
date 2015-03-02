@@ -12,7 +12,7 @@ $studentNames = array();
 	$currentStudentRow = array();
 	$lastInit = $studentRow['lastname'][0];
 	$stats = calculateStats($studentRow['studentid']);
-	array_push($currentStudentRow,$studentRow['firstname'],$lastInit,$stats[2]);
+	array_push($currentStudentRow,$studentRow['firstname'],$lastInit,$stats[2],$stats[0]);
 	array_push($studentTable,$currentStudentRow);
 	array_push($studentNames,$studentRow['firstname']);
 }
@@ -36,6 +36,7 @@ for ($i = 1; $i < count($studentTable); $i++){
 <tr> 
 <th> name </th>
 <th> minutes per day </th>
+<th> offsite </th>
 </tr>
 <?php 
 foreach ($studentTable as $render){
@@ -43,6 +44,7 @@ foreach ($studentTable as $render){
 	<tr>
 	<td> <?php echo $render[0]; ?> </td>
 	<td> <?php echo $render[2]; ?> </td>
+	<td> <?php echo $render[3]; ?> </td>
 	</tr>
 <?php
 }
