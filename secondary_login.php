@@ -70,7 +70,10 @@ if(isset($_POST['Submit']))
         
         echo '<META http-equiv="refresh" content="0;URL=index.php">';
     } else
-		die("Wrong password :^)");
+		die('Wrong password :^) <br /> <br /> <video controls autoplay>
+  <source src="Error.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>');
 }
 ?>
 <html>
