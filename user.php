@@ -1,8 +1,4 @@
 <?php
-//load required external files
-    require_once("connection.php");
-   	require_once("function.php");
-	
 //load name and id from either get or cookie and sets a cookie for name if name is set
 
 	if (!empty($_GET['name'])){
@@ -487,6 +483,5 @@ if (!empty($_POST)){
     var picker = new Pikaday({ field: document.getElementById('chooseday') });
 	var picker = new Pikaday({ field: document.getElementById('secondchoosedate') });
 </script>
-<?php require_once("login.php"); ?>
 </body>
 </html>
