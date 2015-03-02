@@ -4,6 +4,7 @@
 	<?php require_once('header.php'); ?>
 </head>
 <body>
+    <div align="center">
 <?php 
 $studentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname");
 $studentTable = array();
@@ -32,11 +33,11 @@ for ($i = 1; $i < count($studentTable); $i++){
 
 ?>
 <br>
-<table>
+<table id="LeaderBoards">
 <tr> 
-<th> name </th>
-<th> minutes per day </th>
-<th> offsite </th>
+<th> Name </th>
+<th> Minutes Per Day </th>
+<th> Offsite </th>
 </tr>
 <?php 
 foreach ($studentTable as $render){
@@ -51,5 +52,6 @@ foreach ($studentTable as $render){
 
 ?>
 </table>
+        </div>
 </body>
 </html>
