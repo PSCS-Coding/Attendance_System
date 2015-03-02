@@ -251,7 +251,7 @@
 	   
 	   	<div>
 			<!-- top interface sign out button -->
-			<input class="button" type="submit" value="Check Out" name="checkout">
+			<input class="button" type="submit" value="Check Out" name="checkout" onclick="return confirm('Confirmation: \nAre you sure you want to check out?');">
 		</div>
  
 	    <div>
