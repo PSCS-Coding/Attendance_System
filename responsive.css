@@ -17,7 +17,7 @@
         #top_header input:not(.button) {
             width: 9em;
             vertical-align: middle;
-            height: 10px;
+            height: 11px;
         }
         #top_header select {
             font-size: 0.7em;
