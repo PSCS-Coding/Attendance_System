@@ -3,7 +3,7 @@
 	<title>Edit Globals</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-globals">
 <?php
 // Header Info
 $HeaderStatus = null;
@@ -27,7 +27,7 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
               <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
                 </div>
             <div align="center" id="main">
-<div class="globals">
+<div class="admintable">
 <table>
     
    <tr>

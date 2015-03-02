@@ -3,7 +3,7 @@
 	<title>Edit Passwords</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-passwords">
 <?php 
 // Header Info
 $HeaderStatus = null;
@@ -47,7 +47,7 @@ if (!empty($_POST['savestudentpass'])) {
               <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
                 </div>
             <div align="center" id="main">
-<div class="passwords">
+<div class="admintable">
 <?php
 // loop through passwords
 while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>

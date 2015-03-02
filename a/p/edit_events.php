@@ -91,11 +91,12 @@ if (!empty($_POST['studentselect'])) {
    <link rel="stylesheet" type="text/css" href="../../attendance.css">
    <?php require_once('header.php'); ?>
 </head>
-                                        <div id="TopHeader">
-                    <h1 class="Myheader">Update Events</h1>
-                    </div>
+<body class="edit-events adminpage">
+	<div id="TopHeader">
+		<h1 class="Myheader">Update Events</h1>
+	</div>
     <div align="center" id="main">
-<body class="edit-events">
+
 
    <div id="puttheimagehere">
        <img src="../img/mobius.png">

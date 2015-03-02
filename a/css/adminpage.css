@@ -23,7 +23,7 @@ body {
     display: -webkit-flex;
     display: flex;
 }
-.allottedhours {
+.admintable {
     padding: 25px 15px 25px 15px;
     background-color: darkgray;
     border-radius: 5px;
@@ -32,50 +32,9 @@ body {
     max-width: 500px;
     opacity: 0.85;
 }
-.facilitators {
-    padding: 25px 15px 25px 15px;
-    background-color: darkgray;
-    border-radius: 5px;
-    color: black;
-    min-width: 500px;
-    max-width: 500px;
-    opacity: 0.85;
-}
-.globals {
-    padding: 25px 15px 25px 15px;
-    background-color: darkgray;
-    border-radius: 5px;
-    color: black;
-    min-width: 500px;
-    max-width: 500px;
-    opacity: 0.85;
-}
-.holidays {
-    padding: 25px 15px 25px 15px;
-    background-color: darkgray;
-    border-radius: 5px;
-    color: black;
-    min-width: 500px;
-    max-width: 500px;
-    opacity: 0.85;
-}
-.passwords {
-    padding: 25px 15px 25px 15px;
-    background-color: darkgray;
-    border-radius: 5px;
-    color: black;
+.edit-passwords .admintable {
     min-width: 400px;
     max-width: 400px;
-    opacity: 0.85;
-}
-.students {
-    padding: 25px 15px 25px 15px;
-    background-color: darkgray;
-    border-radius: 5px;
-    color: black;
-    min-width: 500px;
-    max-width: 500px;
-    opacity: 0.85;
 }
 table {
     width: 100%;

@@ -3,7 +3,7 @@
 	<title>Edit Allotted Hours</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-allottedhours">
 <?php
 // Header Info
 $HeaderStatus = null;
@@ -23,7 +23,7 @@ $hoursresult = $db_server->query("SELECT * FROM allottedhours ORDER BY yis");
   <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
    </div>
  <div align="center" id="main">
-<div class="allottedhours">
+<div class="admintable">
 <table>
    <tr>
       <th>Year In School</th>

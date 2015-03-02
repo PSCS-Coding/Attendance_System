@@ -3,7 +3,7 @@
 	<title>Edit Facilitators</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-facilitators">
 <?php
 // Header Info
 $HeaderStatus = null;
@@ -45,7 +45,7 @@ $FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorn
   <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
    </div>
  <div align="center" id="main">
-    <div class="facilitators">
+    <div class="admintable">
 <form action="" method="post">
     <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name" size="15">
     <input type="text" name="addFacilitatorEmail" placeholder="Email" size="12">

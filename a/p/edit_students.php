@@ -3,7 +3,7 @@
 	<title>Edit Students</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-students">
 <!-- UPDATE FUNCTIONS -->     
 <?php 
 // Header Info
@@ -61,7 +61,7 @@ if (isset($_POST['Reactivate'])) {
                     <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
                     </div>
                     <div align="center" id="main">
-<div class="students">
+<div class="admintable">
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
 	<input type="text" name="newlastname" placeholder="Last Name" required size="12">

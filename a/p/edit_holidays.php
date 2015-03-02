@@ -3,7 +3,7 @@
 	<title>Edit Holidays</title>
 	<?php require_once('header.php'); ?>
 </head>
-                <body>
+<body class="adminpage edit-holidays">
 <!-- UPDATE FUNCTIONS -->     
 <?php
 // Header Info
@@ -49,7 +49,7 @@ $HeaderInfo = "Deleted Holiday.";
               <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
                 </div>
             <div align="center" id="main">
-<div class="holidays">
+<div class="admintable">
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="holidayname" placeholder="Holiday Name" required size="15">
 	<input type="text" name="date" id="date" placeholder="Holiday Date" required size="15">
