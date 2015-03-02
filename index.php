@@ -291,7 +291,7 @@
         <?php        
     if (isset($_COOKIE['login'])) {
     if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
-    echo '<div><a href="/a">Admin</a></div>';
+    echo '<div><a href="a/p">Admin</a></div>';
         }
     } 
         ?>
