@@ -23,6 +23,13 @@
 			
 			setIdle(function() {location.href = location.href;}, 300);
 		</script>
+		<script>
+			$(function() {
+			    $(document).tooltip();    
+			});
+		    </script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 	</head>
 	<body class="mainpage">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
@@ -426,7 +433,7 @@
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
 					<td class='student_col'>
-						<a href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
+						<a title="<?php $showArray = calculateStats($latestdata['studentid']); echo $showArray[2] . " min/day" ?>" href="user.php?id=<?php echo $latestdata['studentid']; ?>&name=<?php echo $latestdata['firstname'];?>"><?php print $latestdata['firstname'] . " " . $lastinitial; ?></a>
 					</td>
 					<td class="student_col_buttons">
 						                    
