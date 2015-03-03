@@ -394,14 +394,15 @@
                 
                 if ($latestdata['statusname'] == 'Not Checked In' && $todaydate < $todaytimestart) {
                  ?>  
+        
                 <tr class="Status_Red">
-                    <?php
-                } else {
-                ?>
+                    
+                <?php  } else { ?>
+                    
 				<tr>
-                    <?php
-                }
-?>
+                    
+                    <?php } ?>
+                    
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
