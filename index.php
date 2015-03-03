@@ -392,16 +392,17 @@
         $todaytime = new DateTime();
         $todaytimestart = new DateTime($globals_data['starttime']);
                 
-                if ($latestdata['statusname'] == 'Not Checked In' && $todaydate < $todaytimestart) {
+                if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+                    
                  ?>  
         
-                <tr class="Status_Red">
+                        <tr class="Status_Red">
                     
-                <?php  } else { ?>
+                        <?php  } else { ?>
+                            
+				        <tr>
                     
-				<tr>
-                    
-                    <?php } ?>
+                <?php } ?>
                     
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
