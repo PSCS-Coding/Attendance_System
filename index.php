@@ -312,7 +312,7 @@
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
 					$("#present_button").prop('value', 'P');
-					$("#present_button").css('width', '20px');
+					$("#present_button").css('width', '25px');
 				}
 				else {
 					$('.viewreports_button a').text('View Reports');
@@ -328,7 +328,7 @@
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
 				$("#present_button").prop('value', 'P');
-				$("#present_button").css('width', '20px');
+				$("#present_button").css('width', '25px');
 			}
 			else {
 				$('.viewreports_button a').text('View Reports');
