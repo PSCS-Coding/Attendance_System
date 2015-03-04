@@ -10,7 +10,6 @@
     require_once('connection.php');
     require_once('function.php');
 
-
     // Query events
     $EventResult = $db_server->query("SELECT * FROM events ORDER BY eventid");
 
@@ -30,11 +29,14 @@ while ($EventList = mysqli_fetch_assoc($EventResult)) {
             $UpdatedTS = substr($myTS, 0, -9);
             $SQLReturnTime = $EventList['returntime'];
             $myReturnTime = $UpdatedTS.' '.$SQLReturnTime;
+            // IF STATEMENT FOR DISPLAYING TIMESTAMPS
+            if ($EventList['info'] != null) {
 
+                echo $EventList['info'];
+                echo $myReturnTime;
+
+            }
         ?>
-
-        <?php echo $EventList['info']; ?> - NEW RETURN TIME:
-        <?php echo $myReturnTime; ?>
 
         </div>
 
