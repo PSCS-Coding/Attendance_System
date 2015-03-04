@@ -246,7 +246,7 @@
 		
 		<div>
 			<!-- top interface present button -->
-	        <input class="button" type="submit" value="Present" name="present">
+	        <input class="button" id="present_button" type="submit" value="Present" name="present">
 	    </div>
 	   
 	   	<div>
@@ -311,11 +311,15 @@
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
+					$("#present_button").prop('value', 'P');
+					$("#present_button").css('width', '20px');
 				}
 				else {
 					$('.viewreports_button a').text('View Reports');
 					$('.statusview_button a').text('Status View');
 					$('.admin_button a').text('Admin');
+					$("#present_button").prop('value', 'Present');
+					$("#present_button").css('width', '60px');
 				}
 			});
 			
@@ -323,11 +327,15 @@
 				$('.viewreports_button a').text('Reports');
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
+				$("#present_button").prop('value', 'P');
+				$("#present_button").css('width', '20px');
 			}
 			else {
 				$('.viewreports_button a').text('View Reports');
 				$('.statusview_button a').text('Status View');
 				$('.admin_button a').text('Admin');
+				$("#present_button").prop('value', 'Present');
+				$("#present_button").css('width', '60px');
 			}
 		});
 	</script>
