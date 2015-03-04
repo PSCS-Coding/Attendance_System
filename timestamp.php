@@ -12,12 +12,11 @@
 
     // Query events
     $EventResult = $db_server->query("SELECT * FROM events ORDER BY eventid");
-
+    $GlobalsResult = $db_server->query("SELECT * FROM globals");
 
     // Make list of all events
 
 while ($EventList = mysqli_fetch_assoc($EventResult)) {
-
     ?>
 
         <!-- Allign Text Left -->
@@ -29,13 +28,24 @@ while ($EventList = mysqli_fetch_assoc($EventResult)) {
             $UpdatedTS = substr($myTS, 0, -9);
             $SQLReturnTime = $EventList['returntime'];
             $myReturnTime = $UpdatedTS.' '.$SQLReturnTime;
-            // IF STATEMENT FOR DISPLAYING TIMESTAMPS
-            if ($EventList['info'] != null) {
+            $myINT = $EventList['eventid'];
+                // Updated database
 
-                echo $EventList['info'];
-                echo $myReturnTime;
-
-            }
+if ($EventList['statusid'] == 2 || $EventList['statusid'] == 3 || $EventList['statusid'] == 6) {
+    if ($SQLReturnTime >= "01:00:00" && $SQLReturnTime <="03:30:00") {
+            echo $SQLReturnTime;
+            echo "--";
+            $NotBrokenRT = new DateTime($SQLReturnTime);
+            $NotBrokenRT ->add(new DateInterval('PT12H'));
+            $myReturnTime = $NotBrokenRT;
+            $myReturnTime = $myReturnTime->format('H:i:s');
+            $myReturnTime = $UpdatedTS.' '.$myReturnTime;
+            echo $myReturnTime;
+    }
+    }
+            $NewRT = $db_server->prepare("UPDATE events SET tempreturntime = ? WHERE eventid = ?");
+               $NewRT->bind_param('si', $myReturnTime, $myINT);
+               $NewRT->execute();
         ?>
 
         </div>
