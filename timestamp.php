@@ -15,7 +15,6 @@
     $GlobalsResult = $db_server->query("SELECT * FROM globals");
 
     // Make list of all events
-
 while ($EventList = mysqli_fetch_assoc($EventResult)) {
     ?>
 
@@ -23,7 +22,10 @@ while ($EventList = mysqli_fetch_assoc($EventResult)) {
         <div style="text-allign: left;">
 
         <?php
-
+            if ($EventList['tempreturntime'] != "0000-00-00 00:00:00") {
+            echo "Either this has worked, or you did not make the database table correctly.";
+            break;
+            } else {
             $myTS = $EventList['timestamp'];
             $UpdatedTS = substr($myTS, 0, -9);
             $SQLReturnTime = $EventList['returntime'];
@@ -50,8 +52,7 @@ if ($EventList['statusid'] == 2 || $EventList['statusid'] == 3 || $EventList['st
 
         </div>
 
-<?php } // Ends while loop for events ?>
-
-
+<?php } // Ends if for new events thingy ?>
+        <?php } // Ends while loop for events ?>
     </body>
     </html>
