@@ -414,8 +414,25 @@
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
-				?>
-				<tr>
+                //Query for globals
+        $globals_query = "SELECT starttime FROM globals";
+        $globals_result = $db_server->query($globals_query);
+        $globals_data = $globals_result->fetch_array();
+        $todaytime = new DateTime();
+        $todaytimestart = new DateTime($globals_data['starttime']);
+                
+                if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+                    
+                 ?>  
+        
+                        <tr class="Status_Red">
+                    
+                        <?php  } else { ?>
+                            
+				        <tr>
+                    
+                <?php } ?>
+                    
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
