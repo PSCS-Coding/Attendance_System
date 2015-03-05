@@ -153,6 +153,9 @@ a.button:last-child {
 td, th {
     padding: 5px 7px;
 }
+#LeaderBoards {
+    opacity: 0.85;
+}
 #adminpwd {
 align-content: center;
 margin-left: auto;
