@@ -194,5 +194,18 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
                     <script>
     var picker = new Pikaday({ field: document.getElementById('EStartDate') });
 </script>
+		    
+		    
+<script>
+       $(document).ready(function() {
+	       $('#TopHeader').delay(1500);
+	       setTimeout(function() {
+		       $('#TopHeader').removeClass();
+		       $('#TopHeader .MyHeader').text('Update Students');
+	       }, 1700);
+	       
+       
+       });
+</script>
 </body>
 </html>

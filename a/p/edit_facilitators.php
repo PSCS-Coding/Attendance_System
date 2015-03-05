@@ -121,12 +121,11 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
  
  <script>
 	$(document).ready(function() {
-		$('#TopHeader').delay(1500).fadeOut('fast');
+		$('#TopHeader').delay(1500);
 		setTimeout(function() {
 			$('#TopHeader').removeClass();
 			$('#TopHeader .MyHeader').text('Update Facilitators');
 		}, 1700);
-		$('#TopHeader').fadeIn('fast');
 		
 	
 	});

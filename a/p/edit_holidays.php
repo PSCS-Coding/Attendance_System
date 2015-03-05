@@ -101,5 +101,16 @@ while ($list = mysqli_fetch_assoc($holidayresult)) { ?>
 </script>
     </div>
                     </div>
+<script>
+       $(document).ready(function() {
+	       $('#TopHeader').delay(1500);
+	       setTimeout(function() {
+		       $('#TopHeader').removeClass();
+		       $('#TopHeader .MyHeader').text('Update Holidays');
+	       }, 1700);
+	       
+       
+       });
+</script>
 </body>
 </html>

@@ -68,5 +68,16 @@ while ($passlist = mysqli_fetch_assoc($passwordresult)) { ?>
 ?>
 </div>
         </div>
+<script>
+       $(document).ready(function() {
+	       $('#TopHeader').delay(1500);
+	       setTimeout(function() {
+		       $('#TopHeader').removeClass();
+		       $('#TopHeader .MyHeader').text('Update Passwords');
+	       }, 1700);
+	       
+       
+       });
+</script>
 </body>
 </html>
