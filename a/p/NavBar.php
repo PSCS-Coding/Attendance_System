@@ -9,5 +9,5 @@
             <a href="edit_globals.php" class="option">Globals</a>
             <a href="edit_events.php" class="option">Events</a>
             <a href="#" class="disabled">Groups</a>
-            <a href="#" class="disabled">Student Stats</a>
-                    </div>   
+            <a href="#" class="disabled">Offsite Stats</a>
+                    </div>
