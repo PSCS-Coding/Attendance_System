@@ -9,7 +9,7 @@
                     <h1 class="Myheader">Welcome Admin!</h1>
                     </div>
         <div id="navigation">
-            <h1 class="header">2.0.1 DEV</h1>
+            <h1 class="header">Admin View</h1>
             <a href="../../" class="option">Back to Main Page</a>
             <a href="Students" class="option">Students</a>
             <a href="Facilitators" class="option">Facilitators</a>

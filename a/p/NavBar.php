@@ -1,5 +1,5 @@
         <div id="navigation">
-            <h1 class="header">2.0.1 DEV</h1>
+            <h1 class="header">Admin View</h1>
             <a href="../../" class="option">Back to Main Page</a>
             <a href="edit_students.php" class="option">Students</a>
             <a href="edit_facilitators.php" class="option">Facilitators</a>
