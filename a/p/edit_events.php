@@ -3,48 +3,48 @@ require_once("../../connection.php");
 require_once("../../function.php");
 
 if (!empty($_GET['eventid'])) {
-	$eventid = $_GET['eventid'];
-	$changerow = "inline_edit_" . $_GET['eventid'];
-	$deleterow = "inline_delete_" . $_GET['eventid'];
-	if (!empty($_POST['edit_submit'])) { // THESE FUNCTIONS UPDATE AN EDITED EVENT
-		if (!empty($_POST['status_select'])) {
-			$statusid = $_POST['status_select'];
-			$update = $db_server->prepare("UPDATE events SET statusid=? WHERE eventid=?");
-			$update->bind_param('ii', $statusid, $eventid);
-			$update->execute();
-			$update->close();
-		}
-		if (!empty($_POST['info_edit'])) {
-			$info = strip_tags($_POST['info_edit']);
-			$update = $db_server->prepare("UPDATE events SET info=? WHERE eventid=?");
-			$update->bind_param('si', $info, $eventid);
-			$update->execute();
-			$update->close();
-		}
-		if (!empty($_POST['returntime_edit'])) {
-			$time = $_POST['returntime_edit'];
-			$update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
-			$update->bind_param('ss', $time, $eventid);
-			$update->execute();
-			$update->close();
-		}
-		if (!empty($_POST['stamp_edit'])) {
-			$stamp = $_POST['stamp_edit'];
-			$update = $db_server->prepare("UPDATE events SET timestamp=? WHERE eventid=?");
-			$update->bind_param('ss', $stamp, $eventid);
-			$update->execute();
-			$update->close();
-		}
-	}
-	if (!empty($_POST[$deleterow])) {
-		$delete = $db_server->prepare("DELETE FROM events WHERE eventid=?");
-		$delete->bind_param('i', $eventid);
-		$delete->execute();
-		$delete->close();
-		}
-	elseif (!empty($_POST[$deleterow])) {
-	
-	}
+    $eventid = $_GET['eventid'];
+    $changerow = "inline_edit_" . $_GET['eventid'];
+    $deleterow = "inline_delete_" . $_GET['eventid'];
+    if (!empty($_POST['edit_submit'])) { // THESE FUNCTIONS UPDATE AN EDITED EVENT
+        if (!empty($_POST['status_select'])) {
+            $statusid = $_POST['status_select'];
+            $update = $db_server->prepare("UPDATE events SET statusid=? WHERE eventid=?");
+            $update->bind_param('ii', $statusid, $eventid);
+            $update->execute();
+            $update->close();
+        }
+        if (!empty($_POST['info_edit'])) {
+            $info = strip_tags($_POST['info_edit']);
+            $update = $db_server->prepare("UPDATE events SET info=? WHERE eventid=?");
+            $update->bind_param('si', $info, $eventid);
+            $update->execute();
+            $update->close();
+        }
+        if (!empty($_POST['returntime_edit'])) {
+            $time = $_POST['returntime_edit'];
+            $update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
+            $update->bind_param('ss', $time, $eventid);
+            $update->execute();
+            $update->close();
+        }
+        if (!empty($_POST['stamp_edit'])) {
+            $stamp = $_POST['stamp_edit'];
+            $update = $db_server->prepare("UPDATE events SET timestamp=? WHERE eventid=?");
+            $update->bind_param('ss', $stamp, $eventid);
+            $update->execute();
+            $update->close();
+        }
+    }
+    if (!empty($_POST[$deleterow])) {
+        $delete = $db_server->prepare("DELETE FROM events WHERE eventid=?");
+        $delete->bind_param('i', $eventid);
+        $delete->execute();
+        $delete->close();
+        }
+    elseif (!empty($_POST[$deleterow])) {
+
+    }
 }
 if (!empty($_POST['new_submit'])) { // TODO require return times for field trip and offsite??
    if (!empty($_POST['new_timestamp']) && !empty($_POST['new_status_id'])) {
@@ -65,54 +65,54 @@ $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE cu
 $current_users_query = $db_server->query($studentquery);
 $current_users_result = array();
 while ($student = $current_users_query->fetch_array()) {
-	array_push($current_users_result, $student);
+    array_push($current_users_result, $student);
 }
 //status query
 $status_result = $db_server->query("SELECT DISTINCT statusname, statusid FROM statusdata");
 $status_array = array();
 while ($blah = $status_result->fetch_assoc()) {
-	array_push($status_array, $blah);
+    array_push($status_array, $blah);
 }
 //keeps student id in get var
 if (!empty($_GET['id'])) {
-	$current_student_id = $_GET['id'];
+    $current_student_id = $_GET['id'];
 }
 if (!empty($_POST['studentselect'])) {
-	$current_student_id = $_POST['studentselect'];
-	header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $current_student_id);
-	exit();
+    $current_student_id = $_POST['studentselect'];
+    header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $current_student_id);
+    exit();
 }
 ?>
 
 <html>
-   
+
 <head>
    <title>Edit Events</title>
+   <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
    <link rel="stylesheet" type="text/css" href="../../attendance.css">
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+   <script src="js/scrollTo.js"></script>
+   <script src="js/jquery.datetimepicker.js"></script>
    <?php require_once('header.php'); ?>
+
 </head>
 <body class="edit-events adminpage">
-	<div id="TopHeader">
-		<h1 class="Myheader">Update Events</h1>
-	</div>
+    <div id="TopHeader">
+        <h1 class="Myheader">Update Events</h1>
+    </div>
     <div align="center" id="main">
-
-
-   <div id="puttheimagehere">
-       <img src="../img/mobius.png">
-   </div>
 
 <?php if (!empty($_GET['eventid'])) {
    if (!empty($_POST[$deleterow])) {
       echo "<div class='error'>Event #".$eventid." was deleted.</div>";
    }
 } ?>
-    
-   <div class="centerr"> 
+
+   <div class="centerr">
       <form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
          <select name='studentselect'>
             <?php foreach($current_users_result as $student) { ?>
-		<?php $lastinitial = substr($student['lastname'], 0, 1); ?>
+        <?php $lastinitial = substr($student['lastname'], 0, 1); ?>
                <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
             <?php } ?>
          </select>
@@ -120,13 +120,13 @@ if (!empty($_POST['studentselect'])) {
       </form>
    </div>
 
-   <?php 
+   <?php
       if (isset($current_student_id)) {
          $student_data_array = array();
          //fetches most recent data from the events table
          //joins with the tables that key student names/status names to the ids in the events table
          $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,studentdata.lastname,timestamp,returntime,events.eventid, yearinschool
-            FROM events 
+            FROM events
             JOIN statusdata ON events.statusid = statusdata.statusid
             RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
             WHERE studentdata.studentid = $current_student_id
@@ -139,7 +139,7 @@ if (!empty($_POST['studentselect'])) {
       <h2>Events for: <span><?php echo $current_student; ?></span></h2>
       <table class='newevent eventlog'>
          <tr>
-            
+
             <th>Timestamp</th>
             <th>Status</th>
             <th>Info</th>
@@ -148,7 +148,7 @@ if (!empty($_POST['studentselect'])) {
          </tr>
          <tr class="new-event">
             <form method="post" name="new_event" action="<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>">
-               
+
                 <td>
                   <input type='text' id='new_timestamp' name='new_timestamp' placeholder='Timestamp'>
                </td>
@@ -189,7 +189,7 @@ if (!empty($_POST['studentselect'])) {
                $postedit = "inline_edit_" . $event['eventid'];
                $nice_timestamp = new DateTime($event['timestamp']);
                if (!empty($_POST[$postedit])) {
-                  $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below                 
+                  $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
               <tr class="editing-row">
@@ -233,7 +233,7 @@ if (!empty($_POST['studentselect'])) {
             </tr>
             <?php
               } //end else
-            } // end if not Not Checked in  
+            } // end if not Not Checked in
          } // end foreach event
       } // end if isset studentid
       ?>
@@ -257,7 +257,7 @@ if (!empty($_POST['studentselect'])) {
             minTime:'09:00',
             maxTime:'15:31',
             step: 5,
-         }); 
+         });
          $('#new_timestamp').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
@@ -265,9 +265,9 @@ if (!empty($_POST['studentselect'])) {
             },
             minDate:'2014/09/08',
             maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
-            format:'Y-m-d H:i:s', 
+            format:'Y-m-d H:i:s',
             step: 5,
-         }); 
+         });
          $('#new_return').datetimepicker({
             datepicker: false,
             format:'H:i:s',
@@ -275,7 +275,7 @@ if (!empty($_POST['studentselect'])) {
             maxTime:'15:31',
             step: 5,
          });
-	 $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
+     $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
       });
    </script>
     </div>

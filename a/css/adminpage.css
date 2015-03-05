@@ -1,5 +1,5 @@
 body {
- background-color: dimgray;   
+ background-color: dimgray;
 }
 .headerr {
     margin: 30px 30%;
@@ -40,7 +40,7 @@ table {
     width: 100%;
 }
 th {
- text-align:left;   
+ text-align:left;
 }
 a {
     color: blue;
@@ -48,18 +48,18 @@ a {
     display: block;
 }
 
-a:hover 
+a:hover
 {
-     color:dimgray; 
-     text-decoration:none; 
-     cursor:pointer;  
+     color:dimgray;
+     text-decoration:none;
+     cursor:pointer;
 }
-.textbox { 
-    background-color: #BDD7F1; 
-    border: solid 1px #646464; 
-    outline: none; 
-    padding: 2px 2px; 
-} 
+.textbox {
+    background-color: #BDD7F1;
+    border: solid 1px #646464;
+    outline: none;
+    padding: 2px 2px;
+}
 tr:nth-child(odd)
 {
 background:#E6E6E6;
@@ -130,7 +130,7 @@ margin-right: auto;
     width: 20%;
     height: 100%;
     opacity: 0.8;
-border-right: 5px solid #404040;   
+border-right: 5px solid #404040;
 background-color: #616161;
 }
 #TopHeader {
@@ -141,14 +141,14 @@ background-color: #616161;
     height: 9%;
     opacity: 0.8;
     z-index: 5;
-border-right: 5px solid black;   
+border-right: 5px solid black;
 background-color: #616161;
 }
 #TopHeader.Error {
- background-color: #FF5A5A;   
+ background-color: #FF5A5A;
 }
 #TopHeader.Sussess {
- background-color: #5CE27C;   
+ background-color: #5CE27C;
 }
 .Myheader {
  text-align: center;
@@ -157,7 +157,7 @@ background-color: #616161;
  color: white;
  margin-right: 20%;
 padding-bottom: 0%;
-  font-size: 1em;
+  font-size: 2em;
 }
 #navigation .header {
  text-align: center;
