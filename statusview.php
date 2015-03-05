@@ -113,9 +113,19 @@
 
 	
 	<!-- student information table rendering -->
+	<br><br>
 	    <?php
 		
 		$student_data_array = array();
+		if (empty($DateFromPicker)){
+			$Date = new DateTime("2014-2-20 10:30:02");
+			$TimeFromPicker = $Date->format('Y-m-d H:i:s');
+			$DateFromPicker = $Date->format('Y-m-d');
+			//$DateFromPicker = strtotime($DateFromPicker);
+			//$TimeFromPicker = strtotime($TimeFromPicker);
+			echo "the date from picker is " . $DateFromPicker . " and the time from picker is " . $TimeFromPicker;
+			
+		}
 			//loops through current students
 				while ($current_student_id = $current_users_result->fetch_assoc()) {
 					//fetches most recent data from the events table
@@ -125,6 +135,7 @@
 										 JOIN statusdata ON events.statusid = statusdata.statusid
 										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 										 WHERE studentdata.studentid = $current_student_id[studentid] 
+										 AND timestamp BETWEEN '$DateFromPicker' AND '$TimeFromPicker' 
 										 ORDER BY timestamp DESC
 										 LIMIT 1") 
 										 or die(mysqli_error($db_server));
