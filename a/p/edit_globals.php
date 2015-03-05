@@ -1,9 +1,13 @@
 <html>
-<body>
-<h1 class="headerr">Edit Globals</h1>
-       
+<head>
+	<title>Edit Globals</title>
+	<?php require_once('header.php'); ?>
+</head>
+                <body>
 <?php
-
+// Header Info
+$HeaderStatus = null;
+$HeaderInfo = "Update Globals";
     // EDIT (UPDATE) GLOBALS
 if (isset($_POST['save'])) {
  $editstartdate = strtotime($_POST['editstartdate']);
@@ -19,7 +23,10 @@ if (isset($_POST['save'])) {
 // GET THE LIST OF GLOBALS
 $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
     ?>	
-    
+                <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+              <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+                </div>
+            <div align="center" id="main">
 <div class="globals">
 <table>
     
@@ -34,7 +41,7 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
 // Make list of globals
 while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 
-<form action="?p=Globals" method="post">
+<form action="" method="post">
 <input type="hidden" name="id" value="<?php echo $list['id']; ?>">
 	<tr>
 		<?php $editme = "edit-" . $list['id'];
@@ -42,18 +49,16 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 			$adjustedstartdate = new DateTime($list['startdate']);
 			$adjustedenddate = new DateTime($list['enddate']);
 		?> 
-        <td><input type="text" name="editstartdate" id="editstartdate" value="<?php echo $adjustedstartdate->format('m d Y'); ?>" required></td>
-		<td><input type="text" name="editenddate" id="editenddate" value="<?php echo $adjustedenddate->format('m d Y'); ?>" required></td>
-		<td><input type="text" name="starttime" value="<?php echo $list['starttime']; ?>" required></td>
-                <td><input type="text" name="endtime" value="<?php echo $list['endtime']; ?>" required></td>
+        <td><input type="text" name="editstartdate" id="EStartDate" value="<?php echo $adjustedstartdate->format('m-d-Y'); ?>" required size="15"></td>
+		<td><input type="text" name="editenddate" id="EEndDate" value="<?php echo $adjustedenddate->format('m-d-Y'); ?>" required size="15"></td>
+		<td><input type="text" name="starttime" value="<?php echo $list['starttime']; ?>" required size="10"></td>
+                <td><input type="text" name="endtime" value="<?php echo $list['endtime']; ?>" required size="10"></td>
 		<td><button type="submit" name="save" value="<?php echo $list['id']; ?>">Save</button></td>
 		<?php } else { ?>
-        <?php $pretty_end_time = new DateTime($list['endtime']); ?>
-        <?php $pretty_start_time = new DateTime($list['starttime']); ?>
 		<td><?php echo $list['startdate']; ?></td>
 		<td><?php echo $list['enddate']; ?></td>
-        <td><?php echo $pretty_start_time->format('g:i a') ?></td>
-		<td><?php echo $pretty_end_time->format('g:i a') ?></td>
+        <td><?php echo $list['starttime'] ?></td>
+		<td><?php echo $list['endtime'] ?></td>
 		
 		<td><input type="submit" name="edit-<?php echo $list['id']; ?>" value="Edit"></td>
 		<?php } ?>
@@ -63,15 +68,16 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 } // end while
 ?>
 </table>
-</div>            
+</div>    
+                    </div>
   <!-- date picker javascript -->          
 <script src="js/pikaday.js"></script>
 <script>
-    var picker = new Pikaday({ field: document.getElementById('editstartdate') });
+    var picker = new Pikaday({ field: document.getElementById('EEndDate') });
 </script>
 <script src="js/pikaday.js"></script>
 <script>
-    var picker = new Pikaday({ field: document.getElementById('editenddate') });
+    var picker = new Pikaday({ field: document.getElementById('EStartDate') });
 </script>
 </body>
 </html>

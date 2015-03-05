@@ -22,111 +22,24 @@
 	 require_once("../connection.php");
 	 require_once("../function.php");
          ?>
-	 <div align="center">
-         
-         <h1 class="headerr">
-             Edit Attendance
-         </h1>
-	<div><a href="pages/edit_events.php" style="color:#fff; margin-bottom: 0.5em;">Temporary link to Edit Events page</a></div>   
-         
-         <div class="options">
-              <a href="../" id="goodbye" class="btn">Back to main page</a>
-             
-             <a href="?p=Students" id="button1" class="button">Students</a>
-             <a href="#" id="#" class="button">Events</a>
-             <a href="?p=Holidays" id="button5" class="button">Holidays</a>
-        <a href="?p=Pws" id="button4" class="button">Passwords</a >
-        <a href="?p=Facilitators" id="button2" class="button">Facilitators</a>
-        <a href="?p=Allotted-Hours" id="button3" class="button">Allotted Hours</a>
-        <a href="?p=Globals" id="button6" class="button">Globals</a>
-             
-</div>
-	    <?php
-//echo htmlspecialchars($_GET["page"]);
-if (isset($_GET["p"])) {
-
-if (htmlspecialchars($_GET["p"]) == "Students"){  
-   include ('JSUrl/studentjs.php');
-}
-if (htmlspecialchars($_GET["p"]) == "Facilitators"){  
-    include_once('JSUrl/facilitatorjs.php');    
-}
-if (htmlspecialchars($_GET["p"]) == "Allotted-Hours"){  
-    include_once('JSUrl/allotted-hoursjs.php');    
-}
-if (htmlspecialchars($_GET["p"]) == "Pws"){  
-    include_once('JSUrl/passwordsjs.php');    
-}
-if (htmlspecialchars($_GET["p"]) == "Holidays"){  
-    include_once('JSUrl/holidaysjs.php');    
-}
-if (htmlspecialchars($_GET["p"]) == "Globals"){  
-    include_once('JSUrl/globalsjs.php');    
-}
-if (htmlspecialchars($_GET["p"]) == "Events"){  
-    include_once('JSUrl/eventsjs.php');    
-}
-}
-?>
-            
-<!----- ALL TABS/PAGES ON ADMIN PAGE ----->
-
-
-<!----- STUDENTS PAGE ----->
-<div id="showdiv1">
-<?php
-// Get Student Page
-    include_once("pages/edit_students.php");	
-?>
-</div>
-
-<!----- FACILITATORS PAGE ----->
-<div id="showdiv2">
-<?php
-// Get Facilitators page
-    include_once("pages/edit_facilitators.php");	
-?>
-</div>
-
-<!----- ALLOTTED HOURS PAGE ----->
-<div id="showdiv3">
-<?php
-// Get Allotted-Hours page
-    include_once("pages/edit_allottedhours.php");	
-?>
-</div>
-
-<!----- PASSWORDS PAGE ----->
-<div id="showdiv4">
-<?php
-// Get Get Passwords
-    include_once("pages/edit_passwords.php");	
-?>
-</div>
-
-<!----- HOLIDAYS PAGE ----->
-<div id="showdiv5">
-<?php
-// Get Holidays Page
-    include_once("pages/edit_holidays.php");	
-?>
-</div>
-
-<!----- GLOBALS PAGE ----->
-<div id="showdiv6">
-<?php
-// Get Globals
-    include_once("pages/edit_globals.php");	
-?>
-</div>
-<!----- Events PAGE ----->
-<div id="showdiv7">
-<?php
-// Get Globals
-    //include_once("pages/edit_events.php");	
-?>
-</div>
-	 </div>
+                    <div id="TopHeader">
+                    <h1 class="Myheader">Welcome Admin!</h1>
+                    </div>
+        <div id="navigation">
+            <h1 class="header">2.0.1 DEV</h1>
+            <a href="../" class="option">Back to Main Page</a>
+            <a href="p/Students" class="option">Students</a>
+            <a href="p/Facilitators" class="option">Facilitators</a>
+            <a href="p/Allotted-Hours" class="option">Allotted Hours</a>
+            <a href="p/Passwords" class="option">Passwords</a>
+            <a href="p/Holidays" class="option">Holidays</a>
+            <a href="p/Globals" class="option">Globals</a>
+            <a href="p/Events" class="option">Events</a>
+            <a href="p/Groups" class="disabled">Groups</a>
+            <a href="p/Stats" class="disabled">Student Stats</a>
+                    </div>            
+	 <div align="center" id="main">
+                    </div>
                 </body>
         
     </html>

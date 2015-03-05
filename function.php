@@ -511,6 +511,7 @@ $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
 array_push($returnArray,$offsitePercent);
+array_push($returnArray,$yearPercent);
 
 return $returnArray;	
 } else {
