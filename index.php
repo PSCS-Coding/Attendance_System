@@ -246,7 +246,7 @@
 
         <div>
             <!-- top interface present button -->
-            <input class="button" type="submit" value="Present" name="present">
+            <input class="button" id="present_button" type="submit" value="Present" name="present">
         </div>
 
            <div>
@@ -311,11 +311,15 @@
                     $('.viewreports_button a').text('Reports');
                     $('.statusview_button a').text('Status');
                     $('.admin_button a').text('A');
+                    $("#present_button").prop('value', 'P');
+                    $("#present_button").css('width', '25px');
                 }
                 else {
                     $('.viewreports_button a').text('View Reports');
                     $('.statusview_button a').text('Status View');
                     $('.admin_button a').text('Admin');
+                    $("#present_button").prop('value', 'Present');
+                    $("#present_button").css('width', '60px');
                 }
             });
 
@@ -323,11 +327,15 @@
                 $('.viewreports_button a').text('Reports');
                 $('.statusview_button a').text('Status');
                 $('.admin_button a').text('A');
+                $("#present_button").prop('value', 'P');
+                $("#present_button").css('width', '25px');
             }
             else {
                 $('.viewreports_button a').text('View Reports');
                 $('.statusview_button a').text('Status View');
                 $('.admin_button a').text('Admin');
+                $("#present_button").prop('value', 'Present');
+                $("#present_button").css('width', '60px');
             }
         });
     </script>
@@ -414,8 +422,25 @@
                 changestatus($latestdata['studentid'], '8', '', '');
                 }
                 }
-                ?>
-                <tr>
+                //Query for globals
+        $globals_query = "SELECT starttime FROM globals";
+        $globals_result = $db_server->query($globals_query);
+        $globals_data = $globals_result->fetch_array();
+        $todaytime = new DateTime();
+        $todaytimestart = new DateTime($globals_data['starttime']);
+
+                if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+
+                 ?>
+
+                        <tr class="Status_Red">
+
+                        <?php  } else { ?>
+
+                        <tr>
+
+                <?php } ?>
+
                     <td class='select_col'>
                         <!-- checkbox that gives student data to the form at the top -->
                         <input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
