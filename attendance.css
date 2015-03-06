@@ -425,6 +425,7 @@ width:100%;
       .edit-events .eventlog {
          margin: 1em auto;
 	 opacity: 0.9;
+	 width: 830px;
       }
       .edit-events .centerr {
          margin: 0 auto;
