@@ -150,6 +150,11 @@ background-color: #616161;
 #TopHeader.Sussess {
  background-color: #5CE27C;
 }
+#LeaderBoards {
+    max-width: 700px;
+    margin-left: 15%;
+    opacity: 0.85;
+}
 .Myheader {
  text-align: center;
  font-weight: 900;
