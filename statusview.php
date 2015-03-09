@@ -119,13 +119,11 @@
 		$student_data_array = array();
 		if (empty($DateFromPicker)){
 			$Date = new DateTime();
-			$TimeFromPicker = $Date->format('Y-m-d H:i:s');
-			$DateFromPicker = $Date->format('Y-m-d');
-			//$DateFromPicker = strtotime($DateFromPicker);
-			//$TimeFromPicker = strtotime($TimeFromPicker);
-			//echo "the date from picker is " . $DateFromPicker . " and the time from picker is " . $TimeFromPicker;
-			
+			//echo "the date from picker is " . $DateFromPicker;	
 		}
+		$TimeFromPicker = $Date->format('Y-m-d H:i:s');
+		$DateFromPicker = $Date->format('Y-m-d');
+		
 			//loops through current students
 				while ($current_student_id = $current_users_result->fetch_assoc()) {
 					//fetches most recent data from the events table
