@@ -434,6 +434,11 @@ width:100%;
       .edit-events .editing-row {
          background-color: rgb(178, 178, 178);
       }
+      #TopHeader .Myheader {
+	margin: 15px;
+	margin-right: 25%;
+	font-size: 16px;
+      }
 .ui-timepicker-input {
     width: 80px;
 }

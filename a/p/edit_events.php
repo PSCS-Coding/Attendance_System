@@ -108,7 +108,10 @@ if (!empty($_POST['studentselect'])) {
    }
 } ?>
 
-   <h1 class="headerr">Edit Events</h1>
+   <div id="TopHeader" class="">
+              <h1 class="Myheader">Edit Events</h1>
+                </div>
+            <div align="center" id="main">
    <div class="centerr" style="margin: 1em;">
       <a href="../" style="color: #fff;">Temporary link to main admin interface</a>
    </div>
