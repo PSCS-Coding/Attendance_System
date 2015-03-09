@@ -118,12 +118,12 @@
 		
 		$student_data_array = array();
 		if (empty($DateFromPicker)){
-			$Date = new DateTime("2014-2-20 10:30:02");
+			$Date = new DateTime();
 			$TimeFromPicker = $Date->format('Y-m-d H:i:s');
 			$DateFromPicker = $Date->format('Y-m-d');
 			//$DateFromPicker = strtotime($DateFromPicker);
 			//$TimeFromPicker = strtotime($TimeFromPicker);
-			echo "the date from picker is " . $DateFromPicker . " and the time from picker is " . $TimeFromPicker;
+			//echo "the date from picker is " . $DateFromPicker . " and the time from picker is " . $TimeFromPicker;
 			
 		}
 			//loops through current students
