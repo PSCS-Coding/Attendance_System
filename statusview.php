@@ -146,9 +146,9 @@
 			
 				//using the above data from the query, this renders the alternate status view
 				//creates a table header for each of the possible status'
-										?>
-										<input type='text' id="datetimepicker" name='datetimepicker' placeholder="select a date">
-										<?php
+				?>
+				<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
+				<?php
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
