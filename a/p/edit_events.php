@@ -98,9 +98,7 @@ if (!empty($_POST['studentselect'])) {
 
 <body class="edit-events">
 
-   <div id="puttheimagehere">
-       <img src="../img/mobius.png">
-   </div>
+
 
 <?php if (!empty($_GET['eventid'])) {
    if (!empty($_POST[$deleterow])) {

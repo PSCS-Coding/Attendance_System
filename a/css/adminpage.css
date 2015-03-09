@@ -24,10 +24,10 @@ body {
     display: flex;
 }
 .admintable {
-    padding: 25px 15px 25px 15px;
+    padding: 10px;
     background-color: darkgray;
     border-radius: 5px;
-    color: black;
+    color: white;
     min-width: 500px;
     max-width: 500px;
     opacity: 0.85;
