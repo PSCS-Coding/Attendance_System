@@ -4,12 +4,14 @@
 		<title>PSCS Attendance: Status View</title>
 		<?php require_once('header.php') ?>
 	    <script type="text/javascript">
+		 
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
 				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
+		<script src="/js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript">
 			function setIdle(cb, seconds) {
     			var timer; 
@@ -143,7 +145,10 @@
 				}
 			
 				//using the above data from the query, this renders the alternate status view
-				//creates a table header for each of the possible status'	
+				//creates a table header for each of the possible status'
+										?>
+										<input type='text' id="datetimepicker" name='datetimepicker' placeholder="select a date">
+										<?php
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
@@ -171,6 +176,17 @@
 						<?php } ?>
 						</ul> <?php } ?> 
 					</div> <?php } ?>
-
+<script> 
+	$('#datetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s', 
+            step: 5,
+         }); 
+</script>
 	</body>
 	</html>
