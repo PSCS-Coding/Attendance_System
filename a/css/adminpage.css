@@ -36,6 +36,14 @@ body {
     min-width: 400px;
     max-width: 400px;
 }
+.edit-groups .admintable{
+    min-width: 35%;
+    max-width: 35%;
+    margin-left: 40% !important;
+}
+.GroupsTable {
+width: 30%;
+}
 table {
     width: 100%;
 }

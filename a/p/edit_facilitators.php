@@ -4,7 +4,7 @@
 	<?php require_once('header.php'); ?>
 	<script src="js/jquery.min.js"></script>
 </head>
-<body class="adminpage edit-facilitators">
+<body class="edit-facilitators">
 <?php
 // Header Info
 $HeaderStatus = null;
