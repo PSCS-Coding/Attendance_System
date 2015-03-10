@@ -3,14 +3,21 @@
  <title>Edit Groups</title>
     <?php require_once('header.php'); ?>
  </head>
-<body class="adminpage edit-facilitators">
+<body class="adminpage edit-groups">
  <?php
+
+// Header Info
+    $HeaderStatus = null;
+    $HeaderInfo = "Update Groups";
 
 if (!empty($_POST['addgroup'])) {
         $stmt = $db_server->prepare('INSERT INTO groups (name) VALUES (?)');
         $stmt->bind_param('s', $_POST['addgrouptext']);
         $stmt->execute();
         $stmt->close();
+        $NewGroup = $_POST['addgrouptext'];
+        $HeaderStatus = "Sussess";
+        $HeaderInfo = "Added group $NewGroup.";
  }
 
  if (!empty($_POST['deletegroup'])) {
@@ -18,6 +25,8 @@ if (!empty($_POST['addgroup'])) {
         $stmt->bind_param('s', $_POST['deletegroup']);
         $stmt->execute();
         $stmt->close();
+        $HeaderStatus = "Error";
+        $HeaderInfo = "Deleted Group.";
  }
 
  if (!empty($_POST['addstudent'])) {
@@ -37,6 +46,8 @@ if (!empty($_POST['addgroup'])) {
         $stmt->bind_param('ss', $stringID, $groupname);
         $stmt->execute();
         $stmt->close();
+        $HeaderStatus = "Sussess";
+        $HeaderInfo = "Added Student.";
  }
 
  $studentQuery = $db_server->query("SELECT studentid, firstname,lastname FROM studentdata ORDER BY firstname ASC");
@@ -57,7 +68,7 @@ if (!empty($_POST['addgroup'])) {
     <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
 </div>
     
-<div align="center" id="main">
+<div align="center" id="main" class="admintable">
     
     <form method='post'>
         <p style='font-style:italic'>
@@ -152,5 +163,16 @@ for ($i = 0; $i < count($groupsResult); $i++) {
  }
  ?>
     </div>
+     <script>
+	$(document).ready(function() {
+		$('#TopHeader').delay(1500);
+		setTimeout(function() {
+			$('#TopHeader').removeClass();
+			$('#TopHeader .MyHeader').text('Update Groups');
+		}, 1700);
+		
+	
+	});
+ </script>
  </body>
  </html>
