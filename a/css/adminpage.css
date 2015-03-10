@@ -158,9 +158,9 @@ background-color: #616161;
 #TopHeader.Sussess {
  background-color: #5CE27C;
 }
-#LeaderBoards {
+#OffsiteStats {
     max-width: 700px;
-    margin-left: 15%;
+    margin-left: 5%;
     opacity: 0.85;
 }
 .Myheader {

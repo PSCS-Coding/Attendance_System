@@ -4,11 +4,10 @@
 	<?php require_once('header.php'); ?>
 </head>
 <body>
-    <div align="center">
 <?php 
 // Header Info
     $HeaderStatus = null;
-    $HeaderInfo = "Update Groups";
+    $HeaderInfo = "Offsite Stats";
 
 $studentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname");
 $studentTable = array();
@@ -32,8 +31,11 @@ foreach ($studentTable as $key => $row){
 array_multisort($sortArray, SORT_ASC, $studentTable);
 
 ?>
-<br>
-<table id="LeaderBoards">
+<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
+    <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
+</div>
+    <div align="center" id="main">
+<table id="OffsiteStats">
 <tr> 
 <th> Name </th>
 <th> Minutes Per Day </th>
