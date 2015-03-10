@@ -36,6 +36,10 @@ body {
     min-width: 400px;
     max-width: 400px;
 }
+.edit-groups .admintable {
+    min-width: 20%;
+    max-width: 20%;
+}
 table {
     width: 100%;
 }
@@ -200,6 +204,9 @@ text-decoration: underline;
 .dis {
  color: gray;
 text-decoration: none;
+}
+.GroupsTable {
+width: 20%;
 }
 #main {
 margin-left: 18%;
