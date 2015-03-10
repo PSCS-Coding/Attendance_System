@@ -1,10 +1,9 @@
 <html>
  <head>
  <title>Edit Groups</title>
+    <?php require_once('header.php'); ?>
  </head>
  <body>
- <h1 class="headerr">Edit Groups</h1>
-
  <?php
  require_once("../../connection.php");
  require_once("../../function.php");
