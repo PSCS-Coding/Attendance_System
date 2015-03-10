@@ -1,8 +1,7 @@
 <?php
 include("connection.php");
-
 $phpdatetime = new dateTime();
-$currentDate = $phpdatetime->format('dym');
+$currentDate = $phpdatetime->format('y-m-d h:i:s');
 
 if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
 {
@@ -17,7 +16,8 @@ $SecureAdminPW = $adminPW;
 $SecureAdminPW .= crypt($currentDate, 'M7');
 $SecureStudentPW = $studentPW;
 $SecureStudentPW .= crypt($currentDate, 'M7');
-
+// Seconds in a day
+$expDate = 86400 * 5;
 
 $StudentLogin = 0;
 $AdminLogin = 0;
