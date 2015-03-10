@@ -1,11 +1,15 @@
 <html>
 <head>
-	<title>Leaderboards</title>
+	<title>Offsite Stats</title>
 	<?php require_once('header.php'); ?>
 </head>
 <body>
     <div align="center">
 <?php 
+// Header Info
+    $HeaderStatus = null;
+    $HeaderInfo = "Update Groups";
+
 $studentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname");
 $studentTable = array();
 $studentNames = array();
