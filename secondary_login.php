@@ -1,82 +1,85 @@
 <?php
+
 include("connection.php");
-$phpdatetime = new dateTime();
-$currentDate = $phpdatetime->format('y-m-d h:i:s');
 
-if ($result = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
+// Set current date & format to timestamp
+    $phpdatetime = new dateTime();
+    $currentDate = $phpdatetime->format('y-m-d h:i:s');
+// Set query results as array
+    $loginQuery = array();
+    $timeoutQuery = array();
+
+if ($loginQuery = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
 {
-    $row = $result->fetch_assoc();
-	
-    $result->free();
+    $pwdRow = $loginQuery->fetch_assoc();
 }
-$studentPW = $row['password'];
-$adminPW = $row['adminPass'];
-// Appdends date to password
-$SecureAdminPW = $adminPW;
-$SecureAdminPW .= crypt($currentDate, 'M7');
-$SecureStudentPW = $studentPW;
-$SecureStudentPW .= crypt($currentDate, 'M7');
-// Seconds in a day
-$expDate = 86400 * 5;
+// Set varibles for student & admin passwords
+$studentPassword = $pwdRow['password'];
+$adminPassword = $pwdRow['adminPass'];
 
-$StudentLogin = 0;
-$AdminLogin = 0;
-//echo htmlspecialchars($_GET["logout"]);
-//get logout from url
+// IF USER HAS LOGGED OUT DELETE COOKIE
 if (!empty($_GET["logout"])) {
     
-if (($_GET["logout"]) == "1") {
-    // delete cookie
-    setcookie("login", "", time()-3600);
-}
-    
-}
-if (!empty($_GET["logout"])) {
-    
-if ($_COOKIE["login"] == $SecureAdminPW) {
-    //remove cookie if admin loads page
-    setcookie("login", "", time()-3600);
-} elseif ($_COOKIE["login"] == $SecureStudentPW) {
-    //remove cookie if student loads page
-    setcookie("login", "", time()-3600);
-}
-} else {
-    //delete login cookie
-    setcookie("login", "", time()-3600);
+    if (($_GET["logout"]) == "1") {
+        // delete cookie
+        setcookie("login", "", time()-3600);
+        
+    }
 }
 
-//if(isset($_SESSION['prevURL'])) 
-//   $url = $_SESSION['prevURL']; // holds url for last page visited.
-//else 
-   $url = "index.php";
-?><?php
+// GET EXPERATION DATES FOR COOKIES FROM DATABASE
+if ($timeoutQuery = $db_server->query("SELECT * FROM globals"))
+{
+    $expRow = $timeoutQuery->fetch_assoc();
+}
+
+$DBstudentTimeout = $expRow['studentTimeout'];
+$DBadminTimeout = $expRow['adminTimeout'];
+
+// Convert database days to seconds
+$studentTimeout = 86400 * $DBstudentTimeout;
+$adminTimeout = 86400 * $DBadminTimeout;
+
+// SET URL FOR WHEN LOGGED IN
+$url = "index.php";
+
+// SETTING LOGINS TO NULL
+$StudentLogin = null;
+$AdminLogin = null;
+
 if(isset($_POST['Submit']))
 {
-	if (crypt($_POST['mypassword'], 'P9') == $studentPW)
-		{
+	if (crypt($_POST['mypassword'], 'P9') == $studentPassword) {
+            // SET LOGIN COOKIE
             $StudentLogin = 1;
-			setcookie("login", $SecureStudentPW, time()+28800); // 8 hours
+			setcookie("login", $studentPassword, time()+$studentTimeout); // 8 hours
+        
 		}
-	elseif (crypt($_POST['mypassword'], 'P9') == $adminPW)
-		{
+    
+    elseif (crypt($_POST['mypassword'], 'P9') == $adminPassword) {
+            // SET LOGIN COOKIE
             $AdminLogin = 1;
-            setcookie("login", $SecureAdminPW, time()+28800); // 8 hours		
+            setcookie("login", $adminPassword, time()+$adminTimeout); // 8 hours
+        
 		}
-	if ($AdminLogin == 1) {
+    
+if ($AdminLogin == 1) {
         
-     header("location:$url");
+    header("location:$url");
         
-		} elseif ($StudentLogin == 1) {
+} elseif ($StudentLogin == 1) {
         
         echo '<META http-equiv="refresh" content="0;URL=index.php">';
+    
     } else
-		die("Wrong password :^)");
+		die("Wrong password.");
 }
+
 ?>
 <html>
 <head>
-<title>PSCS attendance system login</title>
-<link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
+    <title>PSCS attendance system login</title>
+    <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
 </head>
 
 <style>
@@ -132,18 +135,20 @@ if(isset($_POST['Submit']))
 </style>
 
 <body style="background-color: dimgray;">
+    
     <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
 	<img src="img/mobius.png">
     </div>
-    <div id="loginform">
+    
+<div id="loginform">
 <form name="form1" method="post" action="secondary_login.php" style="padding-top: 10px;">
-
-<strong class="logintext">Login </strong>
-<div class="spacer"></div>
+    <strong class="logintext">Login </strong>
+    <div class="spacer"></div>
     Password :
-<input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">
-<a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
+    <input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">
+    <a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
 </form>
-        </div>
+</div>
+    
 </body>
 </html>
