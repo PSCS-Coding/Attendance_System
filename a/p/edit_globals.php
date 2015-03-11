@@ -38,8 +38,8 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
       <th>End Date</th>
       <th>Start Time</th>
       <th>End Time</th>
-      <th>Admin TO</th>
-      <th>Student TO</th>
+      <th>Admin Login Cookie Duration (Days)</th>
+      <th>Student Login Cookie Duration (Days)</th>
 	  <th>Edit</th>
    </tr>
 <?php
