@@ -1,4 +1,9 @@
 <?php
+if (!empty($_POST['studentselect'])) {
+    $current_student_id = $_POST['studentselect'];
+    header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $current_student_id);
+    exit();
+}
 require_once('../../login.php');
 require_once("../../connection.php");
 require_once("../../function.php");
@@ -78,11 +83,7 @@ while ($blah = $status_result->fetch_assoc()) {
 if (!empty($_GET['id'])) {
     $current_student_id = $_GET['id'];
 }
-if (!empty($_POST['studentselect'])) {
-    $current_student_id = $_POST['studentselect'];
-    header("Location: " . basename($_SERVER['PHP_SELF']) . "?id=" . $current_student_id);
-    exit();
-}
+
 ?>
 
 <html>
