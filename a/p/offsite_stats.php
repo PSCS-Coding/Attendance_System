@@ -1,3 +1,8 @@
+<?php
+$admin = 1;
+require_once('../../login.php');
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Offsite Stats</title>

@@ -1,3 +1,7 @@
+<?php
+$admin = 1;
+require_once('../../login.php');
+?>
 <!DOCTYPE html>
     <html>
         <head>
