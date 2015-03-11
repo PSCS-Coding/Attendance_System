@@ -12,8 +12,10 @@ $HeaderInfo = "Update Globals";
 if (isset($_POST['save'])) {
  $editstartdate = strtotime($_POST['editstartdate']);
  $editenddate = strtotime($_POST['editenddate']);
- $stmt = $db_server->prepare("UPDATE globals SET startdate = FROM_UNIXTIME(?) , enddate = FROM_UNIXTIME(?) , starttime = ? , endtime = ? WHERE id = ?");
-	  $stmt->bind_param('ssssi', $editstartdate, $editenddate, $_POST['starttime'], $_POST['endtime'], $_POST['id']); 
+ $newStuTimeout = $_POST['EditStudentTimeout'];
+ $newAdmTimeout = $_POST['EditAdminTimeout'];
+ $stmt = $db_server->prepare("UPDATE globals SET startdate = FROM_UNIXTIME(?) , enddate = FROM_UNIXTIME(?) , starttime = ? , endtime = ? , adminTimeout = ? , studentTimeout = ? WHERE id = ?");
+$stmt->bind_param('ssssiii', $editstartdate, $editenddate, $_POST['starttime'], $_POST['endtime'], $newAdmTimeout, $newStuTimeout,  $_POST['id']); 
 	  $stmt->execute(); 
 	  $stmt->close();
 	} 
@@ -26,7 +28,7 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
                 <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
               <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
                 </div>
-            <div align="center" id="main">
+<div align="center" id="main">
 <div class="admintable">
 <table>
     
@@ -35,6 +37,8 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
       <th>End Date</th>
       <th>Start Time</th>
       <th>End Time</th>
+      <th>Admin TO</th>
+      <th>Student TO</th>
 	  <th>Edit</th>
    </tr>
 <?php
@@ -53,13 +57,16 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 		<td><input type="text" name="editenddate" id="EEndDate" value="<?php echo $adjustedenddate->format('m-d-Y'); ?>" required size="15"></td>
 		<td><input type="text" name="starttime" value="<?php echo $list['starttime']; ?>" required size="10"></td>
                 <td><input type="text" name="endtime" value="<?php echo $list['endtime']; ?>" required size="10"></td>
+<td><input type="number" name="EditAdminTimeout" value="<?php echo $list['adminTimeout']; ?>" required min="1" max="35"></td>
+<td><input type="number" name="EditStudentTimeout" value="<?php echo $list['studentTimeout']; ?>" required min="1" max="35"></td>
 		<td><button type="submit" name="save" value="<?php echo $list['id']; ?>">Save</button></td>
 		<?php } else { ?>
 		<td><?php echo $list['startdate']; ?></td>
 		<td><?php echo $list['enddate']; ?></td>
         <td><?php echo $list['starttime'] ?></td>
 		<td><?php echo $list['endtime'] ?></td>
-		
+        <td><?php echo $list['adminTimeout'] ?></td>
+		<td><?php echo $list['studentTimeout'] ?></td>
 		<td><input type="submit" name="edit-<?php echo $list['id']; ?>" value="Edit"></td>
 		<?php } ?>
 	</tr>
