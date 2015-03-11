@@ -1,4 +1,5 @@
-	<!DOCTYPE html>
+<?php require_once('login.php'); ?>
+<!DOCTYPE html>
 	<html>
 	<head>
         <?php require_once('header.php'); ?>
