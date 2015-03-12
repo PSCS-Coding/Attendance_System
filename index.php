@@ -251,7 +251,7 @@
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
         
-                <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
+                <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='lmain' >
         		<?php
             if (!empty($groupsResult)) {
             echo "<div class='groupsGUI'>";
