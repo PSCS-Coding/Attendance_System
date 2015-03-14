@@ -1,3 +1,7 @@
+<?php
+$admin = "1";
+require_once("../login.php");
+?>
 <!DOCTYPE html>
     <html>
         <head>
@@ -17,8 +21,6 @@
 		
             <?php
          // set up mysql connection
-     $userlevel = "admin";
-     require_once("../login.php");
 	 require_once("../connection.php");
 	 require_once("../function.php");
          ?>
