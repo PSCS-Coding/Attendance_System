@@ -220,11 +220,16 @@ background-color: #A9F5A9;
 border-bottom: 1px solid #A9F5A9;
 }
 
+form#datepicker {
+  text-align: center;
+  margin-top: 15px;
+}
+
 .altview_status {
 float:left;
 float: left;
 background-color: white;
-margin: 35px 10px;
+margin: 20px 10px;
 padding: 10px;
 border-radius: 3px;
 opacity: 0.8;
