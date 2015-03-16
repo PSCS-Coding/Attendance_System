@@ -301,6 +301,14 @@ function idToName($id)
     $name = $tempvar['firstname'];
     return($name);
 }
+function idToLastName($id)
+{
+    global $db_server;
+    $query = $db_server->query("SELECT lastname FROM studentdata WHERE studentid = $id");
+    $tempvar = $query->fetch_assoc();
+    $lastname = $tempvar['lastname'];
+    return($lastname);
+}
 
 function statconvert($id)
 {

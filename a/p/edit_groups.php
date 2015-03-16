@@ -54,7 +54,7 @@ if (!empty($_POST['addgroup'])) {
         $HeaderInfo = "Added Student.";
  }
 
- $studentQuery = $db_server->query("SELECT studentid, firstname,lastname FROM studentdata ORDER BY firstname ASC");
+ $studentQuery = $db_server->query("SELECT studentid, firstname,lastname FROM studentdata WHERE current = 1 ORDER BY firstname ASC");
         $studentResult = array();
         while ($student = $studentQuery->fetch_array()) {
         array_push($studentResult, $student);
@@ -156,7 +156,7 @@ for ($i = 0; $i < count($groupsResult); $i++) {
         
         if (!empty($ids[$s])) {
         echo "<tr>
-        <td>" . idToName($ids[$s]) . "</td>
+        <td>" . idToName($ids[$s]) . " " . idToLastName($ids[$s])[0] . "</td>
 
         <td><button type='submit' name='deletestudent' value='" . $ids[$s] . "'>X</button></td>
         </tr>"; //edit is here >> <td><input type='submit' name='edit-" . $ids[$s] ."' value='Edit'></td>
