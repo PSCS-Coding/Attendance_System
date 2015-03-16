@@ -36,6 +36,16 @@
 			while ($blah = $status_result->fetch_assoc()) {
 				$status_array[] = $blah['statusname'];
 			}
+
+
+        //time for fetching groups!!
+		$groupsQuery = $db_server->query("SELECT * FROM groups ORDER BY name DESC");
+			$groupsResult = array();
+			while ($group = $groupsQuery->fetch_array()) {
+				array_push($groupsResult, $group);
+				//$groupsCount += 1;
+			}
+            $group = ltrim($group, ",");
 		//this function sorts multidimensional arrays by one of their subkeys
 	    //$a = the array to be sorted -- $subkey = the subkey to be sorted by
 		function subval_sort($a, $subkey, $result) {
@@ -241,6 +251,20 @@
        <?php } else { ?>
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
+        
+                <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='lmain' >
+        		<?php
+            if (!empty($groupsResult)) {
+            echo "<div class='groupsGUI'>";
+            echo "<h1 class='groupHeader'>Groups</h1>";
+			for ($j = 0; $j < count($groupsResult); $j++) {
+			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . $groupsResult[$j]["name"] . "'><br />";
+		}
+echo "</div> ";
+                }
+	?>
+            </form>
+        
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
@@ -345,7 +369,7 @@
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
 	    <tr>
-	        <th class='select_col'></th>
+	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
 			<th></th>
@@ -444,10 +468,22 @@
                     
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
-						<input type='checkbox' name='person[]' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
+						<input type='checkbox' name='person[]' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
 					</td>
 				<?php 
+                
+            // SELECTION FOR GROUPS
+						for ($k = 0; $k < count($groupsResult); $k++) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentid']);
+				for ($l = 0; $l < count($ids); $l++) {
+					//echo $ids[$l];
+					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+				}
+			}	
+		}
+                
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
@@ -529,7 +565,17 @@
 	</table>
 	</table>
 	</div>
-	
+	<!-- CODE FOR GROUPS BOX -->
+    <script>
+        $(document).ready(function() {
+			$('.groupsGUI').mouseenter(function() {
+				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+			});
+			$('.groupsGUI').mouseleave(function() {
+				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+			});
+		});
+</script>
 	<!-- CODE FOR MULTI-CHECKBOX SELECT-->
 	
 	<script>
@@ -558,9 +604,18 @@
 	
 	<script>
 	    $(document).ready(function() {
-		$('.c_box').shiftSelectable();    
+		$('.c_box').shiftSelectable();
+          
 	    });
 	</script>
+
+    <script>
+        $(document).ready(function(){
+            $("#checkAll").change(function () {
+                $("input:checkbox").prop('checked', $(this).prop("checked"));
+            });
+        });
+    </script>
 	
 	</body>
 	</html>
