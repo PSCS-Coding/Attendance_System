@@ -15,6 +15,7 @@ require_once('../../login.php');
     $HeaderInfo = "Update Groups";
 
 if (!empty($_POST['addgroup'])) {
+	$_POST['addgrouptext'] = str_replace(" ","_", $_POST['addgrouptext']);
         $stmt = $db_server->prepare('INSERT INTO groups (name) VALUES (?)');
         $stmt->bind_param('s', $_POST['addgrouptext']);
         $stmt->execute();
