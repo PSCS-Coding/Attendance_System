@@ -311,6 +311,23 @@ function statconvert($id)
     return($name);
 }
 
+function groupIdToName($id)
+{
+    global $db_server;
+    $query = $db_server->query("SELECT name FROM groups WHERE groupid = $id");
+    $tempvar = $query->fetch_assoc();
+    $name = $tempvar['name'];
+    return($name);
+}
+function groupNameToId($name)
+{
+    global $db_server;
+    $query = $db_server->query("SELECT groupid FROM groups WHERE name = $name");
+    $tempvar = $query->fetch_assoc();
+    $id = $tempvar['groupid'];
+    return($id);
+}
+
 function calculateStats($current_student_id) //======================== passes out an array of view-reports type information ====================================
 {
 	
@@ -511,6 +528,7 @@ $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 
 array_push($returnArray,$offsitePercent);
+array_push($returnArray,$yearPercent);
 
 return $returnArray;	
 } else {
