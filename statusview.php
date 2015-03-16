@@ -155,6 +155,7 @@
 				//using the above data from the query, this renders the alternate status view
 				//creates a table header for each of the possible status'
 				?>
+				<br>
 				<form method='post' id="datepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 				<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
 				<input type='submit' name='submit'>
