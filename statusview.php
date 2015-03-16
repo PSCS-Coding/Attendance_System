@@ -11,6 +11,10 @@
 				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
+		<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
+		<link rel="stylesheet" type="text/css" href="attendance.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="a/js/scrollTo.js"></script>
 		<script src="a/js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript">
 			function setIdle(cb, seconds) {
@@ -117,11 +121,15 @@
 	<!-- student information table rendering -->
 	<br><br>
 	    <?php
-		
+		if(!empty($_POST['datetimepicker'])){
+		$DateFromPicker = $_POST['datetimepicker'];
+		}
 		$student_data_array = array();
 		if (empty($DateFromPicker)){
 			$Date = new DateTime();
 			//echo "the date from picker is " . $DateFromPicker;	
+		} else {
+			$Date = new DateTime($DateFromPicker);
 		}
 		$TimeFromPicker = $Date->format('Y-m-d H:i:s');
 		$DateFromPicker = $Date->format('Y-m-d');
@@ -147,7 +155,10 @@
 				//using the above data from the query, this renders the alternate status view
 				//creates a table header for each of the possible status'
 				?>
+				<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 				<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
+				<input type='submit' name='submit'>
+				</form>
 				<?php
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
