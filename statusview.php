@@ -11,7 +11,7 @@
 				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
-		<script src="/js/jquery.datetimepicker.js"></script>
+		<script src="a/js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript">
 			function setIdle(cb, seconds) {
     			var timer; 
