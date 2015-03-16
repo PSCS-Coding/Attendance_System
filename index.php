@@ -368,7 +368,7 @@ echo "</div> ";
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
 	    <tr>
-	        <th class='select_col'></th>
+	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
 			<th></th>
@@ -603,9 +603,18 @@ echo "</div> ";
 	
 	<script>
 	    $(document).ready(function() {
-		$('.c_box').shiftSelectable();    
+		$('.c_box').shiftSelectable();
+          
 	    });
 	</script>
+
+    <script>
+        $(document).ready(function(){
+            $("#checkAll").change(function () {
+                $("input:checkbox").prop('checked', $(this).prop("checked"));
+            });
+        });
+    </script>
 	
 	</body>
 	</html>

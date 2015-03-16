@@ -28,6 +28,10 @@ table {
 	border-spacing: 0;
 }
 
+input#checkAll {
+  height: 29px;
+}
+
 
 /* ///////// PSCS STYLES //////////// */
 td {
