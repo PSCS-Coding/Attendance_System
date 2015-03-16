@@ -44,7 +44,7 @@
 				array_push($groupsResult, $group);
 				//$groupsCount += 1;
 			}
-
+            $group = ltrim($group, ",");
 		//this function sorts multidimensional arrays by one of their subkeys
 	    //$a = the array to be sorted -- $subkey = the subkey to be sorted by
 		function subval_sort($a, $subkey, $result) {
