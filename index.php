@@ -446,7 +446,7 @@
                             
 				        <tr>
                     
-                <?php } ?>
+                        <?php } ?>
                 
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
