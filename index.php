@@ -434,10 +434,10 @@
         $globals_data = $globals_result->fetch_array();
         $todaytime = new DateTime();
         $todaytimestart = new DateTime($globals_data['starttime']);
-        if ($myReturn < $currTime) {
-        //if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) { 
-        }
-                if ($myReturn < $currTime && $latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Field Trip' && $latestdata['statusname'] != 'Checked Out' || $latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {    
+                
+        // Start of IF statement for contextual coloring        
+        if ($myReturn < $currTime && $latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Field Trip' && $latestdata['statusname'] != 'Checked Out' || $latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+            
                  ?>  
         
                         <tr class="Status_Red">
