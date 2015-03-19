@@ -570,9 +570,13 @@ echo "</div> ";
         $(document).ready(function() {
 			$('.groupsGUI').mouseenter(function() {
 				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+                $('.groupHeader').addClass('active');
+                $('.groupButton').addClass('active');
 			});
 			$('.groupsGUI').mouseleave(function() {
-				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+				$('.groupsGUI').stop().animate({ right: "-140px"} , "fast");
+                $('.groupHeader').removeClass('active');
+                $('.groupButton').removeClass('active');
 			});
 		});
 </script>
