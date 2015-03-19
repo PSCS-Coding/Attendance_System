@@ -53,13 +53,13 @@ if (!empty($_POST['addgroup'])) {
         $stmt->execute();
         $stmt->close();
         $HeaderStatus = "Sussess";
-        $HeaderInfo = "Added Student.";
+        $HeaderInfo = "Added Student " . idToName($_POST['studentselect']);
  }
 if (!empty($_POST['deletestudent'])) {
 	$infoArray = explode("-", $_POST['deletestudent']);
 	$groupSelected = $infoArray[0];
 	$studentSelected = $infoArray[1];
-	echo $groupSelected . '<br />' . $studentSelected;
+	//echo $groupSelected . '<br />' . $studentSelected;
 
 	$getGroupSelected = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT * FROM groups WHERE name = '" . $groupSelected . "' ORDER BY name DESC LIMIT 1"));
 	$idsSelected = explode(",", $getGroupSelected['studentid']);
@@ -74,6 +74,8 @@ if (!empty($_POST['deletestudent'])) {
         $stmt->bind_param('ss', $idsSelectedString, $groupSelected);
         $stmt->execute();
         $stmt->close();
+	$HeaderStatus = "Error";
+        $HeaderInfo = "Deleted Student " . idToName($studentSelected);
 	}
 }
  $studentQuery = $db_server->query("SELECT studentid, firstname,lastname FROM studentdata WHERE current = 1 ORDER BY firstname ASC");
