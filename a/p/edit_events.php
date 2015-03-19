@@ -31,12 +31,13 @@ if (!empty($_GET['eventid'])) { // This conditional will fire if a user has clic
             $update->close();
         }
         if (!empty($_POST['returntime_edit'])) { // update the return time of the event
-            $stamp = $_POST['stamp_edit'];
-            $newStamp = substr($stamp, 0, -9);
+            //$stamp = $_POST['stamp_edit'];
+            //$newStamp = substr($stamp, 0, -9);
+            //echo $newStamp;
             $time = $_POST['returntime_edit'];
-            $fullTime = $newStamp.' '.$time;
+            //$fullTime = $newStamp.' '.$time;
             $update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
-            $update->bind_param('ss', $fullTime, $eventid);
+            $update->bind_param('ss', $time, $eventid);
             $update->execute();
             $update->close();
         }
@@ -214,7 +215,9 @@ if (!empty($_GET['id'])) {
 									<input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
 								</td>
 								<td>
-									<input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $event['returntime'];} ?>'>
+									<input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {
+                   echo $event['returntime'];
+        } ?>'>
 								</td>
 								<td>
 									<input type='submit' name='edit_submit' value='Save'>
