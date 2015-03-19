@@ -32,12 +32,10 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
 //only allows integers and colons
 function validTime($inTime)
 {
-    /*
     $pattern   =   "/^(((([9])|([0-2])|([0-1][0-5])):([0-5][0-9]))|(([3]):(([0-2][0-9])|([3][0]))))$/";
     if (preg_match($pattern, $inTime)) {
-    */
         return true;
-    //}
+    }
 }
 //checks if you've hit any of the submit buttons that are a part of the top form
 function isPost()
