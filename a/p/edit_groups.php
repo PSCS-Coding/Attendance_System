@@ -45,7 +45,8 @@ if (!empty($_POST['addgroup'])) {
      
         // $_POST['studentselect']; IS A STUDENT ID
         $editID = explode(',', $specGroupsResult[0]['studentid']);
-        array_push($editID, $_POST['studentselect']);
+	if (!in_array($_POST['studentselect'], $editID)) {
+        	array_push($editID, $_POST['studentselect']);
         $stringID = implode(',', $editID);
      
         $stmt = $db_server->prepare('UPDATE groups SET studentid = ? WHERE name = ?');
@@ -54,6 +55,10 @@ if (!empty($_POST['addgroup'])) {
         $stmt->close();
         $HeaderStatus = "Sussess";
         $HeaderInfo = "Added Student " . idToName($_POST['studentselect']);
+		} else {
+	$HeaderStatus = "Error";
+	$HeaderInfo = "Student Already in Group " . $groupname;
+	}
  }
 if (!empty($_POST['deletestudent'])) {
 	$infoArray = explode("-", $_POST['deletestudent']);
