@@ -32,10 +32,10 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
 //only allows integers and colons
 function validTime($inTime)
 {
-    $pattern   =   "/^(((([9])|([0-2])|([0-1][0-5])):([0-5][0-9]))|(([3]):(([0-2][0-9])|([3][0]))))$/";
-    if (preg_match($pattern, $inTime)) {
+    //$pattern   =   "/^(((([9])|([0-2])|([0-1][0-5])):([0-5][0-9]))|(([3]):(([0-2][0-9])|([3][0]))))$/";
+    //if (preg_match($pattern, $inTime)) {
         return true;
-    }
+    //}
 }
 //checks if you've hit any of the submit buttons that are a part of the top form
 function isPost()
@@ -448,8 +448,8 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 		$event_datetime_1 = new DateTime($event_val['timestamp']);
 		//variables for easy comparison
-		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
-		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
+		$early = $event_datetime_1->format('Y-m-d') . " " . $starttime;
+		$late = $event_datetime_1->format('Y-m-d') . " " . $endtime;
 		$event_early = new DateTime($early);
 		$event_late = new DateTime($late);
 		//is event 1 on a weekend or holiday?
