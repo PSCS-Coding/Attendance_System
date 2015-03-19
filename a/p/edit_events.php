@@ -91,7 +91,6 @@ if (!empty($_GET['id'])) {
 <head>
    <title>Edit Events</title>
    <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
-   <link rel="stylesheet" type="text/css" href="../../attendance.css">
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    <script src="js/scrollTo.js"></script>
    <script src="js/jquery.datetimepicker.js"></script>
@@ -109,7 +108,7 @@ if (!empty($_GET['id'])) {
 } ?>
 
    <div id="TopHeader" class="">
-              <h1 class="Myheader">Edit Events</h1>
+              <h1 class="edit_events_Myheader">Edit Events</h1>
                 </div>
             <div align="center" id="main">
   <!-- <div class="centerr" style="margin: 1em;">
@@ -143,7 +142,7 @@ if (!empty($_GET['id'])) {
          }
          $current_student = $student_data_array[0]['firstname'] . " " . $student_data_array[0]['lastname'];
    ?>
-      <h2>Events for: <span><?php echo $current_student; ?></span></h2>
+      <h2 class="title">Events for: <span><?php echo $current_student; ?></span></h2>
       <table class='newevent eventlog'>
          <tr>
 

@@ -1,3 +1,41 @@
+/* HTML5 reset  */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-spacing: 0;
+}
+
+input#checkAll {
+  height: 29px;
+}
+
+
+/* ///////// PSCS STYLES //////////// */
+
+
 body {
  background-color: dimgray;
 }
@@ -25,17 +63,25 @@ body {
 }
 .admintable {
     padding: 10px;
-    background-color: darkgray;
     border-radius: 5px;
     color: white;
     min-width: 500px;
     max-width: 500px;
     opacity: 0.85;
 }
+.holiday_table,
+.global_table,
+.allottedhours_table,
+.facilitators_table,
+.students_table {
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
 .edit-passwords .admintable {
     min-width: 400px;
     max-width: 400px;
 }
+
 .edit-groups .admintable{
     min-width: 35%;
     max-width: 35%;
@@ -46,7 +92,12 @@ min-width: 400px;
 max-width: 645px;   
 }
 .GroupsTable {
-width: 30%;
+  width: 30%;
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+.admintable form {
+  margin: 1.5em;
 }
 table {
     width: 100%;
@@ -163,9 +214,12 @@ background-color: #616161;
  background-color: #5CE27C;
 }
 #OffsiteStats {
-    max-width: 700px;
-    margin-left: 5%;
-    opacity: 0.85;
+  max-width: 700px;
+  margin-left: 5%;
+  opacity: 0.85;
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  margin-bottom: 1em;
 }
 .Myheader {
  text-align: center;
@@ -175,12 +229,16 @@ background-color: #616161;
  margin-right: 20%;
 padding-bottom: 0%;
   font-size: 1.5em;
+  padding: 13px;
 }
 #navigation .header {
  text-align: center;
  font-weight: 900;
  font-family: "Verdana";
  color: white;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  font-size: 1.5em;
 }
 #navigation .disabled {
  text-align: left;
@@ -226,3 +284,84 @@ margin-top: 6%;
     z-index: 4;
 background-color: #B5FA9D;
 }
+
+/* EDIT EVENTS */
+
+.edit-events tr {
+	background-color: #f0f0f0;
+	border: 2px solid white;
+}
+
+.edit-events tr.Offsite {
+	background-color: #D2B48C;
+}
+
+.edit-events tr.Absent {
+	background-color: #FF6347;
+}
+
+.edit-events tr.Late {
+	background-color: #B0E0E6;
+}
+
+body .edit-events {
+   background-color: dimgray
+
+}
+
+.edit-events .message {
+   color: red;
+   background: #fff;
+   border: 1px solid red;
+   padding: 0.5em;
+   margin: 1em;
+   display: inline-block;
+   position: absolute;
+}
+.new-event input, .editing-row input {
+   width: 100%;
+}
+.new-event td {
+   padding: 1em;
+}
+.edit-events .eventlog {
+   margin: 1em auto;
+   opacity: 0.8;
+   width: 830px;
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+.edit-events .centerr {
+   margin: 0 auto;
+   text-align: center;
+}
+.edit-events .editing-row {
+   background-color: rgb(178, 178, 178);
+}
+
+.title {
+  color: white;
+  font-size: 2em;
+  margin: 20px;
+  font-family: 'Verdana';
+  font-weight: 900;
+}
+
+
+.edit_events_Myheader {
+ text-align: center;
+ font-weight: 900;
+ font-family: "Verdana";
+ color: white;
+ margin: 9px;
+  padding: 6px;
+  padding-right: 24%;
+  font-size: 1.5em;
+}
+
+
+
+
+
+
+
