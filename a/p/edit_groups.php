@@ -5,7 +5,7 @@ require_once('../../login.php');
 <html>
  <head>
  <title>Edit Groups</title>
-    <?php require_once('header.php'); ?>
+	    <?php require_once('header.php'); ?>
  </head>
 <body class="adminpage edit-groups">
  <?php
@@ -40,7 +40,8 @@ if (!empty($_POST['addgroup'])) {
         $specGroupsResult = array();
         while ($specGroup = $specGroupsQuery->fetch_assoc()) {
         array_push($specGroupsResult, $specGroup);
-        }
+}
+
      
         // $_POST['studentselect']; IS A STUDENT ID
         $editID = explode(',', $specGroupsResult[0]['studentid']);
@@ -54,7 +55,27 @@ if (!empty($_POST['addgroup'])) {
         $HeaderStatus = "Sussess";
         $HeaderInfo = "Added Student.";
  }
+if (!empty($_POST['deletestudent'])) {
+	$infoArray = explode("-", $_POST['deletestudent']);
+	$groupSelected = $infoArray[0];
+	$studentSelected = $infoArray[1];
+	echo $groupSelected . '<br />' . $studentSelected;
 
+	$getGroupSelected = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT * FROM groups WHERE name = '" . $groupSelected . "' ORDER BY name DESC LIMIT 1"));
+	$idsSelected = explode(",", $getGroupSelected['studentid']);
+	if (in_array($studentSelected, $idsSelected)) {
+
+	$key = array_search($studentSelected, $idsSelected);
+    	unset($idsSelected[$key]);
+
+	$idsSelectedString = implode(',', $idsSelected);
+	//echo "<br />" . $idsSelectedString . "<br />";
+        $stmt = $db_server->prepare('UPDATE groups SET studentid = ? WHERE name = ?');
+        $stmt->bind_param('ss', $idsSelectedString, $groupSelected);
+        $stmt->execute();
+        $stmt->close();
+	}
+}
  $studentQuery = $db_server->query("SELECT studentid, firstname,lastname FROM studentdata WHERE current = 1 ORDER BY firstname ASC");
         $studentResult = array();
         while ($student = $studentQuery->fetch_array()) {
@@ -120,35 +141,12 @@ if (!empty($_POST['addgroup'])) {
 for ($i = 0; $i < count($groupsResult); $i++) {
     
     $ids = explode(",", $groupsResult[$i]['studentid']);
-    
-    if (!empty($_POST['deletestudent'])) {
-        
-    if (in_array($_POST['deletestudent'], $ids)) {
-        
-    $key = array_search($_POST['deletestudent'], $ids);
-        
-    unset($ids[$key]);
-        
-    $idsString = implode(',', $ids);
-
-        $stmt = $db_server->prepare('UPDATE groups SET studentid = ? WHERE name = ?');
-        $stmt->bind_param('ss', $idsString, $groupsResult[$i]['name']);
-        $stmt->execute();
-        $stmt->close();
-
-    $groupsQuery = $db_server->query("SELECT name, studentid FROM groups ORDER BY name DESC");
-    $groupsResult = array();
-    while ($group = $groupsQuery->fetch_array()) {
-    array_push($groupsResult, $group);
-    }
-    }
-    }
 
     echo "
     <form method='post'>
     <table bgcolor='darkgrey' class='GroupsTable'>
     <tr>
-    <th>" . $groupsResult[$i]['name'] . "</th>
+    <th>" . str_replace("_"," ", $groupsResult[$i]["name"]) . "</th>
     <td><button style='font-weight:bold; border-radius:10px' type='submit' name='deletegroup' value='" . $groupsResult[$i]['name'] .             "'>X</button></td>
     </tr>
     ";
@@ -159,7 +157,7 @@ for ($i = 0; $i < count($groupsResult); $i++) {
         echo "<tr>
         <td>" . idToName($ids[$s]) . " " . idToLastName($ids[$s])[0] . "</td>
 
-        <td><button type='submit' name='deletestudent' value='" . $ids[$s] . "'>X</button></td>
+        <td><button type='submit' name='deletestudent' value='" . $groupsResult[$i]['name'] . "-" . $ids[$s] . "'>X</button></td>
         </tr>"; //edit is here >> <td><input type='submit' name='edit-" . $ids[$s] ."' value='Edit'></td>
         }
     }
