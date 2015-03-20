@@ -42,13 +42,14 @@ while ($student = $current_users_query->fetch_array()) {
 		</div>
 	</div>
 <div class='report-container'>
+
 <?php
 if (!isset($_POST['studentselect']) && (empty($_GET['id']))) {
 ?>
     Select a name from the dropdown above
 	<?php
 } //Close if statment
-
+//stats render
 //holidays array
 $holiday_data_array = array();
 $holiday_dt_array = array();
@@ -61,12 +62,49 @@ foreach ($holiday_dt_array as $k) {
 	array_push($holiday_data_array, $k[0]);
 }
 if (isset($current_student_id)) {
+//gets stats
+$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2");
+$getStatsResult = array();
+while ($stats = $getStatsQuery->fetch_array()) {
+	array_push($getStatsResult, $stats);
+}
+//displays stats
+echo "
+<div class='stats-container' style='float:right;width:30%;height:36%;background-color:darkgrey;border-radius:3%;'>
+<div class='stats-render' style='float:left;width:90%;height:90%;padding:8%;'>
+<p style='font-size:20px'>Stats</p>
+";
+$uniqueLoc = array();
+$siteCount = array();
+$totalCount = 0;
+foreach ($getStatsResult as $sub) {
+	$totalCount += 1;
+	if (!in_array($sub['info'], $uniqueLoc)) {
+		array_push($uniqueLoc, $sub['info']);
+	}
+	//echo "<p>" . $sub['info'] . "</p>";
+}
+$siteCount = array_fill_keys($uniqueLoc, 0);
+foreach ($getStatsResult as $child) {
+	$siteCount[$child['info']] += 1;
+}
+
+for ($n = 0; $n < count($uniqueLoc); $n++) {
+	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
+	$count2 = $count1 * 100;
+	$count = number_format($count2, 0);
+	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
+}
+echo "
+</div>
+</div>
+";
 $student_data_array = array();
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
 		FROM events
-		JOIN statusdata ON events.statusid = statusdata.statusid
+		 	JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
