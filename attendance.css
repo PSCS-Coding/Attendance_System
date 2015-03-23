@@ -481,7 +481,11 @@ width:100%;
 .ui-timepicker-input {
     width: 80px;
 }
-tr.Status_Red {
-background-color:rgb(250, 150, 150);
+tr.Status_Red:nth-child(even) {
+background-color:rgb(249, 179, 179);
+opacity:0.9;
+}
+tr.Status_Red:nth-child(odd) {
+background-color:rgb(242, 147, 147);
 opacity:0.9;
 }
