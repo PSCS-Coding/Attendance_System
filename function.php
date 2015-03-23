@@ -170,6 +170,11 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
     $stmt->bind_param('iisss', $id, $status, $eventdate, $returntimestring, $info);
     $stmt->execute();
     $stmt->close();
+	} else {
+		?>
+		<div class='error'><?php echo $eventDateObject->format('l, M j, Y') ?> is not a school day</div>
+		
+		<?php
 	}
 	if ($endDate < $startDate){
 			$eventdate = $eventdate - 24*60*60;
