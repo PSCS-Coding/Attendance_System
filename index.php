@@ -316,7 +316,7 @@ echo "</div> ";
         <?php        
     if (isset($_COOKIE['login'])) {
     if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
-    echo '<div class="admin_button"><a href="/a/p/index.php">Admin</a></div>';
+    echo '<div class="admin_button"><a href="a/p/index.php">Admin</a></div>';
         }
     } 
         ?>
