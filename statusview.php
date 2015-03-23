@@ -31,7 +31,7 @@
 			setIdle(function() {location.href = location.href;}, 300);
 		</script>
 	</head>
-	<body class="mainpage">
+	<body class="mainpage statusview">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
@@ -119,10 +119,9 @@
 
 	
 	<!-- student information table rendering -->
-	<br><br>
-	    <?php
+	<?php
 		if(!empty($_POST['datetimepicker'])){
-		$DateFromPicker = $_POST['datetimepicker'];
+			$DateFromPicker = $_POST['datetimepicker'];
 		}
 		$student_data_array = array();
 		if (empty($DateFromPicker)){
@@ -131,9 +130,13 @@
 		} else {
 			$Date = new DateTime($DateFromPicker);
 		}
-		?> <div style="text-align:center"> <br> <?php
-		echo "viewing events for " . $Date->format('l F jS \a\t g:ia');
-		?> </div> <?php
+	?>
+	<h1><?php echo "Attendance status as of " . $Date->format('l F jS \a\t g:ia'); ?></h1>
+	<form method='post' id="datepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
+		<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
+		<input type='submit' name='submit'>
+	</form>
+	<?php
 		$TimeFromPicker = $Date->format('Y-m-d H:i:s');
 		$DateFromPicker = $Date->format('Y-m-d');
 		
@@ -153,21 +156,18 @@
 					$result_array = $result->fetch_assoc();
 					//pushed each individual students data into an array				
 					array_push($student_data_array, $result_array);
-				}
-			
+				} ?>
+
+				<?php
 				//using the above data from the query, this renders the alternate status view
 				//creates a table header for each of the possible status'
-				?>
-				<form method='post' id="datepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
-				<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
-				<input type='submit' name='submit'>
-				</form>
-				<?php
+				
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
 					//only renders the table headers for status' that have students assigned to that status
 					if (!empty($sorted_data_array)) { ?> 
+					
 					<div class='altview_status'> 
 						<p><?php echo $status; ?></p>
 						<ul class='altview_list'>
@@ -188,8 +188,9 @@
 									?>
 								</li>
 						<?php } ?>
-						</ul> <?php } ?> 
-					</div> <?php } ?>
+						</ul> 
+					</div> <?php } } ?>
+	
 <script> 
 	$('#datetimepicker').datetimepicker({
             onGenerate:function( ct ){
