@@ -157,7 +157,8 @@
 					//pushed each individual students data into an array				
 					array_push($student_data_array, $result_array);
 				} ?>
-
+                
+                <div class="column_wrapper">
 				<?php
 				//using the above data from the query, this renders the alternate status view
 				//creates a table header for each of the possible status'
@@ -190,6 +191,7 @@
 						<?php } ?>
 						</ul> 
 					</div> <?php } } ?>
+                </div>
 	
 <script> 
 	$('#datetimepicker').datetimepicker({
