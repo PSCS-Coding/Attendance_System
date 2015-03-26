@@ -4,7 +4,7 @@
     <?php require_once('header.php'); ?>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
-	<script src="a/js/jquery.datetimepicker.js"></script>
+	<script src="a/p/js/jquery.datetimepicker.js"></script>
 
 </head>
 <body class="view-reports">
@@ -39,7 +39,6 @@ while ($student = $current_users_query->fetch_array()) {
 	?>
 	</select>
 	<input type='submit' name='studentsubmit' class='studentselect'>
-	</form>
 	</div>
 		<div>
 			<a href="index.php">Return to main attendance view</a>
@@ -91,14 +90,11 @@ if(!empty($_POST['lastdatetimepicker'])){
 		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d');
 		
 	?>
-	<h1><?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?></h1>
-	<h1><?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?></h1>
+	<br>
+	<?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?>
+	<br>
+	<?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?>
 	
-	<form method='post' id="datetimepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
-		<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
-		<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
-		<input type='submit' name='submit'>
-	</form>
 	<?php
 
 
@@ -332,6 +328,10 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
+		<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+		<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+	</form>
+
 <table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
@@ -359,6 +359,18 @@ if ($event['statusname'] != "Not Checked In"){
 </div>
 <script> 
 	$('#firstdatetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s', 
+            step: 5,
+         }); 
+</script>
+<script> 
+	$('#lastdatetimepicker').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
