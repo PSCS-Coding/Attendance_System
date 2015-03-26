@@ -12,7 +12,6 @@
 			});
 		</script>
 		<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
-		<link rel="stylesheet" type="text/css" href="attendance.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="a/js/scrollTo.js"></script>
 		<script src="a/js/jquery.datetimepicker.js"></script>
@@ -131,7 +130,7 @@
 			$Date = new DateTime($DateFromPicker);
 		}
 	?>
-	<h1><?php echo "Attendance status as of " . $Date->format('l F jS \a\t g:ia'); ?></h1>
+	<h1 class="statusview_header"><?php echo "Attendance status as of " . $Date->format('l F jS \a\t g:ia'); ?></h1>
 	<form method='post' id="datepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 		<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
 		<input type='submit' name='submit'>
