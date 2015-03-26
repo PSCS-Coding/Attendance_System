@@ -90,11 +90,12 @@ if(!empty($_POST['lastdatetimepicker'])){
 		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d');
 		
 	?>
-	<br>
-	<?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?>
-	<br>
-	<?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?>
-	
+    <div class="date_info">
+        <br>
+        <?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?>
+        <br>
+        <?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?>
+    </div>
 	<?php
 
 
@@ -328,8 +329,10 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
-		<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
-		<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		<div class="timepickers">
+            <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+        </div>
 	</form>
 
 <table class='eventlog' id="viewreports">
