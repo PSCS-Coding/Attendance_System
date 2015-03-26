@@ -2,6 +2,10 @@
 <head>
 	<title>View Reports</title>
     <?php require_once('header.php'); ?>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
+	<script src="a/js/jquery.datetimepicker.js"></script>
+
 </head>
 <body class="view-reports">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
@@ -60,6 +64,45 @@ while ($holiday_data = $holiday_result->fetch_array()) {
 foreach ($holiday_dt_array as $k) {
 	array_push($holiday_data_array, $k[0]);
 }
+
+//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$tempstartdate = $globalsdata['startdate'];
+
+// end basic queries ========
+if(!empty($_POST['firstdatetimepicker'])){
+			$FirstDateFromPicker = $_POST['firstdatetimepicker'];
+			$FirstDateFromPicker = new DateTime($FirstDateFromPicker);
+		} else {
+			$FirstDateFromPicker = new DateTime($tempstartdate);
+		}
+		
+		
+if(!empty($_POST['lastdatetimepicker'])){
+			$LastDateFromPicker = $_POST['lastdatetimepicker'];
+			$LastDateFromPicker = new DateTime($LastDateFromPicker);
+		} else {
+			$LastDateFromPicker = new DateTime();
+		}
+		
+		$SFirstDateFromPicker = $FirstDateFromPicker->format('Y-m-d'); //add H:i:s to the format to enable time picking as well
+		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d');
+		
+	?>
+	<h1><?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?></h1>
+	<h1><?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?></h1>
+	
+	<form method='post' id="datetimepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
+		<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+		<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		<input type='submit' name='submit'>
+	</form>
+	<?php
+
+
+$student_data_array = array();
 if (isset($current_student_id)) {
 $student_data_array = array();
 //fetches most recent data from the events table
@@ -69,6 +112,7 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
+		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -79,11 +123,6 @@ $yearinschool = $student_data_array[0]['yearinschool'];
 $allottedquery = "SELECT * FROM allottedhours WHERE yis = '$yearinschool'";
 $allotted_result = $db_server->query($allottedquery);
 $allotted_data_array = $allotted_result->fetch_array();
-
-//globals query
-$globalsquery = "SELECT * FROM globals";
-$globals_result = $db_server->query($globalsquery);
-$globalsdata = $globals_result->fetch_array();
 
 $starttime = $globalsdata['starttime'];
 $endtime = $globalsdata['endtime'];
@@ -318,5 +357,17 @@ if ($event['statusname'] != "Not Checked In"){
 } ?>
 </table>
 </div>
+<script> 
+	$('#firstdatetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s', 
+            step: 5,
+         }); 
+</script>
 </body>
 </html>
