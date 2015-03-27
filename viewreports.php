@@ -11,11 +11,20 @@
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
+
+	//query faclitators from sql to get a list
+	$statget = $db_server->query("SELECT * FROM statusdata");
+    $statusdata = array();
+    while ($stat_row = $statget->fetch_row()) {
+		array_push ($statusdata, $stat_row[0]);
+    }
+
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
 } 
+
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
@@ -102,6 +111,15 @@ if(!empty($_POST['lastdatetimepicker'])){
 $student_data_array = array();
 if (isset($current_student_id)) {
 $student_data_array = array();
+$notfulldata = 0;
+if(!empty($_POST['statusselect'])){
+	$currentselectedstatus = $_POST['statusselect'];
+	$statstring = "AND events.statusid = '$currentselectedstatus'" ;
+	$notfulldata = 1;
+} else {
+	$statstring = "";
+}
+
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
@@ -110,7 +128,9 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
 		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
+		".$statstring."
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
+		
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
@@ -262,25 +282,15 @@ $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaini
 if ($offsitehours_remaining < 0) {
 	$readable_offsiteleft = "<p class='reporttext'> You are out of offsite! You are over by " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes. </p>";
 }
+
+if($notfulldata == 1){
+	echo "<p class='reporttext'> NOTE: The below information is only for the selcted status.</p>";
+}
+
 echo $readable_offsiteleft;
 
 $offsiteHrs_used = floor(($offsitehours_used) / 60);
 $offsiteMin_used = $offsitehours_used % 60;
-
-//below is the deprecated days till end function
-
-/*$daystillend = 0;
-$today = New DateTime();
-$today = $today->SetTime(0, 0, 0);
-$enddate = new DateTime($globalsdata['enddate']);
-$interval = new DateInterval('P1D');
-$period = new DatePeriod($today, $interval, $enddate);
-foreach ($period as $date) {
-	if ($date->format('w') != 0 && $date->format('w') != 6) {
-		$daystillend += 1;
-	}
-}
-*/
 
 // this uses a function from functions.php
 $daystillend = daysLeft();
@@ -332,7 +342,21 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 		<div class="timepickers">
             <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
 		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
-        </div>
+		
+		<select name='statusselect'><option value=''>All Statuses</option>
+        <?php
+			foreach ($statusdata as $statusoption) {
+				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+				$tempvar = $query->fetch_assoc();
+				$tempstatname = $tempvar['statusname'];
+        ?> 
+			
+				<option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option>
+        <?php
+			}
+        ?>
+        </select>
+		</div>
 	</form>
 
 <table class='eventlog' id="viewreports">
