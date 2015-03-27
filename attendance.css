@@ -421,6 +421,10 @@ div.report-container {
 margin-bottom:0.5em;
 }
 
+#reportnote {
+    color: red;
+}
+
 .eventlog th, .eventlog td {
 line-height:2em;
 }

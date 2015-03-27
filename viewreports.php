@@ -284,7 +284,7 @@ if ($offsitehours_remaining < 0) {
 }
 
 if($notfulldata == 1){
-	echo "<p class='reporttext'> NOTE: The below information is only for the selcted status.</p>";
+	echo "<p class='reporttext' id='reportnote'> NOTE: The below information is only for the selcted status.</p>";
 }
 
 echo $readable_offsiteleft;
