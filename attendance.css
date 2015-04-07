@@ -77,35 +77,59 @@ background-color: dimgrey;
 }
 
 .groupHeader {
- font-weight: 900;
- text-align: center;
-padding-bottom: 5%;
+      -webkit-transform: rotate(-90deg);
+      font-size: 1.1em;
+      position: absolute;
+      top: 25px;
+      left: -13px;
+      font-family: sans-serif;
+      font-weight: 500;
+      }
+.groupHeader.active {
+      -webkit-transform: rotate(0deg);
+      position: static;
+       text-align: center;
+      padding-bottom: 5%;
+      margin-top: 10px;
+      text-decoration: underline;
 }
-
 .groupButton {
 background:none!important;
      border:none; 
      padding-left: 15px;
      cursor: pointer;
-    font-size: 15px;
+    font-size: 0px;
 }
-
+.groupButton.active {
+      font-size: 15px;
+    }
 .groupButton:hover {
     color: grey; 
 }
 
 .groupsGUI{
-background-color: #B6B6B6;
-border-bottom: 1px solid #B6B6B6;
-color: black;
-padding: 5px;
-opacity: 95%;
-}
+      background-color: #B6B6B6;
+      border-bottom: 1px solid #B6B6B6;
+      color: black;
+      padding: 5px;
+      opacity: 95%;
+      min-height: 50px;
+      position: fixed;
+      top: 55px;
+      right: -140px;
+      width: 150px;
+      z-index: 10;
+      border-radius: 3px 0 0 3px;
+      opacity: 0.8;
+      }
+.groupsGUI:hover {
+        max-height: 100%;
+      }
 
 .mainpage .groupsGUI {
 position: fixed;
 top: 55px;
-right: -145px;
+right: -140px;
 width: 150px;
 z-index: 10;
 border-radius: 3px 0 0 3px;

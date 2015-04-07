@@ -259,6 +259,7 @@
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
+              
 		}
 echo "</div> ";
                 }
@@ -580,9 +581,13 @@ echo "</div> ";
         $(document).ready(function() {
 			$('.groupsGUI').mouseenter(function() {
 				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+                $('.groupHeader').addClass('active');
+                $('.groupButton').addClass('active');
 			});
 			$('.groupsGUI').mouseleave(function() {
-				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+				$('.groupsGUI').stop().animate({ right: "-140px"} , "fast");
+                $('.groupHeader').removeClass('active');
+                $('.groupButton').removeClass('active');
 			});
 		});
 </script>
