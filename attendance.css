@@ -25,7 +25,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 	content: none;
 }
 table {
-	border-spacing: 0;
+border-spacing: 0;
 }
 
 input#checkAll {
@@ -55,12 +55,12 @@ text-align:left;
 }
 
 .status_col {
-	min-width: 380px;
-	max-width: 400px;
-	padding: 5px 5px 5px inherit !important;
+min-width: 380px;
+max-width: 400px;
+padding: 5px 5px 5px inherit !important;
 }
 .late_time {
-	height: 14px;
+height: 14px;
 }
 
 body {
@@ -177,11 +177,11 @@ padding-bottom: 20px;
 }
 
 .student_col_buttons {
-    display: inline-flex;
-    display: -webkit-inline-flex;
-    display: -moz-inline-flex;
-    vertical-align: middle;
-    height: 25px;
+display: inline-flex;
+display: -webkit-inline-flex;
+display: -moz-inline-flex;
+vertical-align: middle;
+height: 25px;
 }
 
 .select_col {
@@ -283,15 +283,39 @@ background-color: #A9F5A9;
 border-bottom: 1px solid #A9F5A9;
 }
 
+form#datepicker {
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+form#datepicker input {
+    border: 0;
+    padding: 4px;
+}
+
+form#datepicker input[type="submit"] {
+    color: grey;
+    background-color: #C3C3C3;
+}
+
+.column_wrapper {
+    margin: 1.5em auto;
+    text-align: center;
+}
+
 .altview_status {
-float:left;
-float: left;
 background-color: white;
-margin: 35px 10px;
 padding: 10px;
 border-radius: 3px;
 opacity: 0.8;
 text-align: center;
+min-width: 105px;
+margin: 10px;
+display: inline-block;
+vertical-align: top;
+box-shadow: rgba(0,0,0,0.2) 4px 4px 4px;
+-webkit-box-shadow: rgba(0,0,0,0.2) 4px 4px 4px;
+-moz-box-shadow: rgba(0,0,0,0.2) 4px 4px 4px;
 }
 
 .altview_status>p {
@@ -302,12 +326,19 @@ margin-bottom:0.5em;
 
 .altview_status ul, .altview_status li {
 list-style-type: none;
-        list-style-position:inside;
-        margin:0;
-        padding:0;
-		line-height:150%;
- }
+list-style-position:inside;
+margin:0;
+padding:0;
+line-height:150%;
+}
 
+.statusview_header {
+text-align: center;
+padding-top: 4em;
+font-weight: 800;
+font-size: 1em;
+color: lightgrey;
+}
 
 #single-body {
 background-color: white;
