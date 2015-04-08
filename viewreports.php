@@ -134,6 +134,8 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
+if(count($student_data_array)!=0){
+
 
 //allotted hours query
 $yearinschool = $student_data_array[0]['yearinschool'];
@@ -284,8 +286,12 @@ if ($offsitehours_remaining < 0) {
 }
 
 if($notfulldata == 1){
-	echo "<p class='reporttext' id='reportnote'> NOTE: The below information is only for the selcted status.</p>";
-}
+	//echo "<p class='reporttext' id='reportnote'> NOTE: The below information is only for the selcted status.</p>";
+	if(!empty($_POST['statusselect'])){
+		echo "Now displaying " . statconvert($_POST['statusselect']) . " events";
+	}
+	?> <br> <br> <?php
+} else {
 
 echo $readable_offsiteleft;
 
@@ -338,6 +344,7 @@ $studyHrs_used = floor($studyhours_used / 60);
 $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
+}
 ?>
 		<div class="timepickers">
             <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
@@ -349,13 +356,12 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
 				$tempvar = $query->fetch_assoc();
 				$tempstatname = $tempvar['statusname'];
-        ?> 
-			
-				<option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option>
-        <?php
-			}
+				
+			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+		}
         ?>
         </select>
+		<input type='submit' name='studentsubmit' class='studentselect'>
 		</div>
 	</form>
 
@@ -380,9 +386,14 @@ if ($event['statusname'] != "Not Checked In"){
 	</tr>
 <?php } 
 }
-
-} ?>
+ ?>
 </table>
+<?php 
+} else {
+echo "There are no events from this time period";
+}
+}
+?>
 </div>
 <script> 
 	$('#firstdatetimepicker').datetimepicker({
