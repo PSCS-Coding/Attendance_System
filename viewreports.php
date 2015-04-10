@@ -1,7 +1,8 @@
 <html>
 <head>
 	<title>View Reports</title>
-    <?php require_once('header.php'); ?>
+   	<?php require_once('header.php'); ?>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 </head>
 <body class="view-reports">
 	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
@@ -92,13 +93,62 @@ foreach ($getStatsResult as $child) {
 for ($n = 0; $n < count($uniqueLoc); $n++) {
 	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
 	$count2 = $count1 * 100;
-	$count = number_format($count2, 0);
+	$count = number_format($count2, 0);	
 	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
+	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
 }
-echo "
-</div>
-</div>
-";
+echo "</div>";//ending stats-render div
+?>
+ <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+var locCount = <?php echo count($uniqueLoc); ?>;
+var string = <?php echo json_encode("holaaaa"); ?>;
+var int = <?php echo json_encode(7); ?>;
+var d = 0;
+var insertrows = [];
+//insertrows.push(['new',4]);
+<?php 
+echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
+for ($n = 0; $n < count($uniqueLoc); $n++) {
+echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
+}
+?>
+var rows = new Array();
+
+rows[0] = ['1','2'];
+rows[1] = ['abc', 'cdf'];
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'name');
+        data.addColumn('number', 'times');
+        data.addRows(insertrows);
+
+        // Set chart options
+        var options = {
+                       'width':380,
+                       'height':300,
+			'backgroundColor':'transparent'};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+<div id="chart_div" style="position:absolute;right:0px;top:0px;width: 43%; height: 300px;"></div>
+<?php
+echo "</div>";//ending stats-container div
 $student_data_array = array();
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
