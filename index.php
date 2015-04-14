@@ -4,6 +4,10 @@
 	<head>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
+
+
+
+
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
@@ -282,13 +286,14 @@ echo "</div> ";
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offlocDropdown" name="offlocDropdown">
+	        
+<select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
-</datalist>
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
+<option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
+</select>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
@@ -630,6 +635,9 @@ echo "</div> ";
                 $("input:checkbox").prop('checked', $(this).prop("checked"));
             });
         });
+	$("#offlocDropdown").change(function () {
+alert($(this).val());
+});
     </script>
 	
 	</body>
