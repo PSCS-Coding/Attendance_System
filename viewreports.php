@@ -298,9 +298,14 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Time</th>
 <th>Status</th>
 <th>Info</th>
+<th>Returntime</th>
 <?php
+
 $reversed_student_array = array_reverse($student_data_array);
 foreach ($reversed_student_array as $event) {
+
+$temp = $event['returntime'];
+$displayNiceTime = new DateTime($temp);
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
@@ -310,7 +315,14 @@ if ($event['statusname'] != "Not Checked In"){
 	<td><?php echo $pretty_time->format('g:i a') ?></td>
 	<td><?php echo $event['statusname'] ?></td>
 	<td><?php echo $event['info'] ?></td>
+	<?php if($event['statusname'] == "Late"){ ?>
+	<td><?php echo $displayNiceTime->format('g:i a') ?> </td>
+	<?php 
 	
+	} else { 
+	?> <td> </td>
+	
+	<?php } ?>
 	</tr>
 <?php } 
 }
