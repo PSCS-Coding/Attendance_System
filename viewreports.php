@@ -304,12 +304,24 @@ foreach ($reversed_student_array as $event) {
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
+    $temp_time = new DateTime();
 ?>
-	<tr class="<?php echo $event['statusname'] ?>">
-	<td><?php echo $pretty_time->format('D, M j') ?></td>
-	<td><?php echo $pretty_time->format('g:i a') ?></td>
-	<td><?php echo $event['statusname'] ?></td>
-	<td><?php echo $event['info'] ?></td>
+     <?php
+        if($temp_time->format('D, M') < $pretty_time->format('D, M')) {
+            echo '<tr class="' . $event["statusname"] . ' new-date">';
+            $temp_time = $pretty_time; ?>
+            <td><?php echo $pretty_time->format('D, M j') ?></td>
+            <td><?php echo $pretty_time->format('g:i a') ?></td>
+            <td><?php echo $event['statusname'] ?></td>
+            <td><?php echo $event['info'] ?></td>
+        <?php }
+        else { ?>
+            <tr class="<?php echo $event['statusname'] ?>">
+            <td><?php echo $pretty_time->format('D, M j') ?></td>
+            <td><?php echo $pretty_time->format('g:i a') ?></td>
+            <td><?php echo $event['statusname'] ?></td>
+            <td><?php echo $event['info'] ?></td>
+        <?php } ?>
 	
 	</tr>
 <?php } 
