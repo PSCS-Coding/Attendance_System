@@ -298,7 +298,7 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Time</th>
 <th>Status</th>
 <th>Info</th>
-<th>Returntime</th>
+<th>Expected Arrival</th>
 <?php
 
 $reversed_student_array = array_reverse($student_data_array);
