@@ -409,7 +409,7 @@ color:red;
 }
 
 tr.new-date td {
-    border-bottom: 1pt solid rgba(0, 0, 0, 0.5);
+    border-top: 2pt solid #ddd;
 }
 
 .toolong {
