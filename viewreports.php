@@ -148,12 +148,22 @@ foreach($student_data_array as $event_key => $event_val) {
 	if (count($student_data_array) != $event_key) {
 		//makes the timestamp into datetime obj
 		if (isset($student_data_array[$event_key+1])) {
-			$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
-		}
-		else {
+			if($student_data_array[$event_key+1]['timestamp'] != "0000-00-00 00:00:00"){
+				$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
+			} else {
+				continue;
+			}
+		} else {
 			break;
 		}
-		$event_datetime_1 = new DateTime($event_val['timestamp']);
+		
+		if($event_val['timestamp'] != "0000-00-00 00:00:00"){
+			$event_datetime_1 = new DateTime($event_val['timestamp']);
+		} else {
+			continue;
+		}
+		
+		
 		//variables for easy comparison
 		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
 		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
