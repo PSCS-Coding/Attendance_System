@@ -112,8 +112,8 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			if (!empty($_POST['offloc'])){
-	        		$info = $_POST['offloc'];
+			if (!empty($_POST['offlocDropdown'])){
+	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
@@ -122,7 +122,11 @@
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
 			} else {
+				if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+				} else {
 				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
+				}
 			}
 		}
 	
@@ -287,15 +291,18 @@ echo "</div> ";
 	    <div>
 			<!-- top interface offsite -->
 	        
-<select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
 <option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
-</select>
+</select></span>
 			<input type="text" name="offtime" placeholder='Return time' id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
+<span id="cdiv">
+
+</span>
 	    </div>
 	    
 	    <div>
@@ -635,8 +642,17 @@ echo "</div> ";
                 $("input:checkbox").prop('checked', $(this).prop("checked"));
             });
         });
-	$("#offlocDropdown").change(function () {
+	/*$("#offlocDropdown").change(function () {
 alert($(this).val());
+});
+if you click on an option it gives an alert with that option*/
+$("#offlocDropdown").change(function () {
+if ($(this).val() == "Custom") {
+//alert("hola");
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("cdropdown").innerHTML = '';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" style="width:100px;opacity:9.0;float:left;"><span> </span>';
+}
 });
     </script>
 	
