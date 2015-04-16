@@ -297,6 +297,7 @@ echo "</div> ";
 			<!-- top interface offsite -->
 	        
 <span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<option>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
