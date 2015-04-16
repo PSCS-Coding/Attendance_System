@@ -112,6 +112,17 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
+if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+if (validTime($_POST['offtime'])){
+					foreach ($name as $student){
+					changestatus($student, '2', $info, $_POST['offtime']);
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
+				//echo "<p style='font-size:30px;'>" . $info . "</p>";
+				} else {
 			if (!empty($_POST['offlocDropdown'])){
 	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
@@ -121,15 +132,9 @@
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			} else {
-				if (!empty($_POST['customtext'])) {
-				$info = $_POST['customtext'];
-				} else {
-				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
-				}
 			}
 		}
-	
+	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
 	
@@ -298,11 +303,11 @@ echo "</div> ";
 	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
 <option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
 </select></span>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
-	        <input class="button" type="submit" name="offsite" value="Offsite">
 <span id="cdiv">
 
 </span>
+			<input type="text" name="offtime" placeholder="Return time" id="offtime">
+	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
 	    <div>
@@ -651,7 +656,7 @@ if ($(this).val() == "Custom") {
 //alert("hola");
 //document.write("<style>#customtext { opacity:9.0; }</style>");
 document.getElementById("cdropdown").innerHTML = '';
-document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" style="width:100px;opacity:9.0;float:left;"><span> </span>';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" style="width:100px;opacity:9.0;">';
 }
 });
     </script>
