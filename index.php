@@ -657,7 +657,7 @@ if ($(this).val() == "Custom") {
 //alert("hola");
 //document.write("<style>#customtext { opacity:9.0; }</style>");
 document.getElementById("cdropdown").innerHTML = '';
-document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" style="width:100px;opacity:9.0;">';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
 }
 });
     </script>
