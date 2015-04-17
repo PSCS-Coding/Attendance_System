@@ -123,7 +123,7 @@ if (validTime($_POST['offtime'])){
 				}
 				//echo "<p style='font-size:30px;'>" . $info . "</p>";
 				} else {
-			if (!empty($_POST['offlocDropdown'])){
+			if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
 	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
@@ -297,7 +297,7 @@ echo "</div> ";
 			<!-- top interface offsite -->
 	        
 <span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
-<option>Offsite Location</option>
+<option value=''>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
