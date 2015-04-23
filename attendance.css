@@ -408,10 +408,6 @@ margin-bottom:1em;
 color:red;
 }
 
-tr.new-date td {
-    border-top: 2pt solid #ddd;
-}
-
 .toolong {
 	background: red;
 	color: white;
