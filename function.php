@@ -557,9 +557,21 @@ return $returnArray;
 
 }
 
-
-
-
-
-
+function convertHours()
+{
+    
+    if (!empty($_POST['offtime'])) {
+    $newEndTime = new DateTime($_POST['offtime']);
+    $astartTime = new DateTime('09:00:00');
+    $aendTime = new DateTime('15:30:00');
+    if ($newEndTime > $aendTime || $newEndTime < $astartTime) {
+    $newEndTime->add(new DateInterval('PT12H'));
+    $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
+    //echo $newEndTime->format('Y-m-d H:i:s');
+    return $sqlEndTime;
+    } else {
+        return true;
+    }
+    }
+}
 ?>

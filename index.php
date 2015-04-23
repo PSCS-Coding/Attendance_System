@@ -127,7 +127,7 @@ if (validTime($_POST['offtime'])){
 	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
-					changestatus($student, '2', $info, $_POST['offtime']);
+					changestatus($student, '2', $info, convertHours($_POST['offtime']));
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
@@ -572,16 +572,16 @@ echo "</div> ";
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
 						if ($latestdata['statusname'] == "Offsite") {
-							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Field Trip") {
-							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Late") {
-							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i');
+							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Independent Study") {
-							echo $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						?>
 						</td>
