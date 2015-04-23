@@ -333,7 +333,7 @@ echo "</div> ";
 	<script>
 		$(document).ready(function() {
 			$(window).resize(function() {
-				if($(window).width() < 1020) {
+				if($(window).width() < 1020 $(window).width() > 500) {
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
@@ -349,7 +349,7 @@ echo "</div> ";
 				}
 			});
 			
-			if($(window).width() < 1020) {
+			if($(window).width() < 1020 && $(window).width() > 500) {
 				$('.viewreports_button a').text('Reports');
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
@@ -363,6 +363,7 @@ echo "</div> ";
 				$("#present_button").prop('value', 'Present');
 				$("#present_button").css('width', '60px');
 			}
+
 		});
 	</script>
 	
@@ -542,7 +543,7 @@ echo "</div> ";
 						?>
 						<!-- Late button with time input next to it -->
                             <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input class="tablebutton" type='submit' value='Late' name='Late' class='l_button'>
+							<input class="tablebutton" id="latebutton" type='submit' value='Late' name='Late' class='l_button'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
                                 </form>

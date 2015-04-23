@@ -1,0 +1,32 @@
+/* For mobile : like samsung grand(480 * 800): */
+@media screen and (max-width : 480px){}
+
+
+/* For iphone: */
+@media screen and (max-width : 480px){
+    #big_table {
+        max-width: 100%;
+        width: 100%;
+        font-size: 0.7em;
+    }
+    #big_table td {
+        padding: 1px 1px;
+    }
+    #top_header form div {
+        text-align: center;
+        float: none;
+    }
+    .status_col {
+        min-width: initial;
+    }
+    #main_table {
+        padding-top: 230px;
+    }
+    .student_col_buttons {
+        display: inline;
+    }
+} 
+
+
+/* For ipad: */
+@media screen and (max-width : 768px){} 
