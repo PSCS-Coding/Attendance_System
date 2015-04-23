@@ -127,7 +127,7 @@ if (validTime($_POST['offtime'])){
 	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
-					changestatus($student, '2', $info, convertHours($_POST['offtime']));
+					changestatus($student, '2', $info, convertHours('offtime'));
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
@@ -142,7 +142,7 @@ if (validTime($_POST['offtime'])){
 	        		$info = $_POST['facilitator'];
 				if (validTime($_POST['fttime'])){
 					foreach ($name as $student){
-					changestatus($student, '3', $info, $_POST['fttime']);
+					changestatus($student, '3', $info, convertHours('fttime'));
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
@@ -181,7 +181,7 @@ if (validTime($_POST['offtime'])){
 	if (!empty($_POST['Late'])) {
 		if (validTime($_POST['late_time'])) {
 			$name = $_POST['late_student'];
-			$status = $_POST['late_time'];
+			$status = convertHours('late_time');
 			changestatus($name, '5', '', $status);
 			}
 		else {

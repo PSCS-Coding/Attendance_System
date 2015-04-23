@@ -557,17 +557,17 @@ return $returnArray;
 
 }
 
-function convertHours()
+function convertHours($whichfield)
 {
     
-    if (!empty($_POST['offtime'])) {
-    // Make post offtime a DateTime
-        $newEndTime = new DateTime($_POST['offtime']);
+    if (!empty($_POST[$whichfield])) {
+    // Make post a DateTime
+        $newEndTime = new DateTime($_POST[$whichfield]);
         // Temp start time
         $astartTime = new DateTime('09:00:00');
-        // If start time is greater that POST offtime add 12 hrs
+        // If start time is greater that POST add 12 hrs
         if ($newEndTime <= $astartTime) {
-            // Add 12 hrs to POST offtime
+            // Add 12 hrs to POST
             $newEndTime->add(new DateInterval('PT12H'));
             // Formating code
             $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
@@ -575,10 +575,11 @@ function convertHours()
     
         } else {
             
-        return $_POST['offtime'];
+        return $_POST[$whichfield];
     }
         
     }
     
 }
+
 ?>
