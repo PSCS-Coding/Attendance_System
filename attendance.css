@@ -245,11 +245,6 @@ opacity:0.5;
 z-index:-1;
 }
 
-#puttheimagehere.main-page,
-#puttheimagehere.view-rep {
-	text-align: left;
-}
-
 .error {
 background-color: red;
 border-bottom: 1px solid red;
