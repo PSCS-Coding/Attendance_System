@@ -645,7 +645,21 @@ echo "</div> ";
     <script>
         $(document).ready(function(){
             $("#checkAll").change(function () {
-                $("input:checkbox").prop('checked', $(this).prop("checked"));
+		if (document.getElementById("checkAll").checked == true) {
+		var ok = confirm("Select All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = false;
+			}
+		} else if (document.getElementById("checkAll").checked == false) {
+		var ok = confirm("Deselect All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = true;
+			}
+		}
             });
         });
 	/*$("#offlocDropdown").change(function () {
