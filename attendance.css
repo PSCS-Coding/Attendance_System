@@ -238,9 +238,15 @@ float:left;
 }
 
 #puttheimagehere {
+width: 100%;
+text-align: center;
 position:fixed;
 opacity:0.5;
 z-index:-1;
+}
+
+#puttheimagehere.main-page {
+	text-align: left;
 }
 
 .error {

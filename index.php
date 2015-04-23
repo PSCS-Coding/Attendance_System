@@ -30,7 +30,7 @@
 		</script>
 	</head>
 	<body class="mainpage">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
+	<div id="puttheimagehere" class="main-page"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
