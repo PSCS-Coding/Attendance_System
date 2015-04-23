@@ -31,7 +31,6 @@
 		</script>
 	</head>
 	<body class="mainpage statusview">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
