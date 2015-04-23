@@ -3,8 +3,8 @@
 	<title>View Reports</title>
     <?php require_once('header.php'); ?>
 </head>
+
 <body class="view-reports">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
 if (!empty($_POST['studentselect'])){

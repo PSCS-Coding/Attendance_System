@@ -275,9 +275,6 @@ if (!empty($_POST)){
 	?>			
 
 <body class="single-user">
-	<div id="puttheimagehere">
-		<img src="img/mobius.png">
-	</div>
 <!-- render buttons and current status-->
 	<div id="single-body">
 	<div id="links">
