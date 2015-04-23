@@ -311,6 +311,7 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <?php
 $reversed_student_array = array_reverse($student_data_array);
 $temp_time = new DateTime();
+$lastprettytime = null;
 foreach ($reversed_student_array as $event) {
 
 if ($event['statusname'] != "Not Checked In"){
@@ -324,8 +325,17 @@ if ($event['statusname'] != "Not Checked In"){
         <?php }
         else { ?>
             <tr class="<?php echo $event['statusname'] ?>">
-        <?php } ?>
-        <td><?php echo $pretty_time->format('D, M j') ?></td>
+        <?php 
+		} 
+		// this makes it so if multiple events have the same date, it only displays the date for the first one
+		$currentprettytime = $pretty_time->format('D, M j');
+		if ($currentprettytime != $lastprettytime){
+			?> <td><?php echo $currentprettytime ?></td><?php
+			$lastprettytime = $currentprettytime;
+		} else {
+			?> <td></td> <?php
+		}
+		?>
         <td><?php echo $pretty_time->format('g:i a') ?></td>
         <td><?php echo $event['statusname'] ?></td>
         <td><?php echo $event['info'] ?></td>
