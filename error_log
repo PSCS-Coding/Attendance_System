@@ -1,81 +1,0 @@
-[03-Sep-2014 12:49:00 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[03-Sep-2014 12:49:00 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 12:49:00 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 12:50:01 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 12:52:43 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/user.php on line 6
-[03-Sep-2014 12:52:43 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 12:52:43 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 12:59:11 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:00:56 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:03:04 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[03-Sep-2014 13:03:04 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:03:04 America/Denver] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/user.php on line 6
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘localhost’ - assumed '‘localhost’' in /home2/pscsorg/public_html/connection.php on line 3
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘pscsorg_attend’ - assumed '‘pscsorg_attend’' in /home2/pscsorg/public_html/connection.php on line 4
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘Dazzle93’ - assumed '‘Dazzle93’' in /home2/pscsorg/public_html/connection.php on line 5
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘pscsorg_attendance’ - assumed '‘pscsorg_attendance’' in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:11:40 America/Denver] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host '‘localhost’' (0) in /home2/pscsorg/public_html/connection.php on line 7
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘localhost’ - assumed '‘localhost’' in /home2/pscsorg/public_html/connection.php on line 3
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘pscsorg_attend’ - assumed '‘pscsorg_attend’' in /home2/pscsorg/public_html/connection.php on line 4
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘Dazzle93’ - assumed '‘Dazzle93’' in /home2/pscsorg/public_html/connection.php on line 5
-[03-Sep-2014 13:11:40 America/Denver] PHP Notice:  Use of undefined constant ‘pscsorg_attendance’ - assumed '‘pscsorg_attendance’' in /home2/pscsorg/public_html/connection.php on line 6
-[03-Sep-2014 13:11:40 America/Denver] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host '‘localhost’' (0) in /home2/pscsorg/public_html/connection.php on line 7
-[03-Sep-2014 13:13:31 America/Denver] PHP Notice:  Undefined variable: id in /home2/pscsorg/public_html/user.php on line 241
-[03-Sep-2014 13:13:31 America/Denver] PHP Notice:  Undefined variable: name in /home2/pscsorg/public_html/user.php on line 300
-[03-Sep-2014 13:13:31 America/Denver] PHP Notice:  Undefined variable: id in /home2/pscsorg/public_html/user.php on line 378
-[03-Sep-2014 13:54:51 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[03-Sep-2014 16:40:34 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'root'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[03-Sep-2014 16:40:34 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[03-Sep-2014 17:34:58 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[03-Sep-2014 20:46:50 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[03-Sep-2014 22:04:17 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 09:49:04 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 10:58:29 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 11:10:54 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 11:35:10 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 11:38:24 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 16:49:33 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 18:43:08 America/Denver] PHP Notice:  Undefined index: set in /home2/pscsorg/public_html/index.php on line 4
-[05-Sep-2014 18:47:42 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:42 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:50 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:50 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:54 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:54 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:59 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:47:59 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:01 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:01 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:03 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:03 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:26 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:48:26 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:38 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:38 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:41 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:41 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:44 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:49:44 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:53:02 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 18:53:02 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:15 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:15 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:19 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:19 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:21 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:21 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:23 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:23 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:25 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:25 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:27 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:27 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:30 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:30 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:34 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:34 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:35 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:35 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:38 America/Denver] PHP Warning:  mysql_real_escape_string(): Access denied for user 'pscsorg'@'localhost' (using password: NO) in /home2/pscsorg/public_html/edit_students.php on line 210
-[05-Sep-2014 19:11:38 America/Denver] PHP Warning:  mysql_real_escape_string(): A link to the server could not be established in /home2/pscsorg/public_html/edit_students.php on line 210
