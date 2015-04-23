@@ -298,7 +298,6 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Time</th>
 <th>Status</th>
 <th>Info</th>
-<th>Expected Arrival</th>
 <?php
 
 $reversed_student_array = array_reverse($student_data_array);
@@ -314,15 +313,23 @@ if ($event['statusname'] != "Not Checked In"){
 	<td><?php echo $pretty_time->format('D, M j') ?></td>
 	<td><?php echo $pretty_time->format('g:i a') ?></td>
 	<td><?php echo $event['statusname'] ?></td>
-	<td><?php echo $event['info'] ?></td>
-	<?php if($event['statusname'] == "Late"){ ?>
-	<td><?php echo $displayNiceTime->format('g:i a') ?> </td>
-	<?php 
+	<td><?php 
+	$stringdisplay = " ";
 	
-	} else { 
-	?> <td> </td>
+if($event['statusname'] == "Field Trip"){
+	$stringdisplay = "with ";
+} elseif ($event['statusname'] == "Offsite"){
+	$stringdisplay = "at ";
+}
 	
-	<?php } ?>
+	
+	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out"){
+		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
+		<?php 
+			} else {
+				echo $event['info'];
+			}
+			?>
 	</tr>
 <?php } 
 }
