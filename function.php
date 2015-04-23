@@ -561,16 +561,24 @@ function convertHours()
 {
     
     if (!empty($_POST['offtime'])) {
-    $newEndTime = new DateTime($_POST['offtime']);
-    $astartTime = new DateTime('09:00:00');
-    if ($newEndTime <= $astartTime) {
-    $newEndTime->add(new DateInterval('PT12H'));
-    $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
-    //echo $newEndTime->format('Y-m-d H:i:s');
-    return $sqlEndTime;
-    } else {
-        return true;
+    // Make post offtime a DateTime
+        $newEndTime = new DateTime($_POST['offtime']);
+        // Temp start time
+        $astartTime = new DateTime('09:00:00');
+        // If start time is greater that POST offtime add 12 hrs
+        if ($newEndTime <= $astartTime) {
+            // Add 12 hrs to POST offtime
+            $newEndTime->add(new DateInterval('PT12H'));
+            // Formating code
+            $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
+            return $sqlEndTime;
+    
+        } else {
+            
+        return $_POST['offtime'];
     }
+        
     }
+    
 }
 ?>
