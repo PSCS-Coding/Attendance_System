@@ -309,15 +309,18 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Status</th>
 <th>Info</th>
 <?php
+
 $reversed_student_array = array_reverse($student_data_array);
 $temp_time = new DateTime();
 $lastprettytime = null;
 foreach ($reversed_student_array as $event) {
 
+$temp = $event['returntime'];
+$displayNiceTime = new DateTime($temp);
+
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
-?>
-     <?php
+	
         if($temp_time->format('D, M') != $pretty_time->format('D, M')) {
             echo '<tr class="' . $event["statusname"] . ' new-date">';
             $temp_time = $pretty_time; ?>
@@ -338,8 +341,22 @@ if ($event['statusname'] != "Not Checked In"){
 		?>
         <td><?php echo $pretty_time->format('g:i a') ?></td>
         <td><?php echo $event['statusname'] ?></td>
-        <td><?php echo $event['info'] ?></td>
+	<td><?php 
+	$stringdisplay = " ";
 	
+if($event['statusname'] == "Field Trip"){
+	$stringdisplay = "with ";
+} elseif ($event['statusname'] == "Offsite"){
+	$stringdisplay = "at ";
+}
+	
+	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out"){
+		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
+		<?php 
+			} else {
+				echo $event['info'];
+			}
+			?>
 	</tr>
 <?php } 
 }
