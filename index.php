@@ -496,22 +496,7 @@ echo "</div> ";
 	
 					</td>
 				<?php 
-                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
-			if (!empty($_POST[$groupsResult[$k]["name"]])) {
-				$ids = explode(",", $groupsResult[$k]['studentid']);
-				for ($l = 0; $l < count($ids); $l++) {
-					//echo $ids[$l];
-					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
-					$recentEvent = $getRecentEvent['statusid'];
- 					if ($recentEvent == 1) {
-					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
-					}
-				}
-			}	
-		}
-                
+   
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
@@ -589,6 +574,22 @@ echo "</div> ";
 			} 
 		}
 	}
+	                
+            // SELECTION FOR GROUPS
+						for ($k = 0; $k < count($groupsResult); $k++) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentid']);
+				for ($l = 0; $l < count($ids); $l++) {
+					//echo $ids[$l];
+					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
+					$recentEvent = $getRecentEvent['statusid'];
+ 					if ($recentEvent == 1) {
+					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+					}
+				}
+			}	
+		}
+             
 	?>
 	</table>
 	</table>
