@@ -278,11 +278,6 @@ echo "</div> ";
                 }
 	?>
             </form>
-        
-        <div id="welcome_admin">
-        <p class="text">Welcome Admin!</p>
-        </div>
-        
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
