@@ -82,13 +82,11 @@ if (isset($_POST['Reactivate'])) {
 </form>
 <table>
    <tr>
-      <th>First</th>
-      <th>Last</th>
-      <th>Start Date</th>
+      <th>Name</th>
+      <th>Enrolled</th>
       <th>Advisor</th>
-      <th>YIS</th>
-      <th>Edit</th>
-	  <th>Hide</th>
+      <th>Y</th>
+	  <th>##</th>
    </tr>
 <?php
 // loop through list of names 
@@ -97,12 +95,19 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 <form action="" method="post">
 <input type="hidden" name="StudentIDS" value="<?php echo $StuDataList['studentid']; ?>">
 	<tr>
+                <?php                                     
+        $fName = $StuDataList['firstname'];
+        $lName = $StuDataList['lastname'];
+        $lastInitial = substr($StuDataList['lastname'], 0, 1);
+        $fullName = $fName .' '. $lastInitial;
+        ?>
 		<?php $editme = "edit-" . $StuDataList['studentid'];
 		if (isset($_POST[$editme])) { 
-		$adjusteddate = new DateTime($StuDataList['startdate']);?> 
-		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $StuDataList['firstname']; ?>" required></td>
-		<td><input type="text" size="10" name="lastname" class="textbox" value="<?php echo $StuDataList['lastname']; ?>" required></td>
-		<td><input type="text" size="11" name="editstartdate" id="EStartDate" class="textbox" value="<?php echo $adjusteddate->format('m-d-Y'); ?>" required></td>
+        ?> 
+		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $fName; ?>" required>
+        <input type="text" size="10" name="lastname" class="textbox" value="<?php echo $lName; ?>" required>
+        </td>
+		<td><input type="text" size="11" name="editstartdate" id="EStartDate" class="textbox" value="<?php echo $StuDataList['startdate']; ?>" required></td>
         		<td>
 			<select name='selectedadvisor'>
 	        <?php
@@ -139,23 +144,27 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 	        </select>
 		</td>
 				
-		<td><button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Save</button></td>
+		<td>
+        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">&#10004;</button>
+        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">&#10006;</button>
+        </td>
 		<?php } else { ?>
-		<td><?php echo $StuDataList['firstname']; ?></td>
-		<td><?php echo $StuDataList['lastname']; ?></td>
-		<td><?php echo $StuDataList['startdate']; ?></td>
+        
+        <td><input type="submit" class="textButton" name="edit-<?php echo $StuDataList['studentid']; ?>" value="<?php echo $fullName; ?>"></td>
+        <?php
+        $pretty_date = new DateTime($StuDataList['startdate']);                                                          
+        ?>
+		<td><?php echo $pretty_date->format('M, Y'); ?></td>
         <?php 
         $StuDataListAdvisor = $StuDataList['advisor'];
         if (empty($StuDataListAdvisor)) {
-         $StuDataListAdvisor = "<font color='red'>???</font>";
+         $StuDataListAdvisor = "<font color='red'>Unknown</font>";
         }
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
-		
-		<td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit"></td>
+        <td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">&#10006;</button></td>
 		<?php } ?>	
-		<td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button></td>
 	</tr>
 	</form>
 <?php 

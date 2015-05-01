@@ -45,6 +45,20 @@ body {
 min-width: 400px;
 max-width: 645px;   
 }
+.miscellaneous .admintable {
+min-width: 200px;
+max-width: 200px;
+}
+.textButton {
+background:none!important;
+border:none; 
+cursor: pointer;
+font-size: 14px;
+text-align: center;
+}
+.textButton:hover {
+color: grey; 
+}
 .GroupsTable {
 width: 30%;
 }

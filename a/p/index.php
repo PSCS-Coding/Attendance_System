@@ -24,6 +24,7 @@ require_once('../../login.php');
             <a href="Events" class="option">Events</a>
             <a href="Groups" class="option">Groups</a>
             <a href="offsite_stats.php" class="option">Offsite Stats</a>
+            <a href="miscellaneous.php" class="option">Miscellaneous</a>
                     </div>
      <div align="center" id="main">
                     </div>
