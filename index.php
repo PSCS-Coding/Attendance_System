@@ -4,6 +4,10 @@
 	<head>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
+
+
+
+
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
@@ -108,8 +112,19 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			if (!empty($_POST['offloc'])){
-	        		$info = $_POST['offloc'];
+if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+if (validTime($_POST['offtime'])){
+					foreach ($name as $student){
+					changestatus($student, '2', $info, $_POST['offtime']);
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
+				//echo "<p style='font-size:30px;'>" . $info . "</p>";
+				} else {
+			if (!empty($_POST['offlocDropdown'])){
+	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
@@ -117,11 +132,9 @@
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			} else {
-				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 			}
 		}
-	
+	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
 	
@@ -259,6 +272,7 @@
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
+              
 		}
 echo "</div> ";
                 }
@@ -285,14 +299,19 @@ echo "</div> ";
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offlocDropdown" name="offlocDropdown">
+	        
+<span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<option>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
-</datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
+<option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
+</select></span>
+<span id="cdiv">
+
+</span>
+			<input type="text" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -320,7 +339,7 @@ echo "</div> ";
         <?php        
     if (isset($_COOKIE['login'])) {
     if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
-    echo '<div class="admin_button"><a href="/a">Admin</a></div>';
+    echo '<div class="admin_button"><a href="a/p/index.php">Admin</a></div>';
         }
     } 
         ?>
@@ -452,24 +471,30 @@ echo "</div> ";
 				}
 				}
                 //Query for globals
+        $currTime = new DateTime();
+        $myReturn= new DateTime($latestdata['returntime']);
+        $myReturn->format('Y-m-d H:i:s');
+        $currTime->format('Y-m-d H:i:s');
+        //$currTime->format('Y-m-d H:i:s');
         $globals_query = "SELECT starttime FROM globals";
         $globals_result = $db_server->query($globals_query);
         $globals_data = $globals_result->fetch_array();
         $todaytime = new DateTime();
         $todaytimestart = new DateTime($globals_data['starttime']);
                 
-                if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
-                    
+        // Start of IF statement for contextual coloring        
+        if ($myReturn < $currTime && $latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Field Trip' && $latestdata['statusname'] != 'Checked Out' || $latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+            
                  ?>  
         
                         <tr class="Status_Red">
                     
-                        <?php  } else { ?>
+                        <?php  } else {?>
                             
 				        <tr>
                     
-                <?php } ?>
-                    
+                        <?php } ?>
+                
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
@@ -483,7 +508,11 @@ echo "</div> ";
 				$ids = explode(",", $groupsResult[$k]['studentid']);
 				for ($l = 0; $l < count($ids); $l++) {
 					//echo $ids[$l];
+					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
+					$recentEvent = $getRecentEvent['statusid'];
+ 					if ($recentEvent == 1) {
 					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+					}
 				}
 			}	
 		}
@@ -574,9 +603,13 @@ echo "</div> ";
         $(document).ready(function() {
 			$('.groupsGUI').mouseenter(function() {
 				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+                $('.groupHeader').addClass('active');
+                $('.groupButton').addClass('active');
 			});
 			$('.groupsGUI').mouseleave(function() {
-				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+				$('.groupsGUI').stop().animate({ right: "-140px"} , "fast");
+                $('.groupHeader').removeClass('active');
+                $('.groupButton').removeClass('active');
 			});
 		});
 </script>
@@ -619,6 +652,18 @@ echo "</div> ";
                 $("input:checkbox").prop('checked', $(this).prop("checked"));
             });
         });
+	/*$("#offlocDropdown").change(function () {
+alert($(this).val());
+});
+if you click on an option it gives an alert with that option*/
+$("#offlocDropdown").change(function () {
+if ($(this).val() == "Custom") {
+//alert("hola");
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("cdropdown").innerHTML = '';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" style="width:100px;opacity:9.0;">';
+}
+});
     </script>
 	
 	</body>
