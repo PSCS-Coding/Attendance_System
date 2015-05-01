@@ -466,20 +466,33 @@ echo "</div> ";
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
-                //Query for globals
-        $currTime = new DateTime();
-        $myReturn= new DateTime($latestdata['returntime']);
-        $myReturn->format('Y-m-d H:i:s');
-        $currTime->format('Y-m-d H:i:s');
-        //$currTime->format('Y-m-d H:i:s');
-        $globals_query = "SELECT starttime FROM globals";
-        $globals_result = $db_server->query($globals_query);
-        $globals_data = $globals_result->fetch_array();
-        $todaytime = new DateTime();
-        $todaytimestart = new DateTime($globals_data['starttime']);
                 
-        // Start of IF statement for contextual coloring        
-        if ($myReturn < $currTime && $latestdata['statusname'] != 'Present' && $latestdata['statusname'] != 'Absent' && $latestdata['statusname'] != 'Field Trip' && $latestdata['statusname'] != 'Checked Out' || $latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
+        // SETTING VERIBLES FOR CONTEXTUAL COLORING //
+                
+            // Get Current Time
+                $cTime = new DateTime();
+            // Format current time
+                $currTime = $cTime->format('Y-m-d H:i:s');
+            // Get ENTERED return time
+                $mReturn= new DateTime($latestdata['returntime']);
+            // Format ENTERED return time
+                $myReturn = $mReturn->format('Y-m-d H:i:s');
+            // Get globals.starttime
+                $globals_query = "SELECT starttime FROM globals";
+            // Setting query info as varible
+                $globals_result = $db_server->query($globals_query);
+            // Put query data into an array
+                $globals_data = $globals_result->fetch_array();
+            // Set globals.starttime as varible
+                $ttStart = new DateTime($globals_data['starttime']);
+            // Format globals.starttime
+                $startTime = $ttStart->format('Y-m-d H:i:s');
+            // These is for making the IF statment shorter
+                $statName = $latestdata['statusname'];
+                $overtime = '$currTime > $myReturn';
+                
+        // Start IF statement for contextual coloring        
+        if ($currTime > $startTime && $statName == 'Not Checked In' || $overtime && $statName == 'Offsite' || $overtime && $statName == 'Field Trip' || $overtime && $statName == 'Late' || $overtime && $statName == 'Independent Study') {
             
                  ?>  
         

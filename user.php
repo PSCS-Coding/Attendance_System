@@ -33,11 +33,11 @@
     <?php require_once('header.php'); ?>
     <script type="text/javascript">
 		$(document).ready(function(){
-			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
-			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
-			$('#latetime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
-			$('#istime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
-			$('#starttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
+			$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
+			$('#latetime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#istime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+			$('#starttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 		});
 	</script>
 </head>
@@ -73,9 +73,9 @@ if (!empty($_POST)){
 		if (!empty($_POST['offloc'])){
         		$info = $_POST['offloc'];
 			if (validTime($_POST['offtime'])){
-				changestatus($id, '2', $info, $_POST['offtime']);
+				changestatus($id, '2', $info, convertHours('offtime'));
 				if (!empty($_POST['favorite'])){
-				favorite($id, '2', $info, $_POST['offtime']);
+				favorite($id, '2', $info, convertHours('offtime'));
 			}
 			} else {
 			echo "<div class='error'>Please enter a valid return time.</div>";
@@ -90,9 +90,9 @@ if (!empty($_POST)){
 		if (!empty($_POST['latetime'])){
 				$info="";
 			if (validTime($_POST['latetime'])){
-				changestatus($id, '5', $info, $_POST['latetime']);
+				changestatus($id, '5', $info, convertHours('latetime'));
 				if (!empty($_POST['favorite'])){
-				favorite($id, '5', $info, $_POST['latetime']);
+				favorite($id, '5', $info, convertHours('latetime'));
 			}
 			} else {
 			echo "<div class='error'>Please enter a valid late time.</div>";
@@ -107,9 +107,9 @@ if (!empty($_POST)){
 		if (!empty($_POST['istime'])){
 				$info="";
 			if (validTime($_POST['istime'])){
-				changestatus($id, '6', $info, $_POST['istime']);
+				changestatus($id, '6', $info, convertHours('istime'));
 				if (!empty($_POST['favorite'])){
-				favorite($id, '6', $info, $_POST['istime']);
+				favorite($id, '6', $info, convertHours('istime'));
 			}
 			} else {
 			echo "<div class='error'>Please enter a valid return time.</div>";
@@ -125,9 +125,9 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				changestatus($id, '3', $info, $_POST['fttime']);
+				changestatus($id, '3', $info, convertHours('fttime'));
 				if (!empty($_POST['favorite'])){
-				favorite($id, '3', $info, $_POST['fttime']);
+				favorite($id, '3', $info, convertHours('fttime'));
 			}
 			} else { 
 				echo "<div class='error'>Please enter a valid return time.</div>";
@@ -177,7 +177,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['latetime'])){
 				$info="";
 			if (validTime($_POST['latetime'])){
-				plan($id, '5', $endchoosedate, $_POST['latetime'], $info, $_POST['secondchoosedate']);
+				plan($id, '5', $endchoosedate, convertHours('latetime'), $info, $_POST['secondchoosedate']);
 			} else {
 			echo "<div class='error'>Please enter a valid late time.</div>";
 			}
@@ -191,7 +191,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['istime'])){
 				$info="";
 			if (validTime($_POST['istime'])){
-				plan($id, '6', $endchoosedate, $_POST['istime'], $info, $_POST['secondchoosedate']);
+				plan($id, '6', $endchoosedate, convertHours('istime'), $info, $_POST['secondchoosedate']);
 			} else {
 				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
@@ -206,7 +206,7 @@ if (!empty($_POST)){
 		if (!empty($_POST['facilitator'])){
         		$info = $_POST['facilitator'];
 			if (validTime($_POST['fttime'])){
-				plan($id, '3', $endchoosedate, $_POST['fttime'], $info, $_POST['secondchoosedate']);
+				plan($id, '3', $endchoosedate, convertHours('fttime'), $info, $_POST['secondchoosedate']);
 			} else { 
 				echo "<div class='error'>Please enter a valid return time.</div>";
 			}
@@ -289,19 +289,19 @@ if (!empty($_POST)){
 		<div class="statusmessage">
 		<?php //render current status
 			if ($currentstatus[0] == "Field Trip"){
-				echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('h:i');
+				echo "is currently on a " . $currentstatus[0] . " with " . $finalwith . " and will be back at " . $returntimeobject->format('g:i a');
 				
 			} elseif ($currentstatus[0] == "Offsite") {
-				echo "is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('h:i');
+				echo "is " . $currentstatus[0] . " at " . $finalwith . " and will be at school at " . $returntimeobject->format('g:i a');
 			
 			} elseif ($currentstatus[0] == "Late"){
-				echo "is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('h:i');
+				echo "is " . $currentstatus[0] . " and will be at school at " . $returntimeobject->format('g:i a');
 			
 			} elseif ($currentstatus[0] == "Not Checked In") {
 				echo "has not checked in today"; 
 			
 			} elseif ($currentstatus[0] == "Independent Study") {
-				echo "is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('h:i');
+				echo "is currently on an " . $currentstatus[0] . " and will be back at " . $returntimeobject->format('g:i a');
 			
 			} else {
 				echo "is currently " . $currentstatus[0];
@@ -373,13 +373,13 @@ if (!empty($_POST)){
 		$outfav=mysqli_fetch_row($favconvert);
 
 		if ($outfav[0] == "Field Trip"){
-			$fullstring =  "go on a " . $outfav[0] . " with " . $favorite[2] . "and be back at " . $returntimeobject->format('h:i');
+			$fullstring =  "go on a " . $outfav[0] . " with " . $favorite[2] . "and be back at " . $returntimeobject->format('g:i a');
 			
 		} elseif ($outfav[0] == "Offsite") {
-			$fullstring =  "go " . $outfav[0] . " to " . $favorite[2] . " and be at school at " . $returntimeobject->format('h:i');
+			$fullstring =  "go " . $outfav[0] . " to " . $favorite[2] . " and be at school at " . $returntimeobject->format('g:i a');
 			
 		} elseif ($outfav[0] == "Late"){
-			$fullstring = "be " . $outfav[0] . " and be at school at " . $returntimeobject->format('h:i');
+			$fullstring = "be " . $outfav[0] . " and be at school at " . $returntimeobject->format('g:i a');
 			
 		} elseif ($outfav[0] == "Absent"){
 			$fullstring = "be " . $outfav[0];
@@ -388,7 +388,7 @@ if (!empty($_POST)){
 			$fullstring = "be " . $outfav[0];
 		
 		} elseif ($outfav[0] == "Independent Study") {
-			$fullstring = "go on an " . $outfav[0] . " and be back at " . $returntimeobject->format('h:i');
+			$fullstring = "go on an " . $outfav[0] . " and be back at " . $returntimeobject->format('g:i a');
 		
 		} else {
 			echo "be " . $outfav[0];
