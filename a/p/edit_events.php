@@ -223,10 +223,10 @@ if (!empty($_GET['id'])) {
 					<?php } else { ?>
 						<tr class="<?php echo $event['statusname'] ?>">
 							<td><?php echo $event['eventid'] ?></td>
-							<td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
+							<td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;<?php echo $nice_timestamp->format('g:i a');?></td>
 							<td><?php echo $event['statusname'] ?></td>
 							<td><?php echo $event['info'] ?></td>
-							<td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo substr($event['returntime'],0,5);} ?></td>
+							<td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo substr($event['returntime'],11);} ?></td>
 							<td>
 								<form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
 									<input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
