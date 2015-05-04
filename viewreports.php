@@ -91,19 +91,24 @@ if(!empty($_POST['firstdatetimepicker'])){
 if(!empty($_POST['lastdatetimepicker'])){
 			$LastDateFromPicker = $_POST['lastdatetimepicker'];
 			$LastDateFromPicker = new DateTime($LastDateFromPicker);
+			$todaybool = 0;
 		} else {
 			$LastDateFromPicker = new DateTime();
+			$todaybool = 1;
 		}
 		
 		$SFirstDateFromPicker = $FirstDateFromPicker->format('Y-m-d'); //add H:i:s to the format to enable time picking as well
 		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d');
 		
+		if($todaybool == 1){
+			$renderlastdate = "today";
+		} else {
+			$renderlastdate = $LastDateFromPicker->format('l F jS \a\t g:ia');
+		}
 	?>
     <div class="date_info">
         <br>
-        <?php echo "the start date is " . $FirstDateFromPicker->format('l F jS \a\t g:ia'); ?>
-        <br>
-        <?php echo "the end date is " . $LastDateFromPicker->format('l F jS \a\t g:ia'); ?>
+        <?php echo "showing events between " . $FirstDateFromPicker->format('l F jS \a\t g:ia') . " and " . $renderlastdate; ?>
     </div>
 	<?php
 

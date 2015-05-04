@@ -402,9 +402,9 @@ div.report-container {
 
 .date_info {
     position: absolute;
-    right: 5;
+    right: 10;
     top: 0;
-    font-size: .4em;
+    font-size: .6em;
 }
 
 .timepickers {
