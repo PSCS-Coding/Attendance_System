@@ -83,8 +83,10 @@ $tempstartdate = $globalsdata['startdate'];
 if(!empty($_POST['firstdatetimepicker'])){
 			$FirstDateFromPicker = $_POST['firstdatetimepicker'];
 			$FirstDateFromPicker = new DateTime($FirstDateFromPicker);
+			$startbool = 0;
 		} else {
 			$FirstDateFromPicker = new DateTime($tempstartdate);
+			$startbool = 1;
 		}
 		
 		
@@ -105,6 +107,12 @@ if(!empty($_POST['lastdatetimepicker'])){
 		} else {
 			$renderlastdate = $LastDateFromPicker->format('l F jS \a\t g:ia');
 		}
+		
+		if($startbool == 1){
+			$renderstartdate = "start of the school year";
+		} else {
+			$renderstartdate = $FirstDateFromPicker->format('l F jS \a\t g:ia');
+		}
 	?>
     <div class="date_info">
         <br>
@@ -121,7 +129,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 				$statselect = "";
 			}
 		 ?>
-        <?php echo "showing " . $statselect . " events between " . $FirstDateFromPicker->format('l F jS \a\t g:ia') . " and " . $renderlastdate; ?>
+        <?php echo "showing " . $statselect . " events between " . $renderstartdate . " and " . $renderlastdate; ?>
     </div>
 	<?php
 
@@ -136,6 +144,17 @@ if(!empty($_POST['statusselect'])){
 	$notfulldata = 1;
 } else {
 	$statstring = "";
+}
+$notfulldatedata = 0;
+if(!empty($_POST['firstdatetimepicker'])){
+	$notfulldata = 1;
+	$notfulldatedata = 1;
+
+}
+
+if(!empty($_POST['lastdatetimepicker'])){
+	$notfulldata = 1;
+	$notfulldatedata = 1;
 }
 
 //fetches most recent data from the events table
@@ -317,6 +336,35 @@ if($notfulldata == 1){
 	//echo "<p class='reporttext' id='reportnote'> NOTE: The below information is only for the selcted status.</p>";
 	if(!empty($_POST['statusselect'])){
 		echo "Now displaying " . statconvert($_POST['statusselect']) . " events";
+		?> <br> <br> <?php
+	}
+	
+	if($notfulldatedata == 1){
+		$offsiteHrs_used = floor(($offsitehours_used) / 60);
+		$offsiteMin_used = $offsitehours_used % 60;
+		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time during this period.</p>";		
+		//Late information echoing
+		echo "<p class='reporttext'> You have been late " . $num_lates;
+	if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+		echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
+	if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+		echo "<p class='reporttext'> You have been absent " . $num_absent;
+	if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+	
+	//IS information echoing
+$studyHrs_remaining = floor($studyhours_remaining / 60);
+$studyMin_remaining = $studyhours_remaining % 60;
+
+$readable_studyleft = "<p class='reporttext'> You have " . $studyHrs_remaining . " hours and " . $studyMin_remaining . " minutes of independent study left. </p>";
+if ($studyhours_remaining < 0) {
+	$readable_studyleft = "<p class='reporttext'> You are out of independent study! You are over by " . $studyHrs_remaining . " hours and " . $studyMin_remaining . " minutes. </p>";
+}
+echo $readable_studyleft;
+
+$studyHrs_used = floor($studyhours_used / 60);
+$studyMin_used = $studyhours_used % 60;
+echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
+	
 	}
 	?> <br> <br> <?php
 } else {
