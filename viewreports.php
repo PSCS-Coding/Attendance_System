@@ -108,7 +108,20 @@ if(!empty($_POST['lastdatetimepicker'])){
 	?>
     <div class="date_info">
         <br>
-        <?php echo "showing events between " . $FirstDateFromPicker->format('l F jS \a\t g:ia') . " and " . $renderlastdate; ?>
+		<?php
+			if(!empty($_POST['statusselect'])){
+				$instatid = $_POST['statusselect'];
+				$statgetname = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $instatid");
+    			$statusdataname = array();
+    			while ($stat_row = $statgetname->fetch_row()) {
+					array_push ($statusdataname, $stat_row[0]);
+    			}
+				$statselect = $statusdataname[0];
+			} else {
+				$statselect = "";
+			}
+		 ?>
+        <?php echo "showing " . $statselect . " events between " . $FirstDateFromPicker->format('l F jS \a\t g:ia') . " and " . $renderlastdate; ?>
     </div>
 	<?php
 
