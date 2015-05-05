@@ -4,6 +4,10 @@
 	<head>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
+
+
+
+
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
@@ -26,7 +30,6 @@
 		</script>
 	</head>
 	<body class="mainpage">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
@@ -108,8 +111,19 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			if (!empty($_POST['offloc'])){
-	        		$info = $_POST['offloc'];
+if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+if (validTime($_POST['offtime'])){
+					foreach ($name as $student){
+					changestatus($student, '2', $info, $_POST['offtime']);
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
+				//echo "<p style='font-size:30px;'>" . $info . "</p>";
+				} else {
+			if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
+	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
@@ -117,11 +131,9 @@
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			} else {
-				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 			}
 		}
-	
+	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
 	
@@ -259,6 +271,7 @@
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
+              
 		}
 echo "</div> ";
                 }
@@ -281,14 +294,19 @@ echo "</div> ";
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offlocDropdown" name="offlocDropdown">
+	        
+<span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<option value=''>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
-</datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
+<option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
+</select></span>
+<span id="cdiv">
+
+</span>
+			<input type="text" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -580,9 +598,13 @@ echo "</div> ";
         $(document).ready(function() {
 			$('.groupsGUI').mouseenter(function() {
 				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+                $('.groupHeader').addClass('active');
+                $('.groupButton').addClass('active');
 			});
 			$('.groupsGUI').mouseleave(function() {
-				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+				$('.groupsGUI').stop().animate({ right: "-140px"} , "fast");
+                $('.groupHeader').removeClass('active');
+                $('.groupButton').removeClass('active');
 			});
 		});
 </script>
@@ -622,9 +644,35 @@ echo "</div> ";
     <script>
         $(document).ready(function(){
             $("#checkAll").change(function () {
-                $("input:checkbox").prop('checked', $(this).prop("checked"));
+		if (document.getElementById("checkAll").checked == true) {
+		var ok = confirm("Select All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = false;
+			}
+		} else if (document.getElementById("checkAll").checked == false) {
+		var ok = confirm("Deselect All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = true;
+			}
+		}
             });
         });
+	/*$("#offlocDropdown").change(function () {
+alert($(this).val());
+});
+if you click on an option it gives an alert with that option*/
+$("#offlocDropdown").change(function () {
+if ($(this).val() == "Custom") {
+//alert("hola");
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("cdropdown").innerHTML = '';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
+}
+});
     </script>
 	
 	</body>

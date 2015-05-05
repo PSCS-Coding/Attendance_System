@@ -9,6 +9,3 @@ require_once('NavBar.php');
 	 require_once("../../connection.php");
 	 require_once("../../function.php");
 ?>
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="../img/mobius.png">
-    </div>

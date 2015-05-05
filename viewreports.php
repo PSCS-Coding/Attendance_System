@@ -7,8 +7,8 @@
 	<script src="a/p/js/jquery.datetimepicker.js"></script>
 
 </head>
+
 <body class="view-reports">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<div id="top_header">
 <?php
 
@@ -224,12 +224,22 @@ foreach($student_data_array as $event_key => $event_val) {
 	if (count($student_data_array) != $event_key) {
 		//makes the timestamp into datetime obj
 		if (isset($student_data_array[$event_key+1])) {
-			$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
-		}
-		else {
+			if($student_data_array[$event_key+1]['timestamp'] != "0000-00-00 00:00:00"){
+				$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
+			} else {
+				continue;
+			}
+		} else {
 			break;
 		}
-		$event_datetime_1 = new DateTime($event_val['timestamp']);
+		
+		if($event_val['timestamp'] != "0000-00-00 00:00:00"){
+			$event_datetime_1 = new DateTime($event_val['timestamp']);
+		} else {
+			continue;
+		}
+		
+		
 		//variables for easy comparison
 		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
 		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
@@ -389,18 +399,54 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 <th>Status</th>
 <th>Info</th>
 <?php
+
 $reversed_student_array = array_reverse($student_data_array);
+$temp_time = new DateTime();
+$lastprettytime = null;
 foreach ($reversed_student_array as $event) {
+
+$temp = $event['returntime'];
+$displayNiceTime = new DateTime($temp);
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
-?>
-	<tr class="<?php echo $event['statusname'] ?>">
-	<td><?php echo $pretty_time->format('D, M j') ?></td>
-	<td><?php echo $pretty_time->format('g:i a') ?></td>
-	<td><?php echo $event['statusname'] ?></td>
-	<td><?php echo $event['info'] ?></td>
 	
+        if($temp_time->format('D, M') != $pretty_time->format('D, M')) {
+            echo '<tr class="' . $event["statusname"] . ' new-date">';
+            $temp_time = $pretty_time; ?>
+            
+        <?php }
+        else { ?>
+            <tr class="<?php echo $event['statusname'] ?>">
+        <?php 
+		} 
+		// this makes it so if multiple events have the same date, it only displays the date for the first one
+		$currentprettytime = $pretty_time->format('D, M j');
+		if ($currentprettytime != $lastprettytime){
+			?> <td><?php echo $currentprettytime ?></td><?php
+			$lastprettytime = $currentprettytime;
+		} else {
+			?> <td></td> <?php
+		}
+		?>
+        <td><?php echo $pretty_time->format('g:i a') ?></td>
+        <td><?php echo $event['statusname'] ?></td>
+	<td><?php 
+	$stringdisplay = " ";
+	
+if($event['statusname'] == "Field Trip"){
+	$stringdisplay = "with ";
+} elseif ($event['statusname'] == "Offsite"){
+	$stringdisplay = "at ";
+}
+	
+	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out"){
+		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
+		<?php 
+			} else {
+				echo $event['info'];
+			}
+			?>
 	</tr>
 <?php } 
 }
