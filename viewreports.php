@@ -100,7 +100,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 		}
 		
 		$SFirstDateFromPicker = $FirstDateFromPicker->format('Y-m-d'); //add H:i:s to the format to enable time picking as well
-		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d');
+		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d H:i:s');
 		
 		if($todaybool == 1){
 			$renderlastdate = "today";
@@ -128,8 +128,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 			} else {
 				$statselect = "";
 			}
-		 ?>
-        <?php echo "showing " . $statselect . " events between " . $renderstartdate . " and " . $renderlastdate; ?>
+		  echo "showing " . $statselect . " events between " . $renderstartdate . " and " . $renderlastdate; ?>
     </div>
 	<?php
 
@@ -340,9 +339,11 @@ if($notfulldata == 1){
 	}
 	
 	if($notfulldatedata == 1){
+		
 		$offsiteHrs_used = floor(($offsitehours_used) / 60);
 		$offsiteMin_used = $offsitehours_used % 60;
 		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time during this period.</p>";		
+		
 		//Late information echoing
 		echo "<p class='reporttext'> You have been late " . $num_lates;
 	if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
@@ -352,15 +353,6 @@ if($notfulldata == 1){
 	if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 	
 	//IS information echoing
-$studyHrs_remaining = floor($studyhours_remaining / 60);
-$studyMin_remaining = $studyhours_remaining % 60;
-
-$readable_studyleft = "<p class='reporttext'> You have " . $studyHrs_remaining . " hours and " . $studyMin_remaining . " minutes of independent study left. </p>";
-if ($studyhours_remaining < 0) {
-	$readable_studyleft = "<p class='reporttext'> You are out of independent study! You are over by " . $studyHrs_remaining . " hours and " . $studyMin_remaining . " minutes. </p>";
-}
-echo $readable_studyleft;
-
 $studyHrs_used = floor($studyhours_used / 60);
 $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
@@ -515,7 +507,8 @@ echo "There are no events from this time period";
             },
             minDate:'2014/09/08',
             maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
-            format:'Y-m-d H:i:s', 
+            format:'Y-m-d H:i:s',
+			defaultTime:'8:00', 
             step: 5,
          }); 
 </script>
@@ -527,7 +520,8 @@ echo "There are no events from this time period";
             },
             minDate:'2014/09/08',
             maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
-            format:'Y-m-d H:i:s', 
+            format:'Y-m-d H:i:s',
+			defaultTime:'15:30', 
             step: 5,
          }); 
 </script>
