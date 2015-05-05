@@ -194,6 +194,7 @@ if (!empty($_GET['id'])) {
             if ($event['statusname'] != 'Not Checked In') {
                $postedit = "inline_edit_" . $event['eventid'];
                $nice_timestamp = new DateTime($event['timestamp']);
+	       $nice_returntime = new DateTime($event['returntime']);
                if (!empty($_POST[$postedit])) {
                   $timestamp_to_edit = $event['timestamp']; // Capture this to pass to the JS timepicker below
             ?>
@@ -228,7 +229,7 @@ if (!empty($_GET['id'])) {
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
-               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo substr($event['returntime'],0,5);} ?></td>
+               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $nice_returntime->format(' g:i a');} ?></td>
                <td>
                   <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
                    <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
