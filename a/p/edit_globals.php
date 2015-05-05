@@ -31,7 +31,7 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
                 </div>
 <div align="center" id="main">
 <div class="admintable">
-<table>
+<table class="global_table">
     
    <tr>
       <th>Start Date</th>

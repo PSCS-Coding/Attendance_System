@@ -25,7 +25,7 @@ $hoursresult = $db_server->query("SELECT * FROM allottedhours ORDER BY yis");
    </div>
  <div align="center" id="main">
 <div class="admintable">
-<table>
+<table class="allottedhours_table">
    <tr>
       <th>Year In School</th>
       <th>Community Hours</th>

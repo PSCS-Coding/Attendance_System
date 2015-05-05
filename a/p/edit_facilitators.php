@@ -64,7 +64,7 @@ $FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorn
     
     <br />
     
-    <table>
+    <table class="facilitators_table">
    <tr>
       <th>Name</th>
       <th>Email</th>
