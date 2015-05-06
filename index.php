@@ -333,7 +333,7 @@ echo "</div> ";
 	<script>
 		$(document).ready(function() {
 			$(window).resize(function() {
-				if($(window).width() < 1020 $(window).width() > 500) {
+				if($(window).width() < 1020 && $(window).width() > 500) {
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
@@ -347,6 +347,14 @@ echo "</div> ";
 					$("#present_button").prop('value', 'Present');
 					$("#present_button").css('width', '60px');
 				}
+				
+				if ($(window).width() < 480) {
+				    $("#latebutton").prop('value', 'L');
+				}
+				else {
+				    $('#latebutton').prop('value', 'Late');
+				}
+				
 			});
 			
 			if($(window).width() < 1020 && $(window).width() > 500) {
@@ -363,6 +371,13 @@ echo "</div> ";
 				$("#present_button").prop('value', 'Present');
 				$("#present_button").css('width', '60px');
 			}
+			
+			if ($(window).width() < 480) {
+			$("#latebutton").prop('value', 'L');
+		    }
+		    else {
+			$('#latebutton').prop('value', 'Late');
+		    }
 
 		});
 	</script>
@@ -374,7 +389,7 @@ echo "</div> ";
 	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
-			<th></th>
+			<th class='blank_col'></th>
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 			
 	    </tr>

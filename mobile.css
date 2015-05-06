@@ -7,23 +7,44 @@
     #big_table {
         max-width: 100%;
         width: 100%;
-        font-size: 0.7em;
+        font-size: 1em;
     }
     #big_table td {
         padding: 1px 1px;
     }
     #top_header form div {
         text-align: center;
-        float: none;
+        
+    }
+    #top_header {
+        display: none;
     }
     .status_col {
         min-width: initial;
     }
     #main_table {
-        padding-top: 230px;
+        padding-top: 30px;
     }
-    .student_col_buttons {
-        display: inline;
+    #checkAll,
+    .c_box {
+        display: none;
+    }
+    .student_col_buttons,
+    .blank_col {
+        /*display: inline;*/
+        display:none;
+    }
+    #top_header form div {
+        border-left: 4px solid rgba(0, 0, 0, 0);
+    }
+    .textbox {
+        max-width: 130px;
+    }
+    .ui-timepicker-input {
+        max-width: 40px;
+    }
+    .groupsGUI {
+        display: none;
     }
 } 
 
