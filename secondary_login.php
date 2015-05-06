@@ -80,7 +80,10 @@ if ($AdminLogin == 1) {
 <head>
     <title>PSCS attendance system login</title>
     <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
-    <style>
+    <link rel="stylesheet" type="text/css" href="attendance.css">
+</head>
+<style>
+    
     #loginform {
 	text-align: center;
 	margin-top: 3em;
@@ -138,12 +141,10 @@ if ($AdminLogin == 1) {
 
 <body style="background-color: dimgray;">
     
-    <div id="puttheimagehere" style="position: fixed; opacity: 0.5; z-index: -1;">
-	<img src="img/mobius.png">
-    </div>
+
     
 <div id="loginform">
-<form name="form1" method="post" action="secondary_login.php" style="padding-top: 10px;">
+<form name="form1" method="post" action="secondary_login.php" style="padding: 10px 0;">
     <strong class="logintext">Login </strong>
     <div class="spacer"></div>
     Password :

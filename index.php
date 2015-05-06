@@ -4,6 +4,10 @@
 	<head>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
+
+
+
+
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
@@ -26,7 +30,6 @@
 		</script>
 	</head>
 	<body class="mainpage">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
@@ -108,8 +111,19 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			if (!empty($_POST['offloc'])){
-	        		$info = $_POST['offloc'];
+if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+if (validTime($_POST['offtime'])){
+					foreach ($name as $student){
+					changestatus($student, '2', $info, $_POST['offtime']);
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
+				//echo "<p style='font-size:30px;'>" . $info . "</p>";
+				} else {
+			if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
+	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
@@ -117,11 +131,9 @@
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			} else {
-				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
 			}
 		}
-	
+	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
 	
@@ -282,14 +294,19 @@ echo "</div> ";
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offlocDropdown" name="offlocDropdown">
+	        
+<span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<option value=''>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
-</datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
+<option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
+</select></span>
+<span id="cdiv">
+
+</span>
+			<input type="text" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -495,22 +512,7 @@ echo "</div> ";
 	
 					</td>
 				<?php 
-                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
-			if (!empty($_POST[$groupsResult[$k]["name"]])) {
-				$ids = explode(",", $groupsResult[$k]['studentid']);
-				for ($l = 0; $l < count($ids); $l++) {
-					//echo $ids[$l];
-					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
-					$recentEvent = $getRecentEvent['statusid'];
- 					if ($recentEvent == 1) {
-					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
-					}
-				}
-			}	
-		}
-                
+   
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
@@ -588,6 +590,22 @@ echo "</div> ";
 			} 
 		}
 	}
+	                
+            // SELECTION FOR GROUPS
+						for ($k = 0; $k < count($groupsResult); $k++) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentid']);
+				for ($l = 0; $l < count($ids); $l++) {
+					//echo $ids[$l];
+					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
+					$recentEvent = $getRecentEvent['statusid'];
+ 					if ($recentEvent == 1) {
+					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+					}
+				}
+			}	
+		}
+             
 	?>
 	</table>
 	</table>
@@ -643,9 +661,35 @@ echo "</div> ";
     <script>
         $(document).ready(function(){
             $("#checkAll").change(function () {
-                $("input:checkbox").prop('checked', $(this).prop("checked"));
+		if (document.getElementById("checkAll").checked == true) {
+		var ok = confirm("Select All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = false;
+			}
+		} else if (document.getElementById("checkAll").checked == false) {
+		var ok = confirm("Deselect All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = true;
+			}
+		}
             });
         });
+	/*$("#offlocDropdown").change(function () {
+alert($(this).val());
+});
+if you click on an option it gives an alert with that option*/
+$("#offlocDropdown").change(function () {
+if ($(this).val() == "Custom") {
+//alert("hola");
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("cdropdown").innerHTML = '';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
+}
+});
     </script>
 	
 	</body>

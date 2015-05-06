@@ -69,6 +69,12 @@ margin:0;
 font-family:Verdana, Arial, Helvetica, sans-serif;
 font-size:80%;
 background-color:dimgrey;
+
+background-image: url('img/mobius-transparent.png');
+background-repeat: no-repeat;
+background-position: center 100px;
+background-attachment: fixed;
+
 }
 
 body.single-user {
@@ -238,6 +244,8 @@ float:left;
 }
 
 #puttheimagehere {
+width: 100%;
+text-align: center;
 position:fixed;
 opacity:0.5;
 z-index:-1;
@@ -406,6 +414,10 @@ margin-bottom:1em;
 
 .deletefave {
 color:red;
+}
+
+tr.new-date td {
+    border-top: 2pt solid #ddd;
 }
 
 .toolong {
