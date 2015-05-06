@@ -399,6 +399,9 @@ echo "</div> ";
 		});
 	</script>
 	
+    <p style="text-align:center; padding-top: 20px; color: white;">Updated Mobile Experience 1.0!</p>
+    <p style="text-align:center; color: white;">Tap your name to enter single user.</p>
+        
 	<!-- student information table rendering -->
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
