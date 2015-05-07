@@ -423,8 +423,9 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
 				$tempvar = $query->fetch_assoc();
 				$tempstatname = $tempvar['statusname'];
-				
+				if($tempstatname != "Not Checked In"){
 			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+			}
 		}
         ?>
         </select>
@@ -504,9 +505,10 @@ echo "<br>";
 				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
 				$tempvar = $query->fetch_assoc();
 				$tempstatname = $tempvar['statusname'];
-				
+				if($tempstatname != "Not Checked In"){
 			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
 		}
+			}
         ?>
         </select>
 		<input type='submit' name='studentsubmit' class='studentselect'>
