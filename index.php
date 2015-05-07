@@ -730,7 +730,7 @@ document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext
         
         var userset = false;
         
-        if(getCookie('id') != '') {
+        if(getCookie('name') != 'null') {
             userset = true;
         }
         

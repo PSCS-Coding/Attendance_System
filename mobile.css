@@ -5,7 +5,7 @@
 /* For iphone: */
 @media screen and (max-width : 480px){
     #big_table {
-        max-width: 100%;
+        min-width: 400px;
         width: 100%;
         font-size: 0.9em;
     }
