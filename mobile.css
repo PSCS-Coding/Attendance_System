@@ -7,10 +7,10 @@
     #big_table {
         max-width: 100%;
         width: 100%;
-        font-size: 1em;
+        font-size: 0.9em;
     }
     #big_table td {
-        padding: 1px 1px;
+        padding: 1px 6px;
     }
     #top_header form div {
         text-align: center;
@@ -20,7 +20,8 @@
         display: none;
     }
     .status_col {
-        min-width: initial;
+        min-width: 240px;
+        width: 240px;
     }
     #main_table {
         padding-top: 30px;
@@ -37,12 +38,14 @@
     #top_header form div {
         border-left: 4px solid rgba(0, 0, 0, 0);
     }
+/*
     .textbox {
         max-width: 130px;
     }
     .ui-timepicker-input {
         max-width: 40px;
     }
+*/
     .groupsGUI {
         display: none;
     }

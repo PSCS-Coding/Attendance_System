@@ -398,9 +398,9 @@ echo "</div> ";
 
 		});
 	</script>
+        
+        
 	
-    <p style="text-align:center; padding-top: 20px; color: white;">Updated Mobile Experience 1.0!</p>
-    <p style="text-align:center; color: white;">Tap your name to enter single user.</p>
         
 	<!-- student information table rendering -->
 	<div id="main_table">
@@ -693,6 +693,56 @@ document.getElementById("cdropdown").innerHTML = '';
 document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
 }
 });
+    </script>
+
+
+
+<script type="text/javascript">
+
+  // Original JavaScript code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.
+
+  function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+    
+    function del_cookie(name) {
+        document.cookie = name +
+        '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    }
+
+</script>
+
+<!--
+    <script>
+        if(getCookie("id") >= 0) {
+            confirm("Hello " + getCookie("name"));
+            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
+
+    </script>
+-->
+        
+    <script>
+        
+        var userset = false;
+        
+        if(getCookie('id') != '') {
+            userset = true;
+        }
+        
+//        alert(document.referrer);
+        
+        if (document.referrer.indexOf('user') >= 0) {
+            userset = false;
+        }
+        
+        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
+           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
     </script>
 	
 	</body>
