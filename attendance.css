@@ -481,7 +481,18 @@ div.report-container {
 }
 
 .timepickers input {
-    width: 110px;
+    width: 90px;
+}
+
+.timepickers2 {
+    float:right;
+    position: absolute;
+    right: 10;
+    top: 25;
+}
+
+.timepickers2 input {
+    width: 90px;
 }
 
 .reporttext {

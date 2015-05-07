@@ -493,9 +493,9 @@ if($event['statusname'] == "Field Trip"){
 <?php 
 } else {
 echo "There are no events from this time period";
-echo "<div class='timepickers'>";
-echo "<input type='submit' name='studentsubmit' class='studentselect'>";
+echo "<br>";
 ?>
+<div class='timepickers2'>
 <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
 <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
 		<select name='statusselect'><option value=''>All Statuses</option>
@@ -509,10 +509,10 @@ echo "<input type='submit' name='studentsubmit' class='studentselect'>";
 		}
         ?>
         </select>
+		<input type='submit' name='studentsubmit' class='studentselect'>
 
-
+</div>
 <?php
-echo "</div>";
 }
 }
 ?>
