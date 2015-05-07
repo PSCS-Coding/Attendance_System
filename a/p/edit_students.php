@@ -80,7 +80,7 @@ if (isset($_POST['Reactivate'])) {
 	        </select>
 	<input type="submit" name="AddStudent" value="Add Student" />
 </form>
-<table>
+<table class="students_table">
    <tr>
       <th>First</th>
       <th>Last</th>
@@ -163,7 +163,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 ?>
 </table>
 <br /> 
-<table>
+<table class="students_table">
     <h1>Hidden Students</h1>
    <tr>
       <th>First</th>

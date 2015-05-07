@@ -511,7 +511,7 @@ line-height:2em;
 width:100%;
 }
 
-.view-reports tr, .edit-events tr {
+.view-reports tr, {
 	background-color: #f0f0f0;
 	border: 2px solid white;
 }
@@ -521,67 +521,17 @@ width:100%;
 	font-weight: bold;
 }
 
-.view-reports tr.Offsite, .edit-events tr.Offsite {
+.view-reports tr.Offsite {
 	background-color: #D2B48C;
 }
 
-.view-reports tr.Absent, .edit-events tr.Absent {
+.view-reports tr.Absent {
 	background-color: #FF6347;
 }
 
-.view-reports tr.Late, .edit-events tr.Late {
+.view-reports tr.Late {
 	background-color: #B0E0E6;
 }
-
-/*EDIT EVENTS*/
-
-body .edit-events {
-    background-color: dimgray
-}
-
-.edit-events .message {
-    color: red;
-    background: #fff;
-    border: 1px solid red;
-    padding: 0.5em;
-    margin: 1em;
-    display: inline-block;
-    position: absolute;
-}
-.new-event input, .editing-row input {
-    width: 100%;
-}
-.new-event td {
-    padding: 1em;
-}
-.edit-events h1, .edit-events h2 {
-    margin: 1em;
-    text-align: center;
-    font-size: 2em;
-    color: #fff;
-}
-.edit-events h2 span {
-    font-weight: bold;
-}
-.edit-events .eventlog {
-    margin: 1em auto;
-    opacity: 0.9;
-    width: 830px;
-}
-.edit-events .centerr {
-    margin: 0 auto;
-    text-align: center;
-}
-.edit-events .editing-row {
-    background-color: rgb(178, 178, 178);
-}
-#TopHeader .Myheader {
-    margin: 15px;
-    margin-right: 25%;
-    font-size: 16px;
-}
-
-/************************************/
 
 .ui-timepicker-input {
     width: 80px;
