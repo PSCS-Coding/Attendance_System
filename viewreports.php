@@ -338,25 +338,24 @@ if($notfulldata == 1){
 		?> <br> <br> <?php
 	}
 	
-	if($notfulldatedata == 1){
+	if($notfulldatedata == 1){ // DO THIS IF THE USER HAS OPTED TO SHOW ONLY A SUBSET OF DATES
 		
+		echo "<p class='reporttext'>During this period:</p>";
 		$offsiteHrs_used = floor(($offsitehours_used) / 60);
 		$offsiteMin_used = $offsitehours_used % 60;
-		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time during this period.</p>";		
-		
-		//Late information echoing
-		echo "<p class='reporttext'> You have been late " . $num_lates;
-	if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
-		echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
-	if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
-		echo "<p class='reporttext'> You have been absent " . $num_absent;
-	if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
-	
-	//IS information echoing
-$studyHrs_used = floor($studyhours_used / 60);
-$studyMin_used = $studyhours_used % 60;
-echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
-	
+		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time.</p>";		
+		//Late
+		echo "<p class='reporttext'> You were late " . $num_lates;
+		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+		echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
+		if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+		//Absent
+		echo "<p class='reporttext'> You were absent " . $num_absent;
+		if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+		//Independent Study
+		$studyHrs_used = floor($studyhours_used / 60);
+		$studyMin_used = $studyhours_used % 60;
+		echo "<p class='reporttext'> You used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of independent study time.</p>";
 	}
 	?> <br> <br> <?php
 } else {
