@@ -557,9 +557,29 @@ return $returnArray;
 
 }
 
-
-
-
-
+function convertHours($whichfield)
+{
+    
+    if (!empty($_POST[$whichfield])) {
+    // Make post a DateTime
+        $newEndTime = new DateTime($_POST[$whichfield]);
+        // Temp start time
+        $astartTime = new DateTime('09:00:00');
+        // If start time is greater that POST add 12 hrs
+        if ($newEndTime <= $astartTime) {
+            // Add 12 hrs to POST
+            $newEndTime->add(new DateInterval('PT12H'));
+            // Formating code
+            $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
+            return $sqlEndTime;
+    
+        } else {
+            
+        return $_POST[$whichfield];
+    }
+        
+    }
+    
+}
 
 ?>
