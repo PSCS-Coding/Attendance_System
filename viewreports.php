@@ -430,7 +430,6 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
         </select>
 		<input type='submit' name='studentsubmit' class='studentselect'>
 		</div>
-	</form>
 
 <table class='eventlog' id="viewreports">
 <th>Date</th>
@@ -494,10 +493,31 @@ if($event['statusname'] == "Field Trip"){
 <?php 
 } else {
 echo "There are no events from this time period";
+echo "<div class='timepickers'>";
+echo "<input type='submit' name='studentsubmit' class='studentselect'>";
+?>
+<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		<select name='statusselect'><option value=''>All Statuses</option>
+        <?php
+			foreach ($statusdata as $statusoption) {
+				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+				$tempvar = $query->fetch_assoc();
+				$tempstatname = $tempvar['statusname'];
+				
+			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+		}
+        ?>
+        </select>
+
+
+<?php
+echo "</div>";
 }
 }
 ?>
 </div>
+</form>
 <script> 
 	$('#firstdatetimepicker').datetimepicker({
             onGenerate:function( ct ){
