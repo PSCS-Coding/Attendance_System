@@ -38,6 +38,12 @@ input#checkAll {
 
 body {
  background-color: dimgray;
+ 
+ background-image: url('../../img/mobius-transparent.png');
+background-repeat: no-repeat;
+background-position: center 100px;
+background-attachment: fixed;
+ 
 }
 .headerr {
     margin: 30px 30%;
