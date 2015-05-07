@@ -70,10 +70,11 @@ while ($stats = $getStatsQuery->fetch_array()) {
 	array_push($getStatsResult, $stats);
 }
 //displays stats
+echo "<div class='reportdiv'>";
+echo "<div class='topdiv'>";//doesnt include detailed list of 
 echo "
-<div class='stats-container' style='float:right;width:30%;height:36%;background-color:darkgrey;border-radius:3%;'>
+<div class='stats-container' style='float:right;width:48%;position:absolute;'>
 <div class='stats-render' style='float:left;width:90%;height:90%;padding:8%;'>
-<p style='font-size:20px'>Stats</p>
 ";
 $uniqueLoc = array();
 $siteCount = array();
@@ -90,13 +91,13 @@ foreach ($getStatsResult as $child) {
 	$siteCount[$child['info']] += 1;
 }
 
-for ($n = 0; $n < count($uniqueLoc); $n++) {
+/*for ($n = 0; $n < count($uniqueLoc); $n++) {
 	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
 	$count2 = $count1 * 100;
 	$count = number_format($count2, 0);	
 	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
 	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
-}
+}*/
 echo "</div>";//ending stats-render div
 ?>
  <script type="text/javascript">
@@ -293,7 +294,6 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 	}
 }
-echo "<div class='reportdiv'>";
 echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>";
 //Offsite information echoing
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
@@ -381,7 +381,7 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
-<table class='eventlog' id="viewreports">
+</div><table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
 <th>Status</th>
