@@ -26,17 +26,17 @@ if (!empty($_POST['addLocation'])) {
 
 // Update facilitator
 if (!empty($_POST['updateLocation'])) {
-    $stmt = $db_server->prepare("UPDATE offsiteloc SET place = ? WHERE locID = ?");
+    $stmt = $db_server->prepare("UPDATE offsiteloc SET place = ? WHERE offsiteloc.id = ?");
     $stmt->bind_param('si', $_POST['updatedLocation'], $_POST['id']);
     $stmt->execute(); 
     $stmt->close();
-    $HeaderStatus = "Sussess";
+    $HeaderStatus = "Success";
     $HeaderInfo = "Updated Offsite location.";
 } 
 
 // Remove Facilitator
 if(!empty($_POST['deleteLocation'])) {
-$stmt = $db_server->prepare("DELETE FROM offsiteloc WHERE locID = ?");
+$stmt = $db_server->prepare("DELETE FROM offsiteloc WHERE offsiteloc.id = ?");
 $stmt->bind_param('i', $_POST['id']);
 $stmt->execute(); 		
 $stmt->close();
@@ -44,11 +44,8 @@ $HeaderStatus = "Error";
 $HeaderInfo = "Deleted Location.";
 }
 
-// Query misc table
-$miscResult = $db_server->query("SELECT * FROM misc ORDER BY miscID");
-
 // Query offsite locations table
-$offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY locID");
+$offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY id");
 ?>
 <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
   <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
@@ -72,19 +69,19 @@ $offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY locID");
 while ($offlocList = mysqli_fetch_assoc($offlocResult)) { ?>
 <form action="" method="post">
 <!-- This is for editing facilitators (How it knows what facilitator you close) -->
-<input type="hidden" name="id" value="<?php echo $offlocList['locID']; ?>">
-    		<?php $editme = "EditOffloc-" . $offlocList['locID'];
+<input type="hidden" name="id" value="<?php echo $offlocList['id']; ?>">
+    		<?php $editme = "EditOffloc-" . $offlocList['id'];
 		if (!empty($_POST[$editme])) { 
 		?>
     	<tr>
         <!-- Displays if you clicked the "Edit Button" -->
 		<td><input type="text" name="updatedLocation" value="<?php echo $offlocList['place']; ?>" required size="15"></td>
-<td><button type="submit" name="updateLocation" value="<?php echo $offlocList['locID']; ?>">Update</button>
+<td><button type="submit" name="updateLocation" value="<?php echo $offlocList['id']; ?>">Update</button>
 <button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
             </tr>
 		<?php } else { ?>
                     <!-- Displays when you first load the page (Static Text) -->    
-        <td><input type="submit" class="textButton" name="EditOffloc-<?php echo $offlocList['locID']; ?>" value="<?php echo $offlocList['place']; ?>"></td>
+        <td><input type="submit" class="textButton" name="EditOffloc-<?php echo $offlocList['id']; ?>" value="<?php echo $offlocList['place']; ?>"></td>
     <td><button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
             
                 <?php } ?>
