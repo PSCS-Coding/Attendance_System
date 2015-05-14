@@ -45,7 +45,7 @@ $HeaderInfo = "Deleted Location.";
 }
 
 // Query offsite locations table
-$offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY id");
+$offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 ?>
 <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
   <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
