@@ -82,10 +82,15 @@ $totalCount = 0;
 foreach ($getStatsResult as $sub) {
 	$totalCount += 1;
 	if (!in_array($sub['info'], $uniqueLoc)) {
+		
 		array_push($uniqueLoc, $sub['info']);
 	}
-	//echo "<p>" . $sub['info'] . "</p>";
+/*echo "<pre>";
+print_r($uniqueLoc);
+echo "</pre>";
+echo "<p>" . $sub['info'] . "</p>";*/
 }
+
 $siteCount = array_fill_keys($uniqueLoc, 0);
 foreach ($getStatsResult as $child) {
 	$siteCount[$child['info']] += 1;
@@ -118,15 +123,13 @@ var d = 0;
 var insertrows = [];
 //insertrows.push(['new',4]);
 <?php 
-echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
+//echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
 for ($n = 0; $n < count($uniqueLoc); $n++) {
 echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
 }
 ?>
 var rows = new Array();
 
-rows[0] = ['1','2'];
-rows[1] = ['abc', 'cdf'];
       function drawChart() {
 
         // Create the data table.
