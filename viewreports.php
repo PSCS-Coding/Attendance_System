@@ -493,6 +493,7 @@ if($event['statusname'] == "Field Trip"){
 </table>
 <?php 
 } else {
+echo "<h1 class='student_name'>" . idtoname($current_student_id) . "</h1>";
 echo "There are no events from this time period";
 echo "<br>";
 ?>
