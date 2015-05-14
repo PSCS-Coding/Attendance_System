@@ -143,7 +143,8 @@ var rows = new Array();
         var options = {
                        'width':380,
                        'height':300,
-			'backgroundColor':'transparent'
+			'backgroundColor':'transparent',
+			'sliceVisibilityThreshold': 2/100 // This is equivalent to 0.625 or 62.5% of the chart.
 			};
 
         // Instantiate and draw our chart, passing in some options.
