@@ -73,6 +73,7 @@ body {
 .global_table,
 .allottedhours_table,
 .facilitators_table,
+.offloc_table,
 .students_table {
   border: 5px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;

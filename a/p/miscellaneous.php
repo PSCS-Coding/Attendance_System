@@ -63,7 +63,7 @@ $offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY locID");
     
     <br />
     
-    <table>
+    <table class="offloc_table">
    <tr>
       <th>Location</th>
        <th>##</th>
