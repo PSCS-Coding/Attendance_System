@@ -79,6 +79,7 @@ background-attachment: fixed;
 .global_table,
 .allottedhours_table,
 .facilitators_table,
+.offloc_table,
 .students_table {
   border: 5px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
@@ -96,6 +97,20 @@ background-attachment: fixed;
 .edit-globals .admintable {
 min-width: 400px;
 max-width: 645px;   
+}
+.miscellaneous .admintable {
+min-width: 250px;
+max-width: 250px;
+}
+.textButton {
+background:none!important;
+border:none; 
+cursor: pointer;
+font-size: 14px;
+text-align: center;
+}
+.textButton:hover {
+color: grey; 
 }
 .GroupsTable {
   width: 30%;
@@ -290,7 +305,6 @@ margin-top: 6%;
     z-index: 4;
 background-color: #B5FA9D;
 }
-
 /* EDIT EVENTS */
 
 .edit-events tr {
@@ -364,10 +378,3 @@ body .edit-events {
   padding-right: 24%;
   font-size: 1.5em;
 }
-
-
-
-
-
-
-
