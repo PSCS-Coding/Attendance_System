@@ -117,8 +117,8 @@ echo "</div>";//ending stats-render div
       // instantiates the pie chart, passes in the data and
       // draws it.
 var locCount = <?php echo count($uniqueLoc); ?>;
-var string = <?php echo json_encode("holaaaa"); ?>;
-var int = <?php echo json_encode(7); ?>;
+/*var string = <?php echo json_encode("holaaaa"); ?>;
+var int = <?php echo json_encode(7); ?>;*/
 var d = 0;
 var insertrows = [];
 //insertrows.push(['new',4]);
@@ -137,12 +137,14 @@ var rows = new Array();
         data.addColumn('string', 'name');
         data.addColumn('number', 'times');
         data.addRows(insertrows);
-
+	data.sort({column: 1, desc: true});
+	
         // Set chart options
         var options = {
                        'width':380,
                        'height':300,
-			'backgroundColor':'transparent'};
+			'backgroundColor':'transparent'
+			};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
