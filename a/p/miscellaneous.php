@@ -55,7 +55,6 @@ $offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY locID");
    </div>
  <div align="center" id="main">
     <div class="admintable">
-        <p>Edit Offsite Locations</p>
 <form action="" method="post">
     <input type="text" name="newLocation" placeholder="World Pizza" size="15">
         <input type="submit" name="addLocation" value="Add">
@@ -66,7 +65,7 @@ $offlocResult = $db_server->query("SELECT * FROM offsiteloc ORDER BY locID");
     <table class="offloc_table">
    <tr>
       <th>Location</th>
-       <th>##</th>
+       <th></th>
    </tr>
 <?php
 // Make list of all facilitators 
@@ -80,13 +79,13 @@ while ($offlocList = mysqli_fetch_assoc($offlocResult)) { ?>
     	<tr>
         <!-- Displays if you clicked the "Edit Button" -->
 		<td><input type="text" name="updatedLocation" value="<?php echo $offlocList['place']; ?>" required size="15"></td>
-<td><button type="submit" name="updateLocation" value="<?php echo $offlocList['locID']; ?>">&#10004;</button>
-<button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">&#10006;</button></td>
+<td><button type="submit" name="updateLocation" value="<?php echo $offlocList['locID']; ?>">Update</button>
+<button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
             </tr>
 		<?php } else { ?>
                     <!-- Displays when you first load the page (Static Text) -->    
         <td><input type="submit" class="textButton" name="EditOffloc-<?php echo $offlocList['locID']; ?>" value="<?php echo $offlocList['place']; ?>"></td>
-    <td><button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">&#10006;</button></td>
+    <td><button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
             
                 <?php } ?>
 	</tr>

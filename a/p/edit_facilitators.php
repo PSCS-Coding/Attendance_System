@@ -69,7 +69,7 @@ $FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorn
       <th>Name</th>
       <th>Email</th>
       <th>Advisor</th>
-      <th>##</th>
+      <th></th>
    </tr>
 <?php
 // Make list of all facilitators 
@@ -101,8 +101,8 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
             } ?>
             </select>
             </td>
-		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">&#10004;</button>
-            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">&#10006;</button>
+		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">Update</button>
+            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Delete</button>
         </td>
 		<?php } else { ?>
             
@@ -110,7 +110,7 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
 		<td><input type="submit" class="textButton" type="submit" name="EditFac-<?php echo $FacList['facilitatorid']; ?>" value="<?php echo $FacList['facilitatorname']; ?>"></td>
 		<td><?php echo $FacList['email']; ?></td>
         <td><?php echo $niceAdvisor ?></td>
-        <td><button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">&#10006;</button></td>    
+        <td><button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Delete</button></td>    
 		<?php } ?>	
             
 	</tr>

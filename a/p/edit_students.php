@@ -86,7 +86,7 @@ if (isset($_POST['Reactivate'])) {
       <th>Enrolled</th>
       <th>Advisor</th>
       <th>Y</th>
-	  <th>##</th>
+	  <th></th>
    </tr>
 <?php
 // loop through list of names 
@@ -145,8 +145,8 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 		</td>
 				
 		<td>
-        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">&#10004;</button>
-        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">&#10006;</button>
+        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
+        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button>
         </td>
 		<?php } else { ?>
         
@@ -163,7 +163,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
-        <td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">&#10006;</button></td>
+        <td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button></td>
 		<?php } ?>	
 	</tr>
 	</form>
