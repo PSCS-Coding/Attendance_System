@@ -13,8 +13,8 @@
 		</script>
 		<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="a/js/scrollTo.js"></script>
-		<script src="a/js/jquery.datetimepicker.js"></script>
+		<script src="a/p/js/scrollTo.js"></script>
+		<script src="a/p/js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript">
 			function setIdle(cb, seconds) {
     			var timer; 
@@ -31,7 +31,6 @@
 		</script>
 	</head>
 	<body class="mainpage statusview">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
