@@ -488,12 +488,12 @@ opacity:0.9;
 
 /* View reports charts */
 .reported-data {
-	width: 55%;
+	width: 50%;
 	display: inline-block;
 	padding-right: 5%;
 }
 .stats-container {
-	width: 39%;
+	width: 44%;
 	display: inline-block;
 	vertical-align: top;
 }

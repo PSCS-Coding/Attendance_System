@@ -389,7 +389,7 @@ var rows = new Array();
 	
         // Set chart options
         var options = {
-                       'width': '250',
+                       'width': '280',
                        'height': '200',
                        'chartArea': {'width': '300%', 'height': '80%'},
                        'legend': {'position': 'right', 'alignment':'center'},
