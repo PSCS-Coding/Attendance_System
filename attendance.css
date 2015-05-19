@@ -487,15 +487,16 @@ opacity:0.9;
 }
 
 /* View reports charts */
+.reported-data {
+	width: 55%;
+	display: inline-block;
+	padding-right: 5%;
+}
 .stats-container {
-	float: right;
-	width: 48%;
-	position: absolute;
+	width: 39%;
+	display: inline-block;
+	vertical-align: top;
 }
 #chart_div {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	width: 43%;
-	height: 300px;
+
 }

@@ -71,90 +71,9 @@ while ($stats = $getStatsQuery->fetch_array()) {
 }
 //displays stats
 echo "<div class='reportdiv'>";
-echo "<div class='topdiv'>";//doesnt include detailed list of 
-echo "
-<div class='stats-container'>
-";
-$uniqueLoc = array();
-$siteCount = array();
-$totalCount = 0;
-foreach ($getStatsResult as $sub) {
-	$totalCount += 1;
-	if (!in_array($sub['info'], $uniqueLoc)) {
-		
-		array_push($uniqueLoc, $sub['info']);
-	}
-/*echo "<pre>";
-print_r($uniqueLoc);
-echo "</pre>";
-echo "<p>" . $sub['info'] . "</p>";*/
-}
+echo "<div class='topdiv'>";//doesnt include detailed list of
 
-$siteCount = array_fill_keys($uniqueLoc, 0);
-foreach ($getStatsResult as $child) {
-	$siteCount[$child['info']] += 1;
-}
 
-/*for ($n = 0; $n < count($uniqueLoc); $n++) {
-	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
-	$count2 = $count1 * 100;
-	$count = number_format($count2, 0);	
-	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
-	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
-}*/
-?>
- <script type="text/javascript">
-
-      // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-var locCount = <?php echo count($uniqueLoc); ?>;
-/*var string = <?php echo json_encode("holaaaa"); ?>;
-var int = <?php echo json_encode(7); ?>;*/
-var d = 0;
-var insertrows = [];
-//insertrows.push(['new',4]);
-<?php 
-//echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
-for ($n = 0; $n < count($uniqueLoc); $n++) {
-echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
-}
-?>
-var rows = new Array();
-
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'name');
-        data.addColumn('number', 'times');
-        data.addRows(insertrows);
-	data.sort({column: 1, desc: true});
-	
-        // Set chart options
-        var options = {
-                       'width':380,
-                       'height':300,
-			'backgroundColor':'transparent',
-			'sliceVisibilityThreshold': 2/100, // This is equivalent to 0.625 or 62.5% of the chart.
-			'pieSliceText': 'percentage'
-			};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
-
-<div id="chart_div"></div>
-<?php
-echo "</div>";//ending stats-container div
 $student_data_array = array();
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
@@ -299,7 +218,20 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 	}
 }
+
+
+
+// DISPLAYS STUDENT NAME
 echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>";
+
+$daystillend = daysLeft(); ?>
+
+
+<div class="reported-data">
+
+
+<?php
+
 //Offsite information echoing
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
 $offsiteMin_remaining = $offsitehours_remaining % 60;
@@ -340,7 +272,6 @@ foreach ($period as $date) {
 */
 
 // this uses a function from functions.php
-$daystillend = daysLeft();
 
 if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
@@ -386,6 +317,97 @@ $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
 ?>
+</div>
+
+
+
+<div class='stats-container'>
+
+<?php
+// CHARTS
+$uniqueLoc = array();
+$siteCount = array();
+$totalCount = 0;
+foreach ($getStatsResult as $sub) {
+	$totalCount += 1;
+	if (!in_array($sub['info'], $uniqueLoc)) {
+		
+		array_push($uniqueLoc, $sub['info']);
+	}
+/*echo "<pre>";
+print_r($uniqueLoc);
+echo "</pre>";
+echo "<p>" . $sub['info'] . "</p>";*/
+}
+
+$siteCount = array_fill_keys($uniqueLoc, 0);
+foreach ($getStatsResult as $child) {
+	$siteCount[$child['info']] += 1;
+}
+
+/*for ($n = 0; $n < count($uniqueLoc); $n++) {
+	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
+	$count2 = $count1 * 100;
+	$count = number_format($count2, 0);	
+	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
+	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
+}*/
+?>
+ <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+var locCount = <?php echo count($uniqueLoc); ?>;
+/*var string = <?php echo json_encode("holaaaa"); ?>;
+var int = <?php echo json_encode(7); ?>;*/
+var d = 0;
+var insertrows = [];
+//insertrows.push(['new',4]);
+<?php 
+//echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
+for ($n = 0; $n < count($uniqueLoc); $n++) {
+echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
+}
+?>
+var rows = new Array();
+
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'name');
+        data.addColumn('number', 'times');
+        data.addRows(insertrows);
+	data.sort({column: 1, desc: true});
+	
+        // Set chart options
+        var options = {
+                       'width': '250',
+                       'height': '200',
+                       'chartArea': {'width': '300%', 'height': '80%'},
+                       'legend': {'position': 'right', 'alignment':'center'},
+			'backgroundColor':'transparent',
+			'sliceVisibilityThreshold': 2/100, // This is equivalent to 0.625 or 62.5% of the chart.
+			'pieSliceText': 'percentage',
+			};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+<div id="chart_div"></div>
+</div> <!--ending stats-container div-->
+
+
 </div><table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
