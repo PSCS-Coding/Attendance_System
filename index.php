@@ -394,6 +394,7 @@ echo "</div> ";
 			
 	    </tr>
 	    <?php
+		$studentcount = 0;
 		$student_data_array = array();
 			//loops through current students
 				while ($current_student_id = $current_users_result->fetch_assoc()) {
@@ -408,10 +409,21 @@ echo "</div> ";
 										 LIMIT 1") 
 										 or die(mysqli_error($db_server));
 					$result_array = $result->fetch_assoc();
-					//pushed each individual students data into an array				
+					//pushed each individual student's data into an array				
 					array_push($student_data_array, $result_array);
+					$studentcount ++;
 				}
-					
+	//field trip groups
+	$currFieldTrips = array();
+		for ($i = 0; $i < $studentcount; $i++) {
+			echo $student_data_array[$i]['statusname'] . "<br />";
+			if ($student_data_array[$i]['statusname'] == "Field Trip") {
+				array_push($currFieldTrips, $student_data_array[$i]['info'] . "---" . $student_data_array[$i]['studentid']);
+			}
+		}
+	echo "<br /><br />";
+	print_r($currFieldTrips);
+
 	//checks how the table should be sorted. Default is alphabetically by student
 	if (isset($_GET['sortBy'])) {
 		if ($_GET['sortBy'] == 'status')	{
