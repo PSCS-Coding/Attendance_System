@@ -73,8 +73,7 @@ while ($stats = $getStatsQuery->fetch_array()) {
 echo "<div class='reportdiv'>";
 echo "<div class='topdiv'>";//doesnt include detailed list of 
 echo "
-<div class='stats-container' style='float:right;width:48%;position:absolute;'>
-<div class='stats-render' style='float:left;width:90%;height:90%;padding:8%;'>
+<div class='stats-container'>
 ";
 $uniqueLoc = array();
 $siteCount = array();
@@ -103,7 +102,6 @@ foreach ($getStatsResult as $child) {
 	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
 	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
 }*/
-echo "</div>";//ending stats-render div
 ?>
  <script type="text/javascript">
 
@@ -154,7 +152,7 @@ var rows = new Array();
       }
     </script>
 
-<div id="chart_div" style="position:absolute;right:0px;top:0px;width: 43%; height: 300px;"></div>
+<div id="chart_div"></div>
 <?php
 echo "</div>";//ending stats-container div
 $student_data_array = array();
