@@ -144,7 +144,8 @@ var rows = new Array();
                        'width':380,
                        'height':300,
 			'backgroundColor':'transparent',
-			'sliceVisibilityThreshold': 2/100 // This is equivalent to 0.625 or 62.5% of the chart.
+			'sliceVisibilityThreshold': 2/100, // This is equivalent to 0.625 or 62.5% of the chart.
+			'pieSliceText': 'percentage'
 			};
 
         // Instantiate and draw our chart, passing in some options.
