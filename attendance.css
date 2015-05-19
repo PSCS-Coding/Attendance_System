@@ -485,3 +485,17 @@ tr.Status_Red {
 background-color:rgb(250, 150, 150);
 opacity:0.9;
 }
+
+/* View reports charts */
+.stats-container {
+	float: right;
+	width: 48%;
+	position: absolute;
+}
+#chart_div {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 43%;
+	height: 300px;
+}
