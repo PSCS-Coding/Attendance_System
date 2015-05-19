@@ -60,7 +60,7 @@ $HeaderInfo = "Deleted Holiday.";
     <input type="submit" name="addnewholiday" value="Add Holiday" />
 </form>
 
- <table>
+ <table class="holiday_table">
    <tr>
       <th>Holiday Name</th>
       <th>Date</th>

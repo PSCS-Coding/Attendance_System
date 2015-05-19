@@ -4,10 +4,14 @@
 	<head>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
+
+
+
+
 			$(document).ready(function(){
-				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
-				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 15 });
-				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'H:i', 'step': 5 });
+				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
+				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
+				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
 		<script type="text/javascript">
@@ -26,7 +30,6 @@
 		</script>
 	</head>
 	<body class="mainpage">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
 	<!-- setup -->
 	<?php
 		$null_value = null;
@@ -108,20 +111,29 @@
 	
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			if (!empty($_POST['offloc'])){
-	        		$info = $_POST['offloc'];
-				if (validTime($_POST['offtime'])){
+if (!empty($_POST['customtext'])) {
+				$info = $_POST['customtext'];
+if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			} else {
-				echo "<div class='error'>Please fill out the location box before signing out to offsite.</div>";
+				//echo "<p style='font-size:30px;'>" . $info . "</p>";
+				} else {
+			if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
+	        		$info = $_POST['offlocDropdown'];
+				if (validTime($_POST['offtime'])){
+					foreach ($name as $student){
+					changestatus($student, '2', $info, convertHours('offtime'));
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
 			}
 		}
-	
+	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
 	
@@ -129,7 +141,7 @@
 	        		$info = $_POST['facilitator'];
 				if (validTime($_POST['fttime'])){
 					foreach ($name as $student){
-					changestatus($student, '3', $info, $_POST['fttime']);
+					changestatus($student, '3', $info, convertHours('fttime'));
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
@@ -168,7 +180,7 @@
 	if (!empty($_POST['Late'])) {
 		if (validTime($_POST['late_time'])) {
 			$name = $_POST['late_student'];
-			$status = $_POST['late_time'];
+			$status = convertHours('late_time');
 			changestatus($name, '5', '', $status);
 			}
 		else {
@@ -259,12 +271,12 @@
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
+              
 		}
 echo "</div> ";
                 }
 	?>
             </form>
-        
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
@@ -281,14 +293,19 @@ echo "</div> ";
  
 	    <div>
 			<!-- top interface offsite -->
-	        <input list="offlocDropdown" name="offloc" id="offloc" placeholder="Offsite Location" maxlength="25" class="offloc">
-<datalist id="offlocDropdown" name="offlocDropdown">
+	        
+<span id="cdropdown"><select id="offlocDropdown" name="offlocDropdown" class="offlocDropdown">
+<option value=''>Offsite Location</option>
   <?php
 		     $placeget = $db_server->query("SELECT * FROM offsiteloc ORDER BY place ASC");
 		      while ($place_option = $placeget->fetch_assoc()) {
-	        ?>  <option value= "<?php echo $place_option['place']; ?> "></option> <?php } ?>
-</datalist>
-			<input type="text" name="offtime" placeholder='Return time' id="offtime">
+	        ?>  <option value= "<?php echo $place_option['place']; ?> "><?php echo $place_option['place']; ?></option> <?php } ?>
+<option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
+</select></span>
+<span id="cdiv">
+
+</span>
+			<input type="text" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -316,7 +333,7 @@ echo "</div> ";
         <?php        
     if (isset($_COOKIE['login'])) {
     if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt) {
-    echo '<div class="admin_button"><a href="/a">Admin</a></div>';
+    echo '<div class="admin_button"><a href="a/p/index.php">Admin</a></div>';
         }
     } 
         ?>
@@ -447,43 +464,49 @@ echo "</div> ";
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
-                //Query for globals
-        $globals_query = "SELECT starttime FROM globals";
-        $globals_result = $db_server->query($globals_query);
-        $globals_data = $globals_result->fetch_array();
-        $todaytime = new DateTime();
-        $todaytimestart = new DateTime($globals_data['starttime']);
+        // SETTING VERIBLES FOR CONTEXTUAL COLORING //
                 
-                if ($latestdata['statusname'] == 'Not Checked In' && $todaytime > $todaytimestart) {
-                    
+            // Get Current Time
+                $cTime = new DateTime();
+            // Format current time
+                $currTime = $cTime->format('Y-m-d H:i:s');
+            // Get ENTERED return time
+                $mReturn= new DateTime($latestdata['returntime']);
+            // Format ENTERED return time
+                $myReturn = $mReturn->format('Y-m-d H:i:s');
+            // Get globals.starttime
+                $globals_query = "SELECT starttime FROM globals";
+            // Setting query info as varible
+                $globals_result = $db_server->query($globals_query);
+            // Put query data into an array
+                $globals_data = $globals_result->fetch_array();
+            // Set globals.starttime as varible
+                $ttStart = new DateTime($globals_data['starttime']);
+            // Format globals.starttime
+                $startTime = $ttStart->format('Y-m-d H:i:s');
+            // These is for making the IF statment shorter
+                $statName = $latestdata['statusname'];
+                $GRtime = $currTime > $myReturn;
+        // Start IF statement for contextual coloring        
+        if ($currTime > $startTime && $statName == 'Not Checked In' || $GRtime && $statName == 'Offsite' || $GRtime && $statName == 'Field Trip' || $GRtime && $statName == 'Late' || $GRtime && $statName == 'Independent Study') {
+            
                  ?>  
         
                         <tr class="Status_Red">
                     
-                        <?php  } else { ?>
+                        <?php  } else {?>
                             
 				        <tr>
                     
-                <?php } ?>
-                    
+                        <?php } ?>
+                
 					<td class='select_col'>
 						<!-- checkbox that gives student data to the form at the top -->
 						<input type='checkbox' name='person[]' id='<?php echo $latestdata['studentid']; ?>' value='<?php echo $latestdata['studentid']; ?>' form='main' class='c_box'>
 	
 					</td>
 				<?php 
-                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
-			if (!empty($_POST[$groupsResult[$k]["name"]])) {
-				$ids = explode(",", $groupsResult[$k]['studentid']);
-				for ($l = 0; $l < count($ids); $l++) {
-					//echo $ids[$l];
-					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
-				}
-			}	
-		}
-                
+   
 				//variable equal to a students last name initial
 				$lastinitial = substr($latestdata['lastname'], 0, 1); ?>
 	            <!-- displays current rows student name, that students status and any comment associated with that status -->
@@ -543,16 +566,16 @@ echo "</div> ";
 						$returntimeobject = new DateTime($latestdata['returntime']);
 						echo $latestdata['statusname'] . " "; 
 						if ($latestdata['statusname'] == "Offsite") {
-							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo "at " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Field Trip") {
-							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo "with " . $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Late") {
-							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i');
+							echo $latestdata['info'] . " arriving at " . $returntimeobject->format('g:i a');
 						}
 						if ($latestdata['statusname'] == "Independent Study") {
-							echo $latestdata['info'] . " returning at " . $returntimeobject->format('g:i');
+							echo $latestdata['info'] . " returning at " . $returntimeobject->format('g:i a');
 						}
 						?>
 						</td>
@@ -561,6 +584,22 @@ echo "</div> ";
 			} 
 		}
 	}
+	                
+            // SELECTION FOR GROUPS
+						for ($k = 0; $k < count($groupsResult); $k++) {
+			if (!empty($_POST[$groupsResult[$k]["name"]])) {
+				$ids = explode(",", $groupsResult[$k]['studentid']);
+				for ($l = 0; $l < count($ids); $l++) {
+					//echo $ids[$l];
+					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
+					$recentEvent = $getRecentEvent['statusid'];
+ 					if ($recentEvent == 1) {
+					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+					}
+				}
+			}	
+		}
+             
 	?>
 	</table>
 	</table>
@@ -570,9 +609,13 @@ echo "</div> ";
         $(document).ready(function() {
 			$('.groupsGUI').mouseenter(function() {
 				$('.groupsGUI').stop().animate({ right: "0px"} , "fast");
+                $('.groupHeader').addClass('active');
+                $('.groupButton').addClass('active');
 			});
 			$('.groupsGUI').mouseleave(function() {
-				$('.groupsGUI').stop().animate({ right: "-145px"} , "fast");
+				$('.groupsGUI').stop().animate({ right: "-140px"} , "fast");
+                $('.groupHeader').removeClass('active');
+                $('.groupButton').removeClass('active');
 			});
 		});
 </script>
@@ -612,9 +655,35 @@ echo "</div> ";
     <script>
         $(document).ready(function(){
             $("#checkAll").change(function () {
-                $("input:checkbox").prop('checked', $(this).prop("checked"));
+		if (document.getElementById("checkAll").checked == true) {
+		var ok = confirm("Select All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = false;
+			}
+		} else if (document.getElementById("checkAll").checked == false) {
+		var ok = confirm("Deselect All Students?");
+			if (ok == true) {
+                		$("input:checkbox").prop('checked', $(this).prop("checked"));
+			} else {
+				document.getElementById("checkAll").checked = true;
+			}
+		}
             });
         });
+	/*$("#offlocDropdown").change(function () {
+alert($(this).val());
+});
+if you click on an option it gives an alert with that option*/
+$("#offlocDropdown").change(function () {
+if ($(this).val() == "Custom") {
+//alert("hola");
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("cdropdown").innerHTML = '';
+document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
+}
+});
     </script>
 	
 	</body>

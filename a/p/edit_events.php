@@ -89,12 +89,11 @@ if (!empty($_GET['id'])) {
 
 <head>
    <title>Edit Events</title>
-   <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
-   <link rel="stylesheet" type="text/css" href="../../attendance.css">
+   <?php require_once('header.php'); ?>
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    <script src="js/scrollTo.js"></script>
    <script src="js/jquery.datetimepicker.js"></script>
-    <?php require_once('header.php'); ?>
+   <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css" />
 </head>
 
 <body class="edit-events">
@@ -125,7 +124,6 @@ if (!empty($_GET['id'])) {
 				<input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
 			</form>
 		</div>
-
 		<?php
 		if (isset($current_student_id)) {
 			$student_data_array = array();

@@ -4,12 +4,17 @@
 		<title>PSCS Attendance: Status View</title>
 		<?php require_once('header.php') ?>
 	    <script type="text/javascript">
+		 
 			$(document).ready(function(){
 				$('#offtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 				$('#fttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 15 });
 				$('.late_time').timepicker({ 'scrollDefaultNow': true, 'minTime': '9:00am', 'maxTime': '3:30pm', 'timeFormat': 'g:i', 'step': 5 });
 			});
 		</script>
+		<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="a/p/js/scrollTo.js"></script>
+		<script src="a/p/js/jquery.datetimepicker.js"></script>
 		<script type="text/javascript">
 			function setIdle(cb, seconds) {
     			var timer; 
@@ -25,8 +30,7 @@
 			setIdle(function() {location.href = location.href;}, 300);
 		</script>
 	</head>
-	<body class="mainpage">
-	<div id="puttheimagehere"><img src="img/mobius.png" /></div>
+	<body class="mainpage statusview">
 	<!-- setup -->
 	<?php
 		$null_value = null;
@@ -113,9 +117,27 @@
 
 	
 	<!-- student information table rendering -->
-	    <?php
-		
+	<?php
+		if(!empty($_POST['datetimepicker'])){
+			$DateFromPicker = $_POST['datetimepicker'];
+		}
 		$student_data_array = array();
+		if (empty($DateFromPicker)){
+			$Date = new DateTime();
+			//echo "the date from picker is " . $DateFromPicker;	
+		} else {
+			$Date = new DateTime($DateFromPicker);
+		}
+	?>
+	<h1 class="statusview_header"><?php echo "Attendance status as of " . $Date->format('l F jS \a\t g:ia'); ?></h1>
+	<form method='post' id="datepicker" action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
+		<input type='text' id="datetimepicker" class = 'datetimepicker' name='datetimepicker' placeholder="select a date">
+		<input type='submit' name='submit'>
+	</form>
+	<?php
+		$TimeFromPicker = $Date->format('Y-m-d H:i:s');
+		$DateFromPicker = $Date->format('Y-m-d');
+		
 			//loops through current students
 				while ($current_student_id = $current_users_result->fetch_assoc()) {
 					//fetches most recent data from the events table
@@ -125,21 +147,26 @@
 										 JOIN statusdata ON events.statusid = statusdata.statusid
 										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 										 WHERE studentdata.studentid = $current_student_id[studentid] 
+										 AND timestamp BETWEEN '$DateFromPicker' AND '$TimeFromPicker' 
 										 ORDER BY timestamp DESC
 										 LIMIT 1") 
 										 or die(mysqli_error($db_server));
 					$result_array = $result->fetch_assoc();
 					//pushed each individual students data into an array				
 					array_push($student_data_array, $result_array);
-				}
-			
+				} ?>
+                
+                <div class="column_wrapper">
+				<?php
 				//using the above data from the query, this renders the alternate status view
-				//creates a table header for each of the possible status'	
+				//creates a table header for each of the possible status'
+				
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
 					//only renders the table headers for status' that have students assigned to that status
 					if (!empty($sorted_data_array)) { ?> 
+					
 					<div class='altview_status'> 
 						<p><?php echo $status; ?></p>
 						<ul class='altview_list'>
@@ -160,8 +187,21 @@
 									?>
 								</li>
 						<?php } ?>
-						</ul> <?php } ?> 
-					</div> <?php } ?>
-
+						</ul> 
+					</div> <?php } } ?>
+                </div>
+	
+<script> 
+	$('#datetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s', 
+            step: 5,
+         }); 
+</script>
 	</body>
 	</html>
