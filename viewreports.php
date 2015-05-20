@@ -479,7 +479,7 @@ if($event['statusname'] == "Field Trip"){
 	$stringdisplay = "at ";
 }
 	
-	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out"){
+	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out" && $event['statusname'] != "Absent"){
 		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
 		<?php 
 			} else {
