@@ -349,7 +349,7 @@ echo "</div> ";
 	<script>
 		$(document).ready(function() {
 			$(window).resize(function() {
-				if($(window).width() < 1020) {
+				if($(window).width() < 1020 && $(window).width() > 500) {
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
@@ -363,9 +363,17 @@ echo "</div> ";
 					$("#present_button").prop('value', 'Present');
 					$("#present_button").css('width', '60px');
 				}
+				
+				if ($(window).width() < 480) {
+				    $("#latebutton").prop('value', 'L');
+				}
+				else {
+				    $('#latebutton').prop('value', 'Late');
+				}
+				
 			});
 			
-			if($(window).width() < 1020) {
+			if($(window).width() < 1020 && $(window).width() > 500) {
 				$('.viewreports_button a').text('Reports');
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
@@ -379,9 +387,20 @@ echo "</div> ";
 				$("#present_button").prop('value', 'Present');
 				$("#present_button").css('width', '60px');
 			}
+			
+			if ($(window).width() < 480) {
+			$("#latebutton").prop('value', 'L');
+		    }
+		    else {
+			$('#latebutton').prop('value', 'Late');
+		    }
+
 		});
 	</script>
+        
+        
 	
+        
 	<!-- student information table rendering -->
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
@@ -389,7 +408,7 @@ echo "</div> ";
 	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
-			<th></th>
+			<th class='blank_col'></th>
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 			
 	    </tr>
@@ -554,7 +573,7 @@ echo "</div> ";
 						?>
 						<!-- Late button with time input next to it -->
                             <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input class="tablebutton" type='submit' value='Late' name='Late' class='l_button'>
+							<input class="tablebutton" id="latebutton" type='submit' value='Late' name='Late' class='l_button'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
                                 </form>
@@ -684,6 +703,56 @@ document.getElementById("cdropdown").innerHTML = '';
 document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
 }
 });
+    </script>
+
+
+
+<script type="text/javascript">
+
+  // Original JavaScript code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.
+
+  function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+    
+    function del_cookie(name) {
+        document.cookie = name +
+        '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    }
+
+</script>
+
+<!--
+    <script>
+        if(getCookie("id") >= 0) {
+            confirm("Hello " + getCookie("name"));
+            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
+
+    </script>
+-->
+        
+    <script>
+        
+        var userset = false;
+        
+        if(getCookie('name') != 'null') {
+            userset = true;
+        }
+        
+//        alert(document.referrer);
+        
+        if (document.referrer.indexOf('user') >= 0) {
+            userset = false;
+        }
+        
+        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
+           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
     </script>
 	
 	</body>
