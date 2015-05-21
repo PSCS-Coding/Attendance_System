@@ -492,6 +492,7 @@ foreach ($getStatsResult as $child) {
 	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
 	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
 }*/
+if($notfulldata==false){
 ?>
  <script type="text/javascript">
 
@@ -546,11 +547,9 @@ var rows = new Array();
 
 <div id="chart_div"></div>
 </div> <!--ending stats-container div-->
-
+<?php } ?>
 
 </div><table class='eventlog' id="viewreports">
-
-
 
 
 <th>Date</th>
