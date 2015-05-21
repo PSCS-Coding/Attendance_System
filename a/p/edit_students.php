@@ -166,7 +166,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         <td><?php echo $StuDataList['middleSchool']; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
         <td>
-            <input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="U">
+            <input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit">
             <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button>
         </td>
 		<?php } ?>	
