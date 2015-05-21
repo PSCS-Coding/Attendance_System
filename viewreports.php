@@ -2,16 +2,29 @@
 <head>
 	<title>View Reports</title>
     <?php require_once('header.php'); ?>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
+	<script src="a/p/js/jquery.datetimepicker.js"></script>
+
 </head>
 
 <body class="view-reports">
 	<div id="top_header">
 <?php
+
+	//query faclitators from sql to get a list
+	$statget = $db_server->query("SELECT * FROM statusdata");
+    $statusdata = array();
+    while ($stat_row = $statget->fetch_row()) {
+		array_push ($statusdata, $stat_row[0]);
+    }
+
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
 } 
+
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
 $current_users_query = $db_server->query($studentquery);
@@ -35,7 +48,6 @@ while ($student = $current_users_query->fetch_array()) {
 	?>
 	</select>
 	<input type='submit' name='studentsubmit' class='studentselect'>
-	</form>
 	</div>
 		<div>
 			<a href="index.php">Return to main attendance view</a>
@@ -60,8 +72,90 @@ while ($holiday_data = $holiday_result->fetch_array()) {
 foreach ($holiday_dt_array as $k) {
 	array_push($holiday_data_array, $k[0]);
 }
+
+//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$tempstartdate = $globalsdata['startdate'];
+
+// end basic queries ========
+if(!empty($_POST['firstdatetimepicker'])){
+			$FirstDateFromPicker = $_POST['firstdatetimepicker'];
+			$FirstDateFromPicker = new DateTime($FirstDateFromPicker);
+			$startbool = 0;
+		} else {
+			$FirstDateFromPicker = new DateTime($tempstartdate);
+			$startbool = 1;
+		}
+		
+		
+if(!empty($_POST['lastdatetimepicker'])){
+			$LastDateFromPicker = $_POST['lastdatetimepicker'];
+			$LastDateFromPicker = new DateTime($LastDateFromPicker);
+			$todaybool = 0;
+		} else {
+			$LastDateFromPicker = new DateTime();
+			$todaybool = 1;
+		}
+		
+		$SFirstDateFromPicker = $FirstDateFromPicker->format('Y-m-d'); //add H:i:s to the format to enable time picking as well
+		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d H:i:s');
+		
+		if($todaybool == 1){
+			$renderlastdate = "today";
+		} else {
+			$renderlastdate = $LastDateFromPicker->format('l F jS \a\t g:ia');
+		}
+		
+		if($startbool == 1){
+			$renderstartdate = "start of the school year";
+		} else {
+			$renderstartdate = $FirstDateFromPicker->format('l F jS \a\t g:ia');
+		}
+	?>
+    <div class="date_info">
+        <br>
+		<?php
+			if(!empty($_POST['statusselect'])){
+				$instatid = $_POST['statusselect'];
+				$statgetname = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $instatid");
+    			$statusdataname = array();
+    			while ($stat_row = $statgetname->fetch_row()) {
+					array_push ($statusdataname, $stat_row[0]);
+    			}
+				$statselect = $statusdataname[0];
+			} else {
+				$statselect = "";
+			}
+		  echo "showing " . $statselect . " events between " . $renderstartdate . " and " . $renderlastdate; ?>
+    </div>
+	<?php
+
+
+$student_data_array = array();
 if (isset($current_student_id)) {
 $student_data_array = array();
+$notfulldata = 0;
+if(!empty($_POST['statusselect'])){
+	$currentselectedstatus = $_POST['statusselect'];
+	$statstring = "AND events.statusid = '$currentselectedstatus'" ;
+	$notfulldata = 1;
+} else {
+	$statstring = "";
+}
+$notfulldatedata = 0;
+if(!empty($_POST['firstdatetimepicker'])){
+	$notfulldata = 1;
+	$notfulldatedata = 1;
+
+}
+
+if(!empty($_POST['lastdatetimepicker'])){
+	$notfulldata = 1;
+	$notfulldatedata = 1;
+}
+
 //fetches most recent data from the events table
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
@@ -69,21 +163,21 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
+		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
+		".$statstring."
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
+		
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
+if(count($student_data_array)!=0){
+
 
 //allotted hours query
 $yearinschool = $student_data_array[0]['yearinschool'];
 $allottedquery = "SELECT * FROM allottedhours WHERE yis = '$yearinschool'";
 $allotted_result = $db_server->query($allottedquery);
 $allotted_data_array = $allotted_result->fetch_array();
-
-//globals query
-$globalsquery = "SELECT * FROM globals";
-$globals_result = $db_server->query($globalsquery);
-$globalsdata = $globals_result->fetch_array();
 
 $starttime = $globalsdata['starttime'];
 $endtime = $globalsdata['endtime'];
@@ -236,25 +330,40 @@ $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaini
 if ($offsitehours_remaining < 0) {
 	$readable_offsiteleft = "<p class='reporttext'> You are out of offsite! You are over by " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes. </p>";
 }
+
+if($notfulldata == 1){
+	//echo "<p class='reporttext' id='reportnote'> NOTE: The below information is only for the selcted status.</p>";
+	if(!empty($_POST['statusselect'])){
+		echo "Now displaying " . statconvert($_POST['statusselect']) . " events";
+		?> <br> <br> <?php
+	}
+	
+	if($notfulldatedata == 1){ // DO THIS IF THE USER HAS OPTED TO SHOW ONLY A SUBSET OF DATES
+		
+		echo "<p class='reporttext'>During this period:</p>";
+		$offsiteHrs_used = floor(($offsitehours_used) / 60);
+		$offsiteMin_used = $offsitehours_used % 60;
+		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time.</p>";		
+		//Late
+		echo "<p class='reporttext'> You were late " . $num_lates;
+		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+		echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
+		if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+		//Absent
+		echo "<p class='reporttext'> You were absent " . $num_absent;
+		if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+		//Independent Study
+		$studyHrs_used = floor($studyhours_used / 60);
+		$studyMin_used = $studyhours_used % 60;
+		echo "<p class='reporttext'> You used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of independent study time.</p>";
+	}
+	?> <br> <br> <?php
+} else {
+
 echo $readable_offsiteleft;
 
 $offsiteHrs_used = floor(($offsitehours_used) / 60);
 $offsiteMin_used = $offsitehours_used % 60;
-
-//below is the deprecated days till end function
-
-/*$daystillend = 0;
-$today = New DateTime();
-$today = $today->SetTime(0, 0, 0);
-$enddate = new DateTime($globalsdata['enddate']);
-$interval = new DateInterval('P1D');
-$period = new DatePeriod($today, $interval, $enddate);
-foreach ($period as $date) {
-	if ($date->format('w') != 0 && $date->format('w') != 6) {
-		$daystillend += 1;
-	}
-}
-*/
 
 // this uses a function from functions.php
 $daystillend = daysLeft();
@@ -302,7 +411,27 @@ $studyHrs_used = floor($studyhours_used / 60);
 $studyMin_used = $studyhours_used % 60;
 echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . $studyMin_used . " minutes of your independent study time.</p>";
 /*}*/
+}
 ?>
+		<div class="timepickers">
+            <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		
+		<select name='statusselect'><option value=''>All Statuses</option>
+        <?php
+			foreach ($statusdata as $statusoption) {
+				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+				$tempvar = $query->fetch_assoc();
+				$tempstatname = $tempvar['statusname'];
+				if($tempstatname != "Not Checked In"){
+			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+			}
+		}
+        ?>
+        </select>
+		<input type='submit' name='studentsubmit' class='studentselect'>
+		</div>
+
 <table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
@@ -360,9 +489,63 @@ if($event['statusname'] == "Field Trip"){
 	</tr>
 <?php } 
 }
-
-} ?>
+ ?>
 </table>
+<?php 
+} else {
+echo "<h1 class='student_name'>" . idtoname($current_student_id) . "</h1>";
+echo "There are no events from this time period";
+echo "<br>";
+?>
+<div class='timepickers2'>
+<input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		<select name='statusselect'><option value=''>All Statuses</option>
+        <?php
+			foreach ($statusdata as $statusoption) {
+				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+				$tempvar = $query->fetch_assoc();
+				$tempstatname = $tempvar['statusname'];
+				if($tempstatname != "Not Checked In"){
+			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+		}
+			}
+        ?>
+        </select>
+		<input type='submit' name='studentsubmit' class='studentselect'>
+
 </div>
+<?php
+}
+}
+?>
+</div>
+</form>
+<script> 
+	$('#firstdatetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s',
+			defaultTime:'8:00', 
+            step: 5,
+         }); 
+</script>
+<script> 
+	$('#lastdatetimepicker').datetimepicker({
+            onGenerate:function( ct ){
+               jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                  .addClass('xdsoft_disabled');
+            },
+            minDate:'2014/09/08',
+            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            format:'Y-m-d H:i:s',
+			defaultTime:'15:30', 
+            step: 5,
+         }); 
+</script>
 </body>
 </html>

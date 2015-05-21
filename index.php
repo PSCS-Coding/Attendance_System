@@ -277,7 +277,6 @@ echo "</div> ";
                 }
 	?>
             </form>
-        
 	<!-- top form for change status -->
 	<div id="top_header">
 	<form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='main' >
@@ -465,7 +464,6 @@ echo "</div> ";
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
-                
         // SETTING VERIBLES FOR CONTEXTUAL COLORING //
                 
             // Get Current Time
@@ -488,10 +486,9 @@ echo "</div> ";
                 $startTime = $ttStart->format('Y-m-d H:i:s');
             // These is for making the IF statment shorter
                 $statName = $latestdata['statusname'];
-                $overtime = '$currTime > $myReturn';
-                
+                $GRtime = $currTime > $myReturn;
         // Start IF statement for contextual coloring        
-        if ($currTime > $startTime && $statName == 'Not Checked In' || $overtime && $statName == 'Offsite' || $overtime && $statName == 'Field Trip' || $overtime && $statName == 'Late' || $overtime && $statName == 'Independent Study') {
+        if ($currTime > $startTime && $statName == 'Not Checked In' || $GRtime && $statName == 'Offsite' || $GRtime && $statName == 'Field Trip' || $GRtime && $statName == 'Late' || $GRtime && $statName == 'Independent Study') {
             
                  ?>  
         

@@ -3,6 +3,14 @@
 <head>
 	<title>Edit Globals</title>
 	<?php require_once('header.php'); ?>
+    
+    	    <script type="text/javascript">
+			$(document).ready(function(){
+				$('#endtime').timepicker({ 'scrollDefaultNow': true, 'minTime': '7:00am', 'maxTime': '5:30pm', 'timeFormat': 'H:i', 'step': 5 });
+				$('#starttime').timepicker({ 'scrollDefaultNow': true, 'minTime': '7:00am', 'maxTime': '5:30pm', 'timeFormat': 'H:i', 'step': 15 });
+			});
+		</script>
+    
 </head>
 <body class="adminpage edit-globals">
 <?php
@@ -31,7 +39,7 @@ $globalsresult = $db_server->query("SELECT * FROM globals ORDER BY startdate");
                 </div>
 <div align="center" id="main">
 <div class="admintable">
-<table>
+<table class="global_table">
     
    <tr>
       <th>Start Date</th>
@@ -56,8 +64,8 @@ while ($list = mysqli_fetch_assoc($globalsresult)) { ?>
 		?> 
         <td><input type="text" name="editstartdate" id="EStartDate" value="<?php echo $adjustedstartdate->format('m-d-Y'); ?>" required size="15"></td>
 		<td><input type="text" name="editenddate" id="EEndDate" value="<?php echo $adjustedenddate->format('m-d-Y'); ?>" required size="15"></td>
-		<td><input type="text" name="starttime" value="<?php echo $list['starttime']; ?>" required size="10"></td>
-                <td><input type="text" name="endtime" value="<?php echo $list['endtime']; ?>" required size="10"></td>
+		<td><input type="text" name="starttime" id="starttime" value="<?php echo $list['starttime']; ?>" required size="10"></td>
+                <td><input type="text" name="endtime" id="endtime" value="<?php echo $list['endtime']; ?>" required size="10"></td>
 <td><input type="number" name="EditAdminTimeout" value="<?php echo $list['adminTimeout']; ?>" required min="1" max="35"></td>
 <td><input type="number" name="EditStudentTimeout" value="<?php echo $list['studentTimeout']; ?>" required min="1" max="35"></td>
 		<td><button type="submit" name="save" value="<?php echo $list['id']; ?>">Save</button></td>
