@@ -325,7 +325,7 @@ foreach($student_data_array as $event_key => $event_val) {
 ?>
 
 
-<h1 class='student_name'><?php $student_data_array[0]['firstname'] ?></h1> <!--Student name-->
+<h1 class='student_name'><?php echo $student_data_array[0]['firstname'] ?></h1> <!--Student name-->
 
 
 		<div class="timepickers">
