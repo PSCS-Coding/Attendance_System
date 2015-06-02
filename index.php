@@ -296,12 +296,12 @@ if (validTime($_POST['offtime'])){
 					array_push($fieldTripArray, $student_data_array[$i]['studentid'] . "---" . $student_data_array[$i]['info']);
 				}
 			}
-			echo "<pre>";
-			print_r($fieldTripArray); //works
-			echo "</pre>";
-			echo "<br /><pre>";
-			print_r($uniqueFacil); //works
-			echo "</pre>";
+			//echo "<pre>";
+			//print_r($fieldTripArray); //works
+			//echo "</pre>";
+			//echo "<br /><pre>";
+			//print_r($uniqueFacil); //works
+			//echo "</pre>";
 	?>
                 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='lmain' >
         		<?php
@@ -310,10 +310,12 @@ if (validTime($_POST['offtime'])){
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groucpButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
-		}
+		}	
+			if (!empty($uniqueFacil)) {
 			echo "<p style='font-weight:bold'>Field Trip Groups</p>";
 			foreach ($uniqueFacil as $sub) {
 				echo "<input class='groucpButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
+			}
 			}
 echo "</div> ";
                 }
@@ -360,7 +362,7 @@ echo "</div> ";
 				//checks the database of facilitators to ensure the dropdown menu is correctly populated by all current staff/facilitators
 				foreach ($facilitators as $facilitator_option) {
 	        ?> 
-					<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
+					<option value= '<?php echo $facilitator_option; ?>'> <?php echo $facilitator_option; ?></option>
 	        <?php
 				}
 	        ?>
@@ -612,8 +614,8 @@ echo "</div> ";
 		}
 	}
 	                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
+            	// SELECTION FOR GROUPS
+		for ($k = 0; $k < count($groupsResult); $k++) {
 			if (!empty($_POST[$groupsResult[$k]["name"]])) {
 				$ids = explode(",", $groupsResult[$k]['studentid']);
 				for ($l = 0; $l < count($ids); $l++) {
@@ -625,6 +627,21 @@ echo "</div> ";
 					}
 				}
 			}	
+		}
+		// SELECTION FOR FIELD TRIP GROUPS
+		//echo "<pre>";
+		//print_r($_POST);
+		//echo "</pre>";
+		$tempExploded = array();
+		foreach ($uniqueFacil as $sub) {
+			if (!empty($_POST[$sub])) {
+				foreach ($fieldTripArray as $child) {
+					$tempExploded = explode("---", $child);
+					if ($tempExploded[1] == $sub) {
+						echo "<script>document.getElementById(" . $tempExploded[0] . ").checked = true;</script>";
+					}
+				}
+			}
 		}
              
 	?>
