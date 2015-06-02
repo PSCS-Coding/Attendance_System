@@ -309,13 +309,13 @@ if (validTime($_POST['offtime'])){
             echo "<div class='groupsGUI'>";
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
-			echo "<input class='groucpButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
+			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
 		}	
 			if (!empty($uniqueFacil)) {
-			echo "<p style='font-weight:bold'>Field Trip Groups</p>";
-			foreach ($uniqueFacil as $sub) {
-				echo "<input class='groucpButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
-			}
+				echo "<p class='groupButton' style='font-weight:bold'>Field Trip Groups</p>";
+				foreach ($uniqueFacil as $sub) {
+					echo "<input class='groupButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
+				}
 			}
 echo "</div> ";
                 }
