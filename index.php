@@ -312,7 +312,7 @@ if (validTime($_POST['offtime'])){
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
 		}	
 			if (!empty($uniqueFacil)) {
-				echo "<p class='groupButton' style='font-weight:bold'>Field Trip Groups</p>";
+				echo "<p class='groupHeader'>Field Trip Groups</p>";
 				foreach ($uniqueFacil as $sub) {
 					echo "<input class='groupButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
 				}
