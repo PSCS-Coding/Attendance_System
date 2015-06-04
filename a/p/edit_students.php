@@ -34,8 +34,8 @@ if (isset($_POST['AddStudent'])) {
 // EDIT (UPDATE) A STUDENT
 if (isset($_POST['UpdateStudent'])) {
     $timestamp = strtotime($_POST['editstartdate']);
-    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
-    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['StudentIDS']);
+    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , middleSchool = ? , yearinschool = ? WHERE studentid = ?");
+    $stmt->bind_param('ssssiii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['midSchool'], $_POST['yearinschool'], $_POST['StudentIDS']);
     $stmt->execute(); 
     $stmt->close();
 } 
@@ -85,6 +85,7 @@ if (isset($_POST['Reactivate'])) {
       <th>Name</th>
       <th>Enrolled</th>
       <th>Advisor</th>
+      <th>MS</th>
       <th>Y</th>
 	  <th></th>
    </tr>
@@ -127,7 +128,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 			?>
 	        </select>
 		</td>
-			
+			<td><input type="number" size="10" name="midSchool" class="textbox" value="<?php echo $StuDataList['middleSchool']; ?>" required min="0" max="1">
 		<td>
 			<select name='yearinschool'>
 	        <?php
@@ -145,12 +146,12 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 		</td>
 				
 		<td>
-        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
+        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">✔</button>
         <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button>
         </td>
 		<?php } else { ?>
         
-        <td><input type="submit" class="textButton" name="edit-<?php echo $StuDataList['studentid']; ?>" value="<?php echo $fullName; ?>"></td>
+        <td><?php echo $fullName; ?></td>
         <?php
         $pretty_date = new DateTime($StuDataList['startdate']);                                                          
         ?>
@@ -162,8 +163,12 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         }
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
+        <td><?php echo $StuDataList['middleSchool']; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
-        <td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button></td>
+        <td>
+            <input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit">
+            <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button>
+        </td>
 		<?php } ?>	
 	</tr>
 	</form>
