@@ -314,17 +314,18 @@ echo "</div> ";
 	    
 			<!-- Creates the dropdown of facilitators -->
 			<select name='facilitator'><option value=''>Select Facilitator</option>
-	        <?php
+	        		<?php
 				//checks the database of facilitators to ensure the dropdown menu is correctly populated by all current staff/facilitators
 				foreach ($facilitators as $facilitator_option) {
-	        ?> 
+	        		?> 
 					<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
-	        <?php
+	        		<?php
 				}
-	        ?>
-	        </select>
-	        <input type="text" name="fttime" placeholder="Return time" id="fttime">
-	       <input class="button" type="submit" name="fieldtrip" value="Field Trip"> 
+	        		?>
+				<option name="CustomFieldTrip" value="CustomFieldTrip" style="background-color:lightgrey;">Custom</option>
+	        	</select>
+                  <input type="text" name="fttime" placeholder="Return time" id="fttime">
+	       	  <input class="button" type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
 		<div class="statusview_button">
 			<a href="statusview.php">Status View</a>
