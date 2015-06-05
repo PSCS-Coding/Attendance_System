@@ -136,7 +136,7 @@ if (validTime($_POST['offtime'])){
 	}
 	    //fieldtrip
 		if (!empty($_POST['fieldtrip'])) {
-	
+			if (empty($_POST['customtextf'])) {
 			if (!empty($_POST['facilitator'])){
 	        		$info = $_POST['facilitator'];
 				if (validTime($_POST['fttime'])){
@@ -149,8 +149,19 @@ if (validTime($_POST['offtime'])){
 			} else {
 				echo "<div class='error'>Please chose a valid facilitator.</div>";
 			}
-		}
-	
+		}/*ends custom*/ else {
+			if (!empty($_POST['facDropDownSelect']) && $_POST['facDropDownSelect'] != ''){
+	        		$info = $_POST['facDropDownSelect'];
+				if (validTime($_POST['fttime'])){
+					foreach ($name as $student){
+					changestatus($student, '3', $info, convertHours('fttime'));
+					}
+				} else {
+					echo "<div class='error'>Please enter a valid return time.</div>";
+				}
+			}
+		} 
+	}
 	//Sign out querying -- "4" refers to "Checked Out" in statusdata table
 		if (!empty($_POST['checkout'])) {
 			foreach ($name as $student) {
@@ -303,7 +314,6 @@ echo "</div> ";
 <option name="Custom" value="Custom" style="background-color:lightgrey;">Custom</option>
 </select></span>
 <span id="cdiv">
-
 </span>
 			<input type="text" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
@@ -313,7 +323,7 @@ echo "</div> ";
 			<!-- top interface fieldtrip -->
 	    
 			<!-- Creates the dropdown of facilitators -->
-			<select name='facilitator'><option value=''>Select Facilitator</option>
+			<span id="facDropDown"><select id="facDropDownSelect" name='facilitator'><option value=''>Select Facilitator</option>
 	        		<?php
 				//checks the database of facilitators to ensure the dropdown menu is correctly populated by all current staff/facilitators
 				foreach ($facilitators as $facilitator_option) {
@@ -323,7 +333,9 @@ echo "</div> ";
 				}
 	        		?>
 				<option name="CustomFieldTrip" value="CustomFieldTrip" style="background-color:lightgrey;">Custom</option>
-	        	</select>
+	        	</select></span>
+			<span id="cdivf">
+			</span>
                   <input type="text" name="fttime" placeholder="Return time" id="fttime">
 	       	  <input class="button" type="submit" name="fieldtrip" value="Field Trip"> 
 	    </div>
@@ -679,10 +691,17 @@ alert($(this).val());
 if you click on an option it gives an alert with that option*/
 $("#offlocDropdown").change(function () {
 if ($(this).val() == "Custom") {
-//alert("hola");
 //document.write("<style>#customtext { opacity:9.0; }</style>");
 document.getElementById("cdropdown").innerHTML = '';
 document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext" id="customtext" placeholder="Custom Location" list="offlocDropdown" maxlength="25" class="offloc" style="width:100px;opacity:9.0;">';
+}
+});
+
+$("#facDropDownSelect").change(function () {
+if ($(this).val() == "CustomFieldTrip") {
+//document.write("<style>#customtext { opacity:9.0; }</style>");
+document.getElementById("facDropDown").innerHTML = '';
+document.getElementById("cdivf").innerHTML = '<input type="text" name="customtextf" id="customtextf" placeholder="Custom Facilitator" list="facDropDown" maxlength="25" class="fac" style="width:120px;opacity:9.0;">';
 }
 });
     </script>
