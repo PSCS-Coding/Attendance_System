@@ -1,11 +1,11 @@
 <html>
 <head>
 	<title>View Reports</title>
-	<?php require_once('header.php'); ?>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <?php require_once('header.php'); ?>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="a/css/jquery.datetimepicker.css" />
 	<script src="a/p/js/jquery.datetimepicker.js"></script>
+
 </head>
 
 <body class="view-reports">
@@ -54,14 +54,13 @@ while ($student = $current_users_query->fetch_array()) {
 		</div>
 	</div>
 <div class='report-container'>
-
 <?php
 if (!isset($_POST['studentselect']) && (empty($_GET['id']))) {
 ?>
     Select a name from the dropdown above
 	<?php
 } //Close if statment
-//stats render
+
 //holidays array
 $holiday_data_array = array();
 $holiday_dt_array = array();
@@ -136,17 +135,6 @@ if(!empty($_POST['lastdatetimepicker'])){
 
 $student_data_array = array();
 if (isset($current_student_id)) {
-//gets stats
-$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2");
-$getStatsResult = array();
-while ($stats = $getStatsQuery->fetch_array()) {
-	array_push($getStatsResult, $stats);
-}
-//displays stats
-echo "<div class='reportdiv'>";
-echo "<div class='topdiv'>";//doesnt include detailed list of
-
-
 $student_data_array = array();
 $notfulldata = 0;
 if(!empty($_POST['statusselect'])){
@@ -172,7 +160,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
 		FROM events
-		 	JOIN statusdata ON events.statusid = statusdata.statusid
+		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
 		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
@@ -321,41 +309,8 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 	}
 }
-
-?>
-
-
-<h1 class='student_name'><?php echo $student_data_array[0]['firstname'] ?></h1> <!--Student name-->
-
-
-		<div class="timepickers">
-            <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
-		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
-		
-		<select name='statusselect'><option value=''>All Statuses</option>
-        <?php
-			foreach ($statusdata as $statusoption) {
-				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
-				$tempvar = $query->fetch_assoc();
-				$tempstatname = $tempvar['statusname'];
-				if($tempstatname != "Not Checked In"){
-			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
-			}
-		}
-        ?>
-        </select>
-		<input type='submit' name='studentsubmit' class='studentselect'>
-		</div>
-
-<?php 
-$daystillend = daysLeft(); ?>
-
-
-<div class="reported-data">
-
-
-<?php
-
+echo "<div class='reportdiv'>";
+echo "<h1 class='student_name'>" . $student_data_array[0]['firstname'] . "</h1>";
 //Offsite information echoing
 $offsiteHrs_remaining = floor($offsitehours_remaining / 60);
 $offsiteMin_remaining = $offsitehours_remaining % 60;
@@ -411,6 +366,7 @@ $offsiteHrs_used = floor(($offsitehours_used) / 60);
 $offsiteMin_used = $offsitehours_used % 60;
 
 // this uses a function from functions.php
+$daystillend = daysLeft();
 
 if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
@@ -457,101 +413,26 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 /*}*/
 }
 ?>
-</div>
-
-
-
-<div class='stats-container'>
-<h3>Offsite use</h3>
-<?php
-// CHARTS
-$uniqueLoc = array();
-$siteCount = array();
-$totalCount = 0;
-foreach ($getStatsResult as $sub) {
-	$totalCount += 1;
-	if (!in_array($sub['info'], $uniqueLoc)) {
+		<div class="timepickers">
+            <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
+		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
 		
-		array_push($uniqueLoc, $sub['info']);
-	}
-/*echo "<pre>";
-print_r($uniqueLoc);
-echo "</pre>";
-echo "<p>" . $sub['info'] . "</p>";*/
-}
+		<select name='statusselect'><option value=''>All Statuses</option>
+        <?php
+			foreach ($statusdata as $statusoption) {
+				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+				$tempvar = $query->fetch_assoc();
+				$tempstatname = $tempvar['statusname'];
+				if($tempstatname != "Not Checked In"){
+			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+			}
+		}
+        ?>
+        </select>
+		<input type='submit' name='studentsubmit' class='studentselect'>
+		</div>
 
-$siteCount = array_fill_keys($uniqueLoc, 0);
-foreach ($getStatsResult as $child) {
-	$siteCount[$child['info']] += 1;
-}
-
-/*for ($n = 0; $n < count($uniqueLoc); $n++) {
-	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
-	$count2 = $count1 * 100;
-	$count = number_format($count2, 0);	
-	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
-	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
-}*/
-if($notfulldata==false){
-?>
- <script type="text/javascript">
-
-      // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-var locCount = <?php echo count($uniqueLoc); ?>;
-/*var string = <?php echo json_encode("holaaaa"); ?>;
-var int = <?php echo json_encode(7); ?>;*/
-var d = 0;
-var insertrows = [];
-//insertrows.push(['new',4]);
-<?php 
-//echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
-for ($n = 0; $n < count($uniqueLoc); $n++) {
-echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
-}
-?>
-var rows = new Array();
-
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'name');
-        data.addColumn('number', 'times');
-        data.addRows(insertrows);
-	data.sort({column: 1, desc: true});
-	
-        // Set chart options
-        var options = {
-                       'width': '280',
-                       'height': '200',
-                       'chartArea': {'width': '300%', 'height': '80%'},
-                       'legend': {'position': 'right', 'alignment':'center'},
-			'backgroundColor':'transparent',
-			'sliceVisibilityThreshold': 2/100, // This is equivalent to 0.625 or 62.5% of the chart.
-			'pieSliceText': 'percentage',
-			};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
-
-<div id="chart_div"></div>
-</div> <!--ending stats-container div-->
-<?php } ?>
-
-</div><table class='eventlog' id="viewreports">
-
-
+<table class='eventlog' id="viewreports">
 <th>Date</th>
 <th>Time</th>
 <th>Status</th>
@@ -598,7 +479,7 @@ if($event['statusname'] == "Field Trip"){
 	$stringdisplay = "at ";
 }
 	
-	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out" && $event['statusname'] != "Absent"){
+	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out"){
 		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
 		<?php 
 			} else {
