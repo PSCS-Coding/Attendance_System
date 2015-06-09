@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 	<html>
 	<head>
+<script src='https://www.google.com/recaptcha/api.js'></script>
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
 
@@ -150,8 +151,9 @@ if (validTime($_POST['offtime'])){
 				echo "<div class='error'>Please chose a valid facilitator.</div>";
 			}
 		}/*ends custom*/ else {
-			if (!empty($_POST['facDropDownSelect']) && $_POST['facDropDownSelect'] != ''){
-	        		$info = $_POST['facDropDownSelect'];
+			//echo "<span style='font-size:40px'>" . $_POST['customtextf'] . "</span>";
+			//if (!empty($_POST['facDropDownSelect']) && $_POST['facDropDownSelect'] != ''){
+	        		$info = $_POST['customtextf'];
 				if (validTime($_POST['fttime'])){
 					foreach ($name as $student){
 					changestatus($student, '3', $info, convertHours('fttime'));
@@ -159,7 +161,7 @@ if (validTime($_POST['offtime'])){
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			}
+			//}
 		} 
 	}
 	//Sign out querying -- "4" refers to "Checked Out" in statusdata table
