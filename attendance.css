@@ -481,7 +481,7 @@ div.report-container {
 }
 
 .timepickers input {
-    width: 90px;
+    width: 100px;
 }
 
 .timepickers2 {
@@ -536,6 +536,24 @@ width:100%;
 .ui-timepicker-input {
     width: 80px;
 }
+
+/* View reports charts */
+.reported-data {
+	width: 50%;
+	display: inline-block;
+	padding-right: 5%;
+}
+.stats-container {
+	width: 44%;
+	display: inline-block;
+	vertical-align: top;
+}
+.stats-container h3 {
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+}
+
 
 tr.Status_Red:nth-child(even) {
     background-color:rgb(249, 179, 179);

@@ -82,8 +82,8 @@ if ($AdminLogin == 1) {
     <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
     <link rel="stylesheet" type="text/css" href="attendance.css">
 </head>
-
 <style>
+    
     #loginform {
 	text-align: center;
 	margin-top: 3em;
@@ -134,6 +134,10 @@ if ($AdminLogin == 1) {
 	color: gray;
     }
 </style>
+    <link rel="stylesheet" type="text/css" href="mobile.css"/>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+</head>
+
 
 <body style="background-color: dimgray;">
     

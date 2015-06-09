@@ -276,7 +276,46 @@ if (validTime($_POST['offtime'])){
        <?php } else { ?>
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
-        
+         <?php
+		$studentcount = 0;
+		$student_data_array = array();
+			//loops through current students
+				while ($current_student_id = $current_users_result->fetch_assoc()) {
+					//fetches most recent data from the events table
+					//joins with the tables that key student names/status names to the ids in the events table
+					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
+										 FROM events 
+										 JOIN statusdata ON events.statusid = statusdata.statusid
+										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
+										 WHERE studentdata.studentid = $current_student_id[studentid] 
+										 ORDER BY timestamp DESC
+										 LIMIT 1")
+										 or die(mysqli_error($db_server));
+					$result_array = $result->fetch_assoc();
+					//pushed each individual student's data into an array				
+					array_push($student_data_array, $result_array);
+					$studentcount ++;
+				}
+			/*echo "<pre>";
+			print_r($student_data_array);
+			echo "</pre>";*/
+			$fieldTripArray = array();
+			$uniqueFacil = array();
+			for ($i = 0; $i <= count($student_data_array); $i++) {
+				if ($student_data_array[$i]['statusname'] == "Field Trip") {
+					if (!in_array($student_data_array[$i]['info'], $uniqueFacil)) {
+						array_push($uniqueFacil, $student_data_array[$i]['info']);
+					}
+					array_push($fieldTripArray, $student_data_array[$i]['studentid'] . "---" . $student_data_array[$i]['info']);
+				}
+			}
+			//echo "<pre>";
+			//print_r($fieldTripArray); //works
+			//echo "</pre>";
+			//echo "<br /><pre>";
+			//print_r($uniqueFacil); //works
+			//echo "</pre>";
+	?>
                 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='lmain' >
         		<?php
             if (!empty($groupsResult)) {
@@ -284,8 +323,13 @@ if (validTime($_POST['offtime'])){
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
-              
-		}
+		}	
+			if (!empty($uniqueFacil)) {
+				echo "<p class='groupHeader'>Field Trip Groups</p>";
+				foreach ($uniqueFacil as $sub) {
+					echo "<input class='groupButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
+				}
+			}
 echo "</div> ";
                 }
 	?>
@@ -364,7 +408,7 @@ echo "</div> ";
 	<script>
 		$(document).ready(function() {
 			$(window).resize(function() {
-				if($(window).width() < 1020) {
+				if($(window).width() < 1020 && $(window).width() > 500) {
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
@@ -378,9 +422,17 @@ echo "</div> ";
 					$("#present_button").prop('value', 'Present');
 					$("#present_button").css('width', '60px');
 				}
+				
+				if ($(window).width() < 480) {
+				    $("#latebutton").prop('value', 'L');
+				}
+				else {
+				    $('#latebutton').prop('value', 'Late');
+				}
+				
 			});
 			
-			if($(window).width() < 1020) {
+			if($(window).width() < 1020 && $(window).width() > 500) {
 				$('.viewreports_button a').text('Reports');
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
@@ -394,9 +446,20 @@ echo "</div> ";
 				$("#present_button").prop('value', 'Present');
 				$("#present_button").css('width', '60px');
 			}
+			
+			if ($(window).width() < 480) {
+			$("#latebutton").prop('value', 'L');
+		    }
+		    else {
+			$('#latebutton').prop('value', 'Late');
+		    }
+
 		});
 	</script>
+        
+        
 	
+        
 	<!-- student information table rendering -->
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
@@ -404,29 +467,14 @@ echo "</div> ";
 	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
-			<th></th>
+			<th class='blank_col'></th>
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 			
 	    </tr>
-	    <?php
-		$student_data_array = array();
-			//loops through current students
-				while ($current_student_id = $current_users_result->fetch_assoc()) {
-					//fetches most recent data from the events table
-					//joins with the tables that key student names/status names to the ids in the events table
-					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
-										 FROM events 
-										 JOIN statusdata ON events.statusid = statusdata.statusid
-										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-										 WHERE studentdata.studentid = $current_student_id[studentid] 
-										 ORDER BY timestamp DESC
-										 LIMIT 1") 
-										 or die(mysqli_error($db_server));
-					$result_array = $result->fetch_assoc();
-					//pushed each individual students data into an array				
-					array_push($student_data_array, $result_array);
-				}
-					
+	   <?php
+	//echo "<br /><br />";
+	//print_r($currFieldTrips);
+
 	//checks how the table should be sorted. Default is alphabetically by student
 	if (isset($_GET['sortBy'])) {
 		if ($_GET['sortBy'] == 'status')	{
@@ -569,7 +617,7 @@ echo "</div> ";
 						?>
 						<!-- Late button with time input next to it -->
                             <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input class="tablebutton" type='submit' value='Late' name='Late' class='l_button'>
+							<input class="tablebutton" id="latebutton" type='submit' value='Late' name='Late' class='l_button'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
                                 </form>
@@ -600,8 +648,8 @@ echo "</div> ";
 		}
 	}
 	                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
+            	// SELECTION FOR GROUPS
+		for ($k = 0; $k < count($groupsResult); $k++) {
 			if (!empty($_POST[$groupsResult[$k]["name"]])) {
 				$ids = explode(",", $groupsResult[$k]['studentid']);
 				for ($l = 0; $l < count($ids); $l++) {
@@ -613,6 +661,21 @@ echo "</div> ";
 					}
 				}
 			}	
+		}
+		// SELECTION FOR FIELD TRIP GROUPS
+		//echo "<pre>";
+		//print_r($_POST);
+		//echo "</pre>";
+		$tempExploded = array();
+		foreach ($uniqueFacil as $sub) {
+			if (!empty($_POST[$sub])) {
+				foreach ($fieldTripArray as $child) {
+					$tempExploded = explode("---", $child);
+					if ($tempExploded[1] == $sub) {
+						echo "<script>document.getElementById(" . $tempExploded[0] . ").checked = true;</script>";
+					}
+				}
+			}
 		}
              
 	?>
@@ -706,6 +769,56 @@ document.getElementById("facDropDown").innerHTML = '';
 document.getElementById("cdivf").innerHTML = '<input type="text" name="customtextf" id="customtextf" placeholder="Custom Facilitator" list="facDropDown" maxlength="25" class="fac" style="width:120px;opacity:9.0;">';
 }
 });
+    </script>
+
+
+
+<script type="text/javascript">
+
+  // Original JavaScript code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.
+
+  function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+    
+    function del_cookie(name) {
+        document.cookie = name +
+        '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    }
+
+</script>
+
+<!--
+    <script>
+        if(getCookie("id") >= 0) {
+            confirm("Hello " + getCookie("name"));
+            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
+
+    </script>
+-->
+        
+    <script>
+        
+        var userset = false;
+        
+        if(getCookie('name') != 'null') {
+            userset = true;
+        }
+        
+//        alert(document.referrer);
+        
+        if (document.referrer.indexOf('user') >= 0) {
+            userset = false;
+        }
+        
+        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
+           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
+        }
     </script>
 	
 	</body>
