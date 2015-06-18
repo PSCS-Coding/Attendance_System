@@ -56,6 +56,18 @@ background-attachment: fixed;
     opacity: 0.8;
     color: #4C4C4C;
 }
+adminHead {
+    position: fixed;
+    top: 0%;
+    left: 20.4%;
+    width: 100%;
+    height: 9%;
+    opacity: 0.8;
+    z-index: 5;
+border-right: 5px solid black;
+background-color: #616161;
+    text-align: center;
+}
 .options {
     padding: 25px 15px 25px 15px;
     background-color: gray;
@@ -265,9 +277,10 @@ padding-bottom: 0%;
  text-align: left;
  margin-left: 5%;
  font-family: "Verdana";
- color: gray;
+ color: gray!important;
  padding-bottom: 5%;
  cursor:default;
+ text-decoration: none!important;
 }
 #navigation #break {
 height:1.3%;
