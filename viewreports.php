@@ -415,11 +415,10 @@ $offsiteMin_used = $offsitehours_used % 60;
 if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
+echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 } else {
 echo "<p class='reporttext'> The school year has ended.</p>";
 }
-
-echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
