@@ -86,7 +86,7 @@ if (isset($_POST['Reactivate'])) {
       <th>Enrolled</th>
       <th>Advisor</th>
       <th>Y</th>
-	  <th></th>
+	  <th>Modify</th>
    </tr>
 <?php
 // loop through list of names 
@@ -146,11 +146,11 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 				
 		<td>
         <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
-        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button>
+        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
         </td>
 		<?php } else { ?>
         
-        <td><input type="submit" class="textButton" name="edit-<?php echo $StuDataList['studentid']; ?>" value="<?php echo $fullName; ?>"></td>
+        <td><?php echo $fullName; ?></td>
         <?php
         $pretty_date = new DateTime($StuDataList['startdate']);                                                          
         ?>
@@ -163,7 +163,9 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
-        <td><button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">X</button></td>
+        <td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edt">
+            <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
+        </td>
 		<?php } ?>	
 	</tr>
 	</form>
