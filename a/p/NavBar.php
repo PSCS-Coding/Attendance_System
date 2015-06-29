@@ -1,6 +1,7 @@
         <div id="navigation">
             <h1 class="header">Admin View</h1>
             <a href="../../" class="option">Back to Main Page</a>
+            <a href="#" class="option disabled">General Info (Coming Soon)</a>
             <a href="edit_students.php" class="option">Students</a>
             <a href="edit_facilitators.php" class="option">Facilitators</a>
             <a href="edit_allottedhours.php" class="option">Allotted Hours</a>
@@ -11,5 +12,5 @@
             <a href="edit_groups.php" class="option">Groups</a>
             <a href="offsite_stats.php" class="option">Offsite Stats</a>
             <a href="miscellaneous.php" class="option">Miscellaneous</a>
-            <a href="example.php" class="option disabled">Beta</a>
+            <a href="example.php" class="option disabled">IN DEVELOPMENT</a>
                     </div>
