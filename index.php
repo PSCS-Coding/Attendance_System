@@ -263,7 +263,46 @@ if (validTime($_POST['offtime'])){
        <?php } else { ?>
         <div class='COTimer COTgood'>Current Time: <?php echo date('g:i a'); ?></div>
         <?php } }?>
-        
+         <?php
+		$studentcount = 0;
+		$student_data_array = array();
+			//loops through current students
+				while ($current_student_id = $current_users_result->fetch_assoc()) {
+					//fetches most recent data from the events table
+					//joins with the tables that key student names/status names to the ids in the events table
+					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
+										 FROM events 
+										 JOIN statusdata ON events.statusid = statusdata.statusid
+										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
+										 WHERE studentdata.studentid = $current_student_id[studentid] 
+										 ORDER BY timestamp DESC
+										 LIMIT 1")
+										 or die(mysqli_error($db_server));
+					$result_array = $result->fetch_assoc();
+					//pushed each individual student's data into an array				
+					array_push($student_data_array, $result_array);
+					$studentcount ++;
+				}
+			/*echo "<pre>";
+			print_r($student_data_array);
+			echo "</pre>";*/
+			$fieldTripArray = array();
+			$uniqueFacil = array();
+			for ($i = 0; $i <= count($student_data_array); $i++) {
+				if ($student_data_array[$i]['statusname'] == "Field Trip") {
+					if (!in_array($student_data_array[$i]['info'], $uniqueFacil)) {
+						array_push($uniqueFacil, $student_data_array[$i]['info']);
+					}
+					array_push($fieldTripArray, $student_data_array[$i]['studentid'] . "---" . $student_data_array[$i]['info']);
+				}
+			}
+			//echo "<pre>";
+			//print_r($fieldTripArray); //works
+			//echo "</pre>";
+			//echo "<br /><pre>";
+			//print_r($uniqueFacil); //works
+			//echo "</pre>";
+	?>
                 <form method='post' action='<?php echo basename($_SERVER['PHP_SELF']); ?>' id='lmain' >
         		<?php
             if (!empty($groupsResult)) {
@@ -271,8 +310,13 @@ if (validTime($_POST['offtime'])){
             echo "<h1 class='groupHeader'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
-              
-		}
+		}	
+			if (!empty($uniqueFacil)) {
+				echo "<p class='groupHeader'>Field Trip Groups</p>";
+				foreach ($uniqueFacil as $sub) {
+					echo "<input class='groupButton' type='submit' name='" . $sub . "' value = '" . $sub . "'><br />";
+				}
+			}
 echo "</div> ";
                 }
 	?>
@@ -318,7 +362,7 @@ echo "</div> ";
 				//checks the database of facilitators to ensure the dropdown menu is correctly populated by all current staff/facilitators
 				foreach ($facilitators as $facilitator_option) {
 	        ?> 
-					<option value= '<?php echo $facilitator_option; ?> '> <?php echo $facilitator_option; ?></option>
+					<option value= '<?php echo $facilitator_option; ?>'> <?php echo $facilitator_option; ?></option>
 	        <?php
 				}
 	        ?>
@@ -412,25 +456,10 @@ echo "</div> ";
 	        <th class='status_col' id='status_header'><a href="index.php?<?php echo $getvar_sort_status; ?>">Status</a></th>
 			
 	    </tr>
-	    <?php
-		$student_data_array = array();
-			//loops through current students
-				while ($current_student_id = $current_users_result->fetch_assoc()) {
-					//fetches most recent data from the events table
-					//joins with the tables that key student names/status names to the ids in the events table
-					$result = $db_server->query("SELECT firstname,lastname,statusname,studentdata.studentid,info,timestamp,returntime
-										 FROM events 
-										 JOIN statusdata ON events.statusid = statusdata.statusid
-										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-										 WHERE studentdata.studentid = $current_student_id[studentid] 
-										 ORDER BY timestamp DESC
-										 LIMIT 1") 
-										 or die(mysqli_error($db_server));
-					$result_array = $result->fetch_assoc();
-					//pushed each individual students data into an array				
-					array_push($student_data_array, $result_array);
-				}
-					
+	   <?php
+	//echo "<br /><br />";
+	//print_r($currFieldTrips);
+
 	//checks how the table should be sorted. Default is alphabetically by student
 	if (isset($_GET['sortBy'])) {
 		if ($_GET['sortBy'] == 'status')	{
@@ -604,8 +633,8 @@ echo "</div> ";
 		}
 	}
 	                
-            // SELECTION FOR GROUPS
-						for ($k = 0; $k < count($groupsResult); $k++) {
+            	// SELECTION FOR GROUPS
+		for ($k = 0; $k < count($groupsResult); $k++) {
 			if (!empty($_POST[$groupsResult[$k]["name"]])) {
 				$ids = explode(",", $groupsResult[$k]['studentid']);
 				for ($l = 0; $l < count($ids); $l++) {
@@ -617,6 +646,21 @@ echo "</div> ";
 					}
 				}
 			}	
+		}
+		// SELECTION FOR FIELD TRIP GROUPS
+		//echo "<pre>";
+		//print_r($_POST);
+		//echo "</pre>";
+		$tempExploded = array();
+		foreach ($uniqueFacil as $sub) {
+			if (!empty($_POST[$sub])) {
+				foreach ($fieldTripArray as $child) {
+					$tempExploded = explode("---", $child);
+					if ($tempExploded[1] == $sub) {
+						echo "<script>document.getElementById(" . $tempExploded[0] . ").checked = true;</script>";
+					}
+				}
+			}
 		}
              
 	?>
