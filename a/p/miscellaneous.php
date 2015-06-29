@@ -81,8 +81,10 @@ while ($offlocList = mysqli_fetch_assoc($offlocResult)) { ?>
             </tr>
 		<?php } else { ?>
                     <!-- Displays when you first load the page (Static Text) -->    
-        <td><input type="submit" class="textButton" name="EditOffloc-<?php echo $offlocList['id']; ?>" value="<?php echo $offlocList['place']; ?>"></td>
-    <td><button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
+    <td><?php echo $offlocList['place']; ?></td>
+    <td>
+        <input type="submit" name="EditOffloc-<?php echo $offlocList['id']; ?>" value="Edt">
+        <button type="submit" name="deleteLocation" value="<?php echo $offlocList['place']; ?>">Delete</button></td>
             
                 <?php } ?>
 	</tr>
