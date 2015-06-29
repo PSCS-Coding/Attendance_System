@@ -5,6 +5,14 @@ require_once('../../login.php'); ?>
 <head>
 	<title>Example Page - Facilitators</title>
 	<?php require_once('header.php'); ?>
+    	<script>
+	$(function () {
+		$('nav li ul').hide().removeClass('fallback');
+		$('nav li').hover(function () {
+			$('ul', this).stop().slideToggle(200);
+		});
+	});
+	</script>
 </head>
     
 <!--
@@ -60,7 +68,22 @@ $results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER B
         // PRINTS YEAR IN SCHOOL
         print '<td>'.$row["yearinschool"].'</td>';
         // PRINTS OPTIONS BUTTON
-        print '<td><input type="submit" name="bOptions" value="???" disabled></td>';
+        print '<td>	<div class="wrapper">
+		<div id="main">
+			<nav>
+				<ul>
+					<li>
+						<a href="#">&nabla;</a>
+						<ul class="fallback">
+							<li><a href="#">Update Info</a></li>
+							<li><a href="#">Delete</a></li>
+							<li><a href="#">(DEV)</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div></td>';
         // END OF TABLE ROW
         print '</tr>';
 }  
@@ -73,7 +96,6 @@ $mysqli->close();
     ?>
     
 </table>
-    
     </div>
 </body>
 </html>

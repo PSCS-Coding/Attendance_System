@@ -252,9 +252,6 @@ color: rgb(224, 224, 224);
 font-family: "Verdana";
 font-size: 0.8em;
 }
-td:nth-child(last) {
-border-bottom: 0em solid;   
-}
 td, th {
     padding: 5px 7px;
 }
@@ -401,4 +398,45 @@ body .edit-events {
   padding: 6px;
   padding-right: 24%;
   font-size: 1.5em;
+}
+nav {
+    float:left;
+}
+nav ul {
+    text-align:center;
+}
+nav ul li {
+    float:left;
+    display:inline;
+}
+nav ul li:hover {
+    color:#E6E6E6;
+}
+nav ul li a {
+    display:block;
+    color:rgb(224, 224, 224);
+}
+nav ul li ul {
+    position:absolute;
+    width:110px;
+    background:#FFF;
+}
+nav ul li ul li {
+    margin:0;
+    padding:0;
+    width:110px;
+}
+nav ul li ul li a {
+    display:block;
+    padding:15px 10px;
+    color:#444;
+}
+nav ul li ul li:hover a {
+    background:#F7F7F7;
+}
+nav ul li ul.fallback {
+    display:none;
+}
+nav ul li:hover ul.fallback {
+    display:block;
 }
