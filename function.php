@@ -1,4 +1,5 @@
 <?php
+include_once('textpath.php');
 date_default_timezone_set('America/Los_Angeles');
 //changestatus inserts name, status and any comment associated into the studentInfo database
 function changestatus($f_id, $f_status, $f_info, $f_returntime)
@@ -6,7 +7,11 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     global $db_server;
     $result = $db_server->query("SELECT timestamp FROM events WHERE studentid='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $rowdata = $result->fetch_array(MYSQLI_BOTH);
-    $f_info = strip_tags($f_info);
+    if (strpos($f_info,"src='img/text/") !== false) {
+    //DO NOTHING
+    } else {
+    $f_info = strip_tags($f_info);    
+    }
     $last = new DateTime($rowdata['timestamp']);
     $now = new DateTime();
     $lastdate = $last->format('Y-m-d');
@@ -580,6 +585,21 @@ function convertHours($whichfield)
         
     }
     
+}
+
+function textMagic($coolText)
+{    
+include_once('textpath.php');
+    
+if (!empty($_POST[$coolText])) {
+global $keywords;
+global $replacewords;
+$magicPost = $_POST[$coolText];
+print_r($magicPost);
+$newphrase = str_replace($keywords, $replacewords, $magicPost);
+return $newphrase;
+    
+}
 }
 
 ?>
