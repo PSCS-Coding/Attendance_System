@@ -245,7 +245,7 @@ background: dimgray;
 }
 td {
 border-bottom: 0.2em solid rgb(124, 124, 124);
-background-color: #616161;
+background-color: #575555;
 color: rgb(224, 224, 224);
 font-family: "Verdana";
 font-size: 0.8em;
@@ -458,6 +458,7 @@ border: 0.1em solid black;
 color: rgb(224, 224, 224);
 height: 1.7em;
 font-size: 1em;
+text-align: center;
 }
 .textcenter {
 text-align: center;
