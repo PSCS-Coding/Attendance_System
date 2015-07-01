@@ -188,15 +188,19 @@ $query_results->free();
 ?>
 
 <!-- CLOSE FOR MAIN TABLE -->
-
 </table>
+    
+<!-- OPENING FOR DELETED STUDETS TABLE -->
     <table class="center tabletwo">
+        
     <th>First</th>
     <th>Last</th>
     <th>Enrolled</th>
     <th class="textcenter">Revive</th>
+        
     <?php
 
+// QUERY FOR DELETED STUDENTS
 $d_query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '0' ORDER BY firstname");
 
 // PUTTING SQL RESULTS INTO AN ARRAY
@@ -204,7 +208,6 @@ while($d_row = $d_query_results->fetch_array()) {
     
         // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
             $d_new_date_format = new DateTime($d_row['startdate']);
-    
         // MAKING FORM
             print '<form action="example.php" method="POST">';
         // PRINTING TABLE ROW
