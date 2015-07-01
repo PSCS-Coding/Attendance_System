@@ -226,7 +226,11 @@ width: 50%;
 opacity: 0.85;
 margin-top: 5em;
 margin-left: 17em;
+align-content: center;
 }
+table.center {
+    margin-left:35%;
+  }
 th {
  text-align:left;
  font-family: "Verdana";

@@ -1,45 +1,66 @@
 <?php
 $admin = 1;
-require_once('../../login.php'); ?>
+require_once('../../login.php');
+/////////////////////////////////////////////
+//                                         //
+//         CREATED BY ANTHONY REYES        //
+//       Puget Sound Community School      //
+//                                         //
+/////////////////////////////////////////////
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Example Page - Facilitators</title>
 	<?php require_once('header.php'); ?>
 </head>
     
-<!--
-Refrences:
-B = Button
-NN = New Name
-Y - Year in school
--->
-    
 <body class="admin">
-                            <div id="TopHeader"><h1>Example Page</h1></div>
-    <div align="center">
+    
+    <!-- HEADER BAR -->
+    <div id="TopHeader"><h1>Example Page</h1></div>
+    
+    <div align="scenter">
 <?php
+
+// In-Code Refrences:
+// B = Button
+// NN = New Name
+// Y - Year in school
+// U - Update
+// NN - New Name
+
 //MySqli Select Query
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY studentid");
 
-if (!empty($_POST['Update'])) {
-$mydesc = 'The best person';
-echo $_POST['sid'];
-$query = "UPDATE studentdata SET studentdesc=? WHERE studentid = ?";
+if (!empty($_POST['Save'])) {
+    
+// DEFINING POST VARIABLES
+$u_first = $_POST['U_firstname'];
+$u_last = $_POST['U_lastname'];
+$u_enrolled = $_POST['U_enrolled'];
+$u_advisor = $_POST['U_advisor'];
+$u_yis = $_POST['U_yis'];
+$find_id = $_POST['sid'];
+
+// QUERY DEFINING WHAT TO UPDATE
+$query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
+    
+// PREPARE STATEMENT    
 $statement = $mysqli->prepare($query);
 
-//bind parameters for markers, where (s = string, i = integer, d = double,  b = blob)
-$results =  $statement->bind_param('si', $mydesc, $_POST['sid']);
+//BIND parameters for markers
+$results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
 
-if($results){
-    print 'Success! record updated (Updated: '.$mydesc.')'; 
-}else{
-    print 'Error : ('. $mysqli->errno .') '. $mysqli->error;
-}
+// PRINTING SUSSESS OR ERROR
+if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
+
+// CLOSING ORIGIN IF STATEMENT
 }
 
 ?>
         
-<table style="width: 50%;">
+<table class="center">
     <th>Name</th>
     <th>Enrolled</th>
     <th>Advisor</th>
@@ -101,11 +122,11 @@ while($row = $query_results->fetch_array()) {
             <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
             </td>';
         // PRINTS ENROLLED YEAR
-            print '<td><input type="text" class="aTextField" size="10" name="U_startdate" value="'.$row["startdate"].'"></td>';
+            print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
         // PRINTS ADVISOR
-            print '<td>'.$row["advisor"].'</td>';
+            print '<td><input type="text" class="aTextField" size="5" name="U_advisor" value="'.$row["advisor"].'"></td>';
         // PRINTS YEAR IN SCHOOL
-            print '<td>'.$row["yearinschool"].'</td>';
+            print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
         // UPDATE BUTTON
             print '
             <td>
