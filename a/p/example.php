@@ -85,7 +85,7 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
     <th>Enrolled</th>
     <th>Advisor</th>
     <th>Y</th>
-    <th>Options</th>
+    <th class="textcenter">Options</th>
 
 <?php
 
@@ -122,7 +122,7 @@ while($row = $query_results->fetch_array()) {
             print '<td>'.$row["yearinschool"].'</td>';
         // PRINTS UPDATE BUTTON
             print '
-            <td>
+            <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Update'.$row["studentid"].'" value="Update">
                 <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
@@ -147,12 +147,12 @@ while($row = $query_results->fetch_array()) {
         // PRINTS ENROLLED YEAR AS TEXTBOX
             print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
         // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
-            print '<td><input type="text" class="aTextField" size="5" name="U_advisor" value="'.$row["advisor"].'"></td>';
+            print '<td><input type="text" class="aTextField" size="7" name="U_advisor" value="'.$row["advisor"].'"></td>';
         // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
             print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
         // UPDATE BUTTON
             print '
-            <td>
+            <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Save" value="Save">
                 <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';

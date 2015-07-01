@@ -92,11 +92,11 @@ background-color: #414040;
     left: 20%;
     font-weight: 900;
 }
-#TopHeader.Error {
- background-color: #FF5A5A;
+.error {
+ background-color: #FF5A5A !important;
 }
-#TopHeader.Sussess {
- background-color: #5CE27C;
+.success {
+ background-color: #5CE27C !important;
 }
 .options {
     padding: 25px 15px 25px 15px;
@@ -455,4 +455,7 @@ border: 0.1em solid black;
 color: rgb(224, 224, 224);
 height: 1.7em;
 font-size: 1em;
+}
+.textcenter {
+text-align: center;
 }
