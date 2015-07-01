@@ -90,7 +90,6 @@ $student_id = $_POST['sid'];
 
 //MYSQLI UPDATE(REMOVE) QUERY
 $results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
-
 }
 
 ?>
