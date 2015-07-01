@@ -11,7 +11,7 @@ require_once('../../login.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example Page - Facilitators</title>
+	<title>Example Page - Students</title>
 	<?php require_once('header.php'); ?>
 </head>
     
@@ -29,8 +29,27 @@ require_once('../../login.php');
 // U - Update
 // NN - New Name
 
-//MySqli Select Query
+//MYSQLI SELECT QUERY
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY studentid");
+
+/////// INSERT FUNCTION //////////
+// CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['addnew'])) {
+    
+//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
+$first_name = '"'.$mysqli->real_escape_string('-Example').'"';
+$last_name = '"'.$mysqli->real_escape_string('Person').'"';
+$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
+$advisor = '"'.$mysqli->real_escape_string('Nic').'"';
+
+//QUERY DEFINING WHAT TO INSERT
+$insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
+
+// SUCCESS/ERROR MESSAGES
+if($insert_row){print 'Success!'; }else{die('Error : ('. $mysqli->errno .') '. $mysqli->error);}
+
+// CLOSING FOR ORIGIN IF STATEMENT
+}
 
 // CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {

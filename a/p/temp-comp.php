@@ -16,24 +16,3 @@ if($results){
 }  
 
 }
-
-/////// INSERT FUNCTION //////////
-if (!empty($_POST['addnew'])) {
-    
-//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
-$first_name = '"'.$mysqli->real_escape_string('AAron').'"';
-$last_name = '"'.$mysqli->real_escape_string('Astion').'"';
-$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
-$advisor = '"'.$mysqli->real_escape_string('2009-09-01').'"';
-
-    
-//MySqli Insert Query
-$insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
-
-if($insert_row){
-    print 'Success! ID of last inserted record is : ' .$mysqli->insert_id .'<br />'; 
-}else{
-    die('Error : ('. $mysqli->errno .') '. $mysqli->error);
-}
-    
-}
