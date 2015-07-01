@@ -5,14 +5,6 @@ require_once('../../login.php'); ?>
 <head>
 	<title>Example Page - Facilitators</title>
 	<?php require_once('header.php'); ?>
-    	<script>
-	$(function () {
-		$('nav li ul').hide().removeClass('fallback');
-		$('nav li').hover(function () {
-			$('ul', this).stop().slideToggle(200);
-		});
-	});
-	</script>
 </head>
     
 <!--
@@ -42,7 +34,7 @@ if($results){
     print 'Success! record updated (Updated: '.$mydesc.')'; 
 }else{
     print 'Error : ('. $mysqli->errno .') '. $mysqli->error;
-}      
+}
 }
 
 ?>
@@ -66,6 +58,10 @@ while($row = $query_results->fetch_array()) {
         // MAKING ENROLLED DATE LOOK NICE
             $new_date_format = new DateTime($row['startdate']);
         
+        // IF STATEMENT FOR UPDATING
+    $editMode = "Update" . $row['studentid'];
+    if (empty($_POST[$editMode])) {
+    
         // PRINTING PLAIN DATA
             print '<tr>';
         // MAKING FORM
@@ -77,13 +73,13 @@ while($row = $query_results->fetch_array()) {
         // PRINTS ENROLLED YEAR
             print '<td>'.$new_date_format->format('M, Y').'</td>';
         // PRINTS ADVISOR
-            print '<td>'."N.A.".'</td>';
+            print '<td>'.$row["advisor"].'</td>';
         // PRINTS YEAR IN SCHOOL
             print '<td>'.$row["yearinschool"].'</td>';
         // UPDATE BUTTON
             print '
             <td>
-                <input type="submit" class="adminbtn" name="Update" value="Update">
+                <input type="submit" class="adminbtn" name="Update'.$row["studentid"].'" value="Update">
                 <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
         // CLOSE FORM
@@ -91,13 +87,44 @@ while($row = $query_results->fetch_array()) {
         // END OF TABLE ROW
             print '</tr>';
 
-}   
-
+    } else {
+        
+        // PRINTING PLAIN DATA
+            print '<tr>';
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
+        // PRINTS FIRST & LAST NAME
+            print '<td>
+            <input type="text" class="aTextField" size="10" name="U_firstname" value="'.$row["firstname"].'">   
+            <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
+            </td>';
+        // PRINTS ENROLLED YEAR
+            print '<td><input type="text" class="aTextField" size="10" name="U_startdate" value="'.$row["startdate"].'"></td>';
+        // PRINTS ADVISOR
+            print '<td>'.$row["advisor"].'</td>';
+        // PRINTS YEAR IN SCHOOL
+            print '<td>'.$row["yearinschool"].'</td>';
+        // UPDATE BUTTON
+            print '
+            <td>
+                <input type="submit" class="adminbtn" name="Save" value="Save">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // CLOSE FORM
+            print '</form>';
+        // END OF TABLE ROW
+            print '</tr>';
+    
+    
+}
+}
 
 // Frees the memory associated with a result
 $query_results->free();
 
-// close connection 
+// close connection
 $mysqli->close();
 
 ?>

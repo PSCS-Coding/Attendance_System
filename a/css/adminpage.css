@@ -445,3 +445,10 @@ nav ul li:hover ul.fallback {
   background: #5a5b5c;
   text-decoration: none;
 }
+.aTextField {
+background: #474747;
+border: 0.1em solid black;
+color: rgb(224, 224, 224);
+height: 1.7em;
+font-size: 1em;
+}
