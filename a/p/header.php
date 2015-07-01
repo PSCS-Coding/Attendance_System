@@ -13,5 +13,13 @@ require_once('NavBar.php');
 	 require_once("../../connection.php");
 	 require_once("../../function.php");
 
+//Open a new connection to the MySQL server
+$mysqli = new mysqli('localhost','root','root','pscsorg_attendance');
+
+//Output any connection error
+if ($mysqli->connect_error) {
+    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+}
+
 ?>
 

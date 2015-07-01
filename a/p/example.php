@@ -26,20 +26,28 @@ Y - Year in school
                             <div id="TopHeader"><h1>Example Page</h1></div>
     <div align="center">
 <?php
-//Open a new connection to the MySQL server
-$mysqli = new mysqli('localhost','root','root','pscsorg_attendance');
+//MySqli Select Query
+$query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY studentid");
 
-//Output any connection error
-if ($mysqli->connect_error) {
-    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+if (!empty($_POST['Update'])) {
+$mydesc = 'The best person';
+echo $_POST['sid'];
+$query = "UPDATE studentdata SET studentdesc=? WHERE studentid = ?";
+$statement = $mysqli->prepare($query);
+
+//bind parameters for markers, where (s = string, i = integer, d = double,  b = blob)
+$results =  $statement->bind_param('si', $mydesc, $_POST['sid']);
+
+if($results){
+    print 'Success! record updated (Updated: '.$mydesc.')'; 
+}else{
+    print 'Error : ('. $mysqli->errno .') '. $mysqli->error;
+}      
 }
 
-//MySqli Select Query
-$results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
-
 ?>
+        
 <table style="width: 50%;">
-    
     <th>Name</th>
     <th>Enrolled</th>
     <th>Advisor</th>
@@ -47,8 +55,9 @@ $results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER B
     <th>Options</th>
 
 <?php
-    while($row = $results->fetch_assoc()) {
-    
+
+while($row = $query_results->fetch_array()) {
+
         // CONVERTS FIRST & LAST NAME INTO 1 VAR
             $NN_first = $row["firstname"];
             $NN_last = substr($row["lastname"], 0, 1);
@@ -56,45 +65,42 @@ $results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER B
     
         // MAKING ENROLLED DATE LOOK NICE
             $new_date_format = new DateTime($row['startdate']);
-    
+        
         // PRINTING PLAIN DATA
-        print '<tr>';
+            print '<tr>';
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
         // PRINTS FULL NAME
-        print '<td>'.$NN_full.'</td>';
+            print '<td>'.$NN_full.'</td>';
         // PRINTS ENROLLED YEAR
-        print '<td>'.$new_date_format->format('M, Y').'</td>';
+            print '<td>'.$new_date_format->format('M, Y').'</td>';
         // PRINTS ADVISOR
-        print '<td>'."N.A.".'</td>';
+            print '<td>'."N.A.".'</td>';
         // PRINTS YEAR IN SCHOOL
-        print '<td>'.$row["yearinschool"].'</td>';
-        print '<td><input type="submit" class="adminbtn" value="BUTTON"></td>';
-        // PRINTS OPTIONS BUTTON
-        print '<td>	<div class="wrapper">
-		<div id="main">
-			<nav>
-				<ul>
-					<li>
-						<a href="#">&nabla;</a>
-						<ul class="fallback">
-							<li><a href="#">Update Info</a></li>
-							<li><a href="#">Delete</a></li>
-							<li><a href="#">(DEV)</a></li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div></td>';
+            print '<td>'.$row["yearinschool"].'</td>';
+        // UPDATE BUTTON
+            print '
+            <td>
+                <input type="submit" class="adminbtn" name="Update" value="Update">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // CLOSE FORM
+            print '</form>';
         // END OF TABLE ROW
-        print '</tr>';
-}  
+            print '</tr>';
+
+}   
+
 
 // Frees the memory associated with a result
-$results->free();
+$query_results->free();
 
 // close connection 
 $mysqli->close();
-    ?>
+
+?>
     
 </table>
     </div>
