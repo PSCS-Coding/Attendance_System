@@ -65,8 +65,8 @@ $keywords = array(
     ":banana:",
     ":leaf:",
     ":poop:",
-    ":raised_hands:");
-    ":ok_hand:";
+    ":raised_hands:",
+    ":ok_hand:");
 
 // THESE ARE THE REPLACEMENT WORDS/IMAGE PATHS
 $replacewords = array(
@@ -122,6 +122,6 @@ $replacewords = array(
     "&#127820;",
     "&#127809;",
     "&#128169;",
-    "&#128588;"
-    "");
+    "&#128588;",
+    "&#128076;");
 ?>
