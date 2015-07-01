@@ -1,7 +1,6 @@
         <div id="navigation">
             <h1 class="header">Admin View</h1>
             <a href="../../" class="option">Back to Main Page</a>
-            <a href="#" class="option disabled">General Info (Coming Soon)</a>
             <a href="edit_students.php" class="option">Students</a>
             <a href="edit_facilitators.php" class="option">Facilitators</a>
             <a href="edit_allottedhours.php" class="option">Allotted Hours</a>

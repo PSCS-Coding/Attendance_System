@@ -69,7 +69,7 @@ background-color: #616161;
     position: fixed;
     top: 0%;
     left: 0%;
-    width: 20.2%;
+    width: 20%;
     height: 100%;
     opacity: 0.8;
 border-right: 5px solid #404040;
@@ -79,16 +79,17 @@ z-index: 10;
 #TopHeader {
     position: fixed;
     top: 0%;
-    width: 100%;
+    width: 80%;
     height: 7%;
     opacity: 0.8;
     z-index: 5;
-background-color: #616161;
+background-color: #414040;
     color: white;
     font-family: "Verdana";
     font-size: 1.5em;
     text-align: center;
     padding-top: 1%;
+    left: 20%;
     font-weight: 900;
 }
 #TopHeader.Error {
@@ -107,16 +108,6 @@ background-color: #616161;
     opacity: 0.95;
     display: -webkit-flex;
     display: flex;
-}
-.Myheader {
- text-align: center;
- font-weight: 900;
- font-family: "Verdana";
- color: white;
- margin-right: 20%;
-padding-bottom: 0%;
-  font-size: 1.5em;
-  padding: 13px;
 }
 #navigation .header {
  text-align: center;
@@ -231,7 +222,7 @@ table
 {
 border-spacing:0px;
 border:0.3em solid #404040;
-width: 100%;
+width: 50%;
 opacity: 0.85;
 margin-top: 5em;
 margin-left: 17em;
@@ -439,4 +430,18 @@ nav ul li ul.fallback {
 }
 nav ul li:hover ul.fallback {
     display:block;
+}
+.adminbtn {
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 10px;
+  background: #8e9091;
+  padding: 5px 5px 5px 5px;
+  text-decoration: none;
+  border: 0.2em solid rgb(124, 124, 124);
+}
+
+.adminbtn:hover {
+  background: #5a5b5c;
+  text-decoration: none;
 }

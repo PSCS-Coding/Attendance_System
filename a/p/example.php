@@ -23,7 +23,7 @@ Y - Year in school
 -->
     
 <body class="admin">
-                            <div id="TopHeader" class="sussess"><h1>Example Page</h1></div>
+                            <div id="TopHeader"><h1>Example Page</h1></div>
     <div align="center">
 <?php
 //Open a new connection to the MySQL server
@@ -67,6 +67,7 @@ $results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER B
         print '<td>'."N.A.".'</td>';
         // PRINTS YEAR IN SCHOOL
         print '<td>'.$row["yearinschool"].'</td>';
+        print '<td><input type="submit" class="adminbtn" value="BUTTON"></td>';
         // PRINTS OPTIONS BUTTON
         print '<td>	<div class="wrapper">
 		<div id="main">

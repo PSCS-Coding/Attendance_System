@@ -7,12 +7,9 @@ require_once('../../login.php');
 	<title>Edit Students</title>
 	<?php require_once('header.php'); ?>
 </head>
-<body class="adminpage edit-students">
+<body class="admin">
 <!-- UPDATE FUNCTIONS -->     
 <?php 
-// Header Info
-$HeaderStatus = null;
-$HeaderInfo = "Update Students";
 // ADD A NEW STUDENT			
 if (isset($_POST['AddStudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
@@ -61,11 +58,8 @@ if (isset($_POST['Reactivate'])) {
 } 
 // Query for student list
 	$StudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
-                                        <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
-                    <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
-                    </div>
+                                        <div id="TopHeader">Update Students</div>
                     <div align="center" id="main">
-<div class="admintable">
 <form style="margin-bottom:1em;" action="" method="post">
 	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
 	<input type="text" name="newlastname" placeholder="Last Name" required size="12">
@@ -80,7 +74,7 @@ if (isset($_POST['Reactivate'])) {
 	        </select>
 	<input type="submit" name="AddStudent" value="Add Student" />
 </form>
-<table class="students_table">
+<table>
    <tr>
       <th>Name</th>
       <th>Enrolled</th>
@@ -145,8 +139,8 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 		</td>
 				
 		<td>
-        <button type="submit" name="UpdateStudent" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
-        <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
+        <button type="submit" name="UpdateStudent" class="adminbtn" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
+        <button type="submit" name="deletestudent" class="adminbtn" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
         </td>
 		<?php } else { ?>
         
@@ -163,8 +157,8 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
-        <td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edt">
-            <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
+        <td><input type="submit" class="adminbtn" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edt">
+            <button type="submit" class="adminbtn" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
         </td>
 		<?php } ?>	
 	</tr>
@@ -174,7 +168,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 ?>
 </table>
 <br /> 
-<table class="students_table">
+<table>
     <h1>Hidden Students</h1>
    <tr>
       <th>First</th>
@@ -194,12 +188,11 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         <td><?php echo $DelStuDataList['firstname']; ?></td>
 		<td><?php echo $DelStuDataList['lastname']; ?></td>
 		<td><?php echo $DelStuDataList['startdate']; ?></td>
-        <td><button type="submit" name="Reactivate" value="<?php echo $DelStuDataList['studentid']; ?>">Reactivate</button></td>
+        <td><button type="submit" class="adminbtn" name="Reactivate" value="<?php echo $DelStuDataList['studentid']; ?>">Reactivate</button></td>
                 </tr>
         </form>
     <?php } ?>
     </table>
-</div>
                     </div>
                       <!-- date picker javascript -->          
 <script src="js/pikaday.js"></script>
