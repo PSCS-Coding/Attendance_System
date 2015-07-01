@@ -20,7 +20,6 @@ require_once('../../login.php');
     <!-- HEADER BAR -->
     <div id="TopHeader"><h1>Example Page</h1></div>
     
-    <div align="scenter">
 <?php
 
 // In-Code Refrences:
@@ -33,6 +32,7 @@ require_once('../../login.php');
 //MySqli Select Query
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY studentid");
 
+// CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {
     
 // DEFINING POST VARIABLES
@@ -60,6 +60,7 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 
 ?>
         
+<!-- Start of main table -->
 <table class="center">
     <th>Name</th>
     <th>Enrolled</th>
@@ -69,27 +70,30 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 
 <?php
 
+// PUTTING SQL RESULTS INTO AN ARRAY
 while($row = $query_results->fetch_array()) {
 
-        // CONVERTS FIRST & LAST NAME INTO 1 VAR
+        // CONVERTS FIRST & LAST NAME INTO A SINGLE VARIABLE
             $NN_first = $row["firstname"];
             $NN_last = substr($row["lastname"], 0, 1);
             $NN_full = $NN_first.' '.$NN_last;
     
-        // MAKING ENROLLED DATE LOOK NICE
+        // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
             $new_date_format = new DateTime($row['startdate']);
         
-        // IF STATEMENT FOR UPDATING
+    // MAKING A SINGLE VAR FROM POST AND STUDENT ID
     $editMode = "Update" . $row['studentid'];
+    
+    // CHECKING IF THERE IS POST DATA FOR $editMode
     if (empty($_POST[$editMode])) {
     
-        // PRINTING PLAIN DATA
+        // PRINTING TABLE ROW
             print '<tr>';
         // MAKING FORM
             print '<form action="example.php" method="POST">';
-        // GETS STUDENT ID
+        // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
-        // PRINTS FULL NAME
+        // PRINTS FULL NAME VARIABLE
             print '<td>'.$NN_full.'</td>';
         // PRINTS ENROLLED YEAR
             print '<td>'.$new_date_format->format('M, Y').'</td>';
@@ -97,35 +101,35 @@ while($row = $query_results->fetch_array()) {
             print '<td>'.$row["advisor"].'</td>';
         // PRINTS YEAR IN SCHOOL
             print '<td>'.$row["yearinschool"].'</td>';
-        // UPDATE BUTTON
+        // PRINTS UPDATE BUTTON
             print '
             <td>
                 <input type="submit" class="adminbtn" name="Update'.$row["studentid"].'" value="Update">
                 <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
-        // CLOSE FORM
+        // PRINTS FORM CLOSE
             print '</form>';
-        // END OF TABLE ROW
+        // PRINTS END TABLE ROW
             print '</tr>';
 
     } else {
         
-        // PRINTING PLAIN DATA
+        // PRINTING STARTING TABLE ROW
             print '<tr>';
-        // MAKING FORM
+        // PRINTING STARTING FORM
             print '<form action="example.php" method="POST">';
-        // GETS STUDENT ID
+        // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
-        // PRINTS FIRST & LAST NAME
+        // PRINTS FIRST & LAST NAME AS TEXTBOXES
             print '<td>
             <input type="text" class="aTextField" size="10" name="U_firstname" value="'.$row["firstname"].'">   
             <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
             </td>';
-        // PRINTS ENROLLED YEAR
+        // PRINTS ENROLLED YEAR AS TEXTBOX
             print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
-        // PRINTS ADVISOR
+        // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
             print '<td><input type="text" class="aTextField" size="5" name="U_advisor" value="'.$row["advisor"].'"></td>';
-        // PRINTS YEAR IN SCHOOL
+        // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
             print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
         // UPDATE BUTTON
             print '
@@ -133,9 +137,9 @@ while($row = $query_results->fetch_array()) {
                 <input type="submit" class="adminbtn" name="Save" value="Save">
                 <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
-        // CLOSE FORM
+        // PRINTING CLOSE FORM
             print '</form>';
-        // END OF TABLE ROW
+        // PRINTING END OF TABLE ROW
             print '</tr>';
     
     
@@ -149,8 +153,9 @@ $query_results->free();
 $mysqli->close();
 
 ?>
-    
+
+<!-- CLOSE FOR MAIN TABLE -->
 </table>
-    </div>
+
 </body>
 </html>
