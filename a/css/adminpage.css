@@ -231,6 +231,9 @@ align-content: center;
 table.center {
     margin-left:35%;
   }
+table.center.tabletwo {
+margin-top: 5%;   
+}
 th {
  text-align:left;
  font-family: "Verdana";

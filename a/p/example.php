@@ -28,6 +28,7 @@ require_once('../../login.php');
 // Y - Year in school
 // U - Update
 // NN - New Name
+// d_ - Deactivated
 
 //MYSQLI SELECT QUERY
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY studentid");
@@ -61,6 +62,8 @@ $u_enrolled = $_POST['U_enrolled'];
 $u_advisor = $_POST['U_advisor'];
 $u_yis = $_POST['U_yis'];
 $find_id = $_POST['sid'];
+echo $u_first;
+echo $find_id;
 
 // QUERY DEFINING WHAT TO UPDATE
 $query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
@@ -70,11 +73,24 @@ $statement = $mysqli->prepare($query);
 
 //BIND parameters for markers
 $results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
-
+$statement->execute();
+$statement->close();
 // PRINTING SUSSESS OR ERROR
 if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
 
-// CLOSING ORIGIN IF STATEMENT
+// CLOSING ORIGIN IF STATEMENT   
+}
+
+
+////////DELETE FUNCTION/////////
+if (!empty($_POST['Delete'])) {
+
+// PUTTING POST INTO A VARIABLE FOR QUERY
+$student_id = $_POST['sid'];
+
+//MYSQLI UPDATE(REMOVE) QUERY
+$results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
+
 }
 
 ?>
@@ -168,13 +184,72 @@ while($row = $query_results->fetch_array()) {
 // Frees the memory associated with a result
 $query_results->free();
 
-// close connection
-$mysqli->close();
 
 ?>
 
 <!-- CLOSE FOR MAIN TABLE -->
-</table>
 
+</table>
+    <table class="center tabletwo">
+    <th>First</th>
+    <th>Last</th>
+    <th>Enrolled</th>
+    <th class="textcenter">Revive</th>
+    <?php
+
+$d_query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '0' ORDER BY firstname");
+
+// PUTTING SQL RESULTS INTO AN ARRAY
+while($d_row = $d_query_results->fetch_array()) {
+    
+        // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
+            $d_new_date_format = new DateTime($d_row['startdate']);
+    
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // PRINTING TABLE ROW
+            print '<tr>';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="d_sid" value="'.$d_row["studentid"].'">';
+        // PRINTS FIRST NAME
+            print '<td>'.$d_row["firstname"].'</td>';
+        // PRINTS LAST NAME
+            print '<td>'.$d_row["lastname"].'</td>';
+        // PRINTS ENROLLED YEAR
+            print '<td>'.$d_new_date_format->format('M, Y').'</td>';
+        // PRINTS UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Revive" value="Revive">
+            </td>';
+        // PRINTS END TABLE ROW
+            print '</tr>';
+        // PRINTS FORM CLOSE
+            print '</form>';
+}
+
+////////REVIVE FUNCTION/////////
+// CHECKS IF REVIVE BUTTON HAS BEEN CLICKED
+ if (!empty($_POST['Revive'])) {
+
+    // PUTTING POST INTO A VARIABLE FOR QUERY
+    $d_student_id = $_POST['d_sid'];
+     
+    //MYSQLI UPDATE(REVIVE) QUERY
+    $d_results = $mysqli->query("UPDATE studentdata SET current='1' WHERE studentid = $d_student_id");
+
+}
+
+// Frees the memory associated with a result
+$d_query_results->free();
+
+// close connection
+$mysqli->close();
+
+?>
+        
+        
+        
+    </table>
 </body>
 </html>
