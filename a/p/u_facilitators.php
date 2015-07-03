@@ -56,23 +56,19 @@ if($insert_row){print 'Success!'; }else{die('Error : ('. $mysqli->errno .') '. $
 if (!empty($_POST['Save'])) {
     
 // DEFINING POST VARIABLES
-$u_first = $_POST['U_firstname'];
-$u_last = $_POST['U_lastname'];
-$u_enrolled = $_POST['U_enrolled'];
+$u_name = $_POST['U_name'];
+$u_email = $_POST['U_email'];
 $u_advisor = $_POST['U_advisor'];
-$u_yis = $_POST['U_yis'];
-$find_id = $_POST['sid'];
-echo $u_first;
-echo $find_id;
+$find_id = $_POST['fid'];
 
 // QUERY DEFINING WHAT TO UPDATE
-$query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
+$query = "UPDATE studentdata SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?";
     
 // PREPARE STATEMENT    
 $statement = $mysqli->prepare($query);
 
 //BIND parameters for markers
-$results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
+$results =  $statement->bind_param('ssii', $u_name, $u_email, $u_advisor, $find_id);
 $statement->execute();
 $statement->close();
 // PRINTING SUSSESS OR ERROR
@@ -115,9 +111,9 @@ while($row = $query_results->fetch_array()) {
         // PRINTING TABLE ROW
             print '<tr>';
         // MAKING FORM
-            print '<form action="example.php" method="POST">';
+            print '<form action="u_facilitators.php" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
-            print '<input type="hidden" name="sid" value="'.$row["facilitatorid"].'">';
+            print '<input type="hidden" name="fid" value="'.$row["facilitatorid"].'">';
         // PRINTS ADVISOR NAME
             print '<td>'.$row["facilitatorname"].'</td>';
         // PRINTS EMAIL
@@ -140,20 +136,15 @@ while($row = $query_results->fetch_array()) {
         // PRINTING STARTING TABLE ROW
             print '<tr>';
         // PRINTING STARTING FORM
-            print '<form action="example.php" method="POST">';
+            print '<form action="u_facilitators.php" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
-            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
+            print '<input type="hidden" name="fid" value="'.$row["facilitatorid"].'">';
         // PRINTS FIRST & LAST NAME AS TEXTBOXES
-            print '<td>
-            <input type="text" class="aTextField" size="10" name="U_firstname" value="'.$row["firstname"].'">   
-            <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
-            </td>';
-        // PRINTS ENROLLED YEAR AS TEXTBOX
-            print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
-        // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
-            print '<td><input type="text" class="aTextField" size="7" name="U_advisor" value="'.$row["advisor"].'"></td>';
-        // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
-            print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
+            print '<td><input type="text" class="aTextField" size="10" name="U_name" value="'.$row["facilitatorname"].'"></td>';
+        // PRINTS EMAIL AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="15" name="U_email" value="'.$row["email"].'"></td>';
+        // PRINTS AVDISOR AS DROPDOWN
+            print '<td><input type="text" class="aTextField" size="3" name="U_advisor" value="'.$row["advisor"].'"></td>';
         // UPDATE BUTTON
             print '
             <td class="textcenter">
