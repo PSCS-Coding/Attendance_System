@@ -1,139 +1,189 @@
 <?php
 $admin = 1;
 require_once('../../login.php');
+/////////////////////////////////////////////
+//                                         //
+//         CREATED BY ANTHONY REYES        //
+//       Puget Sound Community School      //
+//                                         //
+/////////////////////////////////////////////
 ?>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Edit Facilitators</title>
+	<title>Example Page - Students</title>
 	<?php require_once('header.php'); ?>
-	<script src="js/jquery.min.js"></script>
 </head>
-<body class="edit-facilitators">
+    
+<body class="admin">
+    
+    <!-- HEADER BAR -->
+    <div id="TopHeader"><h1>Update Facilitators</h1></div>
+    
 <?php
-// Header Info
-$HeaderStatus = null;
-$HeaderInfo = "Update Facilitators";
-// Add Facilitator to Database
-if (!empty($_POST['addFacilitatorTXT'])) {
-    $newFacilitatorName = $_POST['addFacilitatorTXT'];
-    $newFacilitatorEmail = $_POST['addFacilitatorEmail'];
-    $stmt = $db_server->prepare("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES (?, ?, ?)");
-    $stmt->bind_param('ssi', $newFacilitatorName , $newFacilitatorEmail , $_POST['AdvisorDropDown']);
-    $stmt->execute(); 
-    $stmt->close();	
-    $HeaderStatus = "Sussess";
-    $HeaderInfo = "Added $newFacilitatorName as a facilitator.";
+
+// In-Code Refrences:
+// B = Button
+// NN = New Name
+// Y - Year in school
+// U - Update
+// NN - New Name
+// d_ - Deactivated
+
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
+
+/////// INSERT FUNCTION //////////
+// CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['addnew'])) {
+    
+//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
+$first_name = '"'.$mysqli->real_escape_string('-Example').'"';
+$last_name = '"'.$mysqli->real_escape_string('Person').'"';
+$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
+$advisor = '"'.$mysqli->real_escape_string('Nic').'"';
+
+//QUERY DEFINING WHAT TO INSERT
+$insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
+
+// SUCCESS/ERROR MESSAGES
+if($insert_row){print 'Success!'; }else{die('Error : ('. $mysqli->errno .') '. $mysqli->error);}
+
+// CLOSING FOR ORIGIN IF STATEMENT
 }
 
-// Update facilitator
-if (!empty($_POST['UpdateFac'])) {
-    $stmt = $db_server->prepare("UPDATE facilitators SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?");
-    $stmt->bind_param('ssii', $_POST['UpdatedFacName'], $_POST['UpdatedFacEmail'], $_POST['UpdateAdvisorDropdown'], $_POST['id']);
-    $stmt->execute(); 
-    $stmt->close();
-} 
+// CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['Save'])) {
+    
+// DEFINING POST VARIABLES
+$u_first = $_POST['U_firstname'];
+$u_last = $_POST['U_lastname'];
+$u_enrolled = $_POST['U_enrolled'];
+$u_advisor = $_POST['U_advisor'];
+$u_yis = $_POST['U_yis'];
+$find_id = $_POST['sid'];
+echo $u_first;
+echo $find_id;
 
-// Remove Facilitator
-if(!empty($_POST['DelFac'])) {
-$stmt = $db_server->prepare("DELETE FROM facilitators WHERE facilitatorid = ?");
-$stmt->bind_param('i', $_POST['id']);
-$stmt->execute(); 		
-$stmt->close();
-$HeaderStatus = "Error";
-$HeaderInfo = "Deleted Facilitator.";
+// QUERY DEFINING WHAT TO UPDATE
+$query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
+    
+// PREPARE STATEMENT    
+$statement = $mysqli->prepare($query);
+
+//BIND parameters for markers
+$results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
+$statement->execute();
+$statement->close();
+// PRINTING SUSSESS OR ERROR
+if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
+
+// CLOSING ORIGIN IF STATEMENT   
 }
 
-// Query facilitator table
-$FacResult = $db_server->query("SELECT * FROM facilitators ORDER BY facilitatorname");
+
+////////DELETE FUNCTION/////////
+if (!empty($_POST['Delete'])) {
+
+// PUTTING POST INTO A VARIABLE FOR QUERY
+$student_id = $_POST['sid'];
+
+//MYSQLI UPDATE(REMOVE) QUERY
+$results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
+}
+
 ?>
-<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
-  <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
-   </div>
- <div align="center" id="main">
-    <div class="admintable">
-<form action="" method="post">
-    <input type="text" name="addFacilitatorTXT" placeholder="Facilitator Name" size="15">
-    <input type="text" name="addFacilitatorEmail" placeholder="Email" size="12">
-    <select name="AdvisorDropDown">
-  <option selected value="0">Advisor?</option>
-  <option value="1">Yes</option>
-  <option value="0">No</option>
-</select>
-        <input type="submit" name="addFacilitatorBTN" value="Add Facilitator">
-    </form>
-    
-    <br />
-    
-    <table class="facilitators_table">
-   <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Advisor</th>
-      <th>Modify</th>
-   </tr>
+        
+<!-- Start of main table -->
+<table class="center">
+    <th>Name</th>
+    <th>Email</th>
+    <th>Advisor</th>
+    <th class="textcenter">Options</th>
+
 <?php
-// Make list of all facilitators 
-while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
-<form action="" method="post">
-            <?php if ($FacList['advisor'] == 1) {
-            $niceAdvisor = "Yes";
-        } else {
-           $niceAdvisor = "No"; 
-        }
-            ?>
-<!-- This is for editing facilitators (How it knows what facilitator you close) -->
-<input type="hidden" name="id" value="<?php echo $FacList['facilitatorid']; ?>">
-    	<tr>
-            
-		<?php $editme = "EditFac-" . $FacList['facilitatorid'];
-		if (!empty($_POST[$editme])) { 
-		?> 
-        <!-- Displays if you clicked the "Edit Button" -->
-		<td><input type="text" name="UpdatedFacName" value="<?php echo $FacList['facilitatorname']; ?>" required size="15"></td>
-		<td><input type="text" name="UpdatedFacEmail" value="<?php echo $FacList['email']; ?>" size="15"></td>
-        <td>            <select name="UpdateAdvisorDropdown">
-            <option selected value="0"><?php echo $niceAdvisor ?></option>
-            <!-- Checking if facilitator is an avisor -->
-            <?php if ($niceAdvisor == "No") {
-            echo '<option value="1">Yes</option>';
-            } else {
-            echo '<option value="0">No</option>';
-            } ?>
-            </select>
-            </td>
-		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">Update</button>
-            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Rem</button>
-        </td>
-		<?php } else { ?>
-            
-        <!-- Displays when you first load the page (Static Text) -->    
-        <td><?php echo $FacList['facilitatorname']; ?></td>
-		<td><?php echo $FacList['email']; ?></td>
-        <td><?php echo $niceAdvisor ?></td>
-        <td>
-            <input type="submit" type="submit" name="EditFac-<?php echo $FacList['facilitatorid']; ?>" value="Edt">
-            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Rem</button></td>    
-		<?php } ?>	
-            
-	</tr>
+
+// PUTTING SQL RESULTS INTO AN ARRAY
+while($row = $query_results->fetch_array()) {
+        
+    // MAKING A SINGLE VAR FROM POST AND STUDENT ID
+    $editMode = "Update" . $row['facilitatorid'];
     
-        </form>
-        <?php } // Ends while loop for facilitator info ?>
+    // CHECKING IF THERE IS POST DATA FOR $editMode
+    if (empty($_POST[$editMode])) {
+    
+        // PRINTING TABLE ROW
+            print '<tr>';
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["facilitatorid"].'">';
+        // PRINTS ADVISOR NAME
+            print '<td>'.$row["facilitatorname"].'</td>';
+        // PRINTS EMAIL
+            print '<td>'.$row["email"].'</td>';
+        // PRINTS ADVISOR
+            print '<td>'.$row["advisor"].'</td>';
+        // PRINTS UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Update'.$row["facilitatorid"].'" value="Update">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTS FORM CLOSE
+            print '</form>';
+        // PRINTS END TABLE ROW
+            print '</tr>';
+
+    } else {
+        
+        // PRINTING STARTING TABLE ROW
+            print '<tr>';
+        // PRINTING STARTING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
+        // PRINTS FIRST & LAST NAME AS TEXTBOXES
+            print '<td>
+            <input type="text" class="aTextField" size="10" name="U_firstname" value="'.$row["firstname"].'">   
+            <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
+            </td>';
+        // PRINTS ENROLLED YEAR AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
+        // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
+            print '<td><input type="text" class="aTextField" size="7" name="U_advisor" value="'.$row["advisor"].'"></td>';
+        // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
+            print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
+        // UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Save" value="Save">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTING CLOSE FORM
+            print '</form>';
+        // PRINTING END OF TABLE ROW
+            print '</tr>';
+    
+    
+}
+}
+
+// Frees the memory associated with a result
+$query_results->free();
+
+// close connection
+$mysqli->close();
+
+?>
+
+<!-- CLOSE FOR MAIN TABLE -->
+</table>
+
+?>
+        
+        
+        
     </table>
-</div>
-                    </div>
- 
- <script>
-	$(document).ready(function() {
-		$('#TopHeader').delay(1500);
-		setTimeout(function() {
-			$('#TopHeader').removeClass();
-			$('#TopHeader .MyHeader').text('Update Facilitators');
-		}, 1700);
-		
-	
-	});
- </script>
- 
 </body>
 </html>
