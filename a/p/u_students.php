@@ -1,219 +1,257 @@
 <?php
 $admin = 1;
 require_once('../../login.php');
+/////////////////////////////////////////////
+//                                         //
+//         CREATED BY ANTHONY REYES        //
+//       Puget Sound Community School      //
+//                                         //
+/////////////////////////////////////////////
 ?>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Edit Students</title>
+	<title>Example Page - Students</title>
 	<?php require_once('header.php'); ?>
 </head>
+    
 <body class="admin">
-<!-- UPDATE FUNCTIONS -->     
-<?php 
-// ADD A NEW STUDENT			
-if (isset($_POST['AddStudent'])) {
-    if ($_POST['newAdvisor'] != "novalue") {
-    $timestamp = strtotime($_POST['startdate']);
-    $newStudentName = $_POST['newfirstname'];
-    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
-    $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
-    $stmt->execute(); 
-    $stmt->close();
-    $HeaderStatus = "Sussess";
-    $HeaderInfo = "Added $newStudentName as a student.";
-    } else {
-     $HeaderStatus = "Error";
-     $HeaderInfo = "Please select a valid advisor.";
-    }
-    }
+    
+    <!-- HEADER BAR -->
+    <div id="TopHeader"><h1>Example Page</h1></div>
+    
+<?php
 
-	
-// EDIT (UPDATE) A STUDENT
-if (isset($_POST['UpdateStudent'])) {
-    $timestamp = strtotime($_POST['editstartdate']);
-    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
-    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['StudentIDS']);
-    $stmt->execute(); 
-    $stmt->close();
-} 
+// In-Code Refrences:
+// B = Button
+// NN = New Name
+// Y - Year in school
+// U - Update
+// NN - New Name
+// d_ - Deactivated
 
-// DELETE A STUDENT
-if(isset($_POST['deletestudent'])) {
-    $stmt = $db_server->prepare("UPDATE studentdata SET current = 0 WHERE studentid = ?");
-	$stmt->bind_param('i', $_POST['StudentIDS']);
-	$stmt->execute();
-	$stmt->close();
-    $HeaderStatus = "Error";
-    $HeaderInfo = "Deactivated Student.";
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
+
+/////// INSERT FUNCTION //////////
+// CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['addnew'])) {
+    
+//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
+$first_name = '"'.$mysqli->real_escape_string('-Example').'"';
+$last_name = '"'.$mysqli->real_escape_string('Person').'"';
+$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
+$advisor = '"'.$mysqli->real_escape_string('Nic').'"';
+
+//QUERY DEFINING WHAT TO INSERT
+$insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
+
+// SUCCESS/ERROR MESSAGES
+if($insert_row){print 'Success!'; }else{die('Error : ('. $mysqli->errno .') '. $mysqli->error);}
+
+// CLOSING FOR ORIGIN IF STATEMENT
 }
 
-// Reactivate Student
-if (isset($_POST['Reactivate'])) {
-    $stmt = $db_server->prepare("UPDATE studentdata SET current = 1 WHERE studentid = ?");
-    $stmt->bind_param('i', $_POST['DelStudentIDS']);
-    $stmt->execute(); 
-    $stmt->close();
-    $HeaderStatus = "Sussess";
-    $HeaderInfo = "Reactivated Student.";
-} 
-// Query for student list
-	$StudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 1 ORDER BY firstname"); ?>
-                                        <div id="TopHeader">Update Students</div>
-                    <div align="center" id="main">
-<form style="margin-bottom:1em;" action="" method="post">
-	<input type="text" name="newfirstname" placeholder="First Name" required size="12">
-	<input type="text" name="newlastname" placeholder="Last Name" required size="12">
-	<input type="text" name="startdate" id="NewStartDate" placeholder="Start Date" required size="10"/>
-    <select name='newAdvisor'>
-            <option selected value="novalue">Advisor</option>
-	        <?php // Query for advisor table
-				 $GetFacilitators = $db_server->query("SELECT facilitatorname FROM facilitators WHERE advisor = 1 ORDER BY facilitatorname");
-				 while ($FacList = $GetFacilitators->fetch_assoc()) { ?>  
-				 <option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
-				<?php } ?>
-	        </select>
-	<input type="submit" name="AddStudent" value="Add Student" />
-</form>
-<table>
-   <tr>
-      <th>Name</th>
-      <th>Enrolled</th>
-      <th>Advisor</th>
-      <th>Y</th>
-	  <th>Modify</th>
-   </tr>
-<?php
-// loop through list of names 
-while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
-
-<form action="" method="post">
-<input type="hidden" name="StudentIDS" value="<?php echo $StuDataList['studentid']; ?>">
-	<tr>
-                <?php                                     
-        $fName = $StuDataList['firstname'];
-        $lName = $StuDataList['lastname'];
-        $lastInitial = substr($StuDataList['lastname'], 0, 1);
-        $fullName = $fName .' '. $lastInitial;
-        ?>
-		<?php $editme = "edit-" . $StuDataList['studentid'];
-		if (isset($_POST[$editme])) { 
-        ?> 
-		<td><input type="text" size="10" name="firstname" class="textbox" value="<?php echo $fName; ?>" required>
-        <input type="text" size="10" name="lastname" class="textbox" value="<?php echo $lName; ?>" required>
-        </td>
-		<td><input type="text" size="11" name="editstartdate" id="EStartDate" class="textbox" value="<?php echo $StuDataList['startdate']; ?>" required></td>
-        		<td>
-			<select name='selectedadvisor'>
-	        <?php
-                // Query for advisor table
-				 $GetFacilitators = $db_server->query("SELECT facilitatorname FROM facilitators WHERE advisor = 1 ORDER BY facilitatorname");
-            
-				 while ($FacList = $GetFacilitators->fetch_assoc()) {
-                     
-					if ($StuDataList['advisor'] == $FacList['facilitatorname']) { ?>
-                
-				<option selected value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
-					<?php } else { ?>  
-						<option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
-				<?php
-					}
-			     }
-			?>
-	        </select>
-		</td>
-			
-		<td>
-			<select name='yearinschool'>
-	        <?php
-				 $yearget = $db_server->query("SELECT yis FROM allottedhours ORDER BY yis ASC");
-				 while ($year_option = $yearget->fetch_assoc()) {
-					if ($StuDataList['yearinschool'] == $year_option['yis']) { ?>
-						<option selected value="<?php echo $year_option['yis']; ?>"><?php echo $year_option['yis']; ?></option>
-					<?php } else { ?>  
-						<option value="<?php echo $year_option['yis']; ?>"> <?php echo $year_option['yis']; ?></option> 
-				<?php
-					}
-			     }
-			?>
-	        </select>
-		</td>
-				
-		<td>
-        <button type="submit" name="UpdateStudent" class="adminbtn" value="<?php echo $StuDataList['studentid']; ?>">Update</button>
-        <button type="submit" name="deletestudent" class="adminbtn" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
-        </td>
-		<?php } else { ?>
-        
-        <td><?php echo $fullName; ?></td>
-        <?php
-        $pretty_date = new DateTime($StuDataList['startdate']);                                                          
-        ?>
-		<td><?php echo $pretty_date->format('M, Y'); ?></td>
-        <?php 
-        $StuDataListAdvisor = $StuDataList['advisor'];
-        if (empty($StuDataListAdvisor)) {
-         $StuDataListAdvisor = "<font color='red'>Unknown</font>";
-        }
-        ?>
-        <td><?php echo $StuDataListAdvisor; ?></td>
-		<td><?php echo $StuDataList['yearinschool']; ?></td>
-        <td><input type="submit" class="adminbtn" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edt">
-            <button type="submit" class="adminbtn" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Rem</button>
-        </td>
-		<?php } ?>	
-	</tr>
-	</form>
-<?php 
-} // end while for student data
-?>
-</table>
-<br /> 
-<table>
-    <h1>Hidden Students</h1>
-   <tr>
-      <th>First</th>
-      <th>Last</th>
-      <th>Start Date</th>
-      <th>Reactivate</th>
-   </tr>
-<?php
-
-// Query to get all deleted students
-	$DelStudentData = $db_server->query("SELECT * FROM studentdata WHERE current = 0 ORDER BY firstname ASC");
+// CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['Save'])) {
     
-    while ($DelStuDataList = mysqli_fetch_assoc($DelStudentData)) { ?>
-        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-        <input type="hidden" name="DelStudentIDS" value="<?php echo $DelStuDataList['studentid']; ?>">
-            <tr>
-        <td><?php echo $DelStuDataList['firstname']; ?></td>
-		<td><?php echo $DelStuDataList['lastname']; ?></td>
-		<td><?php echo $DelStuDataList['startdate']; ?></td>
-        <td><button type="submit" class="adminbtn" name="Reactivate" value="<?php echo $DelStuDataList['studentid']; ?>">Reactivate</button></td>
-                </tr>
-        </form>
-    <?php } ?>
+// DEFINING POST VARIABLES
+$u_first = $_POST['U_firstname'];
+$u_last = $_POST['U_lastname'];
+$u_enrolled = $_POST['U_enrolled'];
+$u_advisor = $_POST['U_advisor'];
+$u_yis = $_POST['U_yis'];
+$find_id = $_POST['sid'];
+echo $u_first;
+echo $find_id;
+
+// QUERY DEFINING WHAT TO UPDATE
+$query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
+    
+// PREPARE STATEMENT    
+$statement = $mysqli->prepare($query);
+
+//BIND parameters for markers
+$results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
+$statement->execute();
+$statement->close();
+// PRINTING SUSSESS OR ERROR
+if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
+
+// CLOSING ORIGIN IF STATEMENT   
+}
+
+
+////////DELETE FUNCTION/////////
+if (!empty($_POST['Delete'])) {
+
+// PUTTING POST INTO A VARIABLE FOR QUERY
+$student_id = $_POST['sid'];
+
+//MYSQLI UPDATE(REMOVE) QUERY
+$results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
+}
+
+?>
+        
+<!-- Start of main table -->
+<table class="center">
+    <th>Name</th>
+    <th>Enrolled</th>
+    <th>Advisor</th>
+    <th>Y</th>
+    <th class="textcenter">Options</th>
+
+<?php
+
+// PUTTING SQL RESULTS INTO AN ARRAY
+while($row = $query_results->fetch_array()) {
+
+        // CONVERTS FIRST & LAST NAME INTO A SINGLE VARIABLE
+            $NN_first = $row["firstname"];
+            $NN_last = substr($row["lastname"], 0, 1);
+            $NN_full = $NN_first.' '.$NN_last;
+    
+        // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
+            $new_date_format = new DateTime($row['startdate']);
+        
+    // MAKING A SINGLE VAR FROM POST AND STUDENT ID
+    $editMode = "Update" . $row['studentid'];
+    
+    // CHECKING IF THERE IS POST DATA FOR $editMode
+    if (empty($_POST[$editMode])) {
+    
+        // PRINTING TABLE ROW
+            print '<tr>';
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
+        // PRINTS FULL NAME VARIABLE
+            print '<td>'.$NN_full.'</td>';
+        // PRINTS ENROLLED YEAR
+            print '<td>'.$new_date_format->format('M, Y').'</td>';
+        // PRINTS ADVISOR
+            print '<td>'.$row["advisor"].'</td>';
+        // PRINTS YEAR IN SCHOOL
+            print '<td>'.$row["yearinschool"].'</td>';
+        // PRINTS UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Update'.$row["studentid"].'" value="Update">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTS FORM CLOSE
+            print '</form>';
+        // PRINTS END TABLE ROW
+            print '</tr>';
+
+    } else {
+        
+        // PRINTING STARTING TABLE ROW
+            print '<tr>';
+        // PRINTING STARTING FORM
+            print '<form action="example.php" method="POST">';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
+        // PRINTS FIRST & LAST NAME AS TEXTBOXES
+            print '<td>
+            <input type="text" class="aTextField" size="10" name="U_firstname" value="'.$row["firstname"].'">   
+            <input type="text" class="aTextField" size="10" name="U_lastname" value="'.$row["lastname"].'">
+            </td>';
+        // PRINTS ENROLLED YEAR AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
+        // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
+            print '<td><input type="text" class="aTextField" size="7" name="U_advisor" value="'.$row["advisor"].'"></td>';
+        // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
+            print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
+        // UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Save" value="Save">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTING CLOSE FORM
+            print '</form>';
+        // PRINTING END OF TABLE ROW
+            print '</tr>';
+    
+    
+}
+}
+
+// Frees the memory associated with a result
+$query_results->free();
+
+
+?>
+
+<!-- CLOSE FOR MAIN TABLE -->
+</table>
+    
+<!-- OPENING FOR DELETED STUDETS TABLE -->
+    <table class="center tabletwo">
+        
+    <th>First</th>
+    <th>Last</th>
+    <th>Enrolled</th>
+    <th class="textcenter">Revive</th>
+        
+    <?php
+
+// QUERY FOR DELETED STUDENTS
+$d_query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '0' ORDER BY firstname");
+
+// PUTTING SQL RESULTS INTO AN ARRAY
+while($d_row = $d_query_results->fetch_array()) {
+    
+        // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
+            $d_new_date_format = new DateTime($d_row['startdate']);
+        // MAKING FORM
+            print '<form action="example.php" method="POST">';
+        // PRINTING TABLE ROW
+            print '<tr>';
+        // GETS/MAKES HIDDEN STUDENT ID
+            print '<input type="hidden" name="d_sid" value="'.$d_row["studentid"].'">';
+        // PRINTS FIRST NAME
+            print '<td>'.$d_row["firstname"].'</td>';
+        // PRINTS LAST NAME
+            print '<td>'.$d_row["lastname"].'</td>';
+        // PRINTS ENROLLED YEAR
+            print '<td>'.$d_new_date_format->format('M, Y').'</td>';
+        // PRINTS UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Revive" value="Revive">
+            </td>';
+        // PRINTS END TABLE ROW
+            print '</tr>';
+        // PRINTS FORM CLOSE
+            print '</form>';
+}
+
+////////REVIVE FUNCTION/////////
+// CHECKS IF REVIVE BUTTON HAS BEEN CLICKED
+ if (!empty($_POST['Revive'])) {
+
+    // PUTTING POST INTO A VARIABLE FOR QUERY
+    $d_student_id = $_POST['d_sid'];
+     
+    //MYSQLI UPDATE(REVIVE) QUERY
+    $d_results = $mysqli->query("UPDATE studentdata SET current='1' WHERE studentid = $d_student_id");
+
+}
+
+// Frees the memory associated with a result
+$d_query_results->free();
+
+// close connection
+$mysqli->close();
+
+?>
+        
+        
+        
     </table>
-                    </div>
-                      <!-- date picker javascript -->          
-<script src="js/pikaday.js"></script>
-<script>
-    var picker = new Pikaday({ field: document.getElementById('NewStartDate') });
-</script>
-                    <script>
-    var picker = new Pikaday({ field: document.getElementById('EStartDate') });
-</script>
-		    
-		    
-<script>
-       $(document).ready(function() {
-	       $('#TopHeader').delay(1500);
-	       setTimeout(function() {
-		       $('#TopHeader').removeClass();
-		       $('#TopHeader .MyHeader').text('Update Students');
-	       }, 1700);
-	       
-       
-       });
-</script>
 </body>
 </html>
