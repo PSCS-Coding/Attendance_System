@@ -29,6 +29,7 @@ require_once('../../login.php');
 // U - Update
 // NN - New Name
 // d_ - Deactivated
+// a - admin
 
 //MYSQLI SELECT QUERY
 $query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
@@ -101,7 +102,7 @@ $results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatori
 // PUTTING SQL RESULTS INTO AN ARRAY
 while($row = $query_results->fetch_array()) {
         
-    // MAKING A SINGLE VAR FROM POST AND STUDENT ID
+    // MAKING A SINGLE VAR FROM POST AND FACILITATOR ID
     $editMode = "Update" . $row['facilitatorid'];
     
     // CHECKING IF THERE IS POST DATA FOR $editMode

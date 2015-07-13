@@ -1,67 +1,169 @@
-<?php require_once('../../login.php'); ?>
+<?php
+$admin = 1;
+require_once('../../login.php');
+/////////////////////////////////////////////
+//                                         //
+//         CREATED BY ANTHONY REYES        //
+//       Puget Sound Community School      //
+//                                         //
+/////////////////////////////////////////////
+?>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Edit Allotted Hours</title>
+	<title>Example Page - Students</title>
 	<?php require_once('header.php'); ?>
 </head>
-<body class="adminpage edit-allottedhours">
+    
+<body class="admin">
+    
+    <!-- HEADER BAR -->
+    <div id="TopHeader"><h1>Update Allotted Hours</h1></div>
+    
 <?php
-// Header Info
-$HeaderStatus = null;
-$HeaderInfo = "Update Allotted Hours";
-// EDIT ALLOTTED HOURS
-if (isset($_POST['saveallotted'])) {
-    $updatehours = $db_server->prepare("UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE id = ?");
-    $updatehours->bind_param('iiii', $_POST['communityhours'], $_POST['offsitehours'], $_POST['IShours'], $_POST['saveallotted']); 
-    $updatehours->execute(); 
-    $updatehours->close();
-} 
 
-// Query for allotted hours
-$hoursresult = $db_server->query("SELECT * FROM allottedhours ORDER BY yis");
+// In-Code Refrences:
+// B = Button
+// NN = New Name
+// Y - Year in school
+// U - Update
+// NN - New Name
+// d_ - Deactivated
+// a - admin
+// commhours - Community Hours
+// offhours - Offsite Hours
+// IS - Independent Study
+
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM allottedhours ORDER BY yis");
+
+
+// CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
+if (!empty($_POST['Save'])) {
+    
+// DEFINING POST VARIABLES
+$u_commhours = $_POST['U_communityhours'];
+$u_offhours = $_POST['U_offsitehours'];
+$u_ishours = $_POST['U_IShours'];
+$find_id = $_POST['yid'];
+
+// QUERY DEFINING WHAT TO UPDATE
+$query = "UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE yis = ?";
+    
+// PREPARE STATEMENT    
+$statement = $mysqli->prepare($query);
+
+//BIND parameters for markers
+$results =  $statement->bind_param('ssii', $u_commhours, $u_offhours, $u_ishours, $find_id);
+$statement->execute();
+$statement->close();
+// PRINTING SUSSESS OR ERROR
+if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
+
+// CLOSING ORIGIN IF STATEMENT   
+}
+
+
+////////DELETE FUNCTION/////////
+if (!empty($_POST['Delete'])) {
+
+// PUTTING POST INTO A VARIABLE FOR QUERY
+$yis_id = $_POST['yid'];
+
+//MYSQLI UPDATE(REMOVE) QUERY
+$results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatorid = $student_id");
+}
+
 ?>
-<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
-  <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
-   </div>
- <div align="center" id="main">
-<div class="admintable">
-<table class="allottedhours_table">
-   <tr>
-      <th>Year In School</th>
-      <th>Community Hours</th>
-      <th>Offsite Hours</th>
-      <th>IS Hours</th>
-	  <th>Edit</th>
-   </tr>
+        
+<!-- Start of main table -->
+<table class="center">
+    <th>Year in School</th>
+    <th>Community Hours</th>
+    <th>Offsite Hours</th>
+    <th>IS Hours</th>
+    <th class="textcenter">Change</th>
+
 <?php
-// Make list of allotted hours
-while ($hourslist = mysqli_fetch_assoc($hoursresult)) { ?>
-<tr>
-<form action="" method="post">
-<input type="hidden" name="id" value="<?php echo $hourslist['id']; ?>">
 
-		<?php $editme = "edithours-" . $hourslist['id'];
-		if (isset($_POST[$editme])) { ?>
-		<td><?php echo $hourslist['yis']; ?></td>
-		<td><input type="text" name="communityhours" class="textbox" value="<?php echo $hourslist['communityhours']; ?>" required size="5"></td>
-		<td><input type="text" name="offsitehours" class="textbox" value="<?php echo $hourslist['offsitehours']; ?>" required size="5"></td>
-                <td><input type="text" name="IShours" class="textbox" value="<?php echo $hourslist['IShours']; ?>" required size="5"></td>
-		<td><button type="submit" name="saveallotted" value="<?php echo $hourslist['id']; ?>">Save</button></td>
-		<?php } else { ?>
-		<td><?php echo $hourslist['yis']; ?></td>
-		<td><?php echo $hourslist['communityhours']; ?></td>
-                <td><?php echo $hourslist['offsitehours']; ?></td>
-		<td><?php echo $hourslist['IShours']; ?></td>
-		
-		<td><input type="submit" name="edithours-<?php echo $hourslist['id']; ?>" value="Edit"></td>
-		<?php } ?>
-		</form>
-		</tr>
-<?php 
-} // end while
+// PUTTING SQL RESULTS INTO AN ARRAY
+while($row = $query_results->fetch_array()) {
+        
+    // MAKING A SINGLE VAR FROM POST AND YEAR IN SCHOOL
+    $editMode = "Update" . $row['yis'];
+    
+    // CHECKING IF THERE IS POST DATA FOR $editMode
+    if (empty($_POST[$editMode])) {
+    
+        // PRINTING TABLE ROW
+            print '<tr>';
+        // MAKING FORM
+            print '<form action="u_allottedhours.php" method="POST">';
+        // GETS/MAKES HIDDEN YEAR IN SCHOOL ID
+            print '<input type="hidden" name="yid" value="'.$row["yis"].'">';
+        // PRINTS YEAR IN SCHOOL
+            print '<td>'.$row["yis"].'</td>';
+        // PRINTS COMMUNITY HOURS
+            print '<td>'.$row["communityhours"].'</td>';
+        // PRINTS OFFSITE HOURS
+            print '<td>'.$row["offsitehours"].'</td>';
+        // PRINTS INDEPENDENT STUDY HOURS
+            print '<td>'.$row["IShours"].'</td>';
+        // PRINTS UPDATE BUTTONS
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Update'.$row["yis"].'" value="Update">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTS FORM CLOSE
+            print '</form>';
+        // PRINTS END TABLE ROW
+            print '</tr>';
+
+    } else {
+        
+        // PRINTING STARTING TABLE ROW
+            print '<tr>';
+        // PRINTING STARTING FORM
+            print '<form action="u_allottedhours.php" method="POST">';
+        // GETS/MAKES HIDDEN YEAR IN SCHOOL ID
+            print '<input type="hidden" name="yid" value="'.$row["yis"].'">';
+        // PRINTS YEAR IN SCHOOL (NOT EDITABLE)
+            print '<td>'.$row["yis"].'</td>';
+        // PRINTS COMMUNITY HOURS AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="5" name="U_communityhours" value="'.$row["communityhours"].'"></td>';
+        // PRINTS OFFSITE HOURS AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="5" name="U_offsitehours" value="'.$row["offsitehours"].'"></td>';
+        // PRINTS Independent Study hours as TEXTBOX
+            print '<td><input type="text" class="aTextField" size="5" name="U_IShours" value="'.$row["IShours"].'"></td>';
+        // UPDATE BUTTON
+            print '
+            <td class="textcenter">
+                <input type="submit" class="adminbtn" name="Save" value="Save">
+                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+            </td>';
+        // PRINTING CLOSE FORM
+            print '</form>';
+        // PRINTING END OF TABLE ROW
+            print '</tr>';
+    
+    
+}
+}
+
+// Frees the memory associated with a result
+$query_results->free();
+
+// close connection
+$mysqli->close();
+
 ?>
+
+<!-- CLOSE FOR MAIN TABLE -->
 </table>
-</div>
-                    </div>
+        
+        
+        
+    </table>
 </body>
 </html>
