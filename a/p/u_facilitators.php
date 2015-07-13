@@ -170,9 +170,7 @@ $mysqli->close();
 
 <!-- CLOSE FOR MAIN TABLE -->
 </table>
-
-?>
-        
+  
         
         
     </table>
