@@ -38,13 +38,12 @@ $query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitator
 if (!empty($_POST['addnew'])) {
     
 //VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
-$first_name = '"'.$mysqli->real_escape_string('-Example').'"';
-$last_name = '"'.$mysqli->real_escape_string('Person').'"';
-$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
-$advisor = '"'.$mysqli->real_escape_string('Nic').'"';
+$new_name = '"'.$mysqli->real_escape_string('-Example').'"';
+$new_email = '"'.$mysqli->real_escape_string('example@pscs.org').'"';
+$isadvisor = '"'.$mysqli->real_escape_string('1').'"';
 
 //QUERY DEFINING WHAT TO INSERT
-$insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
+$insert_row = $mysqli->query("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES($new_name, $new_email, $isadvisor)");
 
 // SUCCESS/ERROR MESSAGES
 if($insert_row){print 'Success!'; }else{die('Error : ('. $mysqli->errno .') '. $mysqli->error);}
@@ -62,7 +61,7 @@ $u_advisor = $_POST['U_advisor'];
 $find_id = $_POST['fid'];
 
 // QUERY DEFINING WHAT TO UPDATE
-$query = "UPDATE studentdata SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?";
+$query = "UPDATE facilitators SET facilitatorname = ? , email = ? , advisor = ? WHERE facilitatorid = ?";
     
 // PREPARE STATEMENT    
 $statement = $mysqli->prepare($query);
@@ -82,10 +81,10 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 if (!empty($_POST['Delete'])) {
 
 // PUTTING POST INTO A VARIABLE FOR QUERY
-$student_id = $_POST['sid'];
+$facilitator_id = $_POST['fid'];
 
 //MYSQLI UPDATE(REMOVE) QUERY
-$results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
+$results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatorid = $student_id");
 }
 
 ?>
@@ -112,15 +111,15 @@ while($row = $query_results->fetch_array()) {
             print '<tr>';
         // MAKING FORM
             print '<form action="u_facilitators.php" method="POST">';
-        // GETS/MAKES HIDDEN STUDENT ID
+        // GETS/MAKES HIDDEN FACILITATOR ID
             print '<input type="hidden" name="fid" value="'.$row["facilitatorid"].'">';
-        // PRINTS ADVISOR NAME
+        // PRINTS FACILITATOR NAME
             print '<td>'.$row["facilitatorname"].'</td>';
         // PRINTS EMAIL
             print '<td>'.$row["email"].'</td>';
-        // PRINTS ADVISOR
+        // PRINTS ADVISOR (TRUE/FALSE)
             print '<td>'.$row["advisor"].'</td>';
-        // PRINTS UPDATE BUTTON
+        // PRINTS UPDATE BUTTONS
             print '
             <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Update'.$row["facilitatorid"].'" value="Update">
@@ -137,13 +136,13 @@ while($row = $query_results->fetch_array()) {
             print '<tr>';
         // PRINTING STARTING FORM
             print '<form action="u_facilitators.php" method="POST">';
-        // GETS/MAKES HIDDEN STUDENT ID
+        // GETS/MAKES HIDDEN FACILITATOR ID
             print '<input type="hidden" name="fid" value="'.$row["facilitatorid"].'">';
-        // PRINTS FIRST & LAST NAME AS TEXTBOXES
+        // PRINTS NAME AS TEXTBOX
             print '<td><input type="text" class="aTextField" size="10" name="U_name" value="'.$row["facilitatorname"].'"></td>';
         // PRINTS EMAIL AS TEXTBOX
             print '<td><input type="text" class="aTextField" size="15" name="U_email" value="'.$row["email"].'"></td>';
-        // PRINTS AVDISOR AS DROPDOWN
+        // PRINTS AVDISOR (TRUE/FALSE) AS DROPDOWN
             print '<td><input type="text" class="aTextField" size="3" name="U_advisor" value="'.$row["advisor"].'"></td>';
         // UPDATE BUTTON
             print '
