@@ -18,7 +18,7 @@ require_once('../../login.php');
 <body class="admin">
     
     <!-- HEADER BAR -->
-    <div id="TopHeader"><h1>Example Page</h1></div>
+    <div id="TopHeader"><h1>Update Students</h1></div>
     
 <?php
 

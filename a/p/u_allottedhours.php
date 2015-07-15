@@ -64,16 +64,6 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 }
 
 
-////////DELETE FUNCTION/////////
-if (!empty($_POST['Delete'])) {
-
-// PUTTING POST INTO A VARIABLE FOR QUERY
-$yis_id = $_POST['yid'];
-
-//MYSQLI UPDATE(REMOVE) QUERY
-$results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatorid = $student_id");
-}
-
 ?>
         
 <!-- Start of main table -->
