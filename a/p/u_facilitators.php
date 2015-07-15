@@ -35,10 +35,10 @@ require_once('../../login.php');
 $query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
 
 /////// INSERT FUNCTION //////////
-// CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
+// CHECKING IF THE "ADD FACILITATOR" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['addnew'])) {
     
-//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
+//VALUES TO BE INSERTED INTO THE FACILITATORS TABLE
 $new_name = '"'.$mysqli->real_escape_string('-Example').'"';
 $new_email = '"'.$mysqli->real_escape_string('example@pscs.org').'"';
 $isadvisor = '"'.$mysqli->real_escape_string('1').'"';

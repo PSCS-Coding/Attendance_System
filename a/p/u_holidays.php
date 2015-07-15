@@ -37,10 +37,10 @@ require_once('../../login.php');
 $query_results = $mysqli->query("SELECT * FROM holidays ORDER BY date");
 
 /////// INSERT FUNCTION //////////
-// CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
+// CHECKING IF THE "ADD HOLIDAY" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['addnew'])) {
     
-//VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
+//VALUES TO BE INSERTED INTO THE HOLIDAY TABLE
 $new_hname = '"'.$mysqli->real_escape_string('-Example').'"';
 $new_hdate = '"'.$mysqli->real_escape_string('2014-11-10').'"';
 
