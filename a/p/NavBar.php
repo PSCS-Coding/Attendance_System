@@ -10,5 +10,4 @@
             <a href="edit_events.php" class="option">Events</a>
             <a href="u_groups.php" class="option">Groups</a>
             <a href="offsite_stats.php" class="option">Offsite Stats</a>
-            <a href="example.php" class="option disabled">IN DEVELOPMENT</a>
                     </div>
