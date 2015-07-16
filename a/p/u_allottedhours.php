@@ -11,7 +11,7 @@ require_once('../../login.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example Page - Students</title>
+	<title>Example Page - Allotted Hours</title>
 	<?php require_once('header.php'); ?>
 </head>
     
@@ -24,11 +24,7 @@ require_once('../../login.php');
 
 // In-Code Refrences:
 // B = Button
-// NN = New Name
-// Y - Year in school
 // U - Update
-// NN - New Name
-// d_ - Deactivated
 // a - admin
 // commhours - Community Hours
 // offhours - Offsite Hours
@@ -72,7 +68,7 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
     <th>Community Hours</th>
     <th>Offsite Hours</th>
     <th>IS Hours</th>
-    <th class="textcenter">Change</th>
+    <th class="textcenter">-</th>
 
 <?php
 
@@ -103,7 +99,6 @@ while($row = $query_results->fetch_array()) {
             print '
             <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Update'.$row["yis"].'" value="Update">
-                <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
         // PRINTS FORM CLOSE
             print '</form>';
@@ -130,7 +125,6 @@ while($row = $query_results->fetch_array()) {
             print '
             <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Save" value="Save">
-                <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
         // PRINTING CLOSE FORM
             print '</form>';

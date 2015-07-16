@@ -80,12 +80,14 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 
 ////////DELETE FUNCTION/////////
 if (!empty($_POST['Delete'])) {
-
-// PUTTING POST INTO A VARIABLE FOR QUERY
-$facilitator_id = $_POST['fid'];
-
-//MYSQLI UPDATE(REMOVE) QUERY
-$results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatorid = $student_id");
+    
+//MySqli Delete Query
+$statement = $mysqli->prepare("DELETE FROM facilitators WHERE facilitatorid = ?");
+$statement->bind_param('i', $_POST['fid']);
+$statement->execute(); 
+$statement->close();
+    
+echo "Deleted Record";
 }
 
 ?>

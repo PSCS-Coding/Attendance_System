@@ -24,15 +24,9 @@ require_once('../../login.php');
 
 // In-Code Refrences:
 // B = Button
-// NN = New Name
 // Y - Year in school
 // U - Update
-// NN - New Name
-// d_ - Deactivated
 // a - admin
-// commhours - Community Hours
-// offhours - Offsite Hours
-// IS - Independent Study
 
 //MYSQLI SELECT QUERY
 $query_results = $mysqli->query("SELECT * FROM globals ORDER BY id");
@@ -42,19 +36,20 @@ $query_results = $mysqli->query("SELECT * FROM globals ORDER BY id");
 if (!empty($_POST['Save'])) {
     
 // DEFINING POST VARIABLES
-$u_commhours = $_POST['U_communityhours'];
-$u_offhours = $_POST['U_offsitehours'];
-$u_ishours = $_POST['U_IShours'];
-$find_id = $_POST['yid'];
+$u_starttime = $_POST['U_starttime'];
+$u_endtime = $_POST['U_endtime'];
+$u_startdate = $_POST['U_startdate'];
+$u_enddate = $_POST['U_enddate'];
+$find_id = $_POST['gid'];
 
 // QUERY DEFINING WHAT TO UPDATE
-$query = "UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE yis = ?";
+$query = "UPDATE globals SET starttime = ? , endtime = ? , startdate = ? , enddate = ? WHERE id = ?";
     
 // PREPARE STATEMENT    
 $statement = $mysqli->prepare($query);
 
 //BIND parameters for markers
-$results =  $statement->bind_param('ssii', $u_commhours, $u_offhours, $u_ishours, $find_id);
+$results =  $statement->bind_param('ssssi', $u_starttime, $u_endtime, $u_startdate, $u_enddate, $find_id);
 $statement->execute();
 $statement->close();
 // PRINTING SUSSESS OR ERROR
@@ -67,11 +62,11 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
         
 <!-- Start of main table -->
 <table class="center">
-    <th>Year in School</th>
-    <th>Community Hours</th>
-    <th>Offsite Hours</th>
-    <th>IS Hours</th>
-    <th class="textcenter">Change</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th class="textcenter">-</th>
 
 <?php
 
@@ -79,7 +74,7 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 while($row = $query_results->fetch_array()) {
         
     // MAKING A SINGLE VAR FROM POST AND YEAR IN SCHOOL
-    $editMode = "Update" . $row['yis'];
+    $editMode = "Update" . $row['id'];
     
     // CHECKING IF THERE IS POST DATA FOR $editMode
     if (empty($_POST[$editMode])) {
@@ -87,22 +82,21 @@ while($row = $query_results->fetch_array()) {
         // PRINTING TABLE ROW
             print '<tr>';
         // MAKING FORM
-            print '<form action="u_allottedhours.php" method="POST">';
-        // GETS/MAKES HIDDEN YEAR IN SCHOOL ID
-            print '<input type="hidden" name="yid" value="'.$row["yis"].'">';
-        // PRINTS YEAR IN SCHOOL
-            print '<td>'.$row["yis"].'</td>';
-        // PRINTS COMMUNITY HOURS
-            print '<td>'.$row["communityhours"].'</td>';
-        // PRINTS OFFSITE HOURS
-            print '<td>'.$row["offsitehours"].'</td>';
-        // PRINTS INDEPENDENT STUDY HOURS
-            print '<td>'.$row["IShours"].'</td>';
+            print '<form action="u_globals.php" method="POST">';
+        // GETS/MAKES HIDDEN GLOBALS ID
+            print '<input type="hidden" name="gid" value="'.$row["id"].'">';
+        // PRINTS START TIME
+            print '<td>'.$row["starttime"].'</td>';
+        // PRINTS END TIME
+            print '<td>'.$row["endtime"].'</td>';
+        // PRINTS START DATE
+            print '<td>'.$row["startdate"].'</td>';
+        // PRINTS END DATE
+            print '<td>'.$row["enddate"].'</td>';
         // PRINTS UPDATE BUTTONS
             print '
             <td class="textcenter">
-                <input type="submit" class="adminbtn" name="Update'.$row["yis"].'" value="Update">
-                <input type="submit" class="adminbtn" name="Delete" value="Delete">
+                <input type="submit" class="adminbtn" name="Update'.$row["id"].'" value="Update">
             </td>';
         // PRINTS FORM CLOSE
             print '</form>';
@@ -114,22 +108,21 @@ while($row = $query_results->fetch_array()) {
         // PRINTING STARTING TABLE ROW
             print '<tr>';
         // PRINTING STARTING FORM
-            print '<form action="u_allottedhours.php" method="POST">';
-        // GETS/MAKES HIDDEN YEAR IN SCHOOL ID
-            print '<input type="hidden" name="yid" value="'.$row["yis"].'">';
-        // PRINTS YEAR IN SCHOOL (NOT EDITABLE)
-            print '<td>'.$row["yis"].'</td>';
-        // PRINTS COMMUNITY HOURS AS TEXTBOX
-            print '<td><input type="text" class="aTextField" size="5" name="U_communityhours" value="'.$row["communityhours"].'"></td>';
-        // PRINTS OFFSITE HOURS AS TEXTBOX
-            print '<td><input type="text" class="aTextField" size="5" name="U_offsitehours" value="'.$row["offsitehours"].'"></td>';
-        // PRINTS Independent Study hours as TEXTBOX
-            print '<td><input type="text" class="aTextField" size="5" name="U_IShours" value="'.$row["IShours"].'"></td>';
+            print '<form action="u_globals.php" method="POST">';
+        // GETS/MAKES HIDDEN GLOBALS ID
+            print '<input type="hidden" name="gid" value="'.$row["id"].'">';
+        // PRINTS START TIME AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_starttime" value="'.$row["starttime"].'"></td>';
+        // PRINTS END TIME AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_endtime" value="'.$row["endtime"].'"></td>';
+        // PRINTS START DATE AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_startdate" value="'.$row["startdate"].'"></td>';
+        // PRINTS END DATE AS TEXTBOX
+            print '<td><input type="text" class="aTextField" size="10" name="U_enddate" value="'.$row["enddate"].'"></td>';
         // UPDATE BUTTON
             print '
             <td class="textcenter">
                 <input type="submit" class="adminbtn" name="Save" value="Save">
-                <input type="submit" class="adminbtn" name="Delete" value="Delete">
             </td>';
         // PRINTING CLOSE FORM
             print '</form>';

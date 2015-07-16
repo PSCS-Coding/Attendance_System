@@ -24,11 +24,7 @@ require_once('../../login.php');
 
 // In-Code Refrences:
 // B = Button
-// NN = New Name
-// Y - Year in school
 // U - Update
-// NN - New Name
-// d_ - Deactivated
 // a - admin
 // hname- Holiday Name
 // hdate - Holiday Date
@@ -81,11 +77,13 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 ////////DELETE FUNCTION/////////
 if (!empty($_POST['Delete'])) {
 
-// PUTTING POST INTO A VARIABLE FOR QUERY
-$holiday_id = $_POST['hid'];
-
-//MYSQLI UPDATE(REMOVE) QUERY
-$results = $mysqli->query("DELETE studentdata SET current='0' WHERE facilitatorid = $student_id");
+//MySqli Delete Query
+$statement = $mysqli->prepare("DELETE FROM holidays WHERE id = ?");
+$statement->bind_param('i', $_POST['hid']);
+$statement->execute(); 
+$statement->close();
+    
+echo "Deleted Record";
 }
 
 ?>
