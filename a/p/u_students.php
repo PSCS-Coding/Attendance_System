@@ -124,7 +124,7 @@ while($row = $query_results->fetch_array()) {
         // PRINTING TABLE ROW
             print '<tr>';
         // MAKING FORM
-            print '<form action="example.php" method="POST">';
+            print '<form action="u_students.php" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
         // PRINTS FULL NAME VARIABLE
@@ -151,7 +151,7 @@ while($row = $query_results->fetch_array()) {
         // PRINTING STARTING TABLE ROW
             print '<tr>';
         // PRINTING STARTING FORM
-            print '<form action="example.php" method="POST">';
+            print '<form action="u_students.php" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
         // PRINTS FIRST & LAST NAME AS TEXTBOXES
