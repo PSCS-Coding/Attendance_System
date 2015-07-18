@@ -11,7 +11,7 @@ require_once('../../login.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example Page - Students</title>
+	<title>Admin - Globals</title>
 	<?php require_once('header.php'); ?>
 </head>
     

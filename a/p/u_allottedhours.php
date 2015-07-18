@@ -11,7 +11,7 @@ require_once('../../login.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example Page - Allotted Hours</title>
+	<title>Admin - Allotted Hours</title>
 	<?php require_once('header.php'); ?>
 </head>
     
