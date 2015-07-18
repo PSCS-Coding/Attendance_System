@@ -28,10 +28,6 @@ require_once('../../login.php');
 // U - Update
 // a - admin
 
-//MYSQLI SELECT QUERY
-$query_results = $mysqli->query("SELECT * FROM globals ORDER BY id");
-
-
 // CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {
     
@@ -58,6 +54,8 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 // CLOSING ORIGIN IF STATEMENT   
 }
 
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM globals ORDER BY id");
 ?>
         
 <!-- Start of main table -->
