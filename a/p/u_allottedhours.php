@@ -30,10 +30,6 @@ require_once('../../login.php');
 // offhours - Offsite Hours
 // IS - Independent Study
 
-//MYSQLI SELECT QUERY
-$query_results = $mysqli->query("SELECT * FROM allottedhours ORDER BY yis");
-
-
 // CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {
     
@@ -59,6 +55,8 @@ if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->
 // CLOSING ORIGIN IF STATEMENT   
 }
 
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM allottedhours ORDER BY yis");
 
 ?>
         
