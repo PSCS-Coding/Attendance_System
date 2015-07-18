@@ -10,6 +10,7 @@ require_once('../../login.php');
 ?>
 <!DOCTYPE html>
 <html>
+    
 <head>
 	<title>Admin - Students</title>
 	<?php require_once('header.php'); ?>
@@ -29,12 +30,6 @@ require_once('../../login.php');
 // U - Update
 // NN - New Name
 // d_ - Deactivated
-
-//MYSQLI SELECT QUERY (STUDENT DATA)
-$query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
-
-//MYSQLI SELECT QUERY (FACILITATORS)
-$f_query_results = $mysqli->query("select * from facilitators where advisor = 1");
 
 /////// INSERT FUNCTION //////////
 // CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
@@ -65,8 +60,6 @@ $u_enrolled = $_POST['U_enrolled'];
 $u_advisor = $_POST['U_advisor'];
 $u_yis = $_POST['U_yis'];
 $find_id = $_POST['sid'];
-echo $u_first;
-echo $find_id;
 
 // QUERY DEFINING WHAT TO UPDATE
 $query = "UPDATE studentdata SET firstname = ? , lastname = ? , startdate = ? , advisor = ? , yearinschool = ? WHERE studentid = ?";
@@ -78,8 +71,6 @@ $statement = $mysqli->prepare($query);
 $results =  $statement->bind_param('ssssii', $u_first, $u_last, $u_enrolled, $u_advisor, $u_yis, $find_id);
 $statement->execute();
 $statement->close();
-// PRINTING SUSSESS OR ERROR
-if($results){print 'Success! record updated'; }else{print 'Error : ('. $mysqli->errno .') '. $mysqli->error;}
 
 // CLOSING ORIGIN IF STATEMENT   
 }
@@ -93,6 +84,8 @@ $student_id = $_POST['sid'];
 
 //MYSQLI UPDATE(REMOVE) QUERY
 $results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
+    
+// CLOSING ORIGIN IF STATEMENT
 }
 
 ////////REVIVE FUNCTION/////////
@@ -105,6 +98,7 @@ $results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = 
     //MYSQLI UPDATE(REVIVE) QUERY
     $d_results = $mysqli->query("UPDATE studentdata SET current='1' WHERE studentid = $d_student_id");
 
+// CLOSING ORIGIN IF STATEMENT
 }
 
 // MYSQL QUERYS
