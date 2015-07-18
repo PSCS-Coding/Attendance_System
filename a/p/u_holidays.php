@@ -29,9 +29,6 @@ require_once('../../login.php');
 // hname- Holiday Name
 // hdate - Holiday Date
 
-//MYSQLI SELECT QUERY
-$query_results = $mysqli->query("SELECT * FROM holidays ORDER BY date");
-
 /////// INSERT FUNCTION //////////
 // CHECKING IF THE "ADD HOLIDAY" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['addnew'])) {
@@ -85,6 +82,9 @@ $statement->close();
     
 echo "Deleted Record";
 }
+
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM holidays ORDER BY date");
 
 ?>
         
