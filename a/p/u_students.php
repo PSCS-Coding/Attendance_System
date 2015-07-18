@@ -30,8 +30,11 @@ require_once('../../login.php');
 // NN - New Name
 // d_ - Deactivated
 
-//MYSQLI SELECT QUERY
+//MYSQLI SELECT QUERY (STUDENT DATA)
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
+
+//MYSQLI SELECT QUERY (FACILITATORS)
+$f_query_results = $mysqli->query("select * from facilitators where advisor = 1");
 
 /////// INSERT FUNCTION //////////
 // CHECKING IF THE "ADD STUDENT" BUTTON HAS BEEN CLICKED
@@ -92,6 +95,25 @@ $student_id = $_POST['sid'];
 $results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = $student_id");
 }
 
+////////REVIVE FUNCTION/////////
+// CHECKS IF REVIVE BUTTON HAS BEEN CLICKED
+ if (!empty($_POST['Revive'])) {
+
+    // PUTTING POST INTO A VARIABLE FOR QUERY
+    $d_student_id = $_POST['d_sid'];
+     
+    //MYSQLI UPDATE(REVIVE) QUERY
+    $d_results = $mysqli->query("UPDATE studentdata SET current='1' WHERE studentid = $d_student_id");
+
+}
+
+// MYSQL QUERYS
+//MYSQLI SELECT QUERY (STUDENT DATA)
+$query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
+
+//MYSQLI SELECT QUERY (FACILITATORS)
+$f_query_results = $mysqli->query("select * from facilitators where advisor = 1");
+
 ?>
         
 <!-- Start of main table -->
@@ -124,7 +146,7 @@ while($row = $query_results->fetch_array()) {
         // PRINTING TABLE ROW
             print '<tr>';
         // MAKING FORM
-            print '<form action="u_students.php" method="POST">';
+            print '<form action="" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
         // PRINTS FULL NAME VARIABLE
@@ -151,7 +173,7 @@ while($row = $query_results->fetch_array()) {
         // PRINTING STARTING TABLE ROW
             print '<tr>';
         // PRINTING STARTING FORM
-            print '<form action="u_students.php" method="POST">';
+            print '<form action="" method="POST">';
         // GETS/MAKES HIDDEN STUDENT ID
             print '<input type="hidden" name="sid" value="'.$row["studentid"].'">';
         // PRINTS FIRST & LAST NAME AS TEXTBOXES
@@ -161,10 +183,32 @@ while($row = $query_results->fetch_array()) {
             </td>';
         // PRINTS ENROLLED YEAR AS TEXTBOX
             print '<td><input type="text" class="aTextField" size="10" name="U_enrolled" value="'.$row["startdate"].'"></td>';
-        // PRINTS ADVISOR AS DROPDOWN (COMING SOON)
-            print '<td><input type="text" class="aTextField" size="7" name="U_advisor" value="'.$row["advisor"].'"></td>';
+        ////// PRINTS ADVISOR AS DROPDOWN  //////
+        
+            // Starting table data tag
+            print '<td>';
+            // Opening SELECT tag
+            print '<select name="U_advisor">';
+            // While loop for getting advisor options
+                while($f_row = $f_query_results->fetch_array()) {
+            // Starting IF statement to compare advisor to complete advisor list without dupelacation
+                    if ($row['advisor'] == $f_row['facilitatorname']) {
+            // Selects students current advisor
+                        print '<option selected>'.$row['advisor'].'</option>';
+                    } else {
+            // PRINTS THE REST OF THE ADVISORS  
+                        print '<option>'.$f_row['facilitatorname'].'</option>';
+            // CLOSES ELSE
+                    }
+            // CLOSES WHILE
+                }
+            // CLOSING SELECT TAG
+            print '</select>';
+            // CLOSING TABLE DATA
+            print '</td>';
+        
         // PRINTS YEAR IN SCHOOL AS DROPDOWN (COMING SOON)
-            print '<td><input type="text" class="aTextField" size="3" name="U_yis" value="'.$row["yearinschool"].'"></td>';
+            print '<td><input type="number" min="1" max="8" class="aTextField" name="U_yis" value="'.$row["yearinschool"].'"></td>';
         // UPDATE BUTTON
             print '
             <td class="textcenter">
@@ -208,7 +252,7 @@ while($d_row = $d_query_results->fetch_array()) {
         // PUTTNIG ENROLLED DATE INTO A NEW DATETIME & VARIABLE
             $d_new_date_format = new DateTime($d_row['startdate']);
         // MAKING FORM
-            print '<form action="example.php" method="POST">';
+            print '<form action="u_students.php" method="POST">';
         // PRINTING TABLE ROW
             print '<tr>';
         // GETS/MAKES HIDDEN STUDENT ID
@@ -228,18 +272,6 @@ while($d_row = $d_query_results->fetch_array()) {
             print '</tr>';
         // PRINTS FORM CLOSE
             print '</form>';
-}
-
-////////REVIVE FUNCTION/////////
-// CHECKS IF REVIVE BUTTON HAS BEEN CLICKED
- if (!empty($_POST['Revive'])) {
-
-    // PUTTING POST INTO A VARIABLE FOR QUERY
-    $d_student_id = $_POST['d_sid'];
-     
-    //MYSQLI UPDATE(REVIVE) QUERY
-    $d_results = $mysqli->query("UPDATE studentdata SET current='1' WHERE studentid = $d_student_id");
-
 }
 
 // Frees the memory associated with a result
