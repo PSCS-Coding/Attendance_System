@@ -36,10 +36,10 @@ require_once('../../login.php');
 if (!empty($_POST['addnew'])) {
     
 //VALUES TO BE INSERTED INTO THE STUDENT DATA TABLE
-$first_name = '"'.$mysqli->real_escape_string('-Example').'"';
-$last_name = '"'.$mysqli->real_escape_string('Person').'"';
-$start_date = '"'.$mysqli->real_escape_string('2009-09-01').'"';
-$advisor = '"'.$mysqli->real_escape_string('Nic').'"';
+$first_name = '"'.$mysqli->real_escape_string($_POST['newFirst']).'"';
+$last_name = '"'.$mysqli->real_escape_string($_POST['newLast']).'"';
+$start_date = '"'.$mysqli->real_escape_string($_POST['newStart']).'"';
+$advisor = '"'.$mysqli->real_escape_string($_POST['newAdvisor']).'"';
 
 //QUERY DEFINING WHAT TO INSERT
 $insert_row = $mysqli->query("INSERT INTO studentdata (firstname, lastname, startdate, advisor) VALUES($first_name, $last_name, $start_date, $advisor)");
@@ -105,11 +105,28 @@ $results = $mysqli->query("UPDATE studentdata SET current='0' WHERE studentid = 
 //MYSQLI SELECT QUERY (STUDENT DATA)
 $query_results = $mysqli->query("SELECT * FROM studentdata WHERE current = '1' ORDER BY firstname");
 
-//MYSQLI SELECT QUERY (FACILITATORS)
+//MYSQLI SELECT QUERY (FACILITATORS) (UPDATING STUDENT)
 $f_query_results = $mysqli->query("select * from facilitators where advisor = 1");
 
+//MYSQLI SELECT QUERY (FACILITATORS) (ADDING STUDENT)
+$addf_query_results = $mysqli->query("select * from facilitators where advisor = 1");
+
 ?>
-        
+
+<form method="post" class="myform">
+    <input type="text" name="newFirst" placeholder="First Name" class="aTextField add" required>
+    <input type="text" name="newLast" placeholder="Last Name" class="aTextField add" required>
+    <input type="text" name="newStart" placeholder="2012-09-04" class="aTextField add" required>
+    <select name="newAdvisor">
+                <option disabled selected>Advisor</option>
+               <?php while($f_add_row = $addf_query_results->fetch_array()) { ?>
+                        <option><?php echo $f_add_row['facilitatorname']; ?></option>
+                <?php } ?>
+     </select>
+    <br />
+    <input type="submit" name="addnew" value="Add Student" class="adminbtn add">
+</form>
+    
 <!-- Start of main table -->
 <table class="center">
     <th>Name</th>

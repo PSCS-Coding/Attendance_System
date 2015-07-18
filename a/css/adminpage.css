@@ -150,7 +150,7 @@ border-spacing:0px;
 border:0.3em solid #404040;
 width: 50%;
 opacity: 0.85;
-margin-top: 5em;
+margin-top: 1em;
 margin-left: 17em;
 align-content: center;
 }
@@ -327,6 +327,10 @@ body .edit-events {
   background: #5a5b5c;
   text-decoration: none;
 }
+.adminbtn.add {
+margin-top: 0.7em;
+width: 35%
+}
 .aTextField {
 background: #474747;
 border: 0.1em solid black;
@@ -335,6 +339,26 @@ height: 1.7em;
 font-size: 1em;
 text-align: center;
 }
+.aTextField.add {
+height: 25%;
+font-size: 0.7em;
+}
 .textcenter {
 text-align: center;
+}
+.myform{
+margin-left:35%;
+position:relative;
+width:49.4%;
+height:5em;
+color: white;
+text-decoration: none;
+margin-top: 5em;
+border: 0.3em solid #404040;
+background-color: #575555;
+text-align: center;
+font-family: "Verdana";
+}
+input.add {
+margin-top: 1.5em;
 }
