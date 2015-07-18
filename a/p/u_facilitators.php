@@ -31,9 +31,6 @@ require_once('../../login.php');
 // d_ - Deactivated
 // a - admin
 
-//MYSQLI SELECT QUERY
-$query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
-
 /////// INSERT FUNCTION //////////
 // CHECKING IF THE "ADD FACILITATOR" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['addnew'])) {
@@ -89,6 +86,9 @@ $statement->close();
     
 echo "Deleted Record";
 }
+
+//MYSQLI SELECT QUERY
+$query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
 
 ?>
         
