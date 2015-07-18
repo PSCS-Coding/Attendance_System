@@ -34,8 +34,8 @@ require_once('../../login.php');
 if (!empty($_POST['addnew'])) {
     
 //VALUES TO BE INSERTED INTO THE HOLIDAY TABLE
-$new_hname = '"'.$mysqli->real_escape_string('-Example').'"';
-$new_hdate = '"'.$mysqli->real_escape_string('2014-11-10').'"';
+$new_hname = '"'.$mysqli->real_escape_string($_POST['newHoliday']).'"';
+$new_hdate = '"'.$mysqli->real_escape_string($_POST['newDate']).'"';
 
 //QUERY DEFINING WHAT TO INSERT
 $insert_row = $mysqli->query("INSERT INTO holidays (holidayname, date) VALUES($new_hname, $new_hdate)");
@@ -87,7 +87,14 @@ echo "Deleted Record";
 $query_results = $mysqli->query("SELECT * FROM holidays ORDER BY date");
 
 ?>
-        
+  
+<form method="post" class="myform">
+    <input type="text" name="newHoliday" placeholder="Holiday Name" class="aTextField add" required>
+    <input type="text" name="newDate" placeholder="Date" class="aTextField add" required>
+    <br />
+    <input type="submit" name="addnew" value="Add Holiday" class="adminbtn add holidayButton">
+</form>        
+    
 <!-- Start of main table -->
 <table class="center">
     <th>Holiday</th>

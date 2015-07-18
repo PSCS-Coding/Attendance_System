@@ -37,7 +37,7 @@ foreach ($studentTable as $key => $row){
 array_multisort($sortArray, SORT_ASC, $studentTable);
 
 ?>  
-<table class="center">
+<table class="center noA">
 <tr> 
 <th> Name </th>
 <th> Minutes Per Day </th>

@@ -36,9 +36,9 @@ require_once('../../login.php');
 if (!empty($_POST['addnew'])) {
     
 //VALUES TO BE INSERTED INTO THE FACILITATORS TABLE
-$new_name = '"'.$mysqli->real_escape_string('-Example').'"';
-$new_email = '"'.$mysqli->real_escape_string('example@pscs.org').'"';
-$isadvisor = '"'.$mysqli->real_escape_string('1').'"';
+$new_name = '"'.$mysqli->real_escape_string($_POST['newName']).'"';
+$new_email = '"'.$mysqli->real_escape_string($_POST['newEmail']).'"';
+$isadvisor = '"'.$mysqli->real_escape_string($_POST['newAdvisor']).'"';
 
 //QUERY DEFINING WHAT TO INSERT
 $insert_row = $mysqli->query("INSERT INTO facilitators (facilitatorname, email, advisor) VALUES($new_name, $new_email, $isadvisor)");
@@ -91,7 +91,20 @@ echo "Deleted Record";
 $query_results = $mysqli->query("SELECT * FROM facilitators ORDER BY facilitatorname");
 
 ?>
-        
+
+<form method="post" class="myform">
+    <input type="text" name="newName" placeholder="Name" class="aTextField add" required>
+    <input type="text" name="newEmail" placeholder="Email" class="aTextField add" required>
+    <select name="newAdvisor">
+                <option disabled selected value="0">Advisor?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+     </select>
+    <br />
+    <input type="submit" name="addnew" value="Add Facilitator" class="adminbtn add">
+</form>    
+    
+    
 <!-- Start of main table -->
 <table class="center">
     <th>Name</th>

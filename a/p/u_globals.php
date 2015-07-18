@@ -27,6 +27,7 @@ require_once('../../login.php');
 // Y - Year in school
 // U - Update
 // a - admin
+// noA - no add
 
 // CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {
@@ -59,7 +60,7 @@ $query_results = $mysqli->query("SELECT * FROM globals ORDER BY id");
 ?>
         
 <!-- Start of main table -->
-<table class="center">
+<table class="center noA">
     <th>Start Time</th>
     <th>End Time</th>
     <th>Start Date</th>

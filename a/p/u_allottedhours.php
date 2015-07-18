@@ -29,6 +29,7 @@ require_once('../../login.php');
 // commhours - Community Hours
 // offhours - Offsite Hours
 // IS - Independent Study
+// noA - no add
 
 // CHECKING IF THE "SAVE" BUTTON HAS BEEN CLICKED
 if (!empty($_POST['Save'])) {
@@ -61,7 +62,7 @@ $query_results = $mysqli->query("SELECT * FROM allottedhours ORDER BY yis");
 ?>
         
 <!-- Start of main table -->
-<table class="center">
+<table class="center noA">
     <th>Year in School</th>
     <th>Community Hours</th>
     <th>Offsite Hours</th>
