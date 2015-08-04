@@ -1,8 +1,32 @@
-<?php require_once('login.php'); ?>
+
 <!DOCTYPE html>
 	<html>
 	<head>
-        <?php require_once('header.php'); ?>
+	        <title>PSCS Attendance</title>
+		<link rel="stylesheet" type="text/css" href="attendance.css">
+        <link rel="stylesheet" type="text/css" href="responsive.css">
+        <link rel="stylesheet" type="text/css" href="mobile.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css">    
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+	    <script src="js/jquery.timepicker.min.js" type="text/javascript"></script>
+        <script src="js/OffsiteCount.js" type="text/javascript"></script>
+        <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
+        <link rel='stylesheet' href="css/pikaday.css" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <LINK REL="apple-touch-icon" HREF="img/mobius.png" type="image/png" />
+	<?php
+	require_once("connection.php");
+	    require_once("function.php");
+		$db_hostname = 'localhost';
+	$db_username = 'root';
+	$db_password = '';
+	$db_database = 'pscsorg_attendance';
+	$db_server = new mysqli($db_hostname, $db_username, $db_password, $db_database);
+	if ($db_server->connect_error) { die('Connect Error (' . $db_server->connect_errno . ') '  . $db_server->connect_error); }
+        // THIS LINE TELLS THE SERVER TO UNDERSTAND US AS IN THE PACIFIC TIME ZONE
+        $db_server->query("SET time_zone='US/Pacific';");
+		?>
+		
 	    <script type="text/javascript">
 
 
