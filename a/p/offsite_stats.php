@@ -5,10 +5,11 @@ require_once('../../login.php');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Offsite Stats</title>
+	<title>Admin - Offsite Stats</title>
 	<?php require_once('header.php'); ?>
 </head>
 <body>
+<div id="TopHeader"><h1>Offsite Stats</h1></div>
 <?php 
 // Header Info
     $HeaderStatus = null;
@@ -35,12 +36,8 @@ foreach ($studentTable as $key => $row){
 
 array_multisort($sortArray, SORT_ASC, $studentTable);
 
-?>
-<div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
-    <h1 class="Myheader"><?php echo $HeaderInfo; ?></h1>
-</div>
-    <div align="center" id="main">
-<table id="OffsiteStats">
+?>  
+<table class="center noA">
 <tr> 
 <th> Name </th>
 <th> Minutes Per Day </th>
@@ -71,6 +68,5 @@ foreach ($studentTable as $render){
 
 ?>
 </table>
-        </div>
 </body>
 </html>
