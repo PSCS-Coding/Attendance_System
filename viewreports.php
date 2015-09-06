@@ -636,6 +636,19 @@ echo "<br>";
 <?php
 }
 }
+
+//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$startdateforpicker = $globalsdata['startdate'];
+$enddateforpicker = $globalsdata['enddate'];
+$startdateforpicker = new DateTime($startdateforpicker);
+$enddateforpicker = new DateTime($enddateforpicker);
+$startdateforpicker = $startdateforpicker->format('Y/m/d');
+$enddateforpicker = $enddateforpicker->format('Y/m/d');
+echo $startdateforpicker . " <br> " . $enddateforpicker;
+
 ?>
 </div>
 </form>
@@ -645,8 +658,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'8:00', 
             step: 5,
@@ -658,8 +671,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'15:30', 
             step: 5,
