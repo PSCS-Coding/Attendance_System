@@ -285,7 +285,6 @@ if (validTime($_POST['offtime'])){
 										 JOIN statusdata ON events.statusid = statusdata.statusid
 										 RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 										 WHERE studentdata.studentid = $current_student_id[studentid] 
-										 AND timestamp BETWEEN '$startDate' AND '$endDate' 
 										 ORDER BY timestamp DESC
 										 LIMIT 1")
 										 or die(mysqli_error($db_server));
