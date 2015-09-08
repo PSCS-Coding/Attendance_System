@@ -415,11 +415,10 @@ $offsiteMin_used = $offsitehours_used % 60;
 if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
+echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 } else {
 echo "<p class='reporttext'> The school year has ended.</p>";
 }
-
-echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
@@ -637,6 +636,19 @@ echo "<br>";
 <?php
 }
 }
+
+//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$startdateforpicker = $globalsdata['startdate'];
+$enddateforpicker = $globalsdata['enddate'];
+$startdateforpicker = new DateTime($startdateforpicker);
+$enddateforpicker = new DateTime($enddateforpicker);
+$startdateforpicker = $startdateforpicker->format('Y/m/d');
+$enddateforpicker = $enddateforpicker->format('Y/m/d');
+echo $startdateforpicker . " <br> " . $enddateforpicker;
+
 ?>
 </div>
 </form>
@@ -646,8 +658,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'8:00', 
             step: 5,
@@ -659,8 +671,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'15:30', 
             step: 5,
