@@ -136,12 +136,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 
 $student_data_array = array();
 if (isset($current_student_id)) {
-//gets stats
-$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2");
-$getStatsResult = array();
-while ($stats = $getStatsQuery->fetch_array()) {
-	array_push($getStatsResult, $stats);
-}
+
 //displays stats
 echo "<div class='reportdiv'>";
 echo "<div class='topdiv'>";//doesnt include detailed list of
@@ -182,6 +177,14 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
+
+//gets stats
+$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2 AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'");
+$getStatsResult = array();
+while ($stats = $getStatsQuery->fetch_array()) {
+	array_push($getStatsResult, $stats);
+}
+
 if(count($student_data_array)!=0){
 
 
@@ -647,7 +650,6 @@ $startdateforpicker = new DateTime($startdateforpicker);
 $enddateforpicker = new DateTime($enddateforpicker);
 $startdateforpicker = $startdateforpicker->format('Y/m/d');
 $enddateforpicker = $enddateforpicker->format('Y/m/d');
-echo $startdateforpicker . " <br> " . $enddateforpicker;
 
 ?>
 </div>
