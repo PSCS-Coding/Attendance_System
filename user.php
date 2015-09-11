@@ -51,6 +51,17 @@
 		array_push ($facilitators, $fac_row[0]);
     }
 
+		    // get dates
+                $globals_query = "SELECT * FROM globals";
+                $globals_result = $db_server->query($globals_query);
+                $globals_data = $globals_result->fetch_array();
+				$getendDate = new DateTime($globals_data['enddate']);
+				$getstartDate = new DateTime($globals_data['startdate']);
+				date_add($getstartDate, date_interval_create_from_date_string('1 day'));
+				date_add($getendDate, date_interval_create_from_date_string('-1 day'));
+				$startDate = $getstartDate->format('Y-m-d H:i:s');
+				$endDate = $getendDate->format('Y-m-d H:i:s');
+				
 // if another date has not been chosen, and the submit button has been pressed, change status
 if(empty($_POST['otherdate'])){
 if (!empty($_POST)){
@@ -243,25 +254,25 @@ if (!empty($_POST)){
 	$rowcnt=$rowcnt-1;
 	}
 	//query to get current status and another to convert the status id to the clear text statusname
-	$info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
+	$info = $db_server->query("SELECT statusid FROM events WHERE studentid = '".$id."' AND timestamp BETWEEN '$startDate' AND '$endDate' ORDER BY timestamp DESC LIMIT 1");
 	$rowdata=mysqli_fetch_row($info);
 	$currentstatusid=$rowdata[0];
 	$convert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$currentstatusid."'");
 	$currentstatus=mysqli_fetch_row($convert);
 	
 	//query returntime
-	$getreturn = $db_server->query("SELECT returntime FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
+	$getreturn = $db_server->query("SELECT returntime FROM events WHERE studentid = '".$id."' AND timestamp BETWEEN '$startDate' AND '$endDate' ORDER BY timestamp DESC LIMIT 1");
 	$returntime=mysqli_fetch_row($getreturn);
 	$finalreturn=$returntime[0];
 	$returntimeobject = new DateTime($finalreturn);
 	
 	//query info
-	$getwith = $db_server->query("SELECT info FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
+	$getwith = $db_server->query("SELECT info FROM events WHERE studentid = '".$id."' AND timestamp BETWEEN '$startDate' AND '$endDate' ORDER BY timestamp DESC LIMIT 1");
 	$withrow=mysqli_fetch_row($getwith);
 	$finalwith=$withrow[0];
 	
 	//query timestamp
-	$getdate = $db_server->query("SELECT timestamp FROM events WHERE studentid = '".$id."'ORDER BY timestamp DESC LIMIT 1");
+	$getdate = $db_server->query("SELECT timestamp FROM events WHERE studentid = '".$id."' AND timestamp BETWEEN '$startDate' AND '$endDate' ORDER BY timestamp DESC LIMIT 1");
 	$datedata=mysqli_fetch_row($getdate);
 	$currentdate=$datedata[0];
 	
