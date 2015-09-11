@@ -251,7 +251,11 @@ function daysLeft()
         }
         $rowcnt = $rowcnt-1;
     }
-        $returnInfo = count($dateList);
+        if(!empty($dateList)){
+            $returnInfo = count($dateList);
+        } else {
+            $returnInfo = -1;
+        }
         return($returnInfo);
 }
 
@@ -353,6 +357,17 @@ function calculateStats($current_student_id) //======================== passes o
 	
 global $db_server;
 
+	    // get dates
+                $globals_query = "SELECT * FROM globals";
+                $globals_result = $db_server->query($globals_query);
+                $globals_data = $globals_result->fetch_array();
+				$getendDate = new DateTime($globals_data['enddate']);
+				$getstartDate = new DateTime($globals_data['startdate']);
+				date_add($getstartDate, date_interval_create_from_date_string('1 day'));
+				date_add($getendDate, date_interval_create_from_date_string('-1 day'));
+				$startDate = $getstartDate->format('Y-m-d H:i:s');
+				$endDate = $getendDate->format('Y-m-d H:i:s');
+                
 if (isset($current_student_id)) {
 	//holidays array
 $holiday_data_array = array();
@@ -373,7 +388,8 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		FROM events
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-		WHERE studentdata.studentid = $current_student_id
+		WHERE studentdata.studentid = $current_student_id 
+        AND timestamp BETWEEN '$startDate' AND '$endDate' 
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -535,15 +551,19 @@ $offsiteMin_used = $offsitehours_used % 60;
 $daystillend = daysLeft();
 
 if ($daystillend > 0) {
-$minutesperday = floor($offsitehours_remaining / $daystillend);
-array_push($returnArray,$minutesperday);
+    $minutesperday = floor($offsitehours_remaining / $daystillend);
+    array_push($returnArray,$minutesperday);
 } else {
-array_push($returnArray,null);
+    $minutesperday = floor($offsitehours_remaining / 1);
+    array_push($returnArray,$minutesperday);
 }
 
 $daysInYear = daysLeftFromDate($globalsdata['startdate']);
-
-$yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
+if ($daystillend > 0){
+    $yearPercent = floor(100 - ($daystillend / $daysInYear * 100));
+} else {
+    $yearPercent = 100;
+}
 
 $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 

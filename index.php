@@ -93,7 +93,17 @@
 		}
 	    $current_users_result = $db_server->query($studentquery);
 		
-	    
+	    // get dates
+                $globals_query = "SELECT * FROM globals";
+                $globals_result = $db_server->query($globals_query);
+                $globals_data = $globals_result->fetch_array();
+				$getendDate = new DateTime($globals_data['enddate']);
+				$getstartDate = new DateTime($globals_data['startdate']);
+				date_add($getstartDate, date_interval_create_from_date_string('1 day'));
+				date_add($getendDate, date_interval_create_from_date_string('-1 day'));
+				$startDate = $getstartDate->format('Y-m-d H:i:s');
+				$endDate = $getendDate->format('Y-m-d H:i:s');
+				
 	// changestatus functions to create new entries in the database
 	//each only triggers if each field is correctly filled out, and the corresponding submit button has been pressed
 	
@@ -288,7 +298,7 @@ if (validTime($_POST['offtime'])){
 			echo "</pre>";*/
 			$fieldTripArray = array();
 			$uniqueFacil = array();
-			for ($i = 0; $i <= count($student_data_array); $i++) {
+			for ($i = 0; $i < count($student_data_array); $i++) {
 				if ($student_data_array[$i]['statusname'] == "Field Trip") {
 					if (!in_array($student_data_array[$i]['info'], $uniqueFacil)) {
 						array_push($uniqueFacil, $student_data_array[$i]['info']);
@@ -307,7 +317,7 @@ if (validTime($_POST['offtime'])){
         		<?php
             if (!empty($groupsResult)) {
             echo "<div class='groupsGUI'>";
-            echo "<h1 class='groupHeader'>Groups</h1>";
+            echo "<h1 class='groupHeader tab'>Groups</h1>";
 			for ($j = 0; $j < count($groupsResult); $j++) {
 			echo "<input class='groupButton' type='submit' name='" . $groupsResult[$j]["name"] . "' value='" . str_replace("_"," ", $groupsResult[$j]["name"]) . "'><br />";
 		}	

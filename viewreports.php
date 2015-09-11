@@ -136,12 +136,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 
 $student_data_array = array();
 if (isset($current_student_id)) {
-//gets stats
-$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2");
-$getStatsResult = array();
-while ($stats = $getStatsQuery->fetch_array()) {
-	array_push($getStatsResult, $stats);
-}
+
 //displays stats
 echo "<div class='reportdiv'>";
 echo "<div class='topdiv'>";//doesnt include detailed list of
@@ -182,6 +177,14 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
+
+//gets stats
+$getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2 AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'");
+$getStatsResult = array();
+while ($stats = $getStatsQuery->fetch_array()) {
+	array_push($getStatsResult, $stats);
+}
+
 if(count($student_data_array)!=0){
 
 
@@ -415,11 +418,10 @@ $offsiteMin_used = $offsitehours_used % 60;
 if ($daystillend > 0) {
 $minutesperday = floor($offsitehours_remaining / $daystillend);
 echo "<p class='reporttext'> You have " . $minutesperday . " minutes of offsite per day.</p>";
+echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 } else {
 echo "<p class='reporttext'> The school year has ended.</p>";
 }
-
-echo "<p class='reporttext'> School days left: " . $daystillend. "</p>";
 
 echo "<p class='reporttext'> You have used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of your offsite time.</p>";
 
@@ -637,6 +639,18 @@ echo "<br>";
 <?php
 }
 }
+
+//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$startdateforpicker = $globalsdata['startdate'];
+$enddateforpicker = $globalsdata['enddate'];
+$startdateforpicker = new DateTime($startdateforpicker);
+$enddateforpicker = new DateTime($enddateforpicker);
+$startdateforpicker = $startdateforpicker->format('Y/m/d');
+$enddateforpicker = $enddateforpicker->format('Y/m/d');
+
 ?>
 </div>
 </form>
@@ -646,8 +660,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'8:00', 
             step: 5,
@@ -659,8 +673,8 @@ echo "<br>";
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
 			defaultTime:'15:30', 
             step: 5,
