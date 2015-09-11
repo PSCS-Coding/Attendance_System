@@ -102,7 +102,7 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
             </select>
             </td>
 		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">Update</button>
-            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Rem</button>
+            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Remove</button>
         </td>
 		<?php } else { ?>
             
@@ -111,8 +111,8 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
 		<td><?php echo $FacList['email']; ?></td>
         <td><?php echo $niceAdvisor ?></td>
         <td>
-            <input type="submit" type="submit" name="EditFac-<?php echo $FacList['facilitatorid']; ?>" value="Edt">
-            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Rem</button></td>    
+            <input type="submit" type="submit" name="EditFac-<?php echo $FacList['facilitatorid']; ?>" value="Edit">
+            <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Remove</button></td>    
 		<?php } ?>	
             
 	</tr>
