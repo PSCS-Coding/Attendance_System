@@ -101,7 +101,7 @@ while ($FacList = mysqli_fetch_assoc($FacResult)) { ?>
             } ?>
             </select>
             </td>
-		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['FacID']; ?>">Update</button>
+		<td><button type="submit" name="UpdateFac" value="<?php echo $FacList['facilitatorid']; ?>">Update</button>
             <button type="submit" name="DelFac" value="<?php echo $FacList['facilitatorname']; ?>">Rem</button>
         </td>
 		<?php } else { ?>
