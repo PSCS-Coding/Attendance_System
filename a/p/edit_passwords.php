@@ -17,8 +17,8 @@ if (!empty($_POST['saveadminpass'])) {
     if ($_POST['adminpassword'] != null) {
 // Adding Crypt to admin password
     $AdminCrypt = crypt($_POST['adminpassword'], 'P9');
- $updatepass = $db_server->prepare("UPDATE login SET adminPass = ? WHERE password = ?");
-	  $updatepass->bind_param('si', $AdminCrypt, $_POST['PassID']);
+ $updatepass = $db_server->prepare("UPDATE login SET adminPass = ?");
+	  $updatepass->bind_param('s', $AdminCrypt);
 	  $updatepass->execute(); 
 	  $updatepass->close();
      $HeaderStatus = "Sussess";
@@ -32,8 +32,10 @@ if (!empty($_POST['savestudentpass'])) {
     if ($_POST['password'] != null) {
 // Adding Crypt to student password
     $StudentCrypt = crypt($_POST['password'], 'P9');
- $updatepass = $db_server->prepare("UPDATE login SET password = ? WHERE password = ?");
-	  $updatepass->bind_param('si', $StudentCrypt, $_POST['PassID']);
+    echo "studentcrypt = " . $StudentCrypt . " and post password = " . $_POST['password'];
+    
+ $updatepass = $db_server->prepare("UPDATE login SET password = ?");
+	  $updatepass->bind_param('s', $StudentCrypt);
 	  $updatepass->execute(); 
 	  $updatepass->close();
      $HeaderStatus = "Sussess";
