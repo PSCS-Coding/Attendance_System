@@ -21,8 +21,8 @@ if (!empty($_POST['saveadminpass'])) {
 	  $updatepass->bind_param('s', $AdminCrypt);
 	  $updatepass->execute(); 
 	  $updatepass->close();
-     $HeaderStatus = "Sussess";
-     $HeaderInfo = "Sussessfully updated admin password.";
+     $HeaderStatus = "success";
+     $HeaderInfo = "Successfully updated admin password.";
 	} else {
      $HeaderStatus = "Error";
      $HeaderInfo = "Please enter a valid password.";
@@ -38,8 +38,8 @@ if (!empty($_POST['savestudentpass'])) {
 	  $updatepass->bind_param('s', $StudentCrypt);
 	  $updatepass->execute(); 
 	  $updatepass->close();
-     $HeaderStatus = "Sussess";
-     $HeaderInfo = "Sussessfully updated student password.";
+     $HeaderStatus = "success";
+     $HeaderInfo = "Successfully updated student password.";
 	} else {
      $HeaderStatus = "Error";
      $HeaderInfo = "Please enter a valid password.";
