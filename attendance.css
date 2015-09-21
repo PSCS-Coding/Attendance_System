@@ -126,7 +126,7 @@ background:none!important;
       color: black;
       padding: 5px;
       opacity: 95%;
-      max-height: 50px;
+      min-height: 50px;
       position: fixed;
       top: 55px;
       right: -140px;
