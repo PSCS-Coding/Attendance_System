@@ -191,14 +191,27 @@
 					</div> <?php } } ?>
                 </div>
 	
+	<?php 
+	//globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$startdateforpicker = $globalsdata['startdate'];
+$enddateforpicker = $globalsdata['enddate'];
+$startdateforpicker = new DateTime($startdateforpicker);
+$enddateforpicker = new DateTime($enddateforpicker);
+$startdateforpicker = $startdateforpicker->format('Y/m/d');
+$enddateforpicker = $enddateforpicker->format('Y/m/d');
+?>
+	
 <script> 
 	$('#datetimepicker').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s', 
             step: 5,
          }); 
