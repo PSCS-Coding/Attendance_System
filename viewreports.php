@@ -272,7 +272,6 @@ foreach($student_data_array as $event_key => $event_val) {
 			continue;
 		}
 		
-		
 		//variables for easy comparison
 		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
 		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
@@ -395,8 +394,8 @@ if($notfulldata == 1){
 		//Late
 		echo "<p class='reporttext'> You were late " . $num_lates;
 		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
-		echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
-		if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+		//echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
+		//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 		//Absent
 		echo "<p class='reporttext'> You were absent " . $num_absent;
 		if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
@@ -438,8 +437,8 @@ echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete a
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
 if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
-echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
-if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+//echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
+//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
 echo "<p class='reporttext'> You have been absent " . $num_absent;
 if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 
