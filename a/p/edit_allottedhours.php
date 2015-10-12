@@ -12,7 +12,7 @@ $HeaderInfo = "Update Allotted Hours";
 // EDIT ALLOTTED HOURS
 if (isset($_POST['saveallotted'])) {
     $updatehours = $db_server->prepare("UPDATE allottedhours SET communityhours = ? , offsitehours = ? , IShours = ? WHERE id = ?");
-    $updatehours->bind_param('iiii', $_POST['communityhours'], $_POST['offsitehours'], $_POST['IShours'], $_POST['saveallotted']); 
+    $updatehours->bind_param('idii', $_POST['communityhours'], $_POST['offsitehours'], $_POST['IShours'], $_POST['saveallotted']); 
     $updatehours->execute(); 
     $updatehours->close();
 } 
