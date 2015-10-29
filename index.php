@@ -403,7 +403,7 @@ echo "</div> ";
 	<script>
 		$(document).ready(function() {
 			$(window).resize(function() {
-				if($(window).width() < 1020 && $(window).width() > 500) {
+				if($(window).width() < 1020) {
 					$('.viewreports_button a').text('Reports');
 					$('.statusview_button a').text('Status');
 					$('.admin_button a').text('A');
@@ -427,7 +427,7 @@ echo "</div> ";
 				
 			});
 			
-			if($(window).width() < 1020 && $(window).width() > 500) {
+			if($(window).width() < 1020) {
 				$('.viewreports_button a').text('Reports');
 				$('.statusview_button a').text('Status');
 				$('.admin_button a').text('A');
