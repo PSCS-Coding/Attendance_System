@@ -118,7 +118,7 @@ if (!empty($_GET['id'])) {
          <select name='studentselect'>
             <?php foreach($current_users_result as $student) { ?>
         <?php $lastinitial = substr($student['lastname'], 0, 1); ?>
-               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
+               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';}} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
             <?php } ?>
          </select>
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
@@ -161,7 +161,7 @@ if (!empty($_GET['id'])) {
                   <select name='new_status_id'>
                      <option value="">Select...</option>
                      <?php foreach($status_array as $status) { ?>
-                        <option value='<? echo $status['statusid'] ?>'><? echo $status['statusname'] ?></option>
+                        <option value='<?php echo $status["statusid"] ?>'><?php echo $status['statusname'] ?></option>
                      <?php } ?>
                   </select>
                </td>
@@ -206,7 +206,7 @@ if (!empty($_GET['id'])) {
                   <td>
                      <select name='status_select'>
                         <?php foreach($status_array as $status) { ?>
-                           <option value='<? echo $status['statusid'] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected';} ?>><? echo $status['statusname'] ?></option>
+                           <option value='<?php echo $status["statusid"] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected'; } ?>> <?php echo $status['statusname'] ?></option>
                         <?php } ?>
                      </select>
                   </td>
