@@ -28,7 +28,9 @@ if (!empty($_GET['eventid'])) {
             $update->close();
         }
         if (!empty($_POST['returntime_edit'])) {
-            $time = $_POST['returntime_edit'];
+            $return_date = new dateTime($_POST['stamp_edit']);
+            $return_date = $return_date->format('Y-m-d');
+            $time = $return_date . " " . $_POST['returntime_edit'];
             $update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
             $update->bind_param('ss', $time, $eventid);
             $update->execute();
@@ -55,9 +57,12 @@ if (!empty($_GET['eventid'])) {
 if (!empty($_POST['new_submit'])) { // TODO require return times for field trip and offsite??
    if (!empty($_POST['new_timestamp']) && !empty($_POST['new_status_id'])) {
       // write to the database
+      $return_date = new dateTime($_POST['new_timestamp']);
+      $return_date = $return_date->format('Y-m-d');
+      $return_with_date = $return_date . " " . $_POST['new_return'];
       $newinfo = strip_tags($_POST['new_info']);
       $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime, timestamp) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $newinfo, $_POST['new_return'], $_POST['new_timestamp']);
+      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $newinfo, $return_with_date, $_POST['new_timestamp']);
       $stmt->execute();
       $stmt->close();
    } else {
@@ -214,7 +219,11 @@ if (!empty($_GET['id'])) {
                      <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
                   </td>
                   <td>
-                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $event['returntime'];} ?>'>
+                     <?php 
+                     $modifed_return = new dateTime($event['returntime']);
+                     $modifed_return = $modifed_return->format('h:i:s');
+                     ?>
+                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $modifed_return;} ?>'>
                   </td>
                   <td>
                      <input type='submit' name='edit_submit' value='Save'>
