@@ -780,34 +780,7 @@ document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext
 
 </script>
 
-<!--
-    <script>
-        if(getCookie("id") >= 0) {
-            confirm("Hello " + getCookie("name"));
-            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
 
-    </script>
--->
-        
-    <script>
-        
-        var userset = false;
-        
-        if(getCookie('name') != 'null') {
-            userset = true;
-        }
-        
-//        alert(document.referrer);
-        
-        if (document.referrer.indexOf('user') >= 0) {
-            userset = false;
-        }
-        
-        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
-           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
-    </script>
 	
 	</body>
 	</html>
