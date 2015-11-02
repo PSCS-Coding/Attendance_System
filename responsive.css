@@ -35,6 +35,9 @@
         #main_table {
                 padding-top: 95px;
         }
+        #top_header form div {
+                float: right;
+        }
 }
 
 

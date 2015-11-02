@@ -8,7 +8,6 @@
         <script src="js/OffsiteCount.js" type="text/javascript"></script>
         <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
         <link rel='stylesheet' href="css/pikaday.css" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <LINK REL="apple-touch-icon" HREF="img/mobius.png" type="image/png" />
         <?php 
         require_once("login.php");
