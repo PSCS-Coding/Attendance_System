@@ -223,7 +223,7 @@ if (!empty($_GET['id'])) {
                      $modifed_return = new dateTime($event['returntime']);
                      $modifed_return = $modifed_return->format('h:i:s');
                      ?>
-                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $modifed_return;} ?>'>
+                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late' || $event['statusname'] == 'Independent Study') {echo $modifed_return;} ?>'>
                   </td>
                   <td>
                      <input type='submit' name='edit_submit' value='Save'>
@@ -237,7 +237,7 @@ if (!empty($_GET['id'])) {
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
-               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $nice_returntime->format(' g:i a');} ?></td>
+               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late' || $event['statusname'] == 'Independent Study') {echo $nice_returntime->format(' g:i a');} ?></td>
                <td>
                   <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
                    <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
