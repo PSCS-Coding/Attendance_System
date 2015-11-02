@@ -113,9 +113,8 @@ text-align: center;
 color: grey; 
 }
 .GroupsTable {
-  width: 30%;
-  border: 5px solid rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+  width: 35%;
+  box-shadow: rgba(0,0,0,0.2) 4px 4px 4px;
 }
 .admintable form {
   margin: 1.5em;
