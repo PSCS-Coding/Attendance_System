@@ -229,7 +229,7 @@ tr:nth-child(even) {
     margin-right:-16px;
     text-decoration:none;
     line-height:26px;
-    color: blue;
+    color: black;
 }
 
 .student_col a:hover {
