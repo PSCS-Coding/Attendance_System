@@ -546,7 +546,7 @@ echo "</div> ";
                 $statName = $latestdata['statusname'];
                 $GRtime = '$currTime > $myReturn';
         // Start IF statement for contextual coloring        
-        if ($currTime > $startTime && $statName == 'Not Checked In' || $GRtime && $statName == 'Offsite' || $GRtime && $statName == 'Late') {
+        if ($cTime > $ttStart && $statName == 'Not Checked In' || $cTime && $ttStart == 'Offsite' || $cTime && $ttStart == 'Late') {
             
                  ?>  
         
