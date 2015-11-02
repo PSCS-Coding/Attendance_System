@@ -71,7 +71,7 @@ position:relative;
 margin:0;
 font-family:Verdana, Arial, Helvetica, sans-serif;
 font-size:80%;
-background-color:dimgrey;
+background-color:#4A4747;
 
 background-image: url('img/mobius-transparent.png');
 background-repeat: no-repeat;
@@ -81,7 +81,7 @@ background-attachment: fixed;
 
 body.single-user {
     padding: 2%;
-    background-color: dimgrey;
+    background-color: #4A4747;
 }
 
 .groupHeader {
@@ -431,7 +431,7 @@ tr.new-date td {
 }
 
 body.view-reports {
-    background-color:dimgrey;
+    background-color:#4A4747;
 }
 
 div.report-container {

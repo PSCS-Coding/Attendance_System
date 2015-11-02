@@ -2,10 +2,12 @@
 <!DOCTYPE html>
 	<html>
 	<head>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="HandheldFriendly" content="true" />
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
 
-
+			
 
 
 			$(document).ready(function(){
@@ -418,11 +420,11 @@ echo "</div> ";
 					$("#present_button").css('width', '60px');
 				}
 				
-				if ($(window).width() < 480) {
-				    $("#latebutton").prop('value', 'L');
+				if ($(window).width() < 830) {
+				    $(".l_button").prop('value', 'L');
 				}
 				else {
-				    $('#latebutton').prop('value', 'Late');
+				    $('.l_button').prop('value', 'Late');
 				}
 				
 			});
@@ -442,11 +444,12 @@ echo "</div> ";
 				$("#present_button").css('width', '60px');
 			}
 			
-			if ($(window).width() < 480) {
-			$("#latebutton").prop('value', 'L');
+			if ($(window).width() < 830) {
+			$(".l_button").prop('value', 'L');
+			
 		    }
 		    else {
-			$('#latebutton').prop('value', 'Late');
+			$('.l_button').prop('value', 'Late');
 		    }
 
 		});
@@ -606,7 +609,7 @@ echo "</div> ";
 						?>
 						<!-- Late button with time input next to it -->
                             <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input class="tablebutton" id="latebutton" type='submit' value='Late' name='Late' class='l_button'>
+							<input class="tablebutton l_button" id="latebutton" type='submit' value='Late' name='Late'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
                                 </form>
@@ -774,34 +777,7 @@ document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext
 
 </script>
 
-<!--
-    <script>
-        if(getCookie("id") >= 0) {
-            confirm("Hello " + getCookie("name"));
-            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
 
-    </script>
--->
-        
-    <script>
-        
-        var userset = false;
-        
-        if(getCookie('name') != 'null') {
-            userset = true;
-        }
-        
-//        alert(document.referrer);
-        
-        if (document.referrer.indexOf('user') >= 0) {
-            userset = false;
-        }
-        
-        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
-           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
-    </script>
 	
 	</body>
 	</html>
