@@ -561,11 +561,11 @@ width:100%;
 
 
 tr.Status_Red:nth-child(even) {
-    background-color:rgb(224, 94, 94);
+    background-color:rgb(224, 147, 147); //darker
     opacity:0.9;
 }
 
 tr.Status_Red:nth-child(odd) {
-    background-color:rgb(239, 110, 110);
+    background-color:rgb(234, 171, 171); //lighter
     opacity:0.9;
 }
