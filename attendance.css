@@ -112,18 +112,19 @@ background:none!important;
      padding-left: 15px;
      cursor: pointer;
     font-size: 0px;
+    color: #EFEFEF;
 }
 .groupButton.active {
       font-size: 15px;
     }
 .groupButton:hover {
-    color: grey; 
+    color: grey;
 }
 
 .groupsGUI{
-      background-color: #B6B6B6;
-      border-bottom: 1px solid #B6B6B6;
-      color: black;
+      background-color: #656363;
+      border-bottom: 1px solid #656363;
+      color: #EFEFEF;
       padding: 5px;
       opacity: 95%;
       min-height: 50px;
@@ -150,7 +151,7 @@ border-radius: 3px 0 0 3px;
 
 #top_header {
     position:fixed;
-    background-color:white;
+    background-color:#656363;
     width:100%;
     z-index:5;
     opacity:0.9;
@@ -162,7 +163,7 @@ border-radius: 3px 0 0 3px;
     padding: 3px 0.5%;
     padding-top: 6px;
     float: left;
-    border-left: 6px solid #999;
+    border-left: 2px solid #999;
     height:25px;
 }
 
@@ -173,7 +174,7 @@ border-radius: 3px 0 0 3px;
 #top_header div a {
     display:block;
     padding:0.5em;
-    color:#5F5F5F;
+    color:#EFEFEF;
     text-decoration:none;
     text-align:center;
 }
@@ -561,11 +562,36 @@ width:100%;
 
 
 tr.Status_Red:nth-child(even) {
-    background-color:rgb(224, 147, 147); //darker
+    background-color:rgb(224, 94, 94); //darker
     opacity:0.9;
 }
 
 tr.Status_Red:nth-child(odd) {
-    background-color:rgb(234, 171, 171); //lighter
+    background-color:rgb(228, 129, 129); //lighter
     opacity:0.9;
 }
+/*
+.PSCSbtn {
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 10px;
+  background: #8e9091;
+  padding: 5px 5px 5px 5px;
+  text-decoration: none;
+  border: 0.2em solid rgb(124, 124, 124);
+}
+
+.PSCSbtn:hover {
+  background: #5a5b5c;
+  text-decoration: none;
+}
+.PSCSbtn.add {
+margin-top: 0.7em;
+width: 35%
+}
+.PSCSbtn.disabled {
+color: #C1BCBC;
+background: #7D7D7D;
+border: 0.2em solid rgb(150, 146, 146);
+}
+*/

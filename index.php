@@ -339,12 +339,12 @@ echo "</div> ";
 		
 		<div>
 			<!-- top interface present button -->
-	        <input class="button" id="present_button" type="submit" value="Present" name="present">
+	        <input class="PSCSbtn button" id="present_button" type="submit" value="Present" name="present">
 	    </div>
 	   
 	   	<div>
 			<!-- top interface sign out button -->
-			<input class="button" type="submit" value="Check Out" name="checkout" onclick="return confirm('Confirmation: \nAre you sure you want to check out?');">
+			<input class="PSCSbtn" type="submit" value="Check Out" name="checkout" onclick="return confirm('Confirmation: \nAre you sure you want to check out?');">
 		</div>
  
 	    <div>
@@ -361,7 +361,7 @@ echo "</div> ";
 <span id="cdiv">
 
 </span>
-			<input type="text" name="offtime" placeholder="Return time" id="offtime">
+			<input type="text" class="aTextField" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
