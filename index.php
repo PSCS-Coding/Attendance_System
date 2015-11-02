@@ -522,16 +522,13 @@ echo "</div> ";
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
+                
         // SETTING VERIBLES FOR CONTEXTUAL COLORING //
                 
             // Get Current Time
                 $cTime = new DateTime();
-            // Format current time
-                $currTime = $cTime->format('Y-m-d H:i:s');
             // Get ENTERED return time
                 $mReturn= new DateTime($latestdata['returntime']);
-            // Format ENTERED return time
-                $myReturn = $mReturn->format('Y-m-d H:i:s');
             // Get globals.starttime
                 $globals_query = "SELECT starttime FROM globals";
             // Setting query info as varible
@@ -540,13 +537,10 @@ echo "</div> ";
                 $globals_data = $globals_result->fetch_array();
             // Set globals.starttime as varible
                 $ttStart = new DateTime($globals_data['starttime']);
-            // Format globals.starttime
-                $startTime = $ttStart->format('Y-m-d H:i:s');
             // These is for making the IF statment shorter
-                $statName = $latestdata['statusname'];
-                $GRtime = '$currTime > $myReturn';
-        // Start IF statement for contextual coloring        
-        if ($currTime > $startTime && $statName == 'Not Checked In' || $GRtime && $statName == 'Offsite' || $GRtime && $statName == 'Late') {
+                $currStatus = $latestdata['statusname'];
+                
+        if ($cTime > $ttStart && $currStatus == 'Not Checked In' || $cTime > $mReturn && $currStatus == "Offsite" || $cTime > $mReturn && $currStatus == "Late" || $cTime > $mReturn && $currStatus == "Independent Study" || $cTime > $mReturn && $currStatus == "Field Trip") {
             
                  ?>  
         
