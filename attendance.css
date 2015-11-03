@@ -439,7 +439,7 @@ body.view-reports {
 div.report-container {
     position: relative;
     background-color: #fff;
-    max-width: 680px;
+    width: 680px;
     margin: 3em auto 0;
     padding: 2em;
     border-radius: 3px;
