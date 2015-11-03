@@ -2,10 +2,12 @@
 <!DOCTYPE html>
 	<html>
 	<head>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="HandheldFriendly" content="true" />
         <?php require_once('header.php'); ?>
 	    <script type="text/javascript">
 
-
+			
 
 
 			$(document).ready(function(){
@@ -337,12 +339,12 @@ echo "</div> ";
 		
 		<div>
 			<!-- top interface present button -->
-	        <input class="button" id="present_button" type="submit" value="Present" name="present">
+	        <input class="PSCSbtn button" id="present_button" type="submit" value="Present" name="present">
 	    </div>
 	   
 	   	<div>
 			<!-- top interface sign out button -->
-			<input class="button" type="submit" value="Check Out" name="checkout" onclick="return confirm('Confirmation: \nAre you sure you want to check out?');">
+			<input class="PSCSbtn" type="submit" value="Check Out" name="checkout" onclick="return confirm('Confirmation: \nAre you sure you want to check out?');">
 		</div>
  
 	    <div>
@@ -359,7 +361,7 @@ echo "</div> ";
 <span id="cdiv">
 
 </span>
-			<input type="text" name="offtime" placeholder="Return time" id="offtime">
+			<input type="text" class="aTextField" name="offtime" placeholder="Return time" id="offtime">
 	        <input class="button" type="submit" name="offsite" value="Offsite">
 	    </div>
 	    
@@ -418,11 +420,11 @@ echo "</div> ";
 					$("#present_button").css('width', '60px');
 				}
 				
-				if ($(window).width() < 480) {
-				    $("#latebutton").prop('value', 'L');
+				if ($(window).width() < 830) {
+				    $(".l_button").prop('value', 'L');
 				}
 				else {
-				    $('#latebutton').prop('value', 'Late');
+				    $('.l_button').prop('value', 'Late');
 				}
 				
 			});
@@ -442,11 +444,12 @@ echo "</div> ";
 				$("#present_button").css('width', '60px');
 			}
 			
-			if ($(window).width() < 480) {
-			$("#latebutton").prop('value', 'L');
+			if ($(window).width() < 830) {
+			$(".l_button").prop('value', 'L');
+			
 		    }
 		    else {
-			$('#latebutton').prop('value', 'Late');
+			$('.l_button').prop('value', 'Late');
 		    }
 
 		});
@@ -522,16 +525,13 @@ echo "</div> ";
 				changestatus($latestdata['studentid'], '8', '', '');
 				}
 				}
+                
         // SETTING VERIBLES FOR CONTEXTUAL COLORING //
                 
             // Get Current Time
                 $cTime = new DateTime();
-            // Format current time
-                $currTime = $cTime->format('Y-m-d H:i:s');
             // Get ENTERED return time
                 $mReturn= new DateTime($latestdata['returntime']);
-            // Format ENTERED return time
-                $myReturn = $mReturn->format('Y-m-d H:i:s');
             // Get globals.starttime
                 $globals_query = "SELECT starttime FROM globals";
             // Setting query info as varible
@@ -540,13 +540,10 @@ echo "</div> ";
                 $globals_data = $globals_result->fetch_array();
             // Set globals.starttime as varible
                 $ttStart = new DateTime($globals_data['starttime']);
-            // Format globals.starttime
-                $startTime = $ttStart->format('Y-m-d H:i:s');
             // These is for making the IF statment shorter
-                $statName = $latestdata['statusname'];
-                $GRtime = '$currTime > $myReturn';
-        // Start IF statement for contextual coloring        
-        if ($currTime > $startTime && $statName == 'Not Checked In' || $GRtime && $statName == 'Offsite' || $GRtime && $statName == 'Late') {
+                $currStatus = $latestdata['statusname'];
+                
+        if ($cTime > $ttStart && $currStatus == 'Not Checked In' || $cTime > $mReturn && $currStatus == "Offsite" || $cTime > $mReturn && $currStatus == "Late" || $cTime > $mReturn && $currStatus == "Independent Study" || $cTime > $mReturn && $currStatus == "Field Trip") {
             
                  ?>  
         
@@ -612,7 +609,7 @@ echo "</div> ";
 						?>
 						<!-- Late button with time input next to it -->
                             <form action='<?php echo basename($_SERVER['PHP_SELF']); ?>' method='post'>
-							<input class="tablebutton" id="latebutton" type='submit' value='Late' name='Late' class='l_button'>
+							<input class="tablebutton l_button" id="latebutton" type='submit' value='Late' name='Late'>
 							<input type='input' name='late_time' placeholder='Expected' class='late_time'>
 							<input type='hidden' name='late_student' value='<?php echo $latestdata['studentid']; ?>'>
                                 </form>
@@ -780,34 +777,7 @@ document.getElementById("cdiv").innerHTML = '<input type="text" name="customtext
 
 </script>
 
-<!--
-    <script>
-        if(getCookie("id") >= 0) {
-            confirm("Hello " + getCookie("name"));
-            window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
 
-    </script>
--->
-        
-    <script>
-        
-        var userset = false;
-        
-        if(getCookie('name') != 'null') {
-            userset = true;
-        }
-        
-//        alert(document.referrer);
-        
-        if (document.referrer.indexOf('user') >= 0) {
-            userset = false;
-        }
-        
-        if ( (screen.width < 1024) && (screen.height < 768) && userset) { 
-           window.location = 'user.php?id=' + getCookie("id") + '&name=' + getCookie("name");
-        }
-    </script>
 	
 	</body>
 	</html>

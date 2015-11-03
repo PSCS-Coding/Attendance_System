@@ -28,7 +28,9 @@ if (!empty($_GET['eventid'])) {
             $update->close();
         }
         if (!empty($_POST['returntime_edit'])) {
-            $time = $_POST['returntime_edit'];
+            $return_date = new dateTime($_POST['stamp_edit']);
+            $return_date = $return_date->format('Y-m-d');
+            $time = $return_date . " " . $_POST['returntime_edit'];
             $update = $db_server->prepare("UPDATE events SET returntime=? WHERE eventid=?");
             $update->bind_param('ss', $time, $eventid);
             $update->execute();
@@ -55,9 +57,12 @@ if (!empty($_GET['eventid'])) {
 if (!empty($_POST['new_submit'])) { // TODO require return times for field trip and offsite??
    if (!empty($_POST['new_timestamp']) && !empty($_POST['new_status_id'])) {
       // write to the database
+      $return_date = new dateTime($_POST['new_timestamp']);
+      $return_date = $return_date->format('Y-m-d');
+      $return_with_date = $return_date . " " . $_POST['new_return'];
       $newinfo = strip_tags($_POST['new_info']);
       $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime, timestamp) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $newinfo, $_POST['new_return'], $_POST['new_timestamp']);
+      $stmt->bind_param('iisss', $_POST['new_event_student_id'], $_POST['new_status_id'], $newinfo, $return_with_date, $_POST['new_timestamp']);
       $stmt->execute();
       $stmt->close();
    } else {
@@ -118,7 +123,7 @@ if (!empty($_GET['id'])) {
          <select name='studentselect'>
             <?php foreach($current_users_result as $student) { ?>
         <?php $lastinitial = substr($student['lastname'], 0, 1); ?>
-               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
+               <option value='<?php echo $student['studentid']; ?>' <?php if (!empty($_GET['id'])) { if ($_GET['id'] == $student['studentid']) { echo 'selected';}} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
             <?php } ?>
          </select>
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
@@ -161,7 +166,7 @@ if (!empty($_GET['id'])) {
                   <select name='new_status_id'>
                      <option value="">Select...</option>
                      <?php foreach($status_array as $status) { ?>
-                        <option value='<? echo $status['statusid'] ?>'><? echo $status['statusname'] ?></option>
+                        <option value='<?php echo $status["statusid"] ?>'><?php echo $status['statusname'] ?></option>
                      <?php } ?>
                   </select>
                </td>
@@ -206,7 +211,7 @@ if (!empty($_GET['id'])) {
                   <td>
                      <select name='status_select'>
                         <?php foreach($status_array as $status) { ?>
-                           <option value='<? echo $status['statusid'] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected';} ?>><? echo $status['statusname'] ?></option>
+                           <option value='<?php echo $status["statusid"] ?>' <?php if ($status['statusname'] == $event['statusname']) { echo 'selected'; } ?>> <?php echo $status['statusname'] ?></option>
                         <?php } ?>
                      </select>
                   </td>
@@ -214,7 +219,11 @@ if (!empty($_GET['id'])) {
                      <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
                   </td>
                   <td>
-                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $event['returntime'];} ?>'>
+                     <?php 
+                     $modifed_return = new dateTime($event['returntime']);
+                     $modifed_return = $modifed_return->format('h:i:s');
+                     ?>
+                     <input type='text' name='returntime_edit' id='returntime_edit' value='<?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late' || $event['statusname'] == 'Independent Study') {echo $modifed_return;} ?>'>
                   </td>
                   <td>
                      <input type='submit' name='edit_submit' value='Save'>
@@ -228,7 +237,7 @@ if (!empty($_GET['id'])) {
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
-               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late') {echo $nice_returntime->format(' g:i a');} ?></td>
+               <td><?php if ($event['statusname'] == 'Offsite' || $event['statusname'] == 'Field Trip' || $event['statusname'] == 'Late' || $event['statusname'] == 'Independent Study') {echo $nice_returntime->format(' g:i a');} ?></td>
                <td>
                   <form method='post' class='edit_interface' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
                    <input name='eventid' type='hidden' value='<?php echo $event['eventid'] ?>'>
@@ -242,6 +251,18 @@ if (!empty($_GET['id'])) {
             } // end if not Not Checked in
          } // end foreach event
       } // end if isset studentid
+      
+      //globals query
+$globalsquery = "SELECT * FROM globals";
+$globals_result = $db_server->query($globalsquery);
+$globalsdata = $globals_result->fetch_array();
+$startdateforpicker = $globalsdata['startdate'];
+$enddateforpicker = $globalsdata['enddate'];
+$startdateforpicker = new DateTime($startdateforpicker);
+$enddateforpicker = new DateTime($enddateforpicker);
+$startdateforpicker = $startdateforpicker->format('Y/m/d');
+$enddateforpicker = $enddateforpicker->format('Y/m/d');
+      
       ?>
       </table>
    <script type="text/javascript"> // This is down here so that the appropriate record's timestamp can be used as default value
@@ -251,8 +272,8 @@ if (!empty($_GET['id'])) {
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
             value: '<?php echo $timestamp_to_edit; ?>',
             step: 5,
@@ -269,8 +290,8 @@ if (!empty($_GET['id'])) {
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
                   .addClass('xdsoft_disabled');
             },
-            minDate:'2014/09/08',
-            maxDate:'2015/6/17', // SET THESE TO GLOBALS FOR START DATE AND END DATE
+            minDate:<?php echo(json_encode($startdateforpicker)); ?>,
+            maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
             step: 5,
          });
