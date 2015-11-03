@@ -191,7 +191,7 @@
 						</style>
 						<p class = statuslabel>
 						<span> <?php echo $status; ?> </span>
-						<span class = "hovertext"><?php echo $status . " " . $StudentCountPerStatus . " &asymp; " . $StudentPercent . "%"; ?></span>
+						<span class = "hovertext"><?php echo $StudentCountPerStatus . " &asymp; " . $StudentPercent . "%"; ?></span>
 						
 						</p> <!-- header for each status -->
 						<ul class='altview_list'>
