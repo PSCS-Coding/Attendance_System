@@ -150,7 +150,7 @@ for ($i = 0; $i < count($groupsResult); $i++) {
     $ids = explode(",", $groupsResult[$i]['studentid']);
 
     echo "
-    <form method='post'>
+    <form method='post' style='display:inline'>
     <table bgcolor='darkgrey' class='GroupsTable'>
     <tr>
     <th class='groupheader'>" . str_replace("_"," ", $groupsResult[$i]["name"]) . "</th>
