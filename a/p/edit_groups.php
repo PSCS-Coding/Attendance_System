@@ -133,7 +133,7 @@ if (!empty($_POST['deletestudent'])) {
         <?php
         foreach($groupsResult as $group) {
         ?>
-        <option name='groupselect' value='<?php echo $group['name']; ?>'><?php echo $group['name']?></option>
+        <option name='groupselect' value='<?php echo $group['name']; ?>'><?php echo str_replace("_"," ", $group['name']) ?></option>
         <?php
         }
         ?>
