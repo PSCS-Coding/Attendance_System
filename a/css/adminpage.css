@@ -82,6 +82,7 @@ background-attachment: fixed;
 .students_table {
   border: 5px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
+  max-width:50%;
 }
 .edit-passwords .admintable {
     min-width: 400px;
