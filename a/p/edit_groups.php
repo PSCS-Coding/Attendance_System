@@ -133,7 +133,7 @@ if (!empty($_POST['deletestudent'])) {
         <?php
         foreach($groupsResult as $group) {
         ?>
-        <option name='groupselect' value='<?php echo $group['name']; ?>'><?php echo $group['name']?></option>
+        <option name='groupselect' value='<?php echo $group['name']; ?>'><?php echo str_replace("_"," ", $group['name']) ?></option>
         <?php
         }
         ?>
@@ -150,10 +150,10 @@ for ($i = 0; $i < count($groupsResult); $i++) {
     $ids = explode(",", $groupsResult[$i]['studentid']);
 
     echo "
-    <form method='post'>
+    <form method='post' style='display:inline'>
     <table bgcolor='darkgrey' class='GroupsTable'>
     <tr>
-    <th>" . str_replace("_"," ", $groupsResult[$i]["name"]) . "</th>
+    <th class='groupheader'>" . str_replace("_"," ", $groupsResult[$i]["name"]) . "</th>
     <td><button style='font-weight:bold; border-radius:10px' type='submit' name='deletegroup' value='" . $groupsResult[$i]['name'] .             "'>X</button></td>
     </tr>
     ";
@@ -186,3 +186,12 @@ for ($i = 0; $i < count($groupsResult); $i++) {
  </script>
  </body>
  </html>
+<style>
+
+.groupnames {
+	width:115px;
+}
+.groupheader {
+	width:115px;
+}
+</style>
