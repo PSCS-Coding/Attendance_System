@@ -33,6 +33,15 @@
 	<body class="mainpage statusview">
 	<!-- setup -->
 	<?php
+	
+	//get number of students
+	$StudentNumQuery = $db_server->query("SELECT firstname FROM studentdata WHERE current = 1");
+	$StudentCount = 0;
+	while ($current_student = $StudentNumQuery->fetch_assoc()) {
+				$StudentCount++;
+			}
+	//echo "count: " . $StudentCount;
+	
 		$null_value = null;
 		
 		$status_result = $db_server->query("SELECT DISTINCT statusname FROM statusdata");
@@ -159,16 +168,32 @@
                 <div class="column_wrapper">
 				<?php
 				//using the above data from the query, this renders the alternate status view
-				//creates a table header for each of the possible status'
+				//creates a table header for each of the possible statuses
 				
 				foreach ($status_array as $status) {
 					//calls the sort function to sort the array of students by subkey status
 					$sorted_data_array = subval_sort($student_data_array, 'statusname' , $status);
-					//only renders the table headers for status' that have students assigned to that status
-					if (!empty($sorted_data_array)) { ?> 
+					//only renders the table headers for statuses that have students assigned to that status
+					if (!empty($sorted_data_array)) { 
 					
-					<div class='altview_status'> 
-						<p><?php echo $status; ?></p>
+					$StudentCountPerStatus = 0;
+					foreach($sorted_data_array as $student){
+						$StudentCountPerStatus++;
+					}
+					
+					$StudentPercent = $StudentCountPerStatus / $StudentCount;
+					$StudentPercent = $StudentPercent*100;
+					$StudentPercent = floor($StudentPercent);
+					?> <div class='altview_status'> 
+						<style>
+						.hovertext, .statuslabel:hover span { display: none }
+						.statuslabel:hover .hovertext { display: inline }
+						</style>
+						<p class = statuslabel>
+						<span> <?php echo $status; ?> </span>
+						<span class = "hovertext"><?php echo $StudentCountPerStatus . " &asymp; " . $StudentPercent . "%"; ?></span>
+						
+						</p> <!-- header for each status -->
 						<ul class='altview_list'>
 						<?php
 							foreach ($sorted_data_array as $student) {
