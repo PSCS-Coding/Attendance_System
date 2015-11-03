@@ -4,6 +4,12 @@ date_default_timezone_set('America/Los_Angeles');
 function changestatus($f_id, $f_status, $f_info, $f_returntime)
 {
     global $db_server;
+    $getLastEvent = $db_server->query("SELECT statusid, info, returntime FROM events WHERE studentid ='$f_id' ORDER BY timestamp DESC LIMIT 1");
+    $lastEvent = $getLastEvent->fetch_array(MYSQLI_BOTH);
+    if ($lastEvent['info'] == $f_info and $lastEvent['statusid'] == $f_status and $lastEvent['returntime'] == $f_returntime){
+        echo "did not insert duplicate event";
+    }else{
+    
     $result = $db_server->query("SELECT timestamp FROM events WHERE studentid='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $rowdata = $result->fetch_array(MYSQLI_BOTH);
     $f_info = strip_tags($f_info);
@@ -27,6 +33,7 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     $stmt->bind_param('ssss', $f_id, $f_status, $f_info, $returntimestring);
     $stmt->execute();
     $stmt->close();
+    }
 }
 //defines valid time entries for time text boxes
 //only allows integers and colons
