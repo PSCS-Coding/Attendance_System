@@ -79,7 +79,7 @@ if (isset($_POST['Reactivate'])) {
 				<?php } ?>
 	</select>
 	<select name='newGrade'>
-		<option selected value="novalue">Grade</option>
+		<option selected value="">Grade</option>
 		
 		<option value="ms">MS</option>
 		<option value="hs">HS</option>
