@@ -85,6 +85,7 @@ if (isset($_POST['Reactivate'])) {
       <th>Name</th>
       <th>Enrolled</th>
       <th>Advisor</th>
+	  <th>Grade</th>
       <th>Y</th>
 	  <th>Modify</th>
    </tr>
@@ -162,6 +163,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         }
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
+		<td><?php echo strtoupper($StuDataList['grade']); ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
         <td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit">
             <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Remove</button>
