@@ -185,7 +185,6 @@ if (!empty($_GET['id'])) {
       </table>
       <table class='eventlog'>
          <tr>
-            <th>ID</th>
             <th>Timestamp</th>
             <th>Status</th>
             <th>Info</th>
@@ -204,7 +203,6 @@ if (!empty($_GET['id'])) {
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
               <tr class="editing-row">
-                  <td><?php echo $event['eventid'] ?></td>
                   <td>
                      <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']; ?>'>
                   </td>
@@ -233,7 +231,6 @@ if (!empty($_GET['id'])) {
             </form>
             <?php } else { ?>
             <tr class="<?php echo $event['statusname'] ?>">
-               <td><?php echo $event['eventid'] ?></td>
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
