@@ -137,6 +137,8 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 		
 		<td>
 			<select name='gradeselect'>
+				<option selected value="">No Grade</option>
+				
 				<option value="ms">MS</option>
 				<option value="hs">HS</option>
 			</select>
