@@ -18,8 +18,8 @@ if (isset($_POST['AddStudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
     $timestamp = strtotime($_POST['startdate']);
     $newStudentName = $_POST['newfirstname'];
-    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
-    $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
+    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, grade, startdate) VALUES (?, ?, ?, ?, FROM_UNIXTIME(?))");
+    $stmt->bind_param('sssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $_POST['newGrade'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
     $HeaderStatus = "Sussess";
@@ -77,7 +77,13 @@ if (isset($_POST['Reactivate'])) {
 				 while ($FacList = $GetFacilitators->fetch_assoc()) { ?>  
 				 <option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 				<?php } ?>
-	        </select>
+	</select>
+	<select name='newGrade'>
+		<option selected value="novalue">Grade</option>
+		
+		<option value="ms">MS</option>
+		<option value="hs">HS</option>
+	</select>
 	<input type="submit" name="AddStudent" value="Add Student" />
 </form>
 <table class="students_table">
