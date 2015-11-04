@@ -129,8 +129,19 @@ if (!empty($_GET['id'])) {
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
       </form>
    </div>
-
    <?php
+   
+      //globals query
+      $globalsquery = "SELECT * FROM globals";
+      $globals_result = $db_server->query($globalsquery);
+      $globalsdata = $globals_result->fetch_array();
+      $tempstartdate = $globalsdata['startdate'];
+      $tempenddate = $globalsdata['enddate'];
+      $SFirstDateFromPicker = new DateTime($tempstartdate);
+      $SLastDateFromPicker = new DateTime($tempenddate);
+      $SFirstDateFromPicker = $SFirstDateFromPicker->format('Y-m-d H:i:s');
+      $SLastDateFromPicker = $SLastDateFromPicker->format('Y-m-d H:i:s');
+
       if (isset($current_student_id)) {
          $student_data_array = array();
          //fetches most recent data from the events table
@@ -139,7 +150,8 @@ if (!empty($_GET['id'])) {
             FROM events
             JOIN statusdata ON events.statusid = statusdata.statusid
             RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-            WHERE studentdata.studentid = $current_student_id
+            WHERE studentdata.studentid = $current_student_id 
+            AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
             ORDER BY timestamp DESC") or die(mysqli_error($db_server));
          while ($student_data_result = $result->fetch_assoc()) {
             array_push($student_data_array, $student_data_result);
