@@ -34,8 +34,8 @@ if (isset($_POST['AddStudent'])) {
 // EDIT (UPDATE) A STUDENT
 if (isset($_POST['UpdateStudent'])) {
     $timestamp = strtotime($_POST['editstartdate']);
-    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
-    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['StudentIDS']);
+    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , grade = ?, yearinschool = ? WHERE studentid = ?");
+    $stmt->bind_param('sssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['gradeselect'], $_POST['yearinschool'], $_POST['StudentIDS']);
     $stmt->execute(); 
     $stmt->close();
 } 
@@ -128,7 +128,14 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 			?>
 	        </select>
 		</td>
-			
+		
+		<td>
+			<select name='gradeselect'>
+				<option value="ms">MS</option>
+				<option value="hs">HS</option>
+			</select>
+		</td>		
+
 		<td>
 			<select name='yearinschool'>
 	        <?php
