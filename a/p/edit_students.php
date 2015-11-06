@@ -18,8 +18,8 @@ if (isset($_POST['AddStudent'])) {
     if ($_POST['newAdvisor'] != "novalue") {
     $timestamp = strtotime($_POST['startdate']);
     $newStudentName = $_POST['newfirstname'];
-    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, startdate) VALUES (?, ?, ?, FROM_UNIXTIME(?))");
-    $stmt->bind_param('ssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $timestamp);
+    $stmt = $db_server->prepare("INSERT INTO studentdata (firstname, lastname, advisor, grade, startdate) VALUES (?, ?, ?, ?, FROM_UNIXTIME(?))");
+    $stmt->bind_param('sssss', $_POST['newfirstname'] , $_POST['newlastname'] , $_POST['newAdvisor'] , $_POST['newGrade'] , $timestamp);
     $stmt->execute(); 
     $stmt->close();
     $HeaderStatus = "Sussess";
@@ -34,8 +34,8 @@ if (isset($_POST['AddStudent'])) {
 // EDIT (UPDATE) A STUDENT
 if (isset($_POST['UpdateStudent'])) {
     $timestamp = strtotime($_POST['editstartdate']);
-    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , yearinschool = ? WHERE studentid = ?");
-    $stmt->bind_param('ssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['yearinschool'], $_POST['StudentIDS']);
+    $stmt = $db_server->prepare("UPDATE studentdata SET firstname = ? , lastname = ? , startdate = FROM_UNIXTIME(?) , advisor = ? , grade = ?, yearinschool = ? WHERE studentid = ?");
+    $stmt->bind_param('sssssii', $_POST['firstname'], $_POST['lastname'], $timestamp, $_POST['selectedadvisor'], $_POST['gradeselect'], $_POST['yearinschool'], $_POST['StudentIDS']);
     $stmt->execute(); 
     $stmt->close();
 } 
@@ -77,7 +77,13 @@ if (isset($_POST['Reactivate'])) {
 				 while ($FacList = $GetFacilitators->fetch_assoc()) { ?>  
 				 <option value="<?php echo $FacList['facilitatorname']; ?>"><?php echo $FacList['facilitatorname']; ?></option>
 				<?php } ?>
-	        </select>
+	</select>
+	<select name='newGrade'>
+		<option selected value="">Grade</option>
+		
+		<option value="ms">MS</option>
+		<option value="hs">HS</option>
+	</select>
 	<input type="submit" name="AddStudent" value="Add Student" />
 </form>
 <table class="students_table">
@@ -85,6 +91,7 @@ if (isset($_POST['Reactivate'])) {
       <th>Name</th>
       <th>Enrolled</th>
       <th>Advisor</th>
+	  <th>Grade</th>
       <th>Y</th>
 	  <th>Modify</th>
    </tr>
@@ -127,7 +134,14 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 			?>
 	        </select>
 		</td>
-			
+		
+		<td>	
+			<select name='gradeselect'>
+				<option <?php if ($StuDataList['grade'] == "ms") { echo "selected"; } ?> value="ms">MS</option>
+				<option <?php if ($StuDataList['grade'] == "hs") { echo "selected"; } ?> value="hs">HS</option>
+			</select>
+		</td>		
+
 		<td>
 			<select name='yearinschool'>
 	        <?php
@@ -162,6 +176,7 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
         }
         ?>
         <td><?php echo $StuDataListAdvisor; ?></td>
+		<td><?php echo strtoupper($StuDataList['grade']); ?></td>
 		<td><?php echo $StuDataList['yearinschool']; ?></td>
         <td><input type="submit" name="edit-<?php echo $StuDataList['studentid']; ?>" value="Edit">
             <button type="submit" name="deletestudent" value="<?php echo $StuDataList['studentid']; ?>">Remove</button>
