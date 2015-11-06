@@ -28,6 +28,14 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     }
 
     $whenreturn = new DateTime($f_returntime);
+    $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+    $TimeQuery = $TimeQuery->fetch_array();
+    $starttime = new DateTime($TimeQuery['starttime']);
+    $endtime = new DateTime($TimeQuery['endtime']);
+    if ($whenreturn < $starttime || $whenreturn > $endtime){
+        $whenreturn->add(new DateInterval('PT12H'));
+        echo "modified";
+    }
     $returntimestring = $whenreturn->format('Y-m-d H:i:s');
     $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
     $stmt->bind_param('ssss', $f_id, $f_status, $f_info, $returntimestring);
