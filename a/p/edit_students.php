@@ -135,12 +135,10 @@ while ($StuDataList = mysqli_fetch_assoc($StudentData)) { ?>
 	        </select>
 		</td>
 		
-		<td>
+		<td>	
 			<select name='gradeselect'>
-				<option selected value="">No Grade</option>
-				
-				<option value="ms">MS</option>
-				<option value="hs">HS</option>
+				<option <?php if ($StuDataList['grade'] == "ms") { echo "selected"; } ?> value="ms">MS</option>
+				<option <?php if ($StuDataList['grade'] == "hs") { echo "selected"; } ?> value="hs">HS</option>
 			</select>
 		</td>		
 
