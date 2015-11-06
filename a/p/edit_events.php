@@ -129,8 +129,19 @@ if (!empty($_GET['id'])) {
          <input type='submit' name='studentsubmit' class='studentselect' value="Load this student's events">
       </form>
    </div>
-
    <?php
+   
+      //globals query
+      $globalsquery = "SELECT * FROM globals";
+      $globals_result = $db_server->query($globalsquery);
+      $globalsdata = $globals_result->fetch_array();
+      $tempstartdate = $globalsdata['startdate'];
+      $tempenddate = $globalsdata['enddate'];
+      $SFirstDateFromPicker = new DateTime($tempstartdate);
+      $SLastDateFromPicker = new DateTime($tempenddate);
+      $SFirstDateFromPicker = $SFirstDateFromPicker->format('Y-m-d H:i:s');
+      $SLastDateFromPicker = $SLastDateFromPicker->format('Y-m-d H:i:s');
+
       if (isset($current_student_id)) {
          $student_data_array = array();
          //fetches most recent data from the events table
@@ -139,7 +150,8 @@ if (!empty($_GET['id'])) {
             FROM events
             JOIN statusdata ON events.statusid = statusdata.statusid
             RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-            WHERE studentdata.studentid = $current_student_id
+            WHERE studentdata.studentid = $current_student_id 
+            AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
             ORDER BY timestamp DESC") or die(mysqli_error($db_server));
          while ($student_data_result = $result->fetch_assoc()) {
             array_push($student_data_array, $student_data_result);
@@ -185,7 +197,6 @@ if (!empty($_GET['id'])) {
       </table>
       <table class='eventlog'>
          <tr>
-            <th>ID</th>
             <th>Timestamp</th>
             <th>Status</th>
             <th>Info</th>
@@ -204,7 +215,6 @@ if (!empty($_GET['id'])) {
             ?>
             <form method='post' name='inline_edit' action='<?php echo basename($_SERVER['PHP_SELF']); ?>?id=<?php echo $current_student_id; ?>&eventid=<?php echo $event['eventid']; ?>'>
               <tr class="editing-row">
-                  <td><?php echo $event['eventid'] ?></td>
                   <td>
                      <input type='text' id='stamp_edit' name='stamp_edit' value='<?php echo $event['timestamp']; ?>'>
                   </td>
@@ -233,7 +243,6 @@ if (!empty($_GET['id'])) {
             </form>
             <?php } else { ?>
             <tr class="<?php echo $event['statusname'] ?>">
-               <td><?php echo $event['eventid'] ?></td>
                <td><?php echo $nice_timestamp->format('D, M j ');?>&nbsp;&nbsp;&nbsp;<?php echo $nice_timestamp->format(' g:i a');?></td>
                <td><?php echo $event['statusname'] ?></td>
                <td><?php echo $event['info'] ?></td>
