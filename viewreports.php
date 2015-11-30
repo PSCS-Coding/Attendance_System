@@ -463,7 +463,7 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 
 
 <div class='stats-container'>
-<h3>Offsite use</h3>
+	
 <?php
 // CHARTS
 $uniqueLoc = array();
@@ -495,6 +495,7 @@ foreach ($getStatsResult as $child) {
 }*/
 if($notfulldata==false){
 ?>
+<h3>Offsite use</h3>
  <script type="text/javascript">
 
       // Load the Visualization API and the piechart package.
@@ -517,6 +518,7 @@ var insertrows = [];
 for ($n = 0; $n < count($uniqueLoc); $n++) {
 echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
 }
+
 ?>
 var rows = new Array();
 
