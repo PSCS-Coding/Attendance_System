@@ -6,9 +6,8 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     global $db_server;
     $getLastEvent = $db_server->query("SELECT statusid, info, returntime FROM events WHERE studentid ='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $lastEvent = $getLastEvent->fetch_array(MYSQLI_BOTH);
-    if ($lastEvent['info'] == $f_info and $lastEvent['statusid'] == $f_status and $lastEvent['returntime'] == $f_returntime){
-        echo "did not insert duplicate event";
-    }else{
+    //print_r($lastEvent);
+    //echo $f_status . " " . $f_info . " " . $f_returntime;
     
     $result = $db_server->query("SELECT timestamp FROM events WHERE studentid='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $rowdata = $result->fetch_array(MYSQLI_BOTH);
@@ -36,13 +35,25 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
         $whenreturn->add(new DateInterval('PT12H'));
         echo "modified";
     }
+    
     $returntimestring = $whenreturn->format('Y-m-d H:i:s');
+    
+    if ($f_status == 1 and $lastEvent['statusid'] == 1){
+        //echo "did not insert duplicate event";
+    } elseif($f_status == 4 and $lastEvent['statusid'] == 4) {
+        //duplicate checked out
+    } elseif ($lastEvent['info'] == $f_info and $lastEvent['statusid'] == $f_status and $lastEvent['returntime'] == $returntimestring){
+        //echo "did not insert duplicate event";
+    } else {
+    
+    
     $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
     $stmt->bind_param('ssss', $f_id, $f_status, $f_info, $returntimestring);
     $stmt->execute();
     $stmt->close();
     }
 }
+
 //defines valid time entries for time text boxes
 //only allows integers and colons
 function validTime($inTime)
