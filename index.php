@@ -462,7 +462,8 @@ echo "</div> ";
 	<div id="main_table">
 	<table class='data_table' id='big_table'>
 	    <tr>
-	        <th class='select_col'><input type="checkbox" id="checkAll"/></th>
+	        <th class='select_col'><?php if ($_COOKIE['login'] == $SecureAdminPW || $_COOKIE['login'] == $crypt)
+					{ ?><input type="checkbox" id="checkAll"/> <?php } ?></th>
 			<!-- clickable headers for the table, allows them to be sorted -->
 	        <th class='student_col'><a href="index.php?<?php echo $getvar_sort_student; ?>">Student</a></th>
 			<th class='blank_col'></th>
