@@ -124,7 +124,7 @@
 	    //offsite
 		if (!empty($_POST['offsite'])) {
 if (!empty($_POST['customtext'])) {
-				$info = $_POST['customtext'];
+				$info = textMagic('customtext');
 if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
 					changestatus($student, '2', $info, $_POST['offtime']);
