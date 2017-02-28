@@ -426,6 +426,14 @@ color: lightgrey;
 tr.new-date td {
     border-top: 2pt solid #ddd;
 }
+.single-user #preplanned {
+background-color:#eee;
+padding:1em;
+}
+
+.deletePrePlanned {
+color:red;
+}
 
 .toolong {
 	background: red;

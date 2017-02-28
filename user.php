@@ -366,7 +366,12 @@ if (!empty($_POST)){
 	<div>
 		<input type="checkbox" name="favorite">Do this now, and also save this to favorites
 	</div>
-	
+		<div>
+		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
+		<br>
+		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
+		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
+	</div>
 		<?php /// SHOW FAVORITES BOX IF APPROPRIATE
 		$getfav = $db_server->query("SELECT * FROM cookiedata WHERE studentid = '".$id."'");
 		$rowcnt =  $getfav->num_rows;
@@ -419,14 +424,8 @@ if (!empty($_POST)){
 		
 		//render preplannedevents gui
 	?>
-
-		<div>
-		<input type="checkbox" name="otherdate">Don't do this now, but make this take effect for these future dates: (leave second date blank for one-day plans)
-		<br>
-		<input type="text" name="chooseday" id="chooseday" placeholder="<?php echo date("D M j Y")?>">
-		<input type="text" name="secondchoosedate" id="secondchoosedate" placeholder="<?php echo date("D M j Y")?>">
-	</div>
-
+<div id="preplanned">
+		<h3>Pre Planed Events</h3>
 	<?php
 		$_SESSION['idd']=$id; //pass id for view reports
 		
@@ -457,22 +456,25 @@ if (!empty($_POST)){
 		$statconvert = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = '".$preEvent[1]."'");
 		$outstatconvert=mysqli_fetch_row($statconvert);
 		$today = new dateTime();
+            ?>
+        <?php
+            
 		if ($preEventDate > $today) { 
 		if ($outstatconvert[0] == "Late"){
-			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
+			echo ($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y') . ", arriving at " . $preEventTime->format('g:i');
 			?>
-			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X" class="deletePrePlanned">
 			<?php
 			
 		} elseif ($outstatconvert[0] == "Field Trip"){
-			echo $name . " will be on a " . strtolower($outstatconvert[0]) . " with " . $preEvent[4] . " on " . $preEventDate->format('l, M j, Y') . ", and will return at " . $preEventTime->format('g:i');
+			echo ($outstatconvert[0]) . " with " . $preEvent[4] . " on " . $preEventDate->format('l, M j, Y') . ", returning at " . $preEventTime->format('g:i');
 			?>
-			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X" class="deletePrePlanned">
 			<?php
 		} else {
-			echo $name . " will be " . strtolower($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y');
+			echo ($outstatconvert[0]) . " on " . $preEventDate->format('l, M j, Y');
 			?>
-			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X">
+			<input type="submit" name="<?php echo $preEvent[5] ?>" value="X" class="deletePrePlanned">
 			<?php
 		}
 		?>
