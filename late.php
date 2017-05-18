@@ -29,6 +29,7 @@ require_once("function.php");
 
 $queryAdd = "";
 if(!empty($_POST['studentid'])){
+    $current_student_id = $_POST['studentid'];
     if($_POST['studentid'] != "none"){
         $selectedStudent = $_POST['studentid'];
         $queryAdd = " AND studentid = $selectedStudent";
@@ -58,7 +59,6 @@ while($row = $result->fetch_assoc()){
     while ($student = $current_users_query->fetch_array()) {
         array_push($current_users_result, $student);
     }
-    $current_student_id = $_POST['studentid'];
 	foreach($current_users_result as $student) {
 		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		<option name='studentselect' value= '<?php echo $student['studentid']; ?>' <?php if (!empty($current_student_id)) { if ($current_student_id == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
