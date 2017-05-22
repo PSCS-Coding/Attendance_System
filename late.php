@@ -39,13 +39,17 @@ if(!empty($_POST['studentid'])){
 $lateEvents = array();
 $result = $db_server->query("SELECT * FROM events WHERE statusid=1"  . $queryAdd . " ORDER BY timestamp DESC");
 
+$lastRow = "null";
 while($row = $result->fetch_assoc()){
-    $timeObject = explode(" ", $row['timestamp'])[1];
-    $rowTime = new DateTime($timeObject);
-    $rowTime = $rowTime->format("H:i:s");
-    if(new DateTime($rowTime) > new DateTime("9:00 AM") && new DateTime($rowTime) < new DateTime("10:00 AM")){
-        array_push($lateEvents,$row);
+    if($lastRow != "null" && $lastRow != $row['timestamp']){
+        $timeObject = explode(" ", $row['timestamp'])[1];
+        $rowTime = new DateTime($timeObject);
+        $rowTime = $rowTime->format("H:i:s");
+        if(new DateTime($rowTime) > new DateTime("9:00 AM") && new DateTime($rowTime) < new DateTime("9:30 AM")){
+            array_push($lateEvents,$row);
+        }
     }
+    $lastRow = $row['timestamp'];
 }
 ?>
 <div>
@@ -62,7 +66,7 @@ while($row = $result->fetch_assoc()){
 	foreach($current_users_result as $student) {
 		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		<option name='studentselect' value= '<?php echo $student['studentid']; ?>' <?php if (!empty($current_student_id)) { if ($current_student_id == $student['studentid']) { echo 'selected';};} ?>><?php echo $student['firstname']?><?php echo " "?><?php echo $lastinitial?></option>
-		<?php
+	<?php
 	}
 	?>
 	</select>
