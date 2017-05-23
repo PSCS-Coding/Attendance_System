@@ -30,6 +30,7 @@
 <?php
 require_once("connection.php");
 require_once("function.php");
+require_once("login.php");
 
 $queryAdd = "";
 if(!empty($_POST['studentid'])){
@@ -97,7 +98,7 @@ while($row = $result->fetch_assoc()){
 echo("<tr><td> Total </td><td>Average " . round(array_sum($timeDiffs)/count($timeDiffs),2) .  "</td><td>Count " . count($timeDiffs) . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
-    echo("<tr><td><a href='http://attendance.pscs.org/viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("H:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
+    echo("<tr><td><a href='viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("H:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
 }
 ?>
 </table>
