@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title> Lates </title>
     <style>
@@ -18,6 +18,10 @@
         text-align:center;
         width:60%;
         margin-left:20%
+    }
+    a {
+        text-decoration:none;
+        color:black;
     }
     </style>
 </head>
@@ -38,15 +42,23 @@ if(!empty($_POST['studentid'])){
 
 $lateEvents = array();
 $result = $db_server->query("SELECT * FROM events WHERE statusid=1"  . $queryAdd . " ORDER BY timestamp DESC");
-
+$timeDiffs = [];
 $lastRow = "null";
 while($row = $result->fetch_assoc()){
     if($lastRow != "null" && $lastRow != $row['timestamp']){
         $timeObject = explode(" ", $row['timestamp'])[1];
         $rowTime = new DateTime($timeObject);
         $rowTime = $rowTime->format("H:i:s");
-        if(new DateTime($rowTime) > new DateTime("9:00 AM") && new DateTime($rowTime) < new DateTime("9:30 AM")){
+        if(!empty($_POST['getTime'])){
+            $getTime = $_POST['getTime'];
+        } else {
+            $getTime = "9:30 AM";
+        }
+        if(new DateTime($rowTime) > new DateTime("9:00 AM") && new DateTime($rowTime) < new DateTime($getTime)){
             array_push($lateEvents,$row);
+            $value1 = new DateTime($rowTime);
+            $value2 = new DateTime("9:00 AM");
+            array_push($timeDiffs, round((strtotime($value1->format("Y/m/d H:i:s")) - strtotime($value2->format("Y/m/d H:i:s"))) /60));
         }
     }
     $lastRow = $row['timestamp'];
@@ -70,6 +82,7 @@ while($row = $result->fetch_assoc()){
 	}
 	?>
 	</select>
+    <input type="text" name="getTime" placeholder="9:30 AM"/>
     <input type="submit" value="Go!" name="submit"/>
 </form>
 </div>
@@ -81,9 +94,10 @@ while($row = $result->fetch_assoc()){
     <th>Date</th>
 </tr>
 <?php
+echo("<tr><td> Total </td><td>Average " . round(array_sum($timeDiffs)/count($timeDiffs),2) .  "</td><td>Count " . count($timeDiffs) . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
-    echo("<tr><td>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("H:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
+    echo("<tr><td><a href='http://attendance.pscs.org/viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("H:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
 }
 ?>
 </table>
