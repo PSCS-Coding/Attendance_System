@@ -8,14 +8,24 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     $lastEvent = $getLastEvent->fetch_array(MYSQLI_BOTH);
     //print_r($lastEvent);
     //echo $f_status . " " . $f_info . " " . $f_returntime;
-    
+
+    $whenreturn = new DateTime($f_returntime);
+    $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+    $TimeQuery = $TimeQuery->fetch_array();
+    $starttime = new DateTime($TimeQuery['starttime']);
+    $endtime = new DateTime($TimeQuery['endtime']);
+    if ($whenreturn < $starttime || $whenreturn > $endtime){
+        $whenreturn->add(new DateInterval('PT12H'));
+    }
+
     $result = $db_server->query("SELECT timestamp FROM events WHERE studentid='$f_id' ORDER BY timestamp DESC LIMIT 1");
     $rowdata = $result->fetch_array(MYSQLI_BOTH);
     $f_info = strip_tags($f_info);
     $last = new DateTime($rowdata['timestamp']);
     $now = new DateTime();
     $lastdate = $last->format('Y-m-d');
-    $last330 = $lastdate . '15:30:00';
+    $formattedEnd = new dateTime($TimeQuery['endtime']);
+    $last330 = $lastdate . $formattedEnd->format("H:i:s");
     $lastendofday = new DateTime($last330);
     $nowstamp = $now->getTimestamp();
     $laststamp = $last->getTimestamp();
@@ -26,18 +36,8 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
         $minutes = round(($nowstamp - $laststamp)/60);
     }
 
-    $whenreturn = new DateTime($f_returntime);
-    $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
-    $TimeQuery = $TimeQuery->fetch_array();
-    $starttime = new DateTime($TimeQuery['starttime']);
-    $endtime = new DateTime($TimeQuery['endtime']);
-    if ($whenreturn < $starttime || $whenreturn > $endtime){
-        $whenreturn->add(new DateInterval('PT12H'));
-        echo "modified";
-    }
-    
     $returntimestring = $whenreturn->format('Y-m-d H:i:s');
-    
+
     if ($f_status == 1 and $lastEvent['statusid'] == 1){
         //echo "did not insert duplicate event";
     } elseif($f_status == 4 and $lastEvent['statusid'] == 4) {
@@ -45,8 +45,8 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
     } elseif ($lastEvent['info'] == $f_info and $lastEvent['statusid'] == $f_status and $lastEvent['returntime'] == $returntimestring){
         //echo "did not insert duplicate event";
     } else {
-    
-    
+
+
     $stmt = $db_server->prepare("INSERT INTO events (studentid, statusid, info, returntime) VALUES (?, ?, ?, ?)");
     $stmt->bind_param('ssss', $f_id, $f_status, $f_info, $returntimestring);
     $stmt->execute();
@@ -114,7 +114,7 @@ function validDate($v_date)
     $holidayQuery = $db_server->query("SELECT *
                                   FROM holidays
                                   ");
-                                  
+
     while ($globalsArray = $globalsQuery->fetch_assoc()) {
         $startDate = $globalsArray['startdate'];
         $endDate = $globalsArray['enddate'];
@@ -130,12 +130,12 @@ function validDate($v_date)
         $weekday = $currentDate->format("w");
         if ($weekday != 0 && $weekday != 6) {
             $currentDateString = $currentDate->format("Y-m-d");
-    
+
             array_push($dateList, $currentDateString);
         }
         date_add($currentDate, date_interval_create_from_date_string('1 day'));
     }
-    
+
     // remove holidays
     $rowcnt =  $holidayQuery->num_rows;
     while ($rowcnt>0) {
@@ -167,39 +167,39 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
 		$dayDiff = $endDate->diff($startDate)->format("%a");
 		$dayDiff = $dayDiff + 1;
 	}
-	
+
     if (!empty($returntime)) {
         $whenreturn = new DateTime($returntime);
         $returntimestring = $whenreturn->format('H:i:s');
     } else {
         $returntimestring="";
     }
-        
+
 	if (empty($endDate)){
 		$endDate = $startDate;
 	}
-	
+
 	$eventDateObject = new DateTime();
-	
+
 	while ($dayDiff != 0){
 
 		date_timestamp_set($eventDateObject, $eventdate);
 		$eventDateString = $eventDateObject->format('Y-m-d');
-		
+
 	if(validDate($eventDateString)){
     $stmt = $db_server->prepare(
         "INSERT INTO preplannedevents
         (studentid, statusid, eventdate, returntime, info)
         VALUES (?, ?, FROM_UNIXTIME(?), ?, ?)"
     );
-    
+
     $stmt->bind_param('iisss', $id, $status, $eventdate, $returntimestring, $info);
     $stmt->execute();
     $stmt->close();
 	} else {
 		?>
 		<div class='error'><?php echo $eventDateObject->format('l, M j, Y') ?> is not a school day</div>
-		
+
 		<?php
 	}
 	if ($endDate < $startDate){
@@ -243,7 +243,7 @@ function daysLeft()
     $holidayQuery = $db_server->query("SELECT *
                                   FROM holidays
                                   ");
-                                  
+
     while ($globalsArray = $globalsQuery->fetch_assoc()) {
         $startDate = $globalsArray['startdate'];
         $endDate = $globalsArray['enddate'];
@@ -260,12 +260,12 @@ function daysLeft()
         $weekday = $currentDate->format("w");
         if ($weekday != 0 && $weekday != 6) {
             $currentDateString = $currentDate->format("Y-m-d");
-    
+
             array_push($dateList, $currentDateString);
         }
         date_add($currentDate, date_interval_create_from_date_string('1 day'));
     }
-    
+
     // remove holidays
     $rowcnt =  $holidayQuery->num_rows;
     while ($rowcnt>0) {
@@ -297,7 +297,7 @@ function daysLeftFromDate($start)
     $holidayQuery = $db_server->query("SELECT *
                                   FROM holidays
                                   ");
-                                  
+
     while ($globalsArray = $globalsQuery->fetch_assoc()) {
         $startDate = $globalsArray['startdate'];
         $endDate = $globalsArray['enddate'];
@@ -314,12 +314,12 @@ function daysLeftFromDate($start)
         $weekday = $currentDate->format("w");
         if ($weekday != 0 && $weekday != 6) {
             $currentDateString = $currentDate->format("Y-m-d");
-    
+
             array_push($dateList, $currentDateString);
         }
         date_add($currentDate, date_interval_create_from_date_string('1 day'));
     }
-    
+
     // remove holidays
     $rowcnt =  $holidayQuery->num_rows;
     while ($rowcnt>0) {
@@ -380,7 +380,7 @@ function groupNameToId($name)
 
 function calculateStats($current_student_id) //======================== passes out an array of view-reports type information ====================================
 {
-	
+
 global $db_server;
 
 	    // get dates
@@ -393,7 +393,7 @@ global $db_server;
 				date_add($getendDate, date_interval_create_from_date_string('-1 day'));
 				$startDate = $getstartDate->format('Y-m-d H:i:s');
 				$endDate = $getendDate->format('Y-m-d H:i:s');
-                
+
 if (isset($current_student_id)) {
 	//holidays array
 $holiday_data_array = array();
@@ -414,8 +414,8 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		FROM events
 		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-		WHERE studentdata.studentid = $current_student_id 
-        AND timestamp BETWEEN '$startDate' AND '$endDate' 
+		WHERE studentdata.studentid = $current_student_id
+        AND timestamp BETWEEN '$startDate' AND '$endDate'
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
@@ -510,15 +510,15 @@ foreach($student_data_array as $event_key => $event_val) {
 		if (($event_datetime_1->format('w') == 0 || $event_datetime_1->format('w') == 6) || (in_array($event_datetime_1->format('Y-m-d'), $holiday_data_array) == True)) {
 			continue;
 		}
-		//is event 1 before 9:00am?
+		//is event 1 before the start of school?
 		if ($event_datetime_1 <= $event_early){
 			$event_datetime_1 = clone $event_early;
 		}
-		//is event 2 after 3:30 of the same day of event 1?
+		//is event 2 after the end of the school day of the same day of event 1?
 		if ($event_datetime_2 >= $event_late){
 			$event_datetime_2 = clone $event_late;
 		}
-		
+
 		if ($event_datetime_2 > $event_datetime_1) { // without this logic, you can end up with (adjusted) event 1 coming *after* event 2!  (For example, a "checked out" event at 3:45 will result in a 15 minute diff.)
 			$elapsed = $event_datetime_2->diff($event_datetime_1);
 		} else {
@@ -526,7 +526,7 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 		//format as total minutes
 		$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
-		
+
 		if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
 			$commhours_remaining -= $elapsed_minutes;
 			$commhours_used += $elapsed_minutes;
@@ -596,21 +596,28 @@ $offsitePercent = floor($offsiteHrs_used / $offsiteremaining * 100);
 array_push($returnArray,$offsitePercent);
 array_push($returnArray,$yearPercent);
 
-return $returnArray;	
+return $returnArray;
 } else {
 	return null;
 }
 
 }
 
+		  	$TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+			$TimeQuery = $TimeQuery->fetch_array();
+			$globalstarttime = new DateTime($TimeQuery['starttime']);
+			$globalendtime = new DateTime($TimeQuery['endtime']);
+			$globalstarttime = $globalstarttime->format("H:iA");
+			$globalendtime = $globalendtime->format("H:iA");
+
 function convertHours($whichfield)
 {
-    
+
     if (!empty($_POST[$whichfield])) {
     // Make post a DateTime
         $newEndTime = new DateTime($_POST[$whichfield]);
         // Temp start time
-        $astartTime = new DateTime('09:00:00');
+        $astartTime = new DateTime($globalstarttime);
         // If start time is greater that POST add 12 hrs
         if ($newEndTime <= $astartTime) {
             // Add 12 hrs to POST
@@ -618,14 +625,14 @@ function convertHours($whichfield)
             // Formating code
             $sqlEndTime = $newEndTime->format('Y-m-d H:i:s');
             return $sqlEndTime;
-    
+
         } else {
-            
+
         return $_POST[$whichfield];
     }
-        
+
     }
-    
+
 }
 
 ?>
