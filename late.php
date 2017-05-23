@@ -23,6 +23,45 @@
         text-decoration:none;
         color:black;
     }
+    body {
+    position:relative;
+    margin:0;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:80%;
+    background-color:#4A4747;
+
+    background-image: url('img/mobius-transparent.png');
+    background-repeat: no-repeat;
+    background-position: center 100px;
+    background-attachment: fixed;
+    }
+    tr:nth-child(odd) {
+    background-color:#ddd;
+    opacity:0.9;
+    }
+
+    tr:nth-child(even) {
+        background-color:#fff;
+        opacity:0.9;
+    }
+    a {
+    float:left;
+    margin-right:-16px;
+    text-decoration:none;
+    line-height:26px;
+    color: #344486;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: rgb(0, 0, 97);
+    }
+    select {
+        height: 21.33px;
+    }
+    h3 {
+        color:white;
+    }
     </style>
 </head>
 <body>
@@ -98,7 +137,7 @@ while($row = $result->fetch_assoc()){
 echo("<tr><td> Total </td><td>Average " . round(array_sum($timeDiffs)/count($timeDiffs),2) .  "</td><td>Count " . count($timeDiffs) . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
-    echo("<tr><td><a href='viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("H:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
+    echo("<tr><td><a href='viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("g:i") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
 }
 ?>
 </table>
