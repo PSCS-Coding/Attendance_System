@@ -371,6 +371,10 @@ $hoursinday = $hoursinday * 60;
 $totalminsinday = $hoursinday + $minutesinday;
 $totalminsinday = $totalminsinday / 60;
 
+if ($minutesinday < 1){
+	$minutesinday = 1;
+};
+
 $fulldaysleft = floor($offsitehours_remaining / $minutesinday);
 
 $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes of offsite left. </p>";
