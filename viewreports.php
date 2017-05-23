@@ -23,7 +23,7 @@ if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
-} 
+}
 
 //current students array
 $studentquery = "SELECT studentid, firstname, lastname FROM studentdata WHERE current=1 ORDER BY firstname";
@@ -38,7 +38,7 @@ while ($student = $current_users_query->fetch_array()) {
 	<form method='post' id='studentform' class='studentselect' action='<?php echo basename($_SERVER['PHP_SELF']); ?>'>
 	<select name='studentselect' class='studentselect'>
 	<?php
-	
+
 	foreach($current_users_result as $student) {
 		$lastinitial = substr($student['lastname'], 0, 1); ?>
 		?>
@@ -89,8 +89,8 @@ if(!empty($_POST['firstdatetimepicker'])){
 			$FirstDateFromPicker = new DateTime($tempstartdate);
 			$startbool = 1;
 		}
-		
-		
+
+
 if(!empty($_POST['lastdatetimepicker'])){
 			$LastDateFromPicker = $_POST['lastdatetimepicker'];
 			$LastDateFromPicker = new DateTime($LastDateFromPicker);
@@ -99,16 +99,16 @@ if(!empty($_POST['lastdatetimepicker'])){
 			$LastDateFromPicker = new DateTime();
 			$todaybool = 1;
 		}
-		
+
 		$SFirstDateFromPicker = $FirstDateFromPicker->format('Y-m-d'); //add H:i:s to the format to enable time picking as well
 		$SLastDateFromPicker = $LastDateFromPicker->format('Y-m-d H:i:s');
-		
+
 		if($todaybool == 1){
 			$renderlastdate = "today";
 		} else {
 			$renderlastdate = $LastDateFromPicker->format('l F jS \a\t g:ia');
 		}
-		
+
 		if($startbool == 1){
 			$renderstartdate = "start of the school year";
 		} else {
@@ -170,10 +170,10 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 		 	JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
-		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
+		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'
 		".$statstring."
 		ORDER BY timestamp ASC") or die(mysqli_error($db_server));
-		
+
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
@@ -265,13 +265,13 @@ foreach($student_data_array as $event_key => $event_val) {
 		} else {
 			break;
 		}
-		
+
 		if($event_val['timestamp'] != "0000-00-00 00:00:00"){
 			$event_datetime_1 = new DateTime($event_val['timestamp']);
 		} else {
 			continue;
 		}
-		
+
 		//variables for easy comparison
 		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
 		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
@@ -281,15 +281,15 @@ foreach($student_data_array as $event_key => $event_val) {
 		if (($event_datetime_1->format('w') == 0 || $event_datetime_1->format('w') == 6) || (in_array($event_datetime_1->format('Y-m-d'), $holiday_data_array) == True)) {
 			continue;
 		}
-		//is event 1 before 9:00am?
+		//is event 1 before the start of school?
 		if ($event_datetime_1 <= $event_early){
 			$event_datetime_1 = clone $event_early;
 		}
-		//is event 2 after 3:30 of the same day of event 1?
+		//is event 2 after the end of the school day of the same day of event 1?
 		if ($event_datetime_2 >= $event_late){
 			$event_datetime_2 = clone $event_late;
 		}
-		
+
 		if ($event_datetime_2 > $event_datetime_1) { // without this logic, you can end up with (adjusted) event 1 coming *after* event 2!  (For example, a "checked out" event at 3:45 will result in a 15 minute diff.)
 			$elapsed = $event_datetime_2->diff($event_datetime_1);
 		} else {
@@ -297,7 +297,7 @@ foreach($student_data_array as $event_key => $event_val) {
 		}
 		//format as total minutes
 		$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
-		
+
 		if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
 			$commhours_remaining -= $elapsed_minutes;
 			$commhours_used += $elapsed_minutes;
@@ -333,7 +333,7 @@ foreach($student_data_array as $event_key => $event_val) {
 		<div class="timepickers">
             <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
 		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
-		
+
 		<select name='statusselect'><option value=''>All Statuses</option>
         <?php
 			foreach ($statusdata as $statusoption) {
@@ -349,7 +349,7 @@ foreach($student_data_array as $event_key => $event_val) {
 		<input type='submit' name='studentsubmit' class='studentselect'>
 		</div>
 
-<?php 
+<?php
 $daystillend = daysLeft(); ?>
 
 
@@ -371,6 +371,10 @@ $hoursinday = $hoursinday * 60;
 $totalminsinday = $hoursinday + $minutesinday;
 $totalminsinday = $totalminsinday / 60;
 
+if ($minutesinday < 1){
+	$minutesinday = 1;
+};
+
 $fulldaysleft = floor($offsitehours_remaining / $minutesinday);
 
 $readable_offsiteleft = "<p class='reporttext'> You have " . $offsiteHrs_remaining . " hours and " . $offsiteMin_remaining . " minutes of offsite left. </p>";
@@ -384,16 +388,16 @@ if($notfulldata == 1){
 		echo "Now displaying " . statconvert($_POST['statusselect']) . " events";
 		?> <br> <br> <?php
 	}
-	
+
 	if($notfulldatedata == 1){ // DO THIS IF THE USER HAS OPTED TO SHOW ONLY A SUBSET OF DATES
-		
+
 		echo "<p class='reporttext'>During this period:</p>";
 		$offsiteHrs_used = floor(($offsitehours_used) / 60);
 		$offsiteMin_used = $offsitehours_used % 60;
-		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time.</p>";		
+		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time.</p>";
 		//Late
 		echo "<p class='reporttext'> You were late " . $num_lates;
-		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 		//echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
 		//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 		//Absent
@@ -436,9 +440,9 @@ echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete a
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
-if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 //echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
-//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; } 
+//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 echo "<p class='reporttext'> You have been absent " . $num_absent;
 if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 
@@ -463,7 +467,7 @@ echo "<p class='reporttext'> You have used " . $studyHrs_used . " hours and " . 
 
 
 <div class='stats-container'>
-	
+
 <?php
 // CHARTS
 $uniqueLoc = array();
@@ -472,7 +476,7 @@ $totalCount = 0;
 foreach ($getStatsResult as $sub) {
 	$totalCount += 1;
 	if (!in_array($sub['info'], $uniqueLoc)) {
-		
+
 		array_push($uniqueLoc, $sub['info']);
 	}
 /*echo "<pre>";
@@ -489,7 +493,7 @@ foreach ($getStatsResult as $child) {
 /*for ($n = 0; $n < count($uniqueLoc); $n++) {
 	$count1 = $siteCount[$uniqueLoc[$n]] / $totalCount;
 	$count2 = $count1 * 100;
-	$count = number_format($count2, 0);	
+	$count = number_format($count2, 0);
 	echo "<p>" . $uniqueLoc[$n] . " (" . $siteCount[$uniqueLoc[$n]] . ")    " . $count . "%</p>";
 	//echo "<p style='font-size:5px'>insertrows.push(['" . $uniqueLoc[$n] . "', " . $siteCount[$uniqueLoc[$n]] . "]);</p>";
 }*/
@@ -513,7 +517,7 @@ var int = <?php echo json_encode(7); ?>;*/
 var d = 0;
 var insertrows = [];
 //insertrows.push(['new',4]);
-<?php 
+<?php
 //echo "insertrows.push(['" . $uniqueLoc[0] ."', " . $siteCount[$uniqueLoc[0]] . "]);";
 for ($n = 0; $n < count($uniqueLoc); $n++) {
 echo "insertrows.push(['" . str_replace("'", "", $uniqueLoc[$n]) . "', " . $siteCount[$uniqueLoc[$n]] . "]);";
@@ -530,7 +534,7 @@ var rows = new Array();
         data.addColumn('number', 'times');
         data.addRows(insertrows);
 	data.sort({column: 1, desc: true});
-	
+
         // Set chart options
         var options = {
                        'width': '280',
@@ -571,16 +575,16 @@ $displayNiceTime = new DateTime($temp);
 
 if ($event['statusname'] != "Not Checked In"){
 	$pretty_time = new DateTime($event['timestamp']);
-	
+
         if($temp_time->format('D, M') != $pretty_time->format('D, M')) {
             echo '<tr class="' . $event["statusname"] . ' new-date">';
             $temp_time = $pretty_time; ?>
-            
+
         <?php }
         else { ?>
             <tr class="<?php echo $event['statusname'] ?>">
-        <?php 
-		} 
+        <?php
+		}
 		// this makes it so if multiple events have the same date, it only displays the date for the first one
 		$currentprettytime = $pretty_time->format('D, M j');
 		if ($currentprettytime != $lastprettytime){
@@ -592,28 +596,28 @@ if ($event['statusname'] != "Not Checked In"){
 		?>
         <td><?php echo $pretty_time->format('g:i a') ?></td>
         <td><?php echo $event['statusname'] ?></td>
-	<td><?php 
+	<td><?php
 	$stringdisplay = " ";
-	
+
 if($event['statusname'] == "Field Trip"){
 	$stringdisplay = "with ";
 } elseif ($event['statusname'] == "Offsite"){
 	$stringdisplay = "at ";
 }
-	
+
 	if($event['statusname'] != "Present" && $event['statusname'] != "Checked Out" && $event['statusname'] != "Absent"){
 		echo $stringdisplay . $event['info'] . " expected " . $displayNiceTime->format('g:i a') ?> </td>
-		<?php 
+		<?php
 			} else {
 				echo $event['info'];
 			}
 			?>
 	</tr>
-<?php } 
+<?php }
 }
  ?>
 </table>
-<?php 
+<?php
 } else {
 echo "<h1 class='student_name'>" . idtoname($current_student_id) . "</h1>";
 echo "There are no events from this time period";
@@ -655,7 +659,7 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
 ?>
 </div>
 </form>
-<script> 
+<script>
 	$('#firstdatetimepicker').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
@@ -664,11 +668,11 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
             minDate:<?php echo(json_encode($startdateforpicker)); ?>,
             maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
-			defaultTime:'8:00', 
+			defaultTime:'8:00',
             step: 5,
-         }); 
+         });
 </script>
-<script> 
+<script>
 	$('#lastdatetimepicker').datetimepicker({
             onGenerate:function( ct ){
                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
@@ -677,9 +681,9 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
             minDate:<?php echo(json_encode($startdateforpicker)); ?>,
             maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
-			defaultTime:'15:30', 
+			defaultTime:<?php echo(json_encode($globalendtime)); ?>,
             step: 5,
-         }); 
+         });
 </script>
 </body>
 </html>

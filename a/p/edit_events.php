@@ -130,7 +130,7 @@ if (!empty($_GET['id'])) {
       </form>
    </div>
    <?php
-   
+
       //globals query
       $globalsquery = "SELECT * FROM globals";
       $globals_result = $db_server->query($globalsquery);
@@ -150,8 +150,8 @@ if (!empty($_GET['id'])) {
             FROM events
             JOIN statusdata ON events.statusid = statusdata.statusid
             RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
-            WHERE studentdata.studentid = $current_student_id 
-            AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker' 
+            WHERE studentdata.studentid = $current_student_id
+            AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'
             ORDER BY timestamp DESC") or die(mysqli_error($db_server));
          while ($student_data_result = $result->fetch_assoc()) {
             array_push($student_data_array, $student_data_result);
@@ -229,7 +229,7 @@ if (!empty($_GET['id'])) {
                      <input type='text' name='info_edit' value='<?php echo $event['info'] ?>'>
                   </td>
                   <td>
-                     <?php 
+                     <?php
                      $modifed_return = new dateTime($event['returntime']);
                      $modifed_return = $modifed_return->format('h:i:s');
                      ?>
@@ -260,7 +260,7 @@ if (!empty($_GET['id'])) {
             } // end if not Not Checked in
          } // end foreach event
       } // end if isset studentid
-      
+
       //globals query
 $globalsquery = "SELECT * FROM globals";
 $globals_result = $db_server->query($globalsquery);
@@ -271,7 +271,13 @@ $startdateforpicker = new DateTime($startdateforpicker);
 $enddateforpicker = new DateTime($enddateforpicker);
 $startdateforpicker = $startdateforpicker->format('Y/m/d');
 $enddateforpicker = $enddateforpicker->format('Y/m/d');
-      
+
+		  	$TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+			$TimeQuery = $TimeQuery->fetch_array();
+			$globalstarttime = new DateTime($TimeQuery['starttime']);
+			$globalendtime = new DateTime($TimeQuery['endtime']);
+			$globalstarttime = $globalstarttime->format("H:iA");
+			$globalendtime = $globalendtime->format("H:iA");
       ?>
       </table>
    <script type="text/javascript"> // This is down here so that the appropriate record's timestamp can be used as default value
@@ -290,8 +296,8 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
          $('#returntime_edit').datetimepicker({
             datepicker: false,
             format:'H:i:s',
-            minTime:'09:00',
-            maxTime:'15:31',
+            minTime:<?php echo(json_encode($globalstarttime)); ?>,
+            maxTime:<?php echo(json_encode($globalendtime)); ?>,
             step: 5,
          });
          $('#new_timestamp').datetimepicker({
@@ -307,8 +313,8 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
          $('#new_return').datetimepicker({
             datepicker: false,
             format:'H:i:s',
-            minTime:'09:00',
-            maxTime:'15:31',
+            minTime:<?php echo(json_encode($globalstarttime)); ?>,
+            maxTime:<?php echo(json_encode($globalendtime)); ?>,
             step: 5,
          });
      $('body').scrollTo('.editing-row',{duration:'1000', offsetTop : '150'});
