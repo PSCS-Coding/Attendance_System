@@ -2,7 +2,8 @@
 	<html>
 	<head>
 		<title>PSCS Attendance: Status View</title>
-		<?php require_once('header.php')
+		<?php
+			require_once('header.php');
 			$TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
 			$TimeQuery = $TimeQuery->fetch_array();
 			$globalstarttime = new DateTime($TimeQuery['starttime']);
