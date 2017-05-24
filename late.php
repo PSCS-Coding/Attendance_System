@@ -112,8 +112,8 @@ while($row = $result->fetch_assoc()){
                 array_push($lateEvents,$row);
                 $value1 = new DateTime($rowTime);
                 $value2 = new DateTime("9:00 AM");
-                array_push($timeDiffs, round((strtotime($value1->format("Y/m/d H:i:s")) - strtotime($value2->format("Y/m/d H:i:s"))) /60));
-            }
+                array_push($timeDiffs, round((strtotime($value1->format("Y/m/d H:i:s")) - strtotime($value2->format("Y/m/d H:i:s"))) /60,2));
+                }
         }
     }
     $lastRow = $row['timestamp'];
@@ -149,11 +149,22 @@ while($row = $result->fetch_assoc()){
     <th>Date</th>
 </tr>
 <?php
-if(count($timeDiffs<1)){
-    array_push($timeDiffs,0);
-}
 sort($timeDiffs);
-echo("<tr><td>Average " . round(array_sum($timeDiffs)/count($timeDiffs),2) . " </td><td> Median " . $timeDiffs[round(count($timeDiffs)/2)] . "</td><td>Count " . count($timeDiffs) . "</td></tr>");
+$count = 0;
+$average = 0;
+$median = 0;
+if(count($timeDiffs) > 0){
+    $count = count($timeDiffs);
+    $average = round(array_sum($timeDiffs)/count($timeDiffs),2);
+    if($count % 2 == 0){
+        $median = round(($timeDiffs[round(count($timeDiffs)/2)-1] + $timeDiffs[round(count($timeDiffs)/2)]) / 2,2);
+    } else {
+        $median = $timeDiffs[round(count($timeDiffs)/2)-1];
+    }
+
+}
+
+echo("<tr><td>Average " . $average . " </td><td> Median " . $median . "</td><td>Count " . $count . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
     echo("<tr><td><a href='viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("g:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
