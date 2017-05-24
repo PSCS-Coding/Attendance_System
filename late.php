@@ -95,10 +95,25 @@ while($row = $result->fetch_assoc()){
             $getTime = "9:30 AM";
         }
         if(new DateTime($rowTime) > new DateTime("9:00 AM") && new DateTime($rowTime) < new DateTime($getTime)){
-            array_push($lateEvents,$row);
-            $value1 = new DateTime($rowTime);
-            $value2 = new DateTime("9:00 AM");
-            array_push($timeDiffs, round((strtotime($value1->format("Y/m/d H:i:s")) - strtotime($value2->format("Y/m/d H:i:s"))) /60));
+            $currentId = $row['studentid'];
+            $currentEventId = $row['eventid'];
+            $startQueryTime = new DateTime(explode(" ", $row['timestamp'])[0] . "12:00 AM");
+            $startQueryTime = $startQueryTime->format("Y-m-d H:i:s");
+            $endQueryTime = new DateTime(explode(" ", $row['timestamp'])[0] . $getTime);
+            $endQueryTime = $endQueryTime->format("Y-m-d H:i:s");
+            $prevQuery = $db_server->query("SELECT * FROM events
+                                            WHERE studentid='$currentId'
+                                            AND timestamp BETWEEN '$startQueryTime' AND '$endQueryTime'
+                                            AND eventid < '$currentEventId'
+                                            ORDER BY eventid DESC limit 1")
+                                            or die(mysqli_error($db_server));
+            $prevQueryResult = $prevQuery->fetch_row();
+            if($prevQueryResult[1] == "8" or $prevQueryResult[1] == "5"){
+                array_push($lateEvents,$row);
+                $value1 = new DateTime($rowTime);
+                $value2 = new DateTime("9:00 AM");
+                array_push($timeDiffs, round((strtotime($value1->format("Y/m/d H:i:s")) - strtotime($value2->format("Y/m/d H:i:s"))) /60));
+            }
         }
     }
     $lastRow = $row['timestamp'];
@@ -134,6 +149,9 @@ while($row = $result->fetch_assoc()){
     <th>Date</th>
 </tr>
 <?php
+if(count($timeDiffs<1)){
+    array_push($timeDiffs,0);
+}
 echo("<tr><td> Total </td><td>Average " . round(array_sum($timeDiffs)/count($timeDiffs),2) .  "</td><td>Count " . count($timeDiffs) . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
