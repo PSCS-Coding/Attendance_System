@@ -114,7 +114,7 @@
 
 	//checks value of either checkboxes - $name = all checked students
 	if (!empty($_POST['person']) && isPost()){
-			$name = $_POST['person'];
+		$name = $_POST['person'];
 
 	    //present
 		if (!empty($_POST['present'])) {
@@ -126,27 +126,34 @@
 
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-if (!empty($_POST['customtext'])) {
+			echo("<pre><br><br><br><br>");
+			print_r($_POST);
+			echo("</pre>");
+
+			if (!empty($_POST['customtext'])) {
+
 				$info = $_POST['customtext'];
-if (validTime($_POST['offtime'])){
-					foreach ($name as $student){
-					changestatus($student, '2', $info, $_POST['offtime']);
-					}
-				} else {
-					echo "<div class='error'>Please enter a valid return time.</div>";
-				}
-				//echo "<p style='font-size:30px;'>" . $info . "</p>";
-				} else {
-			if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
-	        		$info = $_POST['offlocDropdown'];
 				if (validTime($_POST['offtime'])){
 					foreach ($name as $student){
-					changestatus($student, '2', $info, convertHours('offtime'));
+						changestatus($student, '2', $info, $_POST['offtime']);
 					}
 				} else {
 					echo "<div class='error'>Please enter a valid return time.</div>";
 				}
-			}
+
+			} else {
+				if (!empty($_POST['offlocDropdown']) && $_POST['offlocDropdown'] != ''){
+						$info = $_POST['offlocDropdown'];
+					if (validTime($_POST['offtime'])){
+						foreach ($name as $student){
+							changestatus($student, '2', $info, convertHours('offtime'));
+						}
+					} else {
+						echo "<div class='error'>Please enter a valid return time.</div>";
+					}
+				} else {
+					echo "<div class='error'>You must choose an offsite location.</div>";
+				}
 		}
 	}
 	    //fieldtrip

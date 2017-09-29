@@ -55,13 +55,27 @@ function changestatus($f_id, $f_status, $f_info, $f_returntime)
 }
 
 //defines valid time entries for time text boxes
-//only allows integers and colons
-function validTime($inTime)
-{
-    //$pattern   =   "/^(((([9])|([0-2])|([0-1][0-5])):([0-5][0-9]))|(([3]):(([0-2][0-9])|([3][0]))))$/";
-    //if (preg_match($pattern, $inTime)) {
+function validTime($inTime){
+    global $db_server;
+
+    if ($inTime){ // if a value was passed
+
+        // query globals for school hours
+        $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+        $TimeQuery = $TimeQuery->fetch_array();
+        $starttime = new DateTime($TimeQuery['starttime']);
+        $endtime = new DateTime($TimeQuery['endtime']);
+
+        // if the selected hours are not within the school day, add 12 hours
+        if($dateTimeObj > $endtime || $dateTimeObj < $starttime){
+            $dateTimeObj->add(new DateInterval('PT12H'));
+        }
+        
         return true;
-    //}
+
+    } else {
+        return false;
+    }
 }
 //checks if you've hit any of the submit buttons that are a part of the top form
 function isPost()
@@ -198,9 +212,8 @@ function plan($id, $status, $eventdate, $returntime, $info, $endeventdate)
     $stmt->close();
 	} else {
 		?>
-		<div class='error'><?php echo $eventDateObject->format('l, M j, Y') ?> is not a school day</div>
-
-		<?php
+		    <div class='error'><?php echo $eventDateObject->format('l, M j, Y') ?> is not a school day</div>
+	    <?php
 	}
 	if ($endDate < $startDate){
 			$eventdate = $eventdate - 24*60*60;
@@ -383,19 +396,20 @@ function calculateStats($current_student_id) //======================== passes o
 
 global $db_server;
 
-	    // get dates
-                $globals_query = "SELECT * FROM globals";
-                $globals_result = $db_server->query($globals_query);
-                $globals_data = $globals_result->fetch_array();
-				$getendDate = new DateTime($globals_data['enddate']);
-				$getstartDate = new DateTime($globals_data['startdate']);
-				date_add($getstartDate, date_interval_create_from_date_string('1 day'));
-				date_add($getendDate, date_interval_create_from_date_string('-1 day'));
-				$startDate = $getstartDate->format('Y-m-d H:i:s');
-				$endDate = $getendDate->format('Y-m-d H:i:s');
+// get dates
+$globals_query = "SELECT * FROM globals";
+$globals_result = $db_server->query($globals_query);
+$globals_data = $globals_result->fetch_array();
+$getendDate = new DateTime($globals_data['enddate']);
+$getstartDate = new DateTime($globals_data['startdate']);
+date_add($getstartDate, date_interval_create_from_date_string('1 day'));
+date_add($getendDate, date_interval_create_from_date_string('-1 day'));
+$startDate = $getstartDate->format('Y-m-d H:i:s');
+$endDate = $getendDate->format('Y-m-d H:i:s');
 
 if (isset($current_student_id)) {
-	//holidays array
+
+//holidays array
 $holiday_data_array = array();
 $holiday_dt_array = array();
 $holidayquery = "SELECT date FROM holidays";
@@ -603,15 +617,15 @@ return $returnArray;
 
 }
 
-		  	$TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
-			$TimeQuery = $TimeQuery->fetch_array();
-			$globalstarttime = new DateTime($TimeQuery['starttime']);
-			$globalendtime = new DateTime($TimeQuery['endtime']);
-			$globalstarttime = $globalstarttime->format("H:iA");
-			$globalendtime = $globalendtime->format("H:iA");
-
 function convertHours($whichfield)
 {
+    global $db_server;
+    $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
+    $TimeQuery = $TimeQuery->fetch_array();
+    $globalstarttime = new DateTime($TimeQuery['starttime']);
+    $globalendtime = new DateTime($TimeQuery['endtime']);
+    $globalstarttime = $globalstarttime->format("H:iA");
+    $globalendtime = $globalendtime->format("H:iA");
 
     if (!empty($_POST[$whichfield])) {
     // Make post a DateTime
