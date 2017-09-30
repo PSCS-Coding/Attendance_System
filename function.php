@@ -68,8 +68,6 @@ function isPost()
 {
     if (in_array("Present", $_POST)) {
         return true;
-    } elseif(in_array("P", $_POST)){
-        return true;
     } elseif (in_array("Offsite", $_POST)) {
         return true;
     } elseif (in_array("Field Trip", $_POST)) {
