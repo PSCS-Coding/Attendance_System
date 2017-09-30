@@ -645,14 +645,16 @@ echo "</div> ";
 
             	// SELECTION FOR GROUPS
 		for ($k = 0; $k < count($groupsResult); $k++) {
-			if (!empty($_POST[$groupsResult[$k]["name"]])) {
-				$ids = explode(",", $groupsResult[$k]['studentid']);
-				for ($l = 0; $l < count($ids); $l++) {
-					//echo $ids[$l];
-					$getRecentEvent = mysqli_fetch_assoc(mysqli_query($db_server, "SELECT statusid FROM events WHERE studentid = " . $ids[$l] . " ORDER BY timestamp DESC LIMIT 1"));
+			$fixedName = str_replace(" ","_",$groupsResult[$k]["name"]);
+			if (!empty($_POST[$fixedName])) {
+				$ids = explode(",", $groupsResult[$k]['studentid']);;
+				for ($l = 1; $l < count($ids); $l++) {
+					$currentId = $ids[$l];
+					$recentEventQuery = $db_server->query("SELECT statusid FROM events WHERE studentid = " . $currentId . " ORDER BY timestamp DESC LIMIT 1");
+					$getRecentEvent = $recentEventQuery->fetch_assoc();
 					$recentEvent = $getRecentEvent['statusid'];
  					if ($recentEvent == 1) {
-					echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
+						echo "<script>document.getElementById(" . $ids[$l] . ").checked = true;</script>";
 					}
 				}
 			}
