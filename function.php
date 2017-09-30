@@ -60,6 +60,8 @@ function validTime($inTime){
 
     if ($inTime){ // if a value was passed
 
+        $dateTimeObj = new DateTime($inTime);
+        
         // query globals for school hours
         $TimeQuery = $db_server->query("SELECT starttime,endtime FROM globals");
         $TimeQuery = $TimeQuery->fetch_array();
