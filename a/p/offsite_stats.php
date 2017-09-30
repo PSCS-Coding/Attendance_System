@@ -51,7 +51,7 @@ array_multisort($sortArray, SORT_ASC, $studentTable);
 foreach ($studentTable as $render){
 	?> 
 	<tr>
-	<td> <?php echo "<a style='text-decoration:none; color:black' href='../../viewreports.php?id=" . $render[6] . "'>" . $render[0] . " " . $render[1]; ?> </a></td>
+	<td> <?php echo "<a target=_blank style='text-decoration:none; color:black' href='../../viewreports.php?id=" . $render[6] . "'>" . $render[0] . " " . $render[1]; ?> </a></td>
 	<td> <?php echo $render[2]; ?> </td>
 	<td> <?php echo $render[3]; ?> </td>
 	<?php 
