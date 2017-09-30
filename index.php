@@ -126,10 +126,6 @@
 
 	    //offsite
 		if (!empty($_POST['offsite'])) {
-			echo("<pre><br><br><br><br>");
-			print_r($_POST);
-			echo("</pre>");
-
 			if (!empty($_POST['customtext'])) {
 
 				$info = $_POST['customtext'];
