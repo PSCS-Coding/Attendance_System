@@ -117,7 +117,7 @@
 		$name = $_POST['person'];
 
 	    //present
-		if (!empty($_POST['present'])) {
+		if (!empty($_POST['present']) or in_array("P", $_POST)) {
 			foreach ($name as $student)
 			{
 				changestatus($student, '1', '', '');
