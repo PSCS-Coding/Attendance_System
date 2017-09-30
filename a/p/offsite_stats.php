@@ -21,7 +21,7 @@ $studentNames = array();
 	$currentStudentRow = array();
 	$lastInit = $studentRow['lastname'][0];
 	$stats = calculateStats($studentRow['studentid']);
-	array_push($currentStudentRow,$studentRow['firstname'],$lastInit,$stats[2],$stats[0],$stats[3],$stats[4]);
+	array_push($currentStudentRow,$studentRow['firstname'],$lastInit,$stats[2],$stats[0],$stats[3],$stats[4],$studentRow['studentid']);
 	array_push($studentTable,$currentStudentRow);
 	array_push($studentNames,$studentRow['firstname']);
 }
@@ -51,7 +51,7 @@ array_multisort($sortArray, SORT_ASC, $studentTable);
 foreach ($studentTable as $render){
 	?> 
 	<tr>
-	<td> <?php echo $render[0] . " " . $render[1]; ?> </td>
+	<td> <?php echo "<a target=_blank class='unstyled-link' href='../../viewreports.php?id=" . $render[6] . "'>" . $render[0] . " " . $render[1]; ?> </a></td>
 	<td> <?php echo $render[2]; ?> </td>
 	<td> <?php echo $render[3]; ?> </td>
 	<?php 
