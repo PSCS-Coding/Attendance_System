@@ -242,8 +242,10 @@
 		}
 	}
 
-
-
+		if(ispost()){
+			header('Location: '.$_SERVER['PHP_SELF']);
+			die;
+		}
         // THIS IS FOR THE "Check Out" Buttons at the end of the day
         //Sets current time
        $phpdatetime = new dateTime();
