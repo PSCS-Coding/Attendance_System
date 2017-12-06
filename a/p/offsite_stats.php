@@ -29,11 +29,10 @@ $studentNames = array();
 $sortArray = array();
 
 foreach ($studentTable as $key => $row){
-    //$studentTable[$key][2]  = $row[2];
-	$sortArray[$key]  = $row[2];
+	$sortArray[$key]  = $row[4]; // the position to sort the table by
 }    
 
-array_multisort($sortArray, SORT_ASC, $studentTable);
+array_multisort($sortArray, SORT_DESC, $studentTable);
 
 ?>
 <div id="TopHeader" class="<?php echo $HeaderStatus; ?>">
