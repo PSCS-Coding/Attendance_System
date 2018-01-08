@@ -216,7 +216,7 @@
 								<li>
 									<?php
 										echo "<a class='unstyled-link' href=viewreports.php?id=" . $student['studentid'] . ">" . $student['firstname'] . " " . substr($student['lastname'], 0, 1) . " ";
-										if ($status == "Offsite" || $status == "Late" || $status == "Field Trip") {echo $returntime_statusview;}
+										if ($status == "Offsite" || $status == "Late" || $status == "Field Trip" || $status == "Independent Study") {echo $returntime_statusview;}
 										echo "</a>";
 									?>
 								</li>
