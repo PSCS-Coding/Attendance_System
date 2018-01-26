@@ -2,17 +2,22 @@
 
 include("connection.php");
 
+// check if login is disabled
+$disabled = FALSE;
+session_start();
+
 // Set current date & format to timestamp
     $phpdatetime = new dateTime();
     $currentDate = $phpdatetime->format('y-m-d h:i:s');
+
 // Set query results as array
     $loginQuery = array();
     $timeoutQuery = array();
 
-if ($loginQuery = $db_server->query("SELECT * FROM login WHERE username='pscs'"))
-{
+if ($loginQuery = $db_server->query("SELECT * FROM login WHERE username='pscs'")){
     $pwdRow = $loginQuery->fetch_assoc();
 }
+
 // Set varibles for student & admin passwords
 $studentPassword = $pwdRow['password'];
 $adminPassword = $pwdRow['adminPass'];
@@ -21,9 +26,7 @@ $adminPassword = $pwdRow['adminPass'];
 if (!empty($_GET["logout"])) {
     
     if (($_GET["logout"]) == "1") {
-        // delete cookie
-        setcookie("login", "", time()-3600);
-        
+        setcookie("login", "", time()-3600); // deletes the cookie
     }
 }
 
@@ -63,16 +66,31 @@ if(isset($_POST['Submit']))
         
 		}
     
-if ($AdminLogin == 1) {
+    if ($AdminLogin == 1) {
         
     header("location:$url");
         
-} elseif ($StudentLogin == 1) {
+    } elseif ($StudentLogin == 1) {
         
         echo '<META http-equiv="refresh" content="0;URL=index.php">';
     
-    } else
-		die("Wrong password.");
+    } else {
+        // echo("<br> <br>");
+        // print_r($_SESSION);
+        // echo($disabled);
+        if (!empty($_SESSION['tries'])){
+            if($_SESSION['tries'] == 5){
+                $disabled = TRUE;
+                $_SESSION['tries'] == 0;
+                echo("<div class='error'>Too many tries, try again later.</div>");
+            } else {
+                $_SESSION['tries'] += 1;
+            }
+        } else {
+            $_SESSION['tries'] = 1;
+        }
+        echo("<div class='error'> Wrong password.</div>");
+    }
 }
 
 ?>
@@ -148,7 +166,11 @@ if ($AdminLogin == 1) {
     <strong class="logintext">Login </strong>
     <div class="spacer"></div>
     Password :
-    <input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">
+    <?php if ($disabled){
+        echo('<input class="textbox" name="mypassword" type="text" value="try again later" id="mypassword" disabled required class="loginpassword">');
+    } else {
+        echo('<input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">');
+    }?>
     <a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
 </form>
 </div>
