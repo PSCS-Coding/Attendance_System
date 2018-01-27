@@ -1,10 +1,20 @@
 <?php
 
 include("connection.php");
+session_start();
+
+$disabled = FALSE;
 
 // check if login is disabled
-$disabled = FALSE;
-session_start();
+if (isset($_SESSION['timeout'])){
+    if(time() - $_SESSION['timeout'] > 900){ // check if the timeout has been long enough
+        $disabled = FALSE;
+    } else {
+        $disabled = TRUE;
+    }
+}
+
+
 
 // Set current date & format to timestamp
     $phpdatetime = new dateTime();
@@ -79,10 +89,11 @@ if(isset($_POST['Submit']))
         // print_r($_SESSION);
         // echo($disabled);
         if (!empty($_SESSION['tries'])){
-            if($_SESSION['tries'] == 5){
+            if($_SESSION['tries'] == 4){
                 $disabled = TRUE;
                 $_SESSION['tries'] == 0;
                 echo("<div class='error'>Too many tries, try again later.</div>");
+                $_SESSION['timeout'] = time();
             } else {
                 $_SESSION['tries'] += 1;
             }
