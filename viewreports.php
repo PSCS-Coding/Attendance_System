@@ -700,7 +700,7 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
             minDate:<?php echo(json_encode($startdateforpicker)); ?>,
             maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
-			defaultTime:'8:00',
+			defaultTime:<?php echo(json_encode(substr($globalsdata['starttime'],0,-3))); ?>,
             step: 5,
          });
 </script>
@@ -713,7 +713,7 @@ $enddateforpicker = $enddateforpicker->format('Y/m/d');
             minDate:<?php echo(json_encode($startdateforpicker)); ?>,
             maxDate:<?php echo(json_encode($enddateforpicker)); ?>,
             format:'Y-m-d H:i:s',
-			defaultTime:<?php echo(json_encode($globalendtime)); ?>,
+			defaultTime:<?php echo(json_encode(substr($globalsdata['starttime'],0,-3))); ?>,
             step: 5,
          });
 </script>
