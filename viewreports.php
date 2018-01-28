@@ -248,6 +248,7 @@ $commhours_remaining = $commhours_all - $baseHours * 60;
 $num_lates = 0;
 $num_unexpected = 0;
 $num_absent = 0;
+$altText = "";
 
 $offsiteremaining = $offsitehours_remaining / 60;
 //counts time
@@ -311,6 +312,7 @@ foreach($student_data_array as $event_key => $event_val) {
 				// echo "  ";
 				// print($event_early->format("Y-M-d H:i:s"));
 				$num_unexpected += 1;
+				$altText = $altText . $thisDateTime->format("Y-M-d H:i:s") . ", ";
 			}
 
 			if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
@@ -467,7 +469,7 @@ if ($num_lates == 1) {
 } else { 
 	echo " times.</p>"; 
 }
-echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
+echo "<p class='reporttext' title='" . $altText . "'> You have been unexpectedly late " . $num_unexpected;
 if ($num_unexpected == 1) { 
 	echo " time.</p>"; 
 } else { 
