@@ -180,7 +180,7 @@ if(isset($_POST['Submit']))
     <?php if ($disabled){
         echo('<input class="textbox" name="mypassword" type="text" value="try again later" id="mypassword" disabled required class="loginpassword">');
     } else {
-        echo('<input class="textbox" name="mypassword" type="password" id="mypassword" required class="loginpassword">');
+        echo('<input class="textbox" name="mypassword" type="password" id="mypassword" required autofocus="autofocus" class="loginpassword">');
     }?>
     <a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
 </form>
