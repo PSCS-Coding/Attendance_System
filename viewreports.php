@@ -302,17 +302,17 @@ foreach($student_data_array as $event_key => $event_val) {
 
 			//format as total minutes
 			$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
-			
+
 			$thisDateTime = new DateTime($event_val['timestamp']);
 			$gracePeriod = $event_early;
 			$gracePeriod = $gracePeriod->add(new DateInterval('PT59S'));
-			
+
 			if(statconvert(getEventBefore($event_val['eventid'],$event_val['studentid'])['statusid']) == "Not Checked In" && $thisDateTime >= $gracePeriod){
 				// print($thisDateTime->format("Y-M-d H:i:s"));
 				// echo "  ";
 				// print($event_early->format("Y-M-d H:i:s"));
 				$num_unexpected += 1;
-				$altText = $altText . $thisDateTime->format("Y-M-d H:i:s") . ", ";
+				$altText = $altText . $thisDateTime->format("M j, g:i") . "&#13";
 			}
 
 			if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
@@ -415,14 +415,14 @@ if($notfulldata == 1){
 		//late printout
 		echo "<p class='reporttext'> You were late " . $num_lates;
 
-		if ($num_lates == 1) { 
-			echo " time.</p>"; } else { echo " times.</p>"; 
+		if ($num_lates == 1) {
+			echo " time.</p>"; } else { echo " times.</p>";
 		}
-		
+
 		// echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
 		// if ($num_unexpected == 1) {
 
-		// 	echo " time.</p>"; } else { echo " times.</p>"; 
+		// 	echo " time.</p>"; } else { echo " times.</p>";
 		// }
 		//Absent
 		echo "<p class='reporttext'> You were absent " . $num_absent;
@@ -464,16 +464,16 @@ echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete a
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
-if ($num_lates == 1) { 
-	echo " time.</p>"; 
-} else { 
-	echo " times.</p>"; 
+if ($num_lates == 1) {
+	echo " time.</p>";
+} else {
+	echo " times.</p>";
 }
 echo "<p class='reporttext' title='" . $altText . "'> You have been unexpectedly late " . $num_unexpected;
-if ($num_unexpected == 1) { 
-	echo " time.</p>"; 
-} else { 
-	echo " times.</p>"; 
+if ($num_unexpected == 1) {
+	echo " time.</p>";
+} else {
+	echo " times.</p>";
 }
 echo "<p class='reporttext'> You have been absent " . $num_absent;
 if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
