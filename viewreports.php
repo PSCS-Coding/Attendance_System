@@ -254,70 +254,84 @@ $offsiteremaining = $offsitehours_remaining / 60;
 //loops through each event for the given student
 foreach($student_data_array as $event_key => $event_val) {
 	if ($student_data_array[$event_key]['statusname'] != "Not Checked In") {
-	if (count($student_data_array) != $event_key) {
-		//makes the timestamp into datetime obj
-		if (isset($student_data_array[$event_key+1])) {
-			if($student_data_array[$event_key+1]['timestamp'] != "0000-00-00 00:00:00"){
-				$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
+		if (count($student_data_array) != $event_key) {
+			//makes the timestamp into datetime obj
+			if (isset($student_data_array[$event_key+1])) {
+				if($student_data_array[$event_key+1]['timestamp'] != "0000-00-00 00:00:00"){
+					$event_datetime_2 = new DateTime($student_data_array[$event_key+1]['timestamp']);
+				} else {
+					continue;
+				}
+			} else {
+				break;
+			}
+
+			if($event_val['timestamp'] != "0000-00-00 00:00:00"){
+				$event_datetime_1 = new DateTime($event_val['timestamp']);
 			} else {
 				continue;
 			}
-		} else {
-			break;
-		}
 
-		if($event_val['timestamp'] != "0000-00-00 00:00:00"){
-			$event_datetime_1 = new DateTime($event_val['timestamp']);
-		} else {
-			continue;
-		}
+			//variables for easy comparison
+			$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
+			$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
+			$event_early = new DateTime($early);
+			$event_late = new DateTime($late);
 
-		//variables for easy comparison
-		$early = $event_datetime_1->format('m/d/y') . " " . $starttime;
-		$late = $event_datetime_1->format('m/d/y') . " " . $endtime;
-		$event_early = new DateTime($early);
-		$event_late = new DateTime($late);
-		//is event 1 on a weekend or holiday?
-		if (($event_datetime_1->format('w') == 0 || $event_datetime_1->format('w') == 6) || (in_array($event_datetime_1->format('Y-m-d'), $holiday_data_array) == True)) {
-			continue;
-		}
-		//is event 1 before the start of school?
-		if ($event_datetime_1 <= $event_early){
-			$event_datetime_1 = clone $event_early;
-		}
-		//is event 2 after the end of the school day of the same day of event 1?
-		if ($event_datetime_2 >= $event_late){
-			$event_datetime_2 = clone $event_late;
-		}
-
-		if ($event_datetime_2 > $event_datetime_1) { // without this logic, you can end up with (adjusted) event 1 coming *after* event 2!  (For example, a "checked out" event at 3:45 will result in a 15 minute diff.)
-			$elapsed = $event_datetime_2->diff($event_datetime_1);
-		} else {
-			$elapsed = $event_datetime_1->diff($event_datetime_1);
-		}
-		//format as total minutes
-		$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
-
-		if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
-			$commhours_remaining -= $elapsed_minutes;
-			$commhours_used += $elapsed_minutes;
-			if ($event_val['statusname'] == 'Independent Study') {
-				$studyhours_remaining -= $elapsed_minutes;
-				$studyhours_used += $elapsed_minutes;
+			//is event 1 on a weekend or holiday?
+			if (($event_datetime_1->format('w') == 0 || $event_datetime_1->format('w') == 6) || (in_array($event_datetime_1->format('Y-m-d'), $holiday_data_array) == True)) {
+				continue;
 			}
-		}
-		else {
-			$offsitehours_remaining -= $elapsed_minutes;
-			$offsitehours_used += $elapsed_minutes;
-			if (($event_val['statusname'] == 'Not Checked In') && ($event_datetime_1 >= new DateTime($starttime))) {
+
+			//is event 1 before the start of school?
+			if ($event_datetime_1 <= $event_early){
+				$event_datetime_1 = clone $event_early;
+			}
+
+			//is event 2 after the end of the school day of the same day of event 1?
+			if ($event_datetime_2 >= $event_late){
+				$event_datetime_2 = clone $event_late;
+			}
+
+			if ($event_datetime_2 > $event_datetime_1) { // without this logic, you can end up with (adjusted) event 1 coming *after* event 2!  (For example, a "checked out" event at 3:45 will result in a 15 minute diff.)
+				$elapsed = $event_datetime_2->diff($event_datetime_1);
+			} else {
+				$elapsed = $event_datetime_1->diff($event_datetime_1);
+			}
+
+			//format as total minutes
+			$elapsed_minutes = ($elapsed->format('%h')*60) + ($elapsed->format('%i'));
+			
+			$thisDateTime = new DateTime($event_val['timestamp']);
+			$gracePeriod = $event_early;
+			$gracePeriod = $gracePeriod->add(new DateInterval('PT59S'));
+			
+			if(statconvert(getEventBefore($event_val['eventid'],$event_val['studentid'])['statusid']) == "Not Checked In" && $thisDateTime >= $gracePeriod){
+				// print($thisDateTime->format("Y-M-d H:i:s"));
+				// echo "  ";
+				// print($event_early->format("Y-M-d H:i:s"));
 				$num_unexpected += 1;
-				$num_lates += 1;
 			}
-			if ($event_val['statusname'] == 'Late') {
-				$num_lates += 1;
-			}
-			if ($event_val['statusname'] == 'Absent') {
-				$num_absent += 1;
+
+			if ($event_val['statusname'] == 'Present' || $event_val['statusname'] == 'Field Trip' || $event_val['statusname'] == 'Independent Study') {
+				$commhours_remaining -= $elapsed_minutes;
+				$commhours_used += $elapsed_minutes;
+				if ($event_val['statusname'] == 'Independent Study') {
+					$studyhours_remaining -= $elapsed_minutes;
+					$studyhours_used += $elapsed_minutes;
+				}
+			} else {
+				$offsitehours_remaining -= $elapsed_minutes;
+				$offsitehours_used += $elapsed_minutes;
+				// if (($event_val['statusname'] == 'Not Checked In') && ($event_datetime_1 >= new DateTime($starttime))) {
+				// 	$num_unexpected += 1;
+				// 	$num_lates += 1;
+				// }
+				if ($event_val['statusname'] == 'Late') {
+					$num_lates += 1;
+				}
+				if ($event_val['statusname'] == 'Absent') {
+					$num_absent += 1;
 				}
 			}
 		}
@@ -395,11 +409,19 @@ if($notfulldata == 1){
 		$offsiteHrs_used = floor(($offsitehours_used) / 60);
 		$offsiteMin_used = $offsitehours_used % 60;
 		echo "<p class='reporttext'> You used " . $offsiteHrs_used . " hours and " . $offsiteMin_used . " minutes of offsite time.</p>";
-		//Late
+
+		//late printout
 		echo "<p class='reporttext'> You were late " . $num_lates;
-		if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
-		//echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
-		//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+
+		if ($num_lates == 1) { 
+			echo " time.</p>"; } else { echo " times.</p>"; 
+		}
+		
+		// echo "<p class='reporttext'> You were unexpectedly late " . $num_unexpected;
+		// if ($num_unexpected == 1) {
+
+		// 	echo " time.</p>"; } else { echo " times.</p>"; 
+		// }
 		//Absent
 		echo "<p class='reporttext'> You were absent " . $num_absent;
 		if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
@@ -440,9 +462,17 @@ echo "<p class='reporttext'> The school year is " . $yearPercent . "% complete a
 
 //Late information echoing
 echo "<p class='reporttext'> You have been late " . $num_lates;
-if ($num_lates == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
-//echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
-//if ($num_unexpected == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
+if ($num_lates == 1) { 
+	echo " time.</p>"; 
+} else { 
+	echo " times.</p>"; 
+}
+echo "<p class='reporttext'> You have been unexpectedly late " . $num_unexpected;
+if ($num_unexpected == 1) { 
+	echo " time.</p>"; 
+} else { 
+	echo " times.</p>"; 
+}
 echo "<p class='reporttext'> You have been absent " . $num_absent;
 if ($num_absent == 1) { echo " time.</p>"; } else { echo " times.</p>"; }
 
