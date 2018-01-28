@@ -7,7 +7,7 @@ $disabled = FALSE;
 
 // check if login is disabled
 if (isset($_SESSION['timeout'])){
-    if(time() - $_SESSION['timeout'] > 900){ // check if the timeout has been long enough
+    if(time() - $_SESSION['timeout'] > 300){ // check if the timeout has been long enough
         $disabled = FALSE;
     } else {
         $disabled = TRUE;
@@ -34,7 +34,7 @@ $adminPassword = $pwdRow['adminPass'];
 
 // IF USER HAS LOGGED OUT DELETE COOKIE
 if (!empty($_GET["logout"])) {
-    
+
     if (($_GET["logout"]) == "1") {
         setcookie("login", "", time()-3600); // deletes the cookie
     }
@@ -66,24 +66,24 @@ if(isset($_POST['Submit']))
             // SET LOGIN COOKIE
             $StudentLogin = 1;
 			setcookie("login", $studentPassword, time()+$studentTimeout); // 8 hours
-        
+
 		}
-    
+
     elseif (crypt($_POST['mypassword'], 'P9') == $adminPassword) {
             // SET LOGIN COOKIE
             $AdminLogin = 1;
             setcookie("login", $adminPassword, time()+$adminTimeout); // 8 hours
-        
+
 		}
-    
+
     if ($AdminLogin == 1) {
-        
+
     header("location:$url");
-        
+
     } elseif ($StudentLogin == 1) {
-        
+
         echo '<META http-equiv="refresh" content="0;URL=index.php">';
-    
+
     } else {
         // echo("<br> <br>");
         // print_r($_SESSION);
@@ -112,7 +112,7 @@ if(isset($_POST['Submit']))
     <link rel="stylesheet" type="text/css" href="attendance.css">
 </head>
 <style>
-    
+
     #loginform {
 	text-align: center;
 	margin-top: 3em;
@@ -127,16 +127,16 @@ if(isset($_POST['Submit']))
     .logintext {
 	margin: 100px;
     }
-    .textbox { 
-	border: 1px solid #848484; 
-	-webkit-border-radius: 30px; 
-	-moz-border-radius: 30px; 
-	border-radius: 30px; 
-	outline:0; 
-	height:20px; 
-	width: 150px; 
-	padding-left:10px; 
-	padding-right:10px; 
+    .textbox {
+	border: 1px solid #848484;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	outline:0;
+	height:20px;
+	width: 150px;
+	padding-left:10px;
+	padding-right:10px;
       }
       .spacer {
 	padding: 6px;
@@ -156,7 +156,7 @@ if(isset($_POST['Submit']))
     a.button:last-child {
 	border-right: 0;
     }
-    
+
     .button:hover {
 	background: rgb(190, 190, 190);
 	text-decoration: none;
@@ -169,9 +169,9 @@ if(isset($_POST['Submit']))
 
 
 <body style="background-color: dimgray;">
-    
 
-    
+
+
 <div id="loginform">
 <form name="form1" method="post" action="secondary_login.php" style="padding: 10px 0;">
     <strong class="logintext">Login </strong>
@@ -185,6 +185,6 @@ if(isset($_POST['Submit']))
     <a href="#" class="loginbutton"><input class="button" type="submit" name="Submit" value="Login"></a>
 </form>
 </div>
-    
+
 </body>
 </html>
