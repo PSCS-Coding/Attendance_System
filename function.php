@@ -653,4 +653,12 @@ function convertHours($whichfield)
 
 }
 
+// gets the last event for a given student returns an array in the format [eventId,statusId,timeStamp]
+function getEventBefore($eventId, $studentId){
+    global $db_server;
+    $eventQuery = $db_server->query("SELECT * FROM events WHERE studentid = '$studentId' AND eventid < '$eventId' ORDER BY eventid DESC LIMIT 1");
+    $eventQuery = $eventQuery->fetch_assoc();
+    return($eventQuery);
+}
+
 ?>
