@@ -219,22 +219,24 @@ $startDateStamp = new DateTime($studentStartDate);
 $yearDateStamp = new DateTime($startdate);
 
 if ($startDateStamp > $yearDateStamp){ // if a student is mid-year, then nerf the number of IS and offsite hours they have
-$remainingDays = daysLeftFromDate($studentStartDate);
-$totalDays = daysLeftFromDate($startdate);
+	$remainingDays = daysLeftFromDate($studentStartDate);
+	$totalDays = daysLeftFromDate($startdate);
 
-$baseHours = $remainingDays / $totalDays;
-$baseISHours = $remainingDays / $totalDays;
-$totalISHours = $study_all / 60;
-$totalHours = $offsite_all / 60;
-$baseHours = $baseHours * $totalHours;
-$baseISHours = $baseISHours * $totalISHours;
+	$remainingDays = $totalDays - $remainingDays; // rip
 
-$offsitehours_used = 0;
-$commhours_used = -$baseHours * 60;
-$studyhours_used = 0;
-$studyhours_remaining = $study_all - $baseISHours * 60;
-$offsitehours_remaining = $offsite_all - $baseHours * 60;
-$commhours_remaining = $commhours_all - $baseHours * 60;
+	$baseHours = $remainingDays / $totalDays;
+	$baseISHours = $remainingDays / $totalDays;
+	$totalISHours = $study_all / 60;
+	$totalHours = $offsite_all / 60;
+	$baseHours = $baseHours * $totalHours;
+	$baseISHours = $baseISHours * $totalISHours;
+
+	$offsitehours_used = 0;
+	$commhours_used = - ($baseHours * 60);
+	$studyhours_used = 0;
+	$studyhours_remaining = $study_all - $baseISHours * 60;
+	$offsitehours_remaining = $offsite_all - $baseHours * 60;
+	$commhours_remaining = $commhours_all - $baseHours * 60;
 
 } else { // if not a new student, do nothing
 	$offsitehours_used = 0;
