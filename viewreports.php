@@ -27,7 +27,7 @@ if (!empty($_POST['studentselect'])){
 
 //download csv
 if(!empty($_POST['download'])){
-	$filename = "data/" . idToName($current_student_id) . "." . date('d.m.Y').'.csv';
+	$filename = "data/" . idToName($current_student_id) . "." . date('m.d.Y').'.csv';
 	header("Location: $filename");
 }
 
@@ -173,7 +173,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
 		FROM events
-		 	JOIN statusdata ON events.statusid = statusdata.statusid
+		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
 		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'
@@ -195,7 +195,7 @@ if(is_file($file))
 	unlink($file);
 }
 // generate new csv
-$filename = "data/" . idToName($current_student_id) . "." . date('d.m.Y').'.csv';
+$filename = "data/" . idToName($current_student_id) . "." . date('m.d.Y').'.csv';
 
 $data = fopen($filename, 'w');
 $headerRow = ['statusname','info','timestamp','returntime'];
