@@ -1,86 +1,6 @@
 /* HTML5 reset  */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -89,17 +9,7 @@ video {
     vertical-align: baseline;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
 
@@ -107,20 +17,15 @@ body {
     line-height: 1;
 }
 
-ol,
-ul {
+ol, ul {
     list-style: none;
 }
 
-blockquote,
-q {
+blockquote, q {
     quotes: none;
 }
 
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote:before, blockquote:after, q:before, q:after {
     content: '';
     content: none;
 }
@@ -152,8 +57,7 @@ form {
     margin: auto;
 }
 
-.status_col,
-.student_col {
+.status_col, .student_col {
     text-align: left;
 }
 
@@ -325,15 +229,11 @@ tr:nth-child(even) {
     width: 800px;
 }
 
-#big_table th,
-#big_table td,
-.eventlog th,
-.eventlog td {
+#big_table th, #big_table td, .eventlog th, .eventlog td {
     padding: 1px 14px;
 }
 
-.student_col a,
-.status_col a {
+.student_col a, .status_col a {
     float: left;
     margin-right: -16px;
     text-decoration: none;
@@ -448,8 +348,7 @@ form#datepicker input[type="submit"] {
     margin-bottom: 0.5em;
 }
 
-.altview_status ul,
-.altview_status li {
+.altview_status ul, .altview_status li {
     list-style-type: none;
     list-style-position: inside;
     margin: 0;
@@ -570,10 +469,7 @@ div.report-container {
     margin-right: 1em;
 }
 
-.choose-report p,
-.choose-report form,
-.view-reports #top_header div,
-.view-reports #top_header div a {
+.choose-report p, .choose-report form, .view-reports #top_header div, .view-reports #top_header div a {
     display: inline-block;
 }
 
@@ -622,8 +518,7 @@ div.report-container {
     color: red;
 }
 
-.eventlog th,
-.eventlog td {
+.eventlog th, .eventlog td {
     line-height: 2em;
 }
 
@@ -631,8 +526,7 @@ div.report-container {
     width: 100%;
 }
 
-.view-reports tr,
-{
+.view-reports tr, {
     background-color: #f0f0f0;
     border: 2px solid white;
 }
@@ -693,6 +587,11 @@ tr.Status_Red:nth-child(odd) {
 .unstyled-link {
     text-decoration: none;
     color: black;
+}
+
+.timepickers .smallbutton {
+    width: 50px;
+    padding: 1px;
 }
 
 
