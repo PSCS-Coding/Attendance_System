@@ -370,6 +370,9 @@ function idToLastName($id)
 function statconvert($id)
 {
     global $db_server;
+    if (empty($id)){
+        $id = 1;
+    }
     $query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $id");
     $tempvar = $query->fetch_assoc();
     $name = $tempvar['statusname'];
