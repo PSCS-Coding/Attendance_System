@@ -12,17 +12,23 @@
 	<div id="top_header">
 <?php
 
-	//query faclitators from sql to get a list
-	$statget = $db_server->query("SELECT * FROM statusdata");
-    $statusdata = array();
-    while ($stat_row = $statget->fetch_row()) {
-		array_push ($statusdata, $stat_row[0]);
-    }
+//query faclitators from sql to get a list
+$statget = $db_server->query("SELECT * FROM statusdata");
+$statusdata = array();
+while ($stat_row = $statget->fetch_row()) {
+	array_push ($statusdata, $stat_row[0]);
+}
 
 if (!empty($_POST['studentselect'])){
     $current_student_id = $_POST['studentselect'];
 } elseif(!empty($_GET['id'])) {
 	$current_student_id = $_GET['id'];
+}
+
+//download csv
+if(!empty($_POST['download'])){
+	$filename = "data/" . idToName($current_student_id) . "." . date('m.d.Y').'.csv';
+	header("Location:" . $filename);
 }
 
 //current students array
@@ -167,7 +173,7 @@ if(!empty($_POST['lastdatetimepicker'])){
 //joins with the tables that key student names/status names to the ids in the events table
 $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studentdata.firstname,timestamp,returntime,events.eventid, yearinschool
 		FROM events
-		 	JOIN statusdata ON events.statusid = statusdata.statusid
+		JOIN statusdata ON events.statusid = statusdata.statusid
 		RIGHT JOIN studentdata ON events.studentid = studentdata.studentid
 		WHERE studentdata.studentid = $current_student_id
 		AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'
@@ -177,6 +183,30 @@ $result = $db_server->query("SELECT info,statusname,studentdata.studentid,studen
 while ($student_data_result = $result->fetch_assoc()) {
 	array_push($student_data_array, $student_data_result);
 }
+
+// create data folder
+if (!file_exists('data')) {
+	mkdir('data', 0777, true);
+}
+// delete old csvs
+$files = glob('data/*');
+foreach($files as $file){
+if(is_file($file))
+	unlink($file);
+}
+// generate new csv
+$filename = "data/" . idToName($current_student_id) . "." . date('m.d.Y').'.csv';
+
+$data = fopen($filename, 'w');
+$headerRow = ['statusname','info','timestamp','returntime'];
+fputcsv($data,$headerRow);
+
+foreach($student_data_array as $row){
+	$csvRow = [];
+	array_push($csvRow,$row['statusname'],$row['info'],$row['timestamp'],$row['returntime']);
+	fputcsv($data, $csvRow);
+}
+fclose($data);
 
 //gets stats
 $getStatsQuery = $db_server->query("SELECT info FROM events WHERE studentid = " . $current_student_id . " AND statusid = 2 AND timestamp BETWEEN '$SFirstDateFromPicker' AND '$SLastDateFromPicker'");
@@ -350,21 +380,22 @@ foreach($student_data_array as $event_key => $event_val) {
 
 		<div class="timepickers">
             <input type='text' id='firstdatetimepicker' class='firstdatetimepicker' name='firstdatetimepicker' placeholder="select start date">
-		  <input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
+		  	<input type='text' id='lastdatetimepicker' class='lastdatetimepicker' name='lastdatetimepicker' placeholder="select end date">
 
-		<select name='statusselect'><option value=''>All Statuses</option>
-        <?php
-			foreach ($statusdata as $statusoption) {
-				$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
-				$tempvar = $query->fetch_assoc();
-				$tempstatname = $tempvar['statusname'];
-				if($tempstatname != "Not Checked In"){
-			?> <option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
-			}
-		}
-        ?>
-        </select>
-		<input type='submit' name='studentsubmit' class='studentselect'>
+			<select name='statusselect'><option value=''>All Statuses</option>
+				<?php
+					foreach ($statusdata as $statusoption) {
+						$query = $db_server->query("SELECT statusname FROM statusdata WHERE statusid = $statusoption");
+						$tempvar = $query->fetch_assoc();
+						$tempstatname = $tempvar['statusname'];
+						if($tempstatname != "Not Checked In"){
+							?><option value= '<?php echo $statusoption; ?> '> <?php echo $tempstatname; ?></option> <?php
+						}
+					}
+				?>
+        	</select>
+			<input type='submit' name='studentsubmit' class='studentselect'>
+			<input type='submit' name='download' value='Export' class='smallbutton'>
 		</div>
 
 <?php
