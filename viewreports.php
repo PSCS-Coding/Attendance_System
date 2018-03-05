@@ -28,7 +28,7 @@ if (!empty($_POST['studentselect'])){
 //download csv
 if(!empty($_POST['download'])){
 	$filename = "data/" . idToName($current_student_id) . "." . date('m.d.Y').'.csv';
-	header("Location: $filename");
+	header("Location:" . $filename);
 }
 
 //current students array
