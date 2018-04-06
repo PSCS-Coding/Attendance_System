@@ -58,8 +58,10 @@
 						<td> <?php echo "<a target=_blank class='unstyled-link' href='../../viewreports.php?id=" . $render[6] . "'>" . $render[0] . " " . $render[1]; // the <a> tag is a link to view reports?> </a></td>
 						<td> <?php echo $render[2]; ?> </td>
 						<td> <?php echo $render[3]; ?> </td>
-						<?php if($studentTable[0][5] <= $render[4]){ // if the student is using offsite unsustainably, turn the percentage red ?> 
+						<?php if($render[4] >= 100){ // if the student is using offsite unsustainably, turn the percentage red ?> 
 							<td style = "color:red;"> <?php echo $render[4] . "%"; ?> </td>
+						<?php } elseif($render[3] <= $render[4]){ ?>
+							<td style = "color:firebrick;"> <?php echo $render[4] . "%"; ?> </td>
 						<?php } else { ?>
 							<td> <?php echo $render[4] . "%"; ?> </td>
 						<?php } ?>
