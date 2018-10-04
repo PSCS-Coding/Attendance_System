@@ -173,7 +173,7 @@ body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 80%;
     background-color: #4A4747;
-    background-image: url('img/mobius-transparent.png');
+    background-image: url('static/mobius-transparent.png');
     background-repeat: no-repeat;
     background-position: center 100px;
     background-attachment: fixed;
@@ -210,7 +210,7 @@ body.single-user {
 }
 
 .groupButton {
-    background: none!important;
+    background: none !important;
     border: none;
     padding-left: 15px;
     cursor: pointer;
@@ -632,7 +632,7 @@ div.report-container {
 }
 
 .view-reports tr,
-{
+    {
     background-color: #f0f0f0;
     border: 2px solid white;
 }

@@ -1,7 +1,7 @@
 <?php
 
-require_once("connection.php");
-require_once("function.php");
+require_once("../connection.php");
+require_once("../function.php");
 
 $query = $db_server->query("SELECT studentid,timestamp,statusid FROM events WHERE statusid = 2");
 
@@ -12,39 +12,6 @@ while ($result = $query->fetch_array()) {
 	array_push($qresult, $result);
 	
 }
-
-/*
-//$currevent = $qresult[0]["timestamp"];
-$studentevents = array();
-
-foreach ($qresult as $event) {
-	
-	array_push($studentevents,$event);
-	
-}
-print_r($studentevents);
-for ($i = 1; $i < count($qresult); $i++) {
-	
-	if ($qresult[$i]["timestamp"] == $qresult[$i - 1]["timestamp"]) {
-		
-		
-	
-	}
-	
-}
-
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 $ts = $qresult[0]["timestamp"];
 

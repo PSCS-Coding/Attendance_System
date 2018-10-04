@@ -30,7 +30,7 @@
     font-size:80%;
     background-color:#4A4747;
 
-    background-image: url('img/mobius-transparent.png');
+    background-image: url('../static/mobius-transparent.png');
     background-repeat: no-repeat;
     background-position: center 100px;
     background-attachment: fixed;
@@ -67,9 +67,9 @@
 <body>
 <h3>Student Late Info</h3>
 <?php
-require_once("connection.php");
-require_once("function.php");
-require_once("login.php");
+require_once("../connection.php");
+require_once("../function.php");
+require_once("../login.php");
 
 $queryAdd = "";
 if(!empty($_POST['studentid'])){
@@ -167,7 +167,7 @@ if(count($timeDiffs) > 0){
 echo("<tr><td>Average " . $average . " </td><td> Median " . $median . "</td><td>Count " . $count . "</td></tr>");
 foreach($lateEvents as $row){
     $currentDatetime = new DateTime($row["timestamp"]);
-    echo("<tr><td><a href='viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("g:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
+    echo("<tr><td><a href='../viewreports.php?id=" . $row['studentid'] . "'target='_blank'/>" . idToName($row["studentid"]) . "</td><td>" . $currentDatetime->format("g:i:s") . "</td><td>" . $currentDatetime->format("Y-m-d") . "</td></tr>");
 }
 ?>
 </table>
