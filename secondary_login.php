@@ -108,8 +108,8 @@ if(isset($_POST['Submit']))
 <html>
 <head>
     <title>PSCS attendance system login</title>
-    <link rel="shortcut icon" type="image/png" href="img/mobius.png"/>
-    <link rel="stylesheet" type="text/css" href="attendance.css">
+    <link rel="shortcut icon" type="image/png" href="static/mobius.png"/>
+    <link rel="stylesheet" type="text/css" href="static/attendance.css">
 </head>
 <style>
 
@@ -163,7 +163,6 @@ if(isset($_POST['Submit']))
 	color: gray;
     }
 </style>
-    <link rel="stylesheet" type="text/css" href="mobile.css"/>
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 </head>
 

@@ -1,6 +1,86 @@
 /* HTML5 reset  */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -9,7 +89,17 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     vertical-align: baseline;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
     display: block;
 }
 
@@ -17,15 +107,20 @@ body {
     line-height: 1;
 }
 
-ol, ul {
+ol,
+ul {
     list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
     quotes: none;
 }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
     content: '';
     content: none;
 }
@@ -43,7 +138,7 @@ input#checkAll {
 
 body {
     background-color: #4A4747;
-    background-image: url('../../img/mobius-transparent.png');
+    background-image: url('../../static/mobius-transparent.png');
     background-repeat: no-repeat;
     background-position: center 100px;
     background-attachment: fixed;
@@ -81,7 +176,12 @@ body {
     opacity: 0.85;
 }
 
-.holiday_table, .global_table, .allottedhours_table, .facilitators_table, .offloc_table, .students_table {
+.holiday_table,
+.global_table,
+.allottedhours_table,
+.facilitators_table,
+.offloc_table,
+.students_table {
     border: 5px solid rgba(0, 0, 0, 0.3);
     border-radius: 3px;
     max-width: 50%;
@@ -107,7 +207,7 @@ body {
 }
 
 .textButton {
-    background: none!important;
+    background: none !important;
     border: none;
     cursor: pointer;
     font-size: 14px;
@@ -205,7 +305,8 @@ a.button:last-child {
     color: lightgray;
 }
 
-td, th {
+td,
+th {
     padding: 5px 7px;
 }
 
@@ -368,7 +469,8 @@ body .edit-events {
     position: absolute;
 }
 
-.new-event input, .editing-row input {
+.new-event input,
+.editing-row input {
     width: 100%;
 }
 
