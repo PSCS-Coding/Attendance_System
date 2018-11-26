@@ -1,14 +1,3 @@
-# Attendance System
-The puget sound community school Attendance System v2.0
-
-Created by the following students under the instruction and supervision of Nic:
- - Issac
- - Milo
- - River
- - Anthony
- - Easton
- - Jon
- - Dexter
- - Ben
-
-https://pscs.org
+# Attendance_System [![Issue Stats](http://issuestats.com/github/PSCS-Coding/Attendance_System/badge/issue)](http://issuestats.com/github/PSCS-Coding/Attendance_System)
+The puget sound community school Attendance System created by the students.
+attendance.pscs.org
